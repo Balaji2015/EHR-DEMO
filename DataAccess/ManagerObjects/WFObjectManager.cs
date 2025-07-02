@@ -72,6 +72,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void GetWfObjDetails(string UserName, ulong encounter_id, out string Obj_Type, out string Curr_Process, out bool Owner_Enc_Mismatch);//Added for CarePointe
 
         WFObject GetWfObjArchiveByObjectSystemId(ulong ObjectSystemId, string ObjectType);
+        ArrayList GetPatientByCurrentProcess(ulong HumanID, string sdob, string sPatientName);
     }
     public partial class WFObjectManager : ManagerBase<WFObject, ulong>, IWFObjectManager
     {
@@ -3910,6 +3911,134 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return ds;
 
+        }
+        public ArrayList GetPatientByCurrentProcess(ulong HumanID, string sdob, string sPatientName)
+        {
+            ArrayList arrayList = new ArrayList();
+            DataTable dtTable = new DataTable();
+            DataSet ds = new DataSet();
+            ArrayList MyList = new ArrayList();
+            IList<string> sObjType = new List<string> { "ENCOUNTER", "DOCUMENTATION", "DOCUMENT REVIEW" };
+            var objWfObject = new List<(
+                        string WF_Object_Id,
+                        string Obj_System_Id,
+                        string Obj_Type,
+                        string Obj_Sub_Type,
+                        string Facility_Name,
+                        string Current_Process,
+                        string Current_Arrival_Time,
+                        string Current_Owner,
+                        string Priority,
+                        string Parent_Obj_Type,
+                        string Parent_Obj_System_Id,
+                        string Process_Allocation,
+                        string Version,
+                        string Doc_Type,
+                        string Doc_Sub_Type,
+                        string Encounter_id,
+                        string Human_ID,
+                        string PatientName,
+                        string PatientDOB,
+                        string Appointment_Date,
+                        string Date_of_service,
+                        string Appointment_Provider_Name,
+                        string Encounter_Provider_Name,
+                        string Assigned_Med_Asst_User_Name,
+                        string Batch_Status)>{ };
+
+            
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                IQuery query = iMySession.GetNamedQuery("Get.HumanCurrentProcess");
+                query.SetString("HumanID", HumanID.ToString());
+                query.SetParameterList("ObjType", sObjType.ToList());
+                MyList = new ArrayList(query.List());
+                
+                iMySession.Close();
+                
+
+            }
+
+
+            if (MyList.Count > 0)
+            {
+                foreach (object[] obj in MyList)
+                {
+                    if (obj[2].ToString() == "ENCOUNTER" && objWfObject.Where(x => x.Encounter_id == obj[15].ToString()).Count() > 0)
+                    {
+                        continue;
+                    }
+                    else if (obj[2].ToString() == "DOCUMENTATION" && objWfObject.Where(x => x.Encounter_id == obj[15].ToString() && x.Obj_Type == "ENCOUNTER").Count() > 0)
+                    {
+                        objWfObject.Remove(objWfObject.Where(x => x.Encounter_id == obj[15].ToString() && x.Obj_Type == "ENCOUNTER").FirstOrDefault());
+                    }
+
+                    objWfObject.Add((WF_Object_Id: obj[0].ToString(),
+                        Obj_System_Id: obj[1].ToString(),
+                        Obj_Type: obj[2].ToString(),
+                        Obj_Sub_Type: obj[3].ToString(),
+                        Facility_Name: obj[4].ToString(),
+                        Current_Process: obj[5].ToString(),
+                        Current_Arrival_Time: obj[6].ToString(),
+                        Current_Owner: obj[7].ToString(),
+                        Priority: obj[8].ToString(),
+                        Parent_Obj_Type: obj[9].ToString(),
+                        Parent_Obj_System_Id: obj[10].ToString(),
+                        Process_Allocation: obj[11].ToString(),
+                        Version: obj[12].ToString(),
+                        Doc_Type: obj[13].ToString(),
+                        Doc_Sub_Type: obj[14].ToString(),
+                        Encounter_id: obj[15].ToString(),
+                        Human_ID: HumanID.ToString(),
+                        PatientName: sPatientName,
+                        PatientDOB: sdob.ToString(),
+                        Appointment_Date: obj[16].ToString(),
+                        Date_of_service: obj[17].ToString(),
+                        Appointment_Provider_Name: obj[18].ToString(),
+                        Encounter_Provider_Name: obj[19].ToString(),
+                        Assigned_Med_Asst_User_Name: obj[20].ToString(),
+                        Batch_Status: obj[21].ToString()));
+
+                }
+
+            }
+
+
+            var listOfObjects = objWfObject.Select(t => new
+            {
+                WF_Object_Id = t.WF_Object_Id,
+                Obj_System_Id = t.Obj_System_Id,
+                Obj_Type = t.Obj_Type,
+                Obj_Sub_Type = t.Obj_Sub_Type,
+                Facility_Name = t.Facility_Name,
+                Current_Process = t.Current_Process,
+                Current_Arrival_Time = t.Current_Arrival_Time,
+                Current_Owner = t.Current_Owner,
+                Priority = t.Priority,
+                Parent_Obj_Type = t.Parent_Obj_Type,
+                Parent_Obj_System_Id = t.Parent_Obj_System_Id,
+                Process_Allocation = t.Process_Allocation,
+                Version = t.Version,
+                Doc_Type = t.Doc_Type,
+                Doc_Sub_Type = t.Doc_Sub_Type,
+                Encounter_id = t.Encounter_id,
+                Human_ID = t.Human_ID,
+                PatientName = t.PatientName,
+                PatientDOB = t.PatientDOB,
+                Appointment_Date = t.Appointment_Date,
+                Date_of_service = t.Date_of_service,
+                Appointment_Provider_Name = t.Appointment_Provider_Name,
+                Encounter_Provider_Name = t.Encounter_Provider_Name,
+                Assigned_Med_Asst_User_Name = t.Assigned_Med_Asst_User_Name,
+                Batch_Status = t.Batch_Status
+            }).ToList();
+
+
+            if (listOfObjects.Count > 0)
+            {
+                arrayList.Add(listOfObjects);
+            }
+            return arrayList;
         }
         //Added by Suvarnni
         public void saveListwfobj(IList<WFObject> ilist)

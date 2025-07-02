@@ -390,8 +390,69 @@
             border: 1px solid #adadad !important;
             background-color: #F7F7F7;
         }
+        .SelectedRow {
+    background: #F3C55A !important;
+    color: black !important;
+}
+        table.dataTable thead>tr>th.sorting:before,table.dataTable thead>tr>th.sorting:after{
+            width: 0% !important;
+        }
+
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+    padding-right: 10px !important;
+    }
+
+.text-align-center{
+    text-align:center;
+}
+
+.word-break-all{
+    word-break: break-all;
+}
+.dataTables_empty {
+    display: none;
+}
+.dataTables_filter input {
+    width: 330px !important;
+}
+.dataTables_wrapper th {
+    padding: 8px !important;
+}
+.process-word-wrap {
+    word-wrap: break-word;
+}
+        .dataTables_scrollHead {
+            width:100% !important;
+        }
+        #grdAdminModuleWfobjwct td {
+    border: 1px solid rgb(144, 144, 144);
+        }
+        #grdAdminModuleWfobjwct .even {
+                background: #f2f2f2;
+        }
+.searchicon {
+        background-image: url(../Resources/SearchIcon.png);
+    background-repeat: no-repeat;
+        padding-left: 26px !important;
+}
+        #grdAdminModuleWfobjwct thead {
+            visibility:collapse;
+        }
+        .dataTables_scrollHeadInner th {
+            font-size:11px !important;
+            font-weight:bold !important;
+        }
+        #grdAdminModuleWfobjwct td {
+            font-size:11px !important;
+            font-weight: normal !important;
+        }
     </style>
-    <link href="~/CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
+    <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/fontawesomenew.css" rel="stylesheet" />
+    <link href="CSS/fontawesome.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="bodybackground" onload="loadwfobject(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}">
     <form id="frmWFObjectManager" runat="server">
@@ -406,7 +467,7 @@
                             <tr>
                                 <td class="style9">
                                     <asp:Panel ID="pnlPatientInformations" runat="server" Height="64px" Font-Size="Small" 
-                                        Width="1050px" GroupingText="Patient Information" CssClass="LabelStyleBold">
+                                        Width="1115px" GroupingText="Patient Information" CssClass="LabelStyleBold">
                                         <table bgcolor="white">
                                             <tr>
                                                 <td class="style36">
@@ -435,13 +496,17 @@
                                                 </td>
                                                 <td>
 
-                                                    <asp:Button ID="btnGetObjects" runat="server" OnClick="btnGetObjects_Click" Text="Get Objects" OnClientClick="return btnGetobjectsClick();"
-                                                        Style="margin-left: 30px" CssClass="aspresizedbluebutton " />
+                                                    <%--<asp:Button ID="btnGetObjects" runat="server" OnClick="btnGetObjects_Click" Text="Get Objects" OnClientClick="return btnGetobjectsClick();"
+                                                        Style="margin-left: 30px" CssClass="aspresizedbluebutton " />--%>
+                                                    <input type="button" id="btnGetObjects" runat="server"  value="Get Objects" onclick ="return btnGetobjectsClick();"
+                                                        style="margin-left: 30px" class="aspresizedbluebutton" />
 
                                                 </td>
                                                 <td>
-                                                    <asp:Button ID="btnClearAll" runat="server" Text="Clear All" OnClientClick="return Clear();"
-                                                        OnClick="btnClearAll_Click" Style="margin-left: 30px" CssClass="aspresizedredbutton "  />
+                                                    <%--<asp:Button ID="btnClearAll" runat="server" Text="Clear All" OnClientClick="return Clear();"
+                                                        OnClick="btnClearAll_Click" Style="margin-left: 30px" CssClass="aspresizedredbutton "  />--%>
+                                                    <input type="button" id="btnClearAll" runat="server" value="Clear All" onclick="return Clear();"
+                                                        style="margin-left: 30px" class="aspresizedredbutton" />
                                                 </td>
                                             </tr>
                                         </table>
@@ -451,13 +516,13 @@
                             <tr>
                                 <td class="style5">
 
-                                    <asp:Panel ID="Panel1" runat="server" Font-Size="Small" Height="247px" Width="1050px" CssClass="LabelStyleBold"
+                                    <asp:Panel ID="Panel1" runat="server" Font-Size="Small" Height="285px" Width="1115px" CssClass="LabelStyleBold"
                                         GroupingText="Patient Process Details">
                                         <table class="style13" bgcolor="white">
                                             <tr>
                                                 <td>
-                                                    <telerik:RadGrid ID="grdAdminModule" runat="server" CellSpacing="0" GridLines="None"
-                                                        Height="217px" OnSelectedIndexChanged="grdAdminModule_SelectedIndexChanged" AllowSorting="True"
+                                                    <%--<telerik:RadGrid ID="grdAdminModule" runat="server"  GridLines="None"
+                                                        OnSelectedIndexChanged="grdAdminModule_SelectedIndexChanged" AllowSorting="True"
                                                         OnItemCommand="grdAdminModule_ItemCommand"
                                                         OnSortCommand="grdAdminModule_SortCommand" OnPreRender="grdAdminModule_PreRender"
                                                          CssClass="AddBorders">
@@ -474,7 +539,10 @@
                                                             <ExpandCollapseColumn Created="True">
                                                             </ExpandCollapseColumn>
                                                         </MasterTableView>
-                                                    </telerik:RadGrid>
+                                                    </telerik:RadGrid>--%>
+                                                    <div id="divWfObject" style="width:100%;" runat="server">
+                                                        <table id="grdAdminModuleWfobjwct" class='table table-bordered' style='' runat="server"></table>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -488,23 +556,26 @@
                                         <table style="width: 1050px">
                                             <tr>
                                                 <td class="style12">
-                                                    <asp:RadioButton ID="rbUpdateProcess" runat="server" AutoPostBack="True" GroupName="rbbutton" onClick="rbUpdateProcessOnClick();"
-                                                        OnCheckedChanged="rbUpdateProcess_CheckedChanged" Text="Update Process" />
+                                                    <%--<asp:RadioButton ID="rbUpdateProcess" runat="server" AutoPostBack="True" GroupName="rbbutton" onClick="rbUpdateProcessOnClick();"
+                                                        OnCheckedChanged="rbUpdateProcess_CheckedChanged" Text="Update Process" />--%>
+                                                    <input type="radio" id="rbUpdateProcess" runat="server" name="rbbutton" onclick="rbUpdateProcessOnClick();" />
+                                                    <label>Update Process</label>
+                                                    
                                                 </td>
                                                 <td class="style12"></td>
                                             </tr>
                                             <tr>
                                                 <td class="style15" colspan="2">
                                                     <asp:Panel ID="pnlUpdateProcess" runat="server" Height="72px" Font-Size="Small" GroupingText=" Process" CssClass="LabelStyleBold"
-                                                        Width="1050px">
-                                                        <table bgcolor="white" style="width: 1022px">
+                                                        Width="1115px">
+                                                        <table bgcolor="white" style="width: 1075px">
                                                             <tr>
                                                                 <td class="style16">
                                                                     <span class="MandLabelstyle">Reason for Change</span><span class="manredforstar">*</span>
                                                                    
                                                                 </td>
                                                                 <td>
-                                                                    <telerik:RadTextBox ID="txtReasonForChange" runat="server" TextMode="MultiLine" CssClass="Editabletxtbox">
+                                                                    <%--<telerik:RadTextBox ID="txtReasonForChange" runat="server" TextMode="MultiLine" CssClass="Editabletxtbox">
                                                                         <DisabledStyle Resize="None" />
                                                                         <InvalidStyle Resize="None" />
                                                                         <HoveredStyle Resize="None" />
@@ -512,19 +583,25 @@
                                                                         <EmptyMessageStyle Resize="None" />
                                                                         <FocusedStyle Resize="None" />
                                                                         <EnabledStyle Resize="None" />
-                                                                    </telerik:RadTextBox>
+                                                                    </telerik:RadTextBox>--%>
+                                                                    <input id="txtReasonForChange" type="text" runat="server" class="Editabletxtbox" style="height:35px;" />
                                                                 </td>
                                                                 <td>
                                                                     <asp:Label ID="lblPreviousProcess" runat="server" Text="Previous Process" CssClass="spanstyle"></asp:Label>
                                                                 </td>
                                                                 <td class="style32">
-                                                                    <telerik:RadComboBox ID="cboPreviousProcess" runat="server" AutoPostBack="false"
+                                                                    <%--<telerik:RadComboBox ID="cboPreviousProcess" runat="server" AutoPostBack="false"
                                                                         Height="100px" Width="200px" CssClass="Editabletxtbox">
-                                                                    </telerik:RadComboBox>
+                                                                    </telerik:RadComboBox>--%>
+                                                                    <select id="cboPreviousProcess" runat="server" class="Editabletxtbox" style="height:20px; width:200px">
+                                                                    </select>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:Button ID="btnUpdateProcess" runat="server" Text="Update Process" OnClientClick="btnUpdateProcessClick();"
-                                                                        Style="margin-left: 0px" OnClick="btnUpdateProcess_Click" CssClass="aspresizedbluebutton" />
+                                                                    <%--<asp:Button ID="btnUpdateProcess" runat="server" Text="Update Process" OnClientClick="btnUpdateProcessClick();"
+                                                                        Style="margin-left: 0px" OnClick="btnUpdateProcess_Click" CssClass="aspresizedbluebutton" />--%>
+                                                               
+                                                                    <input id="btnUpdateProcess" type="button" runat="server" value="Update Process" 
+                                                                        style="margin-left: 0px" onclick="btnUpdateProcessClick();" class="aspresizedbluebutton" />
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -533,29 +610,35 @@
                                             </tr>
                                             <tr>
                                                 <td class="style14">
-                                                    <asp:RadioButton ID="rbUpdateOwner" runat="server" AutoPostBack="True" GroupName="rbbutton" onClick="rbUpdateOwnerOnClick();"
-                                                        OnCheckedChanged="rbUpdateOwner_CheckedChanged" Text="Update Owner" />
+                                                   <%-- <asp:RadioButton ID="rbUpdateOwner" runat="server" AutoPostBack="True" GroupName="rbbutton" onClick="rbUpdateOwnerOnClick();"
+                                                        OnCheckedChanged="rbUpdateOwner_CheckedChanged" Text="Update Owner" />--%>
+                                                    <input type="radio" id="rbUpdateOwner" runat="server" name="rbbutton" onclick="rbUpdateOwnerOnClick();" />
+                                                    <label>Update Owner</label>
                                                 </td>
                                                 <td class="style14"></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
                                                     <asp:Panel ID="pnlUpdateOwner" runat="server" Height="60px" Font-Size="Small" GroupingText="Owner" CssClass="LabelStyleBold">
-                                                        <table bgcolor="white" style="width: 1022px">
+                                                        <table bgcolor="white" style="width: 1075px">
                                                             <tr>
                                                                 <td class="style17">
                                                                     <asp:Label ID="lblUpdateOwner" runat="server" Text="Owner" CssClass="spanstyle"></asp:Label>
                                                                 </td>
                                                                 <td class="style26">
-                                                                    <telerik:RadComboBox ID="cboUpdateOwner" runat="server" AutoPostBack="false" Height="100px"
+                                                                    <%--<telerik:RadComboBox ID="cboUpdateOwner" runat="server" AutoPostBack="false" Height="100px"
                                                                         Width="200px" CssClass="Editabletxtbox">
-                                                                    </telerik:RadComboBox>
+                                                                    </telerik:RadComboBox>--%>
+                                                                    <select id="cboUpdateOwner" runat="server" class="Editabletxtbox" style="height:20px; width:200px">
+                                                                    </select>
                                                                 </td>
                                                                 <td class="style26">
-                                                                    <asp:CheckBox ID="checkkShowAllOwner" runat="server" OnCheckedChanged="checkkShowAllOwner_CheckedChanged" onclick="chkShowAllOwner();" Text="Show All" AutoPostBack="true" />
+                                                                    <%--<asp:CheckBox ID="checkkShowAllOwner" runat="server" OnCheckedChanged="checkkShowAllOwner_CheckedChanged" onclick="chkShowAllOwner();" Text="Show All" AutoPostBack="true" />--%>
+                                                                <input type="checkbox" id="checkkShowAllOwner" runat="server" onclick="chkShowAllOwner();" /> <label>Show All</label>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:Button ID="btnUpdateOwner" runat="server" Text="Update Owner" OnClientClick="return btnUpdateOwnerClick();" OnClick="btnUpdateOwner_Click" CssClass="aspresizedbluebutton" />
+                                                                    <%--<asp:Button ID="btnUpdateOwner" runat="server" Text="Update Owner" OnClientClick="return btnUpdateOwnerClick();" OnClick="btnUpdateOwner_Click" CssClass="aspresizedbluebutton" />--%>
+                                                                <input type="button" id="btnUpdateOwner" runat ="server" value="Update Owner"  onclick="btnUpdateOwnerClick();" class="aspresizedbluebutton" />
                                                                 </td>
                                                                 <td>&nbsp;
                                                                 </td>
@@ -607,9 +690,11 @@
             </Windows>
         </telerik:RadWindowManager>
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
-            <link href="CSS/jquery-ui.css" rel="stylesheet" />
-            <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
-            <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+            <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src='JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>' type="text/javascript"></script>
+    <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="JScripts/pako.min.js" type="text/javascript"></script>
+    <script src="JScripts/jquery.dataTables.min.js" type="text/javascript"></script>
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
