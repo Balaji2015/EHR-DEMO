@@ -56,15 +56,29 @@ function RcopiaDownload() {
         error: function (result) {
             //Jira CAP-1366
             StopRcopiaStrip();
-            var log = JSON.parse(result.responseText);
-            console.log(log);
-            if (result.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            //CAP-3314 - avoid undefined JSON to be parse
+            if (isValidJSON(result.responseText)) {
+                var log = JSON.parse(result.responseText);
+                console.log(log);
+                if (result.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
+                else
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            }
+            else {
+                var log = result.responseText;
+                console.log(log);
+                if (result.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
+                else
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log);
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            }
         }
     });
 }
