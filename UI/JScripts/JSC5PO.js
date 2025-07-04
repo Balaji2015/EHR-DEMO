@@ -1317,7 +1317,7 @@ function OpenModal(data) {
         }
         else {
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-            var Result = openModal("frmWFObjectManager.aspx", 660, 1100, obj, "ctl00_ModalWindow");
+            var Result = openModal("frmWFObjectManager.aspx", 660, 1150, obj, "ctl00_ModalWindow");
         }
     }
     else if (itemValue.toUpperCase() == "WELLNESS NOTES") {
@@ -1866,7 +1866,7 @@ function OfficeManagerQueue() {
 function UpdateProcessOwner() {
     args.set_cancel(true);
     var obj = new Array();
-    var Result = openModal("frmWFObjectManager.aspx", 550, 1070, obj, "ctl00_ModalWindow");
+    var Result = openModal("frmWFObjectManager.aspx", 550, 1150, obj, "ctl00_ModalWindow");
     return false;
 }
 function OpenERX(MyType) {
@@ -2775,7 +2775,7 @@ function OnClientCloseAdminModule(oWindow, args) {
                 obj.push("HumanID=" + HumanId);
                 obj.push("PatientName=" + PatientName);
                 obj.push("PatientDOB=" + dob);
-                var Result = openModal("frmWFObjectManager.aspx", 660, 1100, obj, "ctl00_ModalWindow");
+                var Result = openModal("frmWFObjectManager.aspx", 660, 1150, obj, "ctl00_ModalWindow");
                 var WindowName = $find('ctl00_ModalWindow');
                 WindowName.add_close(function OnCloseWfObjectManager(oWindow, args) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

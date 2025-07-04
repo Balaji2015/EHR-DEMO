@@ -15,6 +15,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Response_Message = string.Empty;
         private string _Created_By = string.Empty;
         private DateTime _Created_Date_And_Time = DateTime.MinValue;
+        private string _Request_Message = string.Empty; 
         #endregion
 
         #region Constructors
@@ -36,6 +37,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Response_Message);
             sb.Append(_Created_By);
             sb.Append(_Created_Date_And_Time);
+            sb.Append(_Request_Message);
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -121,6 +123,15 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _Created_Date_And_Time = value;
+            }
+        }
+        [DataMember]
+        public virtual string Request_Message
+        {
+            get { return _Request_Message; }
+            set
+            {
+                _Request_Message = value;
             }
         }
         #endregion

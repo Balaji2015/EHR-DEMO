@@ -374,6 +374,8 @@ namespace Acurus.Capella.UI.WebServices.API
                 if (ilstEncounterBlob.Count > 0)
                 {
                     sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    //Jira CAP-3393
+                    sXMLEncounterDoc = ReplaceHexadecimal(sXMLEncounterDoc);
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                     //Jira #CAP-115
@@ -393,6 +395,8 @@ namespace Acurus.Capella.UI.WebServices.API
                 if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
                 {
                     sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                    //Jira CAP-3393
+                    sXMLHumanDoc = ReplaceHexadecimal(sXMLHumanDoc);
                 }
                 else
                 {
@@ -403,6 +407,8 @@ namespace Acurus.Capella.UI.WebServices.API
                     if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
                     {
                         sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        //Jira CAP-3393
+                        sXMLHumanDoc = ReplaceHexadecimal(sXMLHumanDoc);
                     }
                 }
 
@@ -1356,6 +1362,16 @@ namespace Acurus.Capella.UI.WebServices.API
             string qryUserByPHYID = "SELECT EMail_Address FROM User WHERE Physician_Library_ID = {0};";
             DataSet UserByPHYIDResult = DBConnector.ReadData(string.Format(qryUserByPHYID, sProviderUserID));
             return DBConnector.DataTableToList<User>(UserByPHYIDResult.Tables[0]) ?? new List<User>();
+        }
+        //Jira CAP-3393
+        public string ReplaceHexadecimal(string sInputString)
+        {
+            string sHtmlEntitiesRegx = @"&#x?[0-9a-fA-F]+;?";
+            sInputString = Regex.Replace(sInputString, sHtmlEntitiesRegx, " ");
+
+            string sHexadecimalRegx = @"^0x[0-9a-fA-F]+$|^[0-9a-fA-F]{2,}$";
+            sInputString = Regex.Replace(sInputString, sHexadecimalRegx, " ");
+            return sInputString;
         }
     }
 

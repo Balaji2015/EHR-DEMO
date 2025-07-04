@@ -12,6 +12,7 @@
     <property name="Result_Message" column="Result_Message" />
     <!--<property name="Response_Message" column="Response_Message" />
     <property name="Created_By" column="Created_By" />-->
-    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />    
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+	  <property name="Request_Message" column="Request_Message" />
   </class>
 </hibernate-mapping>

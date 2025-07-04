@@ -120,7 +120,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGetObjects;
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnGetObjects;
 
         /// <summary>
         /// btnClearAll control.
@@ -129,7 +129,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClearAll;
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnClearAll;
 
         /// <summary>
         /// Panel1 control.
@@ -141,13 +141,22 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.Panel Panel1;
 
         /// <summary>
-        /// grdAdminModule control.
+        /// divWfObject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadGrid grdAdminModule;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divWfObject;
+
+        /// <summary>
+        /// grdAdminModuleWfobjwct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable grdAdminModuleWfobjwct;
 
         /// <summary>
         /// rbPanel control.
@@ -165,7 +174,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbUpdateProcess;
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton rbUpdateProcess;
 
         /// <summary>
         /// pnlUpdateProcess control.
@@ -183,7 +192,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadTextBox txtReasonForChange;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtReasonForChange;
 
         /// <summary>
         /// lblPreviousProcess control.
@@ -201,7 +210,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadComboBox cboPreviousProcess;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect cboPreviousProcess;
 
         /// <summary>
         /// btnUpdateProcess control.
@@ -210,7 +219,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpdateProcess;
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnUpdateProcess;
 
         /// <summary>
         /// rbUpdateOwner control.
@@ -219,7 +228,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbUpdateOwner;
+        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton rbUpdateOwner;
 
         /// <summary>
         /// pnlUpdateOwner control.
@@ -246,7 +255,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadComboBox cboUpdateOwner;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect cboUpdateOwner;
 
         /// <summary>
         /// checkkShowAllOwner control.
@@ -255,7 +264,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox checkkShowAllOwner;
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox checkkShowAllOwner;
 
         /// <summary>
         /// btnUpdateOwner control.
@@ -264,7 +273,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpdateOwner;
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnUpdateOwner;
 
         /// <summary>
         /// divLoading control.

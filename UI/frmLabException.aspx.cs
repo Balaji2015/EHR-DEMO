@@ -1167,7 +1167,7 @@ namespace Acurus.Capella.UI
 
         [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public static object GetOutstandingOrdersList()
+        public static object GetOutstandingOrdersList(string HumanId)
         {
 
             if (ClientSession.UserName == string.Empty)
@@ -1177,18 +1177,13 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
-            string extra_search = HttpContext.Current.Request.Params["extra_search"];
-            var searchData = JsonConvert.DeserializeObject<Dictionary<string, JToken>>(extra_search);
-            IList<Orders> FillOutstandingOrders = searchData["FillOutstandingOrders"].ToObject<List<Orders>>();
 
-            if (FillOutstandingOrders != null)
-                FillOutstandingOrders = FillOutstandingOrders.OrderByDescending(a => a.Order_Submit_ID).ToList<Orders>();
+            OrdersManager orderProxy = new OrdersManager();
+            IList<Orders> listOrders = orderProxy.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "RESULT_PROCESS", Convert.ToUInt64(HumanId));
 
-            var resultNew = new
-            {
-                data = Compress(JsonConvert.SerializeObject(FillOutstandingOrders)),
-            };
-            return resultNew;
+
+
+            return JsonConvert.SerializeObject(listOrders);
         }
 
 

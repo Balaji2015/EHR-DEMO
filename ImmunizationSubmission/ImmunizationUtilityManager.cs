@@ -49,6 +49,8 @@ namespace Acurus.Capella.ImmunizationSubmission
             lstlstwfobject = objwfobject.GetImmunizationOrder();
             ulong ulEncounterId = 0;
             ulong ulHumanId = 0;
+            //Cap - 3164
+            string sXmlRequest = string.Empty;
             EncounterManager objencountermanager = new EncounterManager();
             ImmunizationManager objImmunMngr = new ImmunizationManager();
             IList<ImmunizationSubmissionLog> lstlog = new List<ImmunizationSubmissionLog>();
@@ -181,6 +183,9 @@ namespace Acurus.Capella.ImmunizationSubmission
                         XmlDocument xmlDocument = new XmlDocument();
                         string xml = empty3.Replace("ImmunizationHL7Content", immunizationRegistry);
                         xmlDocument.LoadXml(xml);
+                        //Cap - 3164
+                        sXmlRequest = xml;
+
                         using (Stream requestStream = soapWebRequest.GetRequestStream())
                             xmlDocument.Save(requestStream);
                         using (WebResponse response = soapWebRequest.GetResponse())
@@ -211,7 +216,10 @@ namespace Acurus.Capella.ImmunizationSubmission
                         if (PhysicianList != null && PhysicianList.Count > 0)
                             objlog.Physician_ID = PhysicianList[0].Id;
                         //objlog.Result_Message = test; // resultsplit[resultsplit.Length - 1].ToString(); ;
+                        objlog.Result_Message = str2 + Environment.NewLine + ex?.InnerException ??"" + Environment.NewLine + ex?.InnerException?.Message ?? ""; 
                         objlog.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                        //Cap - 3164
+                        objlog.Request_Message = sXmlRequest;
                         lstlog.Add(objlog);
                         objlogmanager.SaveUpdateDeleteWithTransaction(ref lstlog, null, null, string.Empty);
                         if (ex.InnerException != null)
@@ -252,7 +260,10 @@ namespace Acurus.Capella.ImmunizationSubmission
                         if (PhysicianList != null && PhysicianList.Count > 0)
                             objlog.Physician_ID = PhysicianList[0].Id;
                         //objlog.Result_Message = test; // resultsplit[resultsplit.Length - 1].ToString(); ;
+                        objlog.Result_Message = str2 + Environment.NewLine + ex?.InnerException ??"" + Environment.NewLine + ex?.InnerException?.Message ?? ""; 
                         objlog.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                        //Cap - 3164
+                        objlog.Request_Message = sXmlRequest;
                         lstlog.Add(objlog);
                         objlogmanager.SaveUpdateDeleteWithTransaction(ref lstlog, null, null, string.Empty);
                         if (ex.InnerException != null)
@@ -284,8 +295,11 @@ namespace Acurus.Capella.ImmunizationSubmission
                     objlog.Submission_Result_Type = "Success";
                     if (PhysicianList != null && PhysicianList.Count > 0)
                         objlog.Physician_ID = PhysicianList[0].Id;
-                    objlog.Result_Message = "";
+                    //objlog.Result_Message = "";
+                    objlog.Result_Message = test;
                     objlog.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    //Cap - 3164
+                    objlog.Request_Message = sXmlRequest;
                     lstlog.Add(objlog);
                     objlogmanager.SaveUpdateDeleteWithTransaction(ref lstlog, null, null, string.Empty);
 
@@ -306,6 +320,8 @@ namespace Acurus.Capella.ImmunizationSubmission
                         objlog.Physician_ID = PhysicianList[0].Id;
                     objlog.Result_Message = test; // resultsplit[resultsplit.Length - 1].ToString(); ;
                     objlog.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    //Cap - 3164
+                    objlog.Request_Message = sXmlRequest;
                     lstlog.Add(objlog);
                     objlogmanager.SaveUpdateDeleteWithTransaction(ref lstlog, null, null, string.Empty);
                 }
