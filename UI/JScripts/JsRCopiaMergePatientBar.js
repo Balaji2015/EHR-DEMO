@@ -3,7 +3,8 @@
     var human_id = document.URL.slice(document.URL.indexOf("HumanID")).split("&")[0].split("=")[1];
     if (event?.currentTarget?.id != undefined && event?.currentTarget?.id != null) {
 
-        if (top.window.document.getElementById("TabPatientMergeFrame").contentWindow.document.getElementById("ifrmRcopiaDuplicateScreen").contentWindow.document.getElementById("btnDelete").disabled == false) {
+        //CAP-3313 - Applying null safety check
+        if (top?.window?.document?.getElementById("TabPatientMergeFrame")?.contentWindow?.document?.getElementById("ifrmRcopiaDuplicateScreen")?.contentWindow?.document?.getElementById("btnDelete")?.disabled == false) {
             var bcheck = confirm("Are you sure you want to change tab?");
 
             if (bcheck == true) {
