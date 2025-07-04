@@ -279,7 +279,8 @@ function OpenModal(data) {
         //var result = openModal("frmBlockDays.aspx", 540, 1230, obj, "ctl00_ModalWindow");
         var result = openModal("frmBlockDays.aspx", 540, 1230, obj, "ctl00_C5POBody_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
-        WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
+        //CAP-3311 - Applying null safety check
+        WindowName?.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
         WindowName?.add_close(function CloseBlockDays(oWindow, args) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         });
@@ -1219,7 +1220,8 @@ function OpenModal(data) {
         debugger;
         //CAP-2181
         //sPath = veportpath + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + CLegalOrg + "&CurrPhyId=" + sCurrPhyId + "&UserCarrier=" + CUserCarrier;
-        sPath = veportpath + "htmlReportGenerator.htm?version=" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim() + "&CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + CLegalOrg + "&CurrPhyId=" + sCurrPhyId + "&UserCarrier=" + CUserCarrier;
+        // CAP-3315 - Applying null safety check
+        sPath = veportpath + "htmlReportGenerator.htm?version=" + (sessionStorage.getItem("ScriptVersion")?.split('|')[0].trim() ?? "") + "&CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + CLegalOrg + "&CurrPhyId=" + sCurrPhyId + "&UserCarrier=" + CUserCarrier;
         //sPath = veportpath + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + sessionStorage.getItem("Projname") + "&CurrPhyId=" + sCurrPhyId;
         //sPath = sessionStorage.getItem("ReportPath") + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + sessionStorage.getItem("Projname") + "&CurrPhyId=" + sCurrPhyId;
         //CAP-1966        
@@ -3685,11 +3687,20 @@ window.addEventListener("online", (event) => {
                 if (xhr.status == 999)
                     window.location = "/frmSessionExpired.aspx";
                 else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //CAP-3317 - avoid undefined JSON to be parse
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
+                    } else {
+                        var log = xhr.responseText;
+                        console.log(log);
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log);
+                    }
                 }
             }
         });
