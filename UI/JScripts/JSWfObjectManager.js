@@ -211,6 +211,7 @@ function btnUpdateOwnerClick() {
                 DisplayErrorMessage(cbodata.split("-")[1]);
             }
             if (cbodata.indexOf("return") > -1) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return;
             }
             FillGrid();
@@ -259,6 +260,7 @@ function btnUpdateProcessClick() {
     if (cbopreviousprocess == "START" || cbopreviousprocess == "") {
         DisplayErrorMessage('700007');
         NotSaved();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         document.getElementById("cboPreviousProcess").focus();
         return;
     }
@@ -293,6 +295,7 @@ function btnUpdateProcessClick() {
                     ClearAll();
                 }
                 if ((cbodata.indexOf("return") > -1)) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return;
                 }
             }
@@ -411,19 +414,19 @@ function FillGrid() {
     <thead class='header' style='border: 0px;'>
     <tr class='header' >
     <th style='border: 1px solid #909090;text-align: center;width:7%;'>Encounter ID</th>
-    <th style='border: 1px solid #909090;text-align: center;width:6%;'>Date of Service</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%;'>Date of Service</th>
     <th style='display:none;'>Patient Acc#</th>
-    <th style='border: 1px solid #909090;text-align: center;width:9%;'>Patient Name</th>
-    <th style='border: 1px solid #909090;text-align: center;width:6%;'>Patient DOB</th>
+    <th style='display:none;'>Patient Name</th>
+    <th style='display:none;'>Patient DOB</th>
     <th style='border: 1px solid #909090;text-align: center;width:10%;'>Appointment Provider Name</th>
-    <th style='border: 1px solid #909090;text-align: center;width:7%;'>Encounter Provider Name</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Encounter Provider Name</th>
     <th style='border: 1px solid #909090;text-align: center;width:11%;'>Current Process</th>
     <th style='border: 1px solid #909090;text-align: center;width:6%;'>Current Owner</th>
     <th style='border: 1px solid #909090;text-align: center;width:9%;'>Appointment Date</th>
     <th style='border: 1px solid #909090;text-align: center;width:10%;'>Object Type</th>
     <th style='border: 1px solid #909090;text-align: center;width:7%;'>MA Name</th>
     <th style='border: 1px solid #909090;text-align: center;width:5%;'>Batch Status</th>
-    <th style='border: 1px solid #909090;text-align: center;width:6%;'>Facility Name</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%;'>Facility Name</th>
     </tr>
     </thead>
 </table>`);
@@ -441,7 +444,7 @@ function FillGrid() {
         pageLength: 15,
         language: {
             search: "",
-            searchPlaceholder: "Encounter Provider Name, Current Process or Appointment Date",
+            searchPlaceholder: "Appointment Date, Encounter Provider Name or Current Process",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
@@ -479,9 +482,9 @@ function FillGrid() {
             }
         },
         columns: [
-            { data: 'Encounter_id', searchable: false, switch:'7%', sClass: "word-break-all" },
+            { data: 'Encounter_id', searchable: false, switch: '7%', sClass: "word-break" },
             {
-                data: 'Date_of_service', searchable: false, sClass: "word-break-all", type: 'date', switch: '6%', render: function (data, type, row) {
+                data: 'Date_of_service', searchable: false, sClass: "word-break", type: 'date', switch: '9%', render: function (data, type, row) {
                     var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
                     dt1 = ConvertDate(dt1.replaceAll("T", " "));
                     //var dt2 = dt1.split(' ');
@@ -494,18 +497,18 @@ function FillGrid() {
                 }
             },
             { data: 'Human_ID', searchable: false, sClass: "dataTables_empty" },
-            { data: 'PatientName', searchable: false, sClass: "word-break-all",sWidth: '9%' },
+            { data: 'PatientName', searchable: false, sClass: "dataTables_empty" },
             {
-                data: 'PatientDOB', searchable: false, sClass: "word-break-all", sWidth: '6%', type: 'date', render: function (data, type, row) {
+                data: 'PatientDOB', searchable: false, sClass: "dataTables_empty", type: 'date', render: function (data, type, row) {
                     return DOBConvert(data.replace("T00:00:00", ""))
                 }
             },
-            { data: 'Appointment_Provider_Name', searchable: false, sWidth: '10%', sClass: "word-break-all" },
-            { data: 'Encounter_Provider_Name', searchable: true, sClass: "word-break-all", sWidth: '7%' },
-            { data: 'Current_Process', searchable: true, sClass: "word-break-all", sWidth: '11%' },
-            { data: 'Current_Owner', searchable: false, sClass: "word-break-all", sWidth: '6%' },
+            { data: 'Appointment_Provider_Name', searchable: false, sWidth: '10%', sClass: "word-break" },
+            { data: 'Encounter_Provider_Name', searchable: true, sClass: "word-break", sWidth: '11%' },
+            { data: 'Current_Process', searchable: true, sClass: "word-break", sWidth: '11%' },
+            { data: 'Current_Owner', searchable: false, sClass: "word-break", sWidth: '6%' },
             {
-                data: 'Appointment_Date', searchable: true, sClass: "word-break-all", sWidth: '9%', type: 'date', render: function (data, type, row) {
+                data: 'Appointment_Date', searchable: true, sClass: "word-break", sWidth: '9%', type: 'date', render: function (data, type, row) {
                     var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
                     dt1 = ConvertDate(dt1.replaceAll("T", " "));
                     //var dt2 = dt1.split(' ');
@@ -517,10 +520,10 @@ function FillGrid() {
                     return dt1;
                 }
             },
-            { data: 'Obj_Type', searchable: false, sClass: "word-break-all", sWidth: '10%' },
-            { data: 'Assigned_Med_Asst_User_Name', searchable: false, sClass: "word-break-all", sWidth: '7%' },
-            { data: 'Batch_Status', searchable: false, sClass: "word-break-all", sWidth: '5%' },
-            { data: 'Facility_Name', searchable: false, sClass: "word-break-all", sWidth: '6%' },
+            { data: 'Obj_Type', searchable: false, sClass: "word-break", sWidth: '10%' },
+            { data: 'Assigned_Med_Asst_User_Name', searchable: false, sClass: "word-break", sWidth: '7%' },
+            { data: 'Batch_Status', searchable: false, sClass: "word-break", sWidth: '5%' },
+            { data: 'Facility_Name', searchable: false, sClass: "word-break", sWidth: '9%' },
         ],
         initComplete: function (settings, json) {
             $("#grdAdminModuleWfobjwct_filter input")[0].classList.add('searchicon');
@@ -679,7 +682,7 @@ function ConvertDate(utcDate) {
     var now = new Date(utcDate + ' UTC');
     var then = '';
     if (utcDate == '0001-01-01 00:00:00')
-        then = '01-01-0001';
+        then = '01-Jan-0001 12:00 AM';
     else
         then = ('0' + now.getDate().format("dd")).slice(-2) + '-' + monthNames[now.getMonth()] + '-' + now.getFullYear();
     var hours = now.getHours();
@@ -713,5 +716,6 @@ function DOBConvert(DOB) {
     var SplitDOB = DOB.split('-');
     if (SplitDOB[1].substring(0, 1) == "0")
         SplitDOB[1] = SplitDOB[1].slice(-1);
-    return SplitDOB[2] + "-" + monthNames[parseInt(SplitDOB[1]) - 1] + "-" + SplitDOB[0];
+    //return SplitDOB[2] + "-" + monthNames[parseInt(SplitDOB[1]) - 1] + "-" + SplitDOB[0];
+    return SplitDOB[2] + "-" + SplitDOB[1] + "-" + SplitDOB[0];
 }

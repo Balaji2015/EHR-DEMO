@@ -381,10 +381,11 @@ namespace Acurus.Capella.UI.WebServices.API
                     //Jira #CAP-115
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                     xmlEncounterDoc.LoadXml(sXMLEncounterDoc);
+                    sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
                 }
 
-                sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
-
+                //sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
+                
                 //string objectSystemIdQry = "SELECT Current_Process FROM WF_Object WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION' UNION ALL SELECT Current_Process FROM WF_Object_arc WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION';";
                 //DataSet ObjectSystemResult = DBConnector.ReadData(string.Format(objectSystemIdQry, sEncounterID));
                 //WFObject DocumentationWfObject = new WFObject();
@@ -540,13 +541,17 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumProviderID>"), (htmlString.IndexOf("</AddendumProviderID>") - htmlString.IndexOf("<AddendumProviderID>") + 21));
                     string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumPhysicianEMailAddress>") + 32));
-                    htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
+                    //htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
+                    htmlString = ReplaceFirst(htmlString, NewInput, "");
+                    htmlString = ReplaceFirst(htmlString, NewInput2, "");
                 }
                 while (htmlString.Contains("<AddendumReviewProviderID>"))
                 {
                     string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumReviewProviderID>"), (htmlString.IndexOf("</AddendumReviewProviderID>") - htmlString.IndexOf("<AddendumReviewProviderID>") + 27));
                     string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumReviewPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumReviewPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumReviewPhysicianEMailAddress>") + 38));
-                    htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
+                    //htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
+                    htmlString = ReplaceFirst(htmlString, NewInput, "");
+                    htmlString = ReplaceFirst(htmlString, NewInput2, "");
                 }
                 //Cap - 2508 End
 
@@ -824,7 +829,13 @@ namespace Acurus.Capella.UI.WebServices.API
                 catch { throw new Exception("Error : " + eex?.Message); }
             }
         }
-
+        public string ReplaceFirst(string input, string search, string replacement)
+        {
+            int pos = input.IndexOf(search);
+            if (pos < 0)
+                return input;
+            return input.Substring(0, pos) + replacement + input.Substring(pos + search.Length);
+        }
         private string GenerateJson(string sSection, string sType)
         {
             string[] heading = { "</b><br />" };

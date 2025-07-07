@@ -192,7 +192,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtReasonForChange;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtReasonForChange;
 
         /// <summary>
         /// lblPreviousProcess control.

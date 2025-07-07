@@ -38,7 +38,7 @@
 
         .style13 {
             width: 100%;
-            height: 22px;
+            height: 278px;
         }
 
         .style14 {
@@ -407,14 +407,14 @@ table.dataTable > thead > tr > td {
     text-align:center;
 }
 
-.word-break-all{
-    word-break: break-all;
+.word-break{
+    word-wrap: break-word;
 }
 .dataTables_empty {
     display: none;
 }
 .dataTables_filter input {
-    width: 330px !important;
+    width: 430px !important;
 }
 .dataTables_wrapper th {
     padding: 8px !important;
@@ -447,6 +447,13 @@ table.dataTable > thead > tr > td {
             font-size:11px !important;
             font-weight: normal !important;
         }
+        #Panel1 fieldset {
+            height:98%;
+        }
+        .searchicon::placeholder {
+            font-size: 12px;
+            font-weight: bold;
+        }
     </style>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
@@ -467,8 +474,8 @@ table.dataTable > thead > tr > td {
                             <tr>
                                 <td class="style9">
                                     <asp:Panel ID="pnlPatientInformations" runat="server" Height="64px" Font-Size="Small" 
-                                        Width="1115px" GroupingText="Patient Information" CssClass="LabelStyleBold">
-                                        <table bgcolor="white">
+                                        Width="1160px" GroupingText="Patient Information" CssClass="LabelStyleBold">
+                                        <table bgcolor="white" style="width:1130px;">
                                             <tr>
                                                 <td class="style36">
                                                     <asp:Label ID="lblAccountNo" runat="server" Text="Account No #" Width="120" Style="margin-left: 10px" CssClass="spanstyle"></asp:Label>
@@ -516,11 +523,11 @@ table.dataTable > thead > tr > td {
                             <tr>
                                 <td class="style5">
 
-                                    <asp:Panel ID="Panel1" runat="server" Font-Size="Small" Height="285px" Width="1115px" CssClass="LabelStyleBold"
+                                    <asp:Panel ID="Panel1" runat="server" Font-Size="Small" Height="295px" Width="1160px" CssClass="LabelStyleBold"
                                         GroupingText="Patient Process Details">
                                         <table class="style13" bgcolor="white">
                                             <tr>
-                                                <td>
+                                                <td style="vertical-align: top;">
                                                     <%--<telerik:RadGrid ID="grdAdminModule" runat="server"  GridLines="None"
                                                         OnSelectedIndexChanged="grdAdminModule_SelectedIndexChanged" AllowSorting="True"
                                                         OnItemCommand="grdAdminModule_ItemCommand"
@@ -567,8 +574,8 @@ table.dataTable > thead > tr > td {
                                             <tr>
                                                 <td class="style15" colspan="2">
                                                     <asp:Panel ID="pnlUpdateProcess" runat="server" Height="72px" Font-Size="Small" GroupingText=" Process" CssClass="LabelStyleBold"
-                                                        Width="1115px">
-                                                        <table bgcolor="white" style="width: 1075px">
+                                                        Width="1160px">
+                                                        <table bgcolor="white" style="width: 1130px">
                                                             <tr>
                                                                 <td class="style16">
                                                                     <span class="MandLabelstyle">Reason for Change</span><span class="manredforstar">*</span>
@@ -584,7 +591,8 @@ table.dataTable > thead > tr > td {
                                                                         <FocusedStyle Resize="None" />
                                                                         <EnabledStyle Resize="None" />
                                                                     </telerik:RadTextBox>--%>
-                                                                    <input id="txtReasonForChange" type="text" runat="server" class="Editabletxtbox" style="height:35px;" />
+                                                                    <%--<input id="txtReasonForChange" type="text" runat="server" class="Editabletxtbox" style="height:35px;" />--%>
+                                                                <textarea id="txtReasonForChange" rows="10" cols="30" runat="server" class="Editabletxtbox" style="resize:none; height: 36px;width:207px" ></textarea>
                                                                 </td>
                                                                 <td>
                                                                     <asp:Label ID="lblPreviousProcess" runat="server" Text="Previous Process" CssClass="spanstyle"></asp:Label>
@@ -620,7 +628,7 @@ table.dataTable > thead > tr > td {
                                             <tr>
                                                 <td colspan="2">
                                                     <asp:Panel ID="pnlUpdateOwner" runat="server" Height="60px" Font-Size="Small" GroupingText="Owner" CssClass="LabelStyleBold">
-                                                        <table bgcolor="white" style="width: 1075px">
+                                                        <table bgcolor="white" style="width: 1130px">
                                                             <tr>
                                                                 <td class="style17">
                                                                     <asp:Label ID="lblUpdateOwner" runat="server" Text="Owner" CssClass="spanstyle"></asp:Label>
