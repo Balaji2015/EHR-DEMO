@@ -527,7 +527,7 @@ table.dataTable > thead > tr > td {
                                         GroupingText="Patient Process Details">
                                         <table class="style13" bgcolor="white">
                                             <tr>
-                                                <td>
+                                                <td style="vertical-align: top;">
                                                     <%--<telerik:RadGrid ID="grdAdminModule" runat="server"  GridLines="None"
                                                         OnSelectedIndexChanged="grdAdminModule_SelectedIndexChanged" AllowSorting="True"
                                                         OnItemCommand="grdAdminModule_ItemCommand"
