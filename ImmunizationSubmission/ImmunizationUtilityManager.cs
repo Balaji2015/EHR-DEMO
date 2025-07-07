@@ -16,6 +16,7 @@ using System.Net;
 using System.Reflection;
 using System.Xml;
 using System.Configuration;
+using System.Xml.Linq;
 
 namespace Acurus.Capella.ImmunizationSubmission
 {
@@ -154,7 +155,6 @@ namespace Acurus.Capella.ImmunizationSubmission
                     immunizationRegistry = hl7Gen.CreateImmunizationRegistry(hn, PhysicianList[0], lstFillClinicalSummary, "");
                 else
                     continue;
-
 
                 string sDBConnectivity = System.Configuration.ConfigurationSettings.AppSettings["DBConnectivity"];
                 if (sDBConnectivity != null && sDBConnectivity.ToUpper() == "PRODUCTION")
@@ -315,7 +315,51 @@ namespace Acurus.Capella.ImmunizationSubmission
                         objlog.Control_ID = resultsplit[9].ToString();
                     else
                         objlog.Control_ID = "";
-                    objlog.Submission_Result_Type = "Fail";
+
+                  //Cap - 3165
+                    string ErrOutputVal = string.Empty;
+                    bool bCheckWarning = false;
+                    XDocument doc = XDocument.Parse(test);
+                    string returnValue = doc.Descendants()
+                                            .FirstOrDefault(e => e.Name.LocalName == "return")?.Value;
+                    if (!string.IsNullOrEmpty(returnValue))
+                    {
+                        var errSegments = returnValue
+                                            .Split(new[] { "ERR" }, StringSplitOptions.RemoveEmptyEntries)
+                                            .Select(e => "ERR" + e.Trim()) 
+                                            .ToList();
+
+                        foreach (var err in errSegments)
+                        {
+                            if (err.Split('|')[0] == "ERR")
+                            {
+                                string OutputVal = err.Split('|')[4];
+                                if (OutputVal == "E")
+                                {
+                                    ErrOutputVal = "Fail";
+                                    break;
+                                }
+                                else if (OutputVal == "W")
+                                {
+                                    ErrOutputVal = "Warning";
+                                    bCheckWarning = true;
+
+                                }
+                                else if (!bCheckWarning && OutputVal == "I")
+                                {
+                                    ErrOutputVal = "Information";
+                                }
+                                else
+                                {
+                                    ErrOutputVal = "Fail";
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+
+                    objlog.Submission_Result_Type = ErrOutputVal;
                     if (PhysicianList != null && PhysicianList.Count > 0)
                         objlog.Physician_ID = PhysicianList[0].Id;
                     objlog.Result_Message = test; // resultsplit[resultsplit.Length - 1].ToString(); ;
