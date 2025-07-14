@@ -356,7 +356,7 @@ button.close {
                                                     <td style="width: 15%">
                                                         <telerik:RadComboBox ID="cboSpecialty" runat="server" Font-Size="Small" Width="100%"
                                                             AllowCustomText="True" MaxHeight="150px" onkeypress="EnableSaveReferralOrder"
-                                                            MaxLength="50" OnClientSelectedIndexChanged="EnableSaveReferralOrder" CssClass="Editabletxtbox" >
+                                                            MaxLength="50" OnClientSelectedIndexChanged="EnableSaveReferralOrder" CssClass="Editabletxtbox" EnableTextFiltering="True" Filter="Contains" >
                                                         </telerik:RadComboBox>
                                                     </td>
                                                     <td style="width: 15%">
