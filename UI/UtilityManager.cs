@@ -5245,8 +5245,8 @@ namespace Acurus.Capella.UI
                         ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                         ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate";
                         ilstBlob_Progress_Note[0].Error_Description = "";
-                        //ilstBlob_Progress_Note[0].Modified_By = "";
-                        //ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                        ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                         blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
 
 
