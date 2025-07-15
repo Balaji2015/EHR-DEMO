@@ -2945,6 +2945,41 @@ namespace Acurus.Capella.UI
             }
             return AllPhysicians.Distinct().OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
         }
+        //CAP-3268
+        public static IList<PhysicianLibrary> GetInActiveProviderList(string facility_name, string sLegalOrg)
+        {
+            PhysicianManager physicianManager = new PhysicianManager();
+            IList<PhysicianLibrary> lstPhysicianLibrary = physicianManager.GetInActiveProviderList(facility_name, sLegalOrg);
+
+            if (lstPhysicianLibrary == null || !lstPhysicianLibrary.Any())
+                return new List<PhysicianLibrary>();
+
+            MachinetechnicianList machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
+
+            foreach (var physician in lstPhysicianLibrary)
+            {
+                if (!string.IsNullOrWhiteSpace(physician.PhyColor)
+                    && physician.PhyColor != "0"
+                    && machinetechnicianList?.MachineTechnician != null)
+                {
+                    var technician = machinetechnicianList.MachineTechnician.FirstOrDefault(x => x.machine_technician_library_id == physician.PhyColor.ToString());
+
+                    physician.Company = technician?.machine_name ?? "";
+                }
+                else
+                {
+                    physician.Company = "";
+                }
+            }
+
+            var distinctList = lstPhysicianLibrary
+                                .GroupBy(x => new { x.Id, x.Company })
+                                .Select(g => g.First())
+                                .OrderBy(p => p.PhyLastName)
+                                .ToList();
+
+            return distinctList;
+        }
 
         public static IList<MapFacilityPhysician> GetFacilityListMappedToPhysician(string physician_id)
         {

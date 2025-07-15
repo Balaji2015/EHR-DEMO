@@ -159,13 +159,31 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divShowAllPhysicians;
 
         /// <summary>
-        /// chkShowAllPhysicians control.
+        /// rdoActivePhysicians control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkShowAllPhysicians;
+        protected global::System.Web.UI.WebControls.RadioButton rdoActivePhysicians;
+
+        /// <summary>
+        /// rdoAllActivePhysicians control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdoAllActivePhysicians;
+
+        /// <summary>
+        /// rdoInActivePhysicians control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdoInActivePhysicians;
 
         /// <summary>
         /// updpnlProvidersList control.
@@ -195,6 +213,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.CheckBoxList chklstProviders;
 
         /// <summary>
+        /// divCheckBoxShowAllProviders control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCheckBoxShowAllProviders;
+
+        /// <summary>
         /// chkShowActive control.
         /// </summary>
         /// <remarks>
@@ -202,6 +229,42 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkShowActive;
+
+        /// <summary>
+        /// divShowAllProviders control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divShowAllProviders;
+
+        /// <summary>
+        /// rdoActiveProviders control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdoActiveProviders;
+
+        /// <summary>
+        /// rdoAllActiveProviders control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdoAllActiveProviders;
+
+        /// <summary>
+        /// rdoInActiveProviders control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdoInActiveProviders;
 
         /// <summary>
         /// btnPhysiciancalenderFacility control.

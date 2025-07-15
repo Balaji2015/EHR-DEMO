@@ -404,6 +404,9 @@
                                     <asp:AsyncPostBackTrigger ControlID="btnRefresh" EventName="Click" />
                                     <asp:AsyncPostBackTrigger ControlID="chklstProviders" EventName="SelectedIndexChanged" />
                                     <asp:AsyncPostBackTrigger ControlID="chkShowActive" EventName="CheckedChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="rdoActiveProviders" EventName="CheckedChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="rdoAllActiveProviders" EventName="CheckedChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="rdoInActiveProviders" EventName="CheckedChanged" />
                                 </Triggers>
                                 <ContentTemplate>
                                     <div class="panel panelborderbox" id="pnlScheduler" >
@@ -419,6 +422,7 @@
                                                 ShowNavigationPane="False" OnClientAppointmentInserting="schAppointmentScheduler_TimeSlotClick"
                                                 CssClass="rsAptPai" OnTimeSlotCreated="schAppointmentScheduler_TimeSlotCreated"
                                                 OnNavigationCommand="schAppointmentScheduler_NavigationCommand" OnClientNavigationCommand="schAppoinmentScheduler_NavigationCommand" OnClientAppointmentDoubleClick="schAppoinmentScheduler_DoubleClick"
+                                                OnClientTimeSlotContextMenu="schAppointmentScheduler_TimeSlotContextMenu"
                                                 Skin="Default" TimeLabelRowSpan="1" EnableExactTimeRendering="true">
                                                 <TimelineView UserSelectable="False" />
                                                 <TimeSlotContextMenus>
@@ -506,11 +510,19 @@
                                             PostBackUrl="~/frmBlockDays.aspx" AutoPostBack="True" onchange="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" Style="width: 100%; white-space: pre-line;" CssClass="spanstyle">
                                         </asp:DropDownList>
                                     </div>
-                                 <div class="panel-footer" id="divShowAllPhysicians" runat="server">
+                                <%--<div class="panel-footer" id="divShowAllPhysicians" runat="server">
                                     <asp:CheckBox ID="chkShowAllPhysicians" runat="server" AutoPostBack="True" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged"
                                         onchange="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" Text="Show All Providers"  CssClass="spanstyle"/>
+                                </div>--%>
+                                <div class="panel-footer" style="display: grid;" id="divShowAllPhysicians" runat="server">
+                                    <div>
+                                        <span>Show Providers</span>
+                                        <asp:RadioButton ID="rdoActivePhysicians" runat="server" AutoPostBack="true" Text="Active" GroupName="Physicians" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged" style="margin-left: 5px;"/>
+                                        <asp:RadioButton ID="rdoAllActivePhysicians" runat="server" AutoPostBack="true" Text="All Active" GroupName="Physicians" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged" style="margin-left: 3px;"/>
+                                        <asp:RadioButton ID="rdoInActivePhysicians" runat="server" AutoPostBack="true" Text="InActive" GroupName="Physicians" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged" style="margin-left: 3px;"/>
+                                    </div>
                                 </div>
-                                </div>
+                            </div>
                                
                         </td>
                     </tr>
@@ -520,6 +532,9 @@
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnRefresh" EventName="Click" />
                                     <asp:AsyncPostBackTrigger ControlID="chkShowActive" EventName="CheckedChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="rdoActiveProviders" EventName="CheckedChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="rdoAllActiveProviders" EventName="CheckedChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="rdoInActiveProviders" EventName="CheckedChanged" />
                                 </Triggers>
                                 <ContentTemplate>
                                     <div class="panel panelborderbox" id="pnlProviders">
@@ -535,9 +550,16 @@
 
                                             </div>
                                         </div>
-                                        <div class="panel-footer">
-                                            <asp:CheckBox ID="chkShowActive" runat="server" AutoPostBack="True" Checked="false"
-                                                OnCheckedChanged="chkShowActive_CheckedChanged" Text="Show All Providers" onchange="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" />
+                                        <div class="panel-footer" id="divCheckBoxShowAllProviders" runat="server">
+                                            <asp:CheckBox ID="chkShowActive" runat="server" AutoPostBack="True" OnCheckedChanged="chkShowActive_CheckedChanged" Text="Show All Providers" onchange="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }" />
+                                        </div>
+                                        <div class="panel-footer" style="display: grid;" id="divShowAllProviders" runat="server">
+                                            <div>
+                                                <span>Show Providers</span>
+                                                <asp:RadioButton ID="rdoActiveProviders" runat="server" AutoPostBack="true" Text="Active" GroupName="Providers" OnCheckedChanged="chkShowActive_CheckedChanged" Checked="true" style="margin-left: 5px;"/>
+                                                <asp:RadioButton ID="rdoAllActiveProviders" runat="server" AutoPostBack="true" Text="All Active" GroupName="Providers" OnCheckedChanged="chkShowActive_CheckedChanged" style="margin-left: 3px;"/>
+                                                <asp:RadioButton ID="rdoInActiveProviders" runat="server" AutoPostBack="true" Text="InActive" GroupName="Providers" OnCheckedChanged="chkShowActive_CheckedChanged" style="margin-left: 3px;"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </ContentTemplate>

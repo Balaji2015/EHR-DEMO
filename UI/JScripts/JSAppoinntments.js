@@ -683,6 +683,16 @@ function schAppointmentScheduler_AppointmentClick(sender, args) {
         document.getElementById(GetClientId("hdnFindApptHumanID")).value = "";
 }
 
+//CAP-3268
+function schAppointmentScheduler_TimeSlotContextMenu(sender, args) {
+    var menu = $find("ctl00_C5POBody_schAppointmentScheduler_RadSchedulerContextMenu0");
+    if ($('#ctl00_C5POBody_rdoInActivePhysicians').is(':checked') || $('#ctl00_C5POBody_rdoInActiveProviders').is(':checked')) {
+        menu.findItemByText("New Appointment").hide();
+    } else {
+        menu.findItemByText("New Appointment").show();
+    }
+}
+
 function schAppointmentScheduler_AppointmentContextMenu(sender, args) {
     var date = new Date();
     var Appointment = args.get_appointment();
@@ -690,7 +700,23 @@ function schAppointmentScheduler_AppointmentContextMenu(sender, args) {
     var menu = $find(AppointmentMenu + "_AppointmentMenu");
     menu._postback();
     var Calendar = document.getElementById(GetClientId("Calendar1"));
-    if (Appointment._description == "") {
+    //CAP-3268
+    if ($('#ctl00_C5POBody_rdoInActivePhysicians').is(':checked') || $('#ctl00_C5POBody_rdoInActiveProviders').is(':checked')) {
+        menu.findItemByText("View Appointment").show();
+        menu.findItemByText("Show Patient Summary").show();
+        menu.findItemByText("Print Receipt").show();
+        menu.findItemByText("Open Patient Chart").show();
+        menu.findItemByText("New Appointment").hide();
+        menu.findItemByText("Edit Appointment").hide();
+        menu.findItemByText("Check In").hide();
+        menu.findItemByText("Cancel Appointment").hide();
+        menu.findItemByText("No Show").hide();
+        menu.findItemByText("Authorization & EV").hide();
+        menu.findItemByText("Generate Enc. Doc.").hide();
+        menu.findItemByText("Print Quality Measure Data Sheet").hide();
+        menu.findItemByText("Walked Away").hide();
+        menu.findItemByText("Undo").hide();
+    } else if (Appointment._description == "") {
         menu.findItemByText("New Appointment").show();
         menu.findItemByText("Edit Appointment").hide();
         menu.findItemByText("View Appointment").hide();
