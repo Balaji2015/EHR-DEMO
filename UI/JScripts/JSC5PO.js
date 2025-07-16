@@ -2718,7 +2718,10 @@ function OnClientClosePhoneEncounter(oWindow, args) {
                 }, 0);
         }
     }
-
+    //CAP-3370
+    else {
+        EMRPhoneEnounter = "";
+    }
 }
 
 function GetRadWindow() {
