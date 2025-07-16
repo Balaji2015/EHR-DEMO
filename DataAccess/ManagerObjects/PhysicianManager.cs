@@ -358,7 +358,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<MapFacilityPhysician> facilityPhysician = new List<MapFacilityPhysician>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sq = iMySession.CreateSQLQuery($"select Physician_ID, Facility_Name, Sort_Order from map_facility_physician where Physician_ID = {physician_id};");
+                ISQLQuery sq = iMySession.CreateSQLQuery($"select Physician_ID, Facility_Name, Sort_Order, Status from map_facility_physician where Physician_ID = {physician_id};");
 
                 foreach (IList<Object> l in sq.List())
                 {
@@ -367,9 +367,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         Phy_Rec_ID = Convert.ToUInt64(l[0]),
                         Facility_Name = Convert.ToString(l[1]),
                         Sort_Order = Convert.ToUInt64(l[2]),
+                        Status = Convert.ToString(l[3]),
                     });
                 }
                 iMySession.Close();
+                facilityPhysician = facilityPhysician.OrderByDescending(a => a.Status).ThenBy(a => a.Facility_Name).ToList();
             }
             return facilityPhysician;
         }

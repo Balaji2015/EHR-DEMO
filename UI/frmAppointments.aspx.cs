@@ -1363,8 +1363,12 @@ namespace Acurus.Capella.UI
                     DateTime dtEnd = new DateTime();
 
                     //FacList = ApplicationObject.facilityLibraryList;
+                    //CAP-3268
+                    PhysicianManager physicianManager = new PhysicianManager();
+                    var lstMappedFacility = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(hdnApptPhyId.Value));
+                    var lstFacilityNames = lstMappedFacility.Select(a => a.Facility_Name).ToList();
 
-                    var fac = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
+                    var fac = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg && lstFacilityNames.Contains(f.Fac_Name) select f;
                     FacList = fac.ToList<FacilityLibrary>();
 
                     if (FacList != null)
@@ -2247,6 +2251,17 @@ namespace Acurus.Capella.UI
                     }
                 }
                 SortPhysician();
+                cboFacilityName_SelectedIndexChanged(sender, e);
+            }
+            
+            if (rdoInActivePhysicians.Checked)
+            {
+                chkShowActive.Enabled = true;
+                chkShowActive.Checked = true;
+            }
+            else
+            {
+                chkShowActive.Enabled = false;
             }
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
@@ -4156,12 +4171,14 @@ namespace Acurus.Capella.UI
                 facList = null;
                 TempFac = facilityList;
                 schAppointmentScheduler.Visible = false;
+                chkShowActive.Checked = true;
             }
             else
             {
                 var fac = from f in facilityList where f.Fac_Name == facList[0].Facility_Name select f;
                 TempFac = fac.ToList<FacilityLibrary>();
                 schAppointmentScheduler.Visible = true;
+                chkShowActive.Checked = false;
             }
 
             DateTime dtStart = new DateTime();
