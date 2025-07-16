@@ -5185,19 +5185,19 @@ namespace Acurus.Capella.UI
             }
             BlobProgressNoteManager blobProgressNoteManager = new BlobProgressNoteManager();
             IList<Blob_Progress_Note> ilstBlob_Progress_Note = new List<Blob_Progress_Note>();
+            Blob_Progress_Note objBlobProgressNotesInitiated = new Blob_Progress_Note();
+            ilstBlob_Progress_Note = blobProgressNoteManager.GetBlobProgressNotes(Convert.ToUInt64(sEncounterID));
+            if (ilstBlob_Progress_Note.Count == 0)
+            {
+                ilstBlob_Progress_Note.Add(objBlobProgressNotesInitiated);
+            }
             string sResult = string.Empty;
-
-
             try
             {
                 ulong XML_ID = Convert.ToUInt32(sXMLID);
 
                 if (sXMLType.ToUpper().Contains("HUMAN"))
                 {
-                    //Check if Human_ID exists
-                    //bool isPresent = CheckHumanIDValidity(XML_ID);
-                    //if (isPresent)
-                    //{
                     bool bInsertCheck = false;
                     DateTime dt = DateTime.Now;
                 ln:
@@ -5251,7 +5251,6 @@ namespace Acurus.Capella.UI
 
 
 
-                        // CreateXMLByBackupProcess("Human", Application, XML_ID.ToString());
                         string status = CreateXMLByBatchProcessForCDC("Human", XML_ID.ToString(), ulTimeOut);
                         if (status == string.Empty)
                         {
@@ -5332,7 +5331,6 @@ namespace Acurus.Capella.UI
                         }
                         catch (Exception e)
                         {
-                            //CAP-1942
                             sResult = e.Message + e;
                         }
 
@@ -5341,14 +5339,10 @@ namespace Acurus.Capella.UI
                     {
                         sResult = "ERROR: Unable to Generate XML for " + sXMLID + ". Please try again later.";
                     }
-                    //}
-                    //else
-                    //    sResult = "The given Human_ID: " + sXMLID + " does not exist. Please enter a valid ID.";
                 }
 
                 else if (sXMLType.ToUpper().Contains("ENCOUNTER"))
                 {
-                    //Check if Encounter_ID exists in Encounter/ Encounter_arc
                     string sTableName = string.Empty;
                     sTableName = CheckEncounterIDValidity(XML_ID);
                     if (sTableName.Contains("ENCOUNTER"))
@@ -5405,7 +5399,6 @@ namespace Acurus.Capella.UI
                         blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                         
                             string sXML = (sTableName.ToUpper() == "ENCOUNTER_CURRENT") ? "Encounter" : "EncounterArc";
-                            // CreateXMLByBackupProcess(sXML, Application, XML_ID.ToString());
                             string status = CreateXMLByBatchProcessForCDC(sXML, XML_ID.ToString(), ulTimeOut);
                             if (status == string.Empty)
                             {
@@ -5512,7 +5505,6 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                //CAP-1942
                 sResult = "ERROR: " + ex.Message + " STACKTRACE: " + ex.StackTrace + ex;
 
             }

@@ -312,7 +312,7 @@ namespace Acurus.Capella.UI.WebServices.API
 
         private void GenerateJsonNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
         {
-          lnGenerateJsonNotes:  
+        lnGenerateJsonNotes:
 
             IList<Blob_Progress_Note> ilstBlob_Progress_Note = new List<Blob_Progress_Note>();
             BlobProgressNoteManager BlobProgressNoteMngr = new BlobProgressNoteManager();
@@ -383,11 +383,11 @@ namespace Acurus.Capella.UI.WebServices.API
                     //Jira #CAP-115
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                     xmlEncounterDoc.LoadXml(sXMLEncounterDoc);
-                    sIsPhoneEncounter = (xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes.GetNamedItem("Is_Phone_Encounter")?.Value.ToUpper())?? "N";
+                    sIsPhoneEncounter = (xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes.GetNamedItem("Is_Phone_Encounter")?.Value.ToUpper()) ?? "N";
                 }
 
                 //sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
-                
+
                 //string objectSystemIdQry = "SELECT Current_Process FROM WF_Object WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION' UNION ALL SELECT Current_Process FROM WF_Object_arc WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION';";
                 //DataSet ObjectSystemResult = DBConnector.ReadData(string.Format(objectSystemIdQry, sEncounterID));
                 //WFObject DocumentationWfObject = new WFObject();
@@ -441,7 +441,7 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 string WordOutputName = sEncounterID + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".html";
                 string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
-                
+
                 string htmlString = string.Empty;
                 htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, "");
                 System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
@@ -760,7 +760,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     strSignedAt = Convert.ToDateTime(strSignedAt).ToString("o");
                 }
-                
+
                 sFinalOutPut = sFinalOutPut + sFooterNode
                                     + "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
                                     "\"" + "signedBy" + "\":\"" + (strSignedBy?.Trim() ?? "") + "\"," +
@@ -771,7 +771,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                     "\"" + "ReviewedProviderID" + "\":\"" + (strProviderUserId ?? "") + "\"," +
                                     "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}]";
 
-                sFinalOutPut = sFinalOutPut.Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "").Replace("</subtab>","").Replace("<subtab />", "") + "}";
+                sFinalOutPut = sFinalOutPut.Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "").Replace("</subtab>", "").Replace("<subtab />", "") + "}";
                 //}
 
 
@@ -814,28 +814,31 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     goto lnGenerateJsonNotes;
                 }
-
-                try
+                else if (sStatus != "Time Out")
                 {
-                    ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
-                    ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
-                    ilstBlob_Progress_Note[0].Progress_Note_Json = null;
-                    ilstBlob_Progress_Note[0].Status = "Error";
-                    ilstBlob_Progress_Note[0].Error_Description = "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
-                    if (isModified)
+
+                    try
                     {
-                        ilstBlob_Progress_Note[0].Modified_By = "";
-                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                        ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                        ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                        ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                        ilstBlob_Progress_Note[0].Status = "Error";
+                        ilstBlob_Progress_Note[0].Error_Description = (sStatus != "") ? "Error : " + sStatus : "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
+                        if (isModified)
+                        {
+                            ilstBlob_Progress_Note[0].Modified_By = "";
+                            ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                        }
+                        else
+                        {
+                            ilstBlob_Progress_Note[0].Created_By = "";
+                            ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
+                        }
+                        BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                        throw new Exception("Error : " + eex?.Message);
                     }
-                    else
-                    {
-                        ilstBlob_Progress_Note[0].Created_By = "";
-                        ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
-                    }
-                    BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
-                    throw new Exception("Error : " + eex?.Message);
+                    catch { throw new Exception("Error : " + eex?.Message); }
                 }
-                catch { throw new Exception("Error : " + eex?.Message); }
             }
         }
         public string RegenerateXML(Exception ex, string sHumanID, string sEncounterID)
