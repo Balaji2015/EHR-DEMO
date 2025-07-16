@@ -816,28 +816,22 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
                 else if (sStatus != "Time Out")
                 {
-
                     try
                     {
+                        ilstBlob_Progress_Note = BlobProgressNoteMngr.GetBlobProgressNotes(Convert.ToUInt64(sEncounterID));
                         ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
                         ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
                         ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                         ilstBlob_Progress_Note[0].Status = "Error";
                         ilstBlob_Progress_Note[0].Error_Description = (sStatus != "") ? "Error : " + sStatus : "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
-                        if (isModified)
-                        {
-                            ilstBlob_Progress_Note[0].Modified_By = "";
-                            ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
-                        }
-                        else
-                        {
-                            ilstBlob_Progress_Note[0].Created_By = "";
-                            ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
-                        }
+                        ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                         BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                    }
+                    catch
+                    {
                         throw new Exception("Error : " + eex?.Message);
                     }
-                    catch { throw new Exception("Error : " + eex?.Message); }
                 }
             }
         }
