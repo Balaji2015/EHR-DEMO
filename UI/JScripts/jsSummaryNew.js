@@ -313,7 +313,14 @@ function PrintWellnessNote() {
 function PrintTreatmentNote() {
     //StartLoadingImage();
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-    $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=TREATMENT NOTES" + "&Menu=True";
+
+    //CAP-3403: Capturing the element in a separate variable for the sanity check to avoid the null reference exception
+    var processIFrameNotesElements = $(top.window.document).find('#ProcessiFrameNotes');
+
+    if (processIFrameNotesElements?.length > 0 && processIFrameNotesElements[0].contentDocument?.location?.href != null && processIFrameNotesElements[0].contentDocument?.location?.href != undefined) {
+        processIFrameNotesElements.location.href = "frmWellnessNotes.aspx?SubMenuName=TREATMENT NOTES" + "&Menu=True";
+    }
+
     $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Treatment Notes";
     var DateTime = new Date();
     var strYear = DateTime.getFullYear();
