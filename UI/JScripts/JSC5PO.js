@@ -3102,8 +3102,10 @@ function OnSuccessRCopia(response) {
         if (document.getElementById("tsRefill") != undefined && document.getElementById("tsRefill") != null)
             //CAP-1463 
             document.getElementById("tsRefill").style.display = "none";
-        if (document.getElementById("ctl00_tsRefill") != null && document.getElementById("ctl00_tsRefill") != undefined)
-            document.getElementById("ctl00_tsRefill").style.display = "none";
+        //CAP-3405: Capturing the element in a separate variable for the sanity check to avoid the null reference exception
+        var ctTsRefill = document.getElementById("ctl00_tsRefill");
+        if (ctTsRefill?.style?.display != null && ctTsRefill?.style?.display != undefined)
+            ctTsRefill.style.display = "none";
 
         document.getElementById("tsRx_Pending").style.display = "none";
         document.getElementById("tsRx_Need_Signing").style.display = "none";
