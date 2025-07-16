@@ -312,6 +312,8 @@ namespace Acurus.Capella.UI.WebServices.API
 
         private void GenerateJsonNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
         {
+          lnGenerateJsonNotes:  
+
             IList<Blob_Progress_Note> ilstBlob_Progress_Note = new List<Blob_Progress_Note>();
             BlobProgressNoteManager BlobProgressNoteMngr = new BlobProgressNoteManager();
             EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
@@ -806,6 +808,13 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             catch (Exception eex)
             {
+                string sStatus = string.Empty;
+                sStatus = RegenerateXML(eex, sHumanID, sEncounterID);
+                if (sStatus == "Success")
+                {
+                    goto lnGenerateJsonNotes;
+                }
+
                 try
                 {
                     ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
@@ -828,6 +837,64 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
                 catch { throw new Exception("Error : " + eex?.Message); }
             }
+        }
+        public string RegenerateXML(Exception ex, string sHumanID, string sEncounterID)
+        {
+            string sStatus = string.Empty;
+            string sEncounterStatus = string.Empty;
+            if ((ex.Message.ToLower().Contains("there is an unclosed literal string") == true || ex.Message.ToLower().Contains("root element is missing") == true || ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true))
+            {
+
+                string sResultHuman = string.Empty;
+                string sResultEncounter = string.Empty;
+                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+
+                IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(sEncounterID));
+
+                if (ilstEncounterBlob.Count > 0)
+                {
+                    //HumanXML
+                    string sHumanXMLContent = string.Empty;
+                    XmlDocument xmlDoc = new XmlDocument();
+                    try
+                    {
+                        sHumanXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                        if (sHumanXMLContent.Substring(0, 1) != "<")
+                            sHumanXMLContent = sHumanXMLContent.Substring(1, sHumanXMLContent.Length - 1);
+                        xmlDoc.LoadXml(sHumanXMLContent);
+                        sResultHuman = "Success";
+                        sStatus = "Success";
+                    }
+                    catch
+                    {
+                        sResultHuman = "Failure";
+                        sStatus = UtilityManager.GenerateXMLForCDC(sHumanID, "HUMAN", sHumanID, sEncounterID);
+                    }
+
+                    if (sStatus == "Success")
+                    {
+                        //EncounterXML
+                        string sXMLContent = string.Empty;
+                        xmlDoc = new XmlDocument();
+                        try
+                        {
+                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                            if (sXMLContent.Substring(0, 1) != "<")
+                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                            xmlDoc.LoadXml(sXMLContent);
+                            sResultEncounter = "Success";
+                        }
+                        catch
+                        {
+                            sResultEncounter = "Failure";
+                            sStatus = UtilityManager.GenerateXMLForCDC(sEncounterID, "ENCOUNTER", sHumanID, sEncounterID);
+                        }
+                    }
+                }
+                
+            }
+            return sStatus;
+
         }
         public string ReplaceFirst(string input, string search, string replacement)
         {
@@ -1129,11 +1196,11 @@ namespace Acurus.Capella.UI.WebServices.API
                                                     }
                                                     else
                                                     {
-                                                    //Jira CAP-2608
-                                                    //iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "");
-                                                    iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "").Replace('"', '\"');
-                                                    sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
-                                                }
+                                                        //Jira CAP-2608
+                                                        //iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "");
+                                                        iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "").Replace('"', '\"');
+                                                        sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
+                                                    }
                                                 }
 
                                             }

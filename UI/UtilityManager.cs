@@ -5087,6 +5087,437 @@ namespace Acurus.Capella.UI
             }
             return sResult;
         }
+        public static string CreateXMLByBatchProcessForCDC(string sXmlType, string sXMLID,int ulTimeOut)
+        {
+            string status = "";
+            bool IsTimeOut = true;
+            try
+            {
+                status = "First Block";
+                //System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                string sXmlName = string.Empty;
+                sXmlName = (sXmlType.ToUpper().Contains("HUMAN")) ? "Human_" : "Encounter_";
+                int iTryCount = 0;
+                status = "Second Block";
+                string sSourceFile = System.Configuration.ConfigurationManager.AppSettings["CopyFromSource_" + sXmlType].ToString() + "\\" + sXmlName + sXMLID + ".xml";
+                string sDestFile = System.Configuration.ConfigurationManager.AppSettings["CopyToDestination"].ToString() + "\\" + sXmlName + sXMLID + ".xml";
+                if (File.Exists(sSourceFile))
+                {
+                    File.Delete(sSourceFile);
+                }
+                status = "Third Block Block";
+                string batchfile = System.Configuration.ConfigurationManager.AppSettings["CDCXmlBatchFileFor" + sXmlType].ToString();
+                if (File.Exists(batchfile))
+                {
+                    using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
+                    {
+                        status = "Third Block - Sub 1";
+                        proc.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["CDCXmlBatchFileFor" + sXmlType].ToString();
+                        status = "Third Block - Sub 2";
+                        bool bStart = proc.Start();
+                        status = bStart + " Third Block - Sub 3 " + System.Configuration.ConfigurationManager.AppSettings["CDCXmlBatchFileFor" + sXmlType].ToString();
+                        IsTimeOut = proc.WaitForExit(ulTimeOut);
+                        status = bStart + " Third Block - Sub 4 " + System.Configuration.ConfigurationManager.AppSettings["CDCXmlBatchFileFor" + sXmlType].ToString();
+                        if (!IsTimeOut)
+                        {
+                            proc.Kill();
+                        }
+                    }
+                    //status = "Third Block - Sub 1";
+                    //proc.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileFor" + sXmlType].ToString();
+                    //status = "Third Block - Sub 2";
+                    //proc.Start();
+                    //status = "Third Block - Sub 3";
+                    //proc.WaitForExit();
+                    //status = "Third Block - Sub 4";
+                    //retry:
+                    //try
+                    //{
+                    //    System.IO.File.Copy(sSourceFile, sDestFile, true);
+                    //}
+                    //catch (Exception Ex)
+                    //{
+                    //    //if (Ex.Message.ToLower().Contains("used by another process"))
+                    //    //{
+                    //    //    if (iTryCount < 20)
+                    //    //    {
+                    //    //        iTryCount++;
+                    //    //        Thread.Sleep(3000);
+                    //    //        goto retry;
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+                    //    //    }
+                    //    //}
+                    //    throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+
+
+                    //}
+                    InsertIntostatserrorlog(sXmlName + sXMLID + ".xml");
+                    status = string.Empty;
+                    if (!IsTimeOut)
+                    {
+                        status = "Time Out";
+                    }
+                }
+                else
+                {
+                    status = "Batch File Not found-FileName:" + batchfile;
+                }
+                return status;
+
+            }
+            catch (Exception Ex)
+            {
+                //CAP-1942
+                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException, Ex);
+            }
+
+        }
+        public static string GenerateXMLForCDC(string sXMLID, string sXMLType, string sHumanID, string sEncounterID)
+        {
+            int ulTimeOut = 0;
+            if (System.Configuration.ConfigurationSettings.AppSettings["CDCXMLRegenerationTimeOut"] != null 
+                && System.Configuration.ConfigurationSettings.AppSettings["CDCXMLRegenerationTimeOut"].ToString() != "")
+            {
+                ulTimeOut = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["CDCXMLRegenerationTimeOut"].ToString());
+            }
+            BlobProgressNoteManager blobProgressNoteManager = new BlobProgressNoteManager();
+            IList<Blob_Progress_Note> ilstBlob_Progress_Note = new List<Blob_Progress_Note>();
+            string sResult = string.Empty;
+
+
+            try
+            {
+                ulong XML_ID = Convert.ToUInt32(sXMLID);
+
+                if (sXMLType.ToUpper().Contains("HUMAN"))
+                {
+                    //Check if Human_ID exists
+                    //bool isPresent = CheckHumanIDValidity(XML_ID);
+                    //if (isPresent)
+                    //{
+                    bool bInsertCheck = false;
+                    DateTime dt = DateTime.Now;
+                ln:
+                    TimeSpan tsDiffrence = DateTime.Now -  dt;
+                    if (tsDiffrence.TotalHours < (ulTimeOut/3600000))
+                    {
+                        bool ishumancount = GetList_human_progress_note();
+                        if (ishumancount)
+                        {
+                            if (!bInsertCheck)
+                            {
+                                bInsertCheck = true;
+                                ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                                ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                                ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                                ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate_Wait";
+                                ilstBlob_Progress_Note[0].Error_Description = "";
+                                ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                                ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                                blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                            }
+                            Thread.Sleep(60000);
+                            goto ln;
+                        }
+                    }
+                    else
+                    {
+                        sResult = "Time Out";
+                        ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                        ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                        ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                        ilstBlob_Progress_Note[0].Status = "Error";
+                        ilstBlob_Progress_Note[0].Error_Description = "Human_XML_Generate_Wait Time Out Exceeded";
+                        ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                        blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                        return sResult;
+                    }
+
+                    bool isHumanDone = InsertIntoList_human_progress_note(XML_ID);
+                    if (isHumanDone)
+                    {
+                        ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                        ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                        ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                        ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate";
+                        ilstBlob_Progress_Note[0].Error_Description = "";
+                        ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                        blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+
+
+
+                        // CreateXMLByBackupProcess("Human", Application, XML_ID.ToString());
+                        string status = CreateXMLByBatchProcessForCDC("Human", XML_ID.ToString(), ulTimeOut);
+                        if (status == string.Empty)
+                        {
+                            try
+                            {
+                                string sXMLHumanDoc = string.Empty;
+                                HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                                IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+                                ilstHumanBlob = HumanBlobMngr.GetHumanBlob(XML_ID);
+                                XmlDocument xmlHumanDoc = new XmlDocument();
+                                if (ilstHumanBlob.Count > 0)
+                                {
+                                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                                    if (sXMLHumanDoc.Substring(0, 1) != "<")
+                                        sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                                    xmlHumanDoc.LoadXml(sXMLHumanDoc);
+                                    sResult = "Success";
+                                    ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                                    ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                                    ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                                    ilstBlob_Progress_Note[0].Status = "Initiated";
+                                    ilstBlob_Progress_Note[0].Error_Description = "";
+                                    ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                                    ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                                    blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                sResult = "Failure";
+                            }
+                        }
+                        else
+                        {
+                            if (status == "Time Out")
+                            {
+                                ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                                ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                                ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                                ilstBlob_Progress_Note[0].Status = "Error";
+                                ilstBlob_Progress_Note[0].Error_Description = "Human_XML_Generate Time Out Exceeded";
+                                ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                                ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                                blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                            }
+                            sResult = status;
+                        }
+                        string sConnectionString = string.Empty;
+                        sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        var builder = new MySqlConnectionStringBuilder(sConnectionString);
+
+                        try
+                        {
+                            using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                            {
+                                DBConnection.Open();
+                                using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                                {
+                                    string sQuery = "delete from list_human_progress_note where human_id=" + XML_ID.ToString() + ";";
+                                    using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
+                                    {
+                                        cmdInsert.CommandText = sQuery;
+                                        cmdInsert.CommandType = System.Data.CommandType.Text;
+                                        try
+                                        {
+                                            cmdInsert.ExecuteNonQuery();
+                                            DBTransaction.Commit();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            DBTransaction.Rollback();
+                                            throw;
+                                        }
+                                        finally { }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //CAP-1942
+                            sResult = e.Message + e;
+                        }
+
+                    }
+                    else
+                    {
+                        sResult = "ERROR: Unable to Generate XML for " + sXMLID + ". Please try again later.";
+                    }
+                    //}
+                    //else
+                    //    sResult = "The given Human_ID: " + sXMLID + " does not exist. Please enter a valid ID.";
+                }
+
+                else if (sXMLType.ToUpper().Contains("ENCOUNTER"))
+                {
+                    //Check if Encounter_ID exists in Encounter/ Encounter_arc
+                    string sTableName = string.Empty;
+                    sTableName = CheckEncounterIDValidity(XML_ID);
+                    if (sTableName.Contains("ENCOUNTER"))
+                    {
+                        bool sInsertcheckForEncounter = false;
+                        DateTime dt = DateTime.Now;
+                    ln:
+                        TimeSpan tsDiffrence = DateTime.Now - dt;
+                        if (tsDiffrence.TotalHours < (ulTimeOut / 3600000))
+                        {
+                            bool ishumancount = GetList_encounter_progress_note(sTableName, XML_ID);
+
+                            if (ishumancount)
+                            {
+                                if (!sInsertcheckForEncounter)
+                                {
+                                    sInsertcheckForEncounter = true;
+                                    ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                                    ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                                    ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                                    ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate_Wait";
+                                    ilstBlob_Progress_Note[0].Error_Description = "";
+                                    ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                                    ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                                    blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                                }
+                                Thread.Sleep(60000);
+                                goto ln;
+                            }
+                        }
+                        else
+                        {
+                            sResult = "Time Out";
+                            ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                            ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                            ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                            ilstBlob_Progress_Note[0].Status = "Error";
+                            ilstBlob_Progress_Note[0].Error_Description = "Encounter_XML_Generate_Wait Time Out Exceeded";
+                            ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                            ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                            blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                            return sResult;
+                        }
+                        bool isEncDone = InsertIntoListEncounterCurrOrArcForCDC(XML_ID, sTableName);
+                        if (isEncDone)
+                        {
+                            ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                        ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                        ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                        ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate";
+                        ilstBlob_Progress_Note[0].Error_Description = "";
+                        ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                        blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                        
+                            string sXML = (sTableName.ToUpper() == "ENCOUNTER_CURRENT") ? "Encounter" : "EncounterArc";
+                            // CreateXMLByBackupProcess(sXML, Application, XML_ID.ToString());
+                            string status = CreateXMLByBatchProcessForCDC(sXML, XML_ID.ToString(), ulTimeOut);
+                            if (status == string.Empty)
+                            {
+                                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                                IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(XML_ID);
+                                if (ilstEncounterBlob.Count > 0)
+                                {
+                                    string sXMLContent = string.Empty;
+                                    XmlDocument xmlDoc = new XmlDocument();
+                                    try
+                                    {
+                                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                                        if (sXMLContent.Substring(0, 1) != "<")
+                                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                                        xmlDoc.LoadXml(sXMLContent);
+                                        ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                                        ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                                        ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                                        ilstBlob_Progress_Note[0].Status = sXMLType + "Initiated";
+                                        ilstBlob_Progress_Note[0].Error_Description = "";
+                                        ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                                        blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                                        sResult = "Success";
+                                    }
+                                    catch
+                                    {
+                                        sResult = "Failure";
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (status == "Time Out")
+                                {
+                                    ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                                    ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                                    ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                                    ilstBlob_Progress_Note[0].Status = "Error";
+                                    ilstBlob_Progress_Note[0].Error_Description = "Encounter_XML_Generate Time Out Exceeded";
+                                    ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                                    ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                                    blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                                }
+                                sResult = status;
+                            }
+                            string sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+
+                            try
+                            {
+                                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                                {
+                                    DBConnection.Open();
+                                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                                    {
+                                        string sQuery = string.Empty;
+                                        if (sTableName == "ENCOUNTER_CURRENT")
+                                            sQuery = "delete from list_encounter_progress_note where encounter_id=" + XML_ID.ToString() + ";";
+                                        else
+                                            if (sTableName == "ENCOUNTER_ARCHIVE")
+                                            sQuery = "delete from list_encounter_arc_progress_note where encounter_id=" + XML_ID.ToString() + ";";
+                                        using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
+                                        {
+                                            cmdInsert.CommandText = sQuery;
+                                            cmdInsert.CommandType = System.Data.CommandType.Text;
+                                            try
+                                            {
+                                                cmdInsert.ExecuteNonQuery();
+                                                DBTransaction.Commit();
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                DBTransaction.Rollback();
+                                                throw;
+                                            }
+                                            finally { }
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception e) { throw; }
+
+
+                        }
+                        else
+                        {
+                            sResult = "ERROR: Unable to generate XML for " + sXMLID + ". Please try again later.";
+                        }
+                    }
+                    else
+                    {
+                        if (sTableName == "INVALID DOS")
+                        {
+                            sResult = "The Encounter of ID: " + sXMLID + " has not yet been processed. Hence XML could not be generated.";
+                        }
+                        else
+                        {
+                            sResult = "The given Encounter_ID: " + sXMLID + " does not exist. Please enter a valid ID.";
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //CAP-1942
+                sResult = "ERROR: " + ex.Message + " STACKTRACE: " + ex.StackTrace + ex;
+
+            }
+            return sResult;
+        }
         public static bool InsertIntoListEncounterCurrOrArc(ulong EncID, string sTable)
         {
             bool isInserted = false;
@@ -5107,6 +5538,51 @@ namespace Acurus.Capella.UI
                         else
                             if (sTable.ToUpper() == "ENCOUNTER_ARCHIVE")
                             sQuery = "insert into list_encounter_arc values(" + EncID.ToString() + ", current_timestamp());";
+                        using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
+                        {
+                            cmdInsert.CommandText = sQuery;
+                            cmdInsert.CommandType = System.Data.CommandType.Text;
+                            try
+                            {
+                                cmdInsert.ExecuteNonQuery();
+                                DBTransaction.Commit();
+                                isInserted = true;
+                            }
+                            catch (Exception e)
+                            {
+                                DBTransaction.Rollback();
+                                isInserted = false;
+                                throw;
+                            }
+                            finally { }
+                        }
+                    }
+                }
+            }
+            catch (Exception e) { throw; }
+
+            return isInserted;
+        }
+        public static bool InsertIntoListEncounterCurrOrArcForCDC(ulong EncID, string sTable)
+        {
+            bool isInserted = false;
+            string sConnectionString = string.Empty;
+            sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+
+            try
+            {
+                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                {
+                    DBConnection.Open();
+                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                    {
+                        string sQuery = string.Empty;
+                        if (sTable.ToUpper() == "ENCOUNTER_CURRENT")
+                            sQuery = "insert into list_encounter_progress_note values(" + EncID.ToString() + ", current_timestamp());";
+                        else
+                            if (sTable.ToUpper() == "ENCOUNTER_ARCHIVE")
+                            sQuery = "insert into list_encounter_arc_progress_note values(" + EncID.ToString() + ", current_timestamp());";
                         using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
                         {
                             cmdInsert.CommandText = sQuery;
@@ -5153,6 +5629,47 @@ namespace Acurus.Capella.UI
                         else
                             if (sTable == "ENCOUNTER_ARCHIVE")
                             sQuery = "select *  from list_encounter_arc;";
+                        using (MySqlCommand cmdCheck = new MySqlCommand(sQuery, DBConnection))
+                        {
+                            cmdCheck.CommandText = sQuery;
+                            cmdCheck.CommandType = System.Data.CommandType.Text;
+                            try
+                            {
+                                int iRows = 0;
+                                string sResult = string.Empty;
+                                iRows = Convert.ToInt32(cmdCheck.ExecuteScalar());
+                                if (iRows > 0)
+                                    bExists = true;
+                            }
+                            catch (Exception e) { throw; }
+                            finally { }
+                        }
+                    }
+                }
+            }
+            catch (Exception e) { throw; }
+            return bExists;
+        }
+        public static bool GetList_encounter_progress_note(string sTable, ulong deletionID)
+        {
+            string sConnectionString = string.Empty;
+            bool bExists = false;
+            sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+
+            try
+            {
+                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                {
+                    DBConnection.Open();
+                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                    {
+                        string sQuery = string.Empty;
+                        if (sTable == "ENCOUNTER_CURRENT")
+                            sQuery = "select * from   list_encounter_progress_note ;";
+                        else
+                            if (sTable == "ENCOUNTER_ARCHIVE")
+                            sQuery = "select *  from list_encounter_arc_progress_note;";
                         using (MySqlCommand cmdCheck = new MySqlCommand(sQuery, DBConnection))
                         {
                             cmdCheck.CommandText = sQuery;
@@ -5237,6 +5754,51 @@ namespace Acurus.Capella.UI
                     using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
                     {
                         string sQuery = "insert into list_human values(" + humanID.ToString() + ");";
+                        using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
+                        {
+                            cmdInsert.CommandText = sQuery;
+                            cmdInsert.CommandType = System.Data.CommandType.Text;
+                            try
+                            {
+                                cmdInsert.ExecuteNonQuery();
+                                DBTransaction.Commit();
+                                isInserted = true;
+                            }
+                            catch (Exception e)
+                            {
+                                DBTransaction.Rollback();
+                                isInserted = false;
+                                //CAP-1942
+                                throw new Exception(e.Message, e);
+                            }
+                            finally { }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //CAP-1942
+                throw new Exception(e.Message, e);
+            }
+
+            return isInserted;
+        }
+        public static bool InsertIntoList_human_progress_note(ulong humanID)
+        {
+            bool isInserted = false;
+            string sConnectionString = string.Empty;
+            sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+
+            try
+            {
+                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                {
+                    DBConnection.Open();
+                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                    {
+                        string sQuery = "insert into list_human_progress_note values(" + humanID.ToString() + ");";
                         using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
                         {
                             cmdInsert.CommandText = sQuery;
@@ -5481,6 +6043,41 @@ namespace Acurus.Capella.UI
                     using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
                     {
                         string sQuery = "Select *  from list_human ; ";
+                        using (MySqlCommand cmdCheck = new MySqlCommand(sQuery, DBConnection))
+                        {
+                            cmdCheck.CommandText = sQuery;
+                            cmdCheck.CommandType = System.Data.CommandType.Text;
+                            try
+                            {
+                                int iRows = 0;
+                                string sResult = string.Empty;
+                                iRows = Convert.ToInt32(cmdCheck.ExecuteScalar());
+                                if (iRows > 0)
+                                    bExists = true;
+                            }
+                            catch (Exception e) { throw; }
+                            finally { }
+                        }
+                    }
+                }
+            }
+            catch (Exception e) { throw; }
+            return bExists;
+        }
+        public static bool GetList_human_progress_note()
+        {
+            string sConnectionString = string.Empty;
+            sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+            bool bExists = false;
+            try
+            {
+                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                {
+                    DBConnection.Open();
+                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                    {
+                        string sQuery = "Select *  from list_human_progress_note ; ";
                         using (MySqlCommand cmdCheck = new MySqlCommand(sQuery, DBConnection))
                         {
                             cmdCheck.CommandText = sQuery;
@@ -5762,7 +6359,7 @@ namespace Acurus.Capella.UI
 
                 if (!xmlContent.StartsWith("<"))
                     xmlContent = xmlContent.Substring(1);
-
+                
                 var xmlDoc = new XmlDocument();
                 try
                 {
@@ -6896,6 +7493,7 @@ namespace Acurus.Capella.UI
             //    }
 
             //}
+            sXMLHumanDoc = ReplaceHexadecimal(sXMLHumanDoc);
             return bAlert;
         }
 
@@ -7199,6 +7797,13 @@ namespace Acurus.Capella.UI
                 .Replace("|", "").Replace("=", "").Replace("__", "_").Replace("~", "").Replace("^", "").Replace("\"", "");
 
             return sFilename;
+        }
+        public static string ReplaceHexadecimal( string xmlContent) {
+            string sReg = @"&#x?[0-9a-fA-F]+;?";
+            xmlContent = Regex.Replace(xmlContent, sReg, " ");
+            string shReg = @"^0x[0-9a-fA-F]+$|^[0-9a-fA-F]{2,}$";
+            xmlContent = Regex.Replace(xmlContent, shReg, " ");
+            return xmlContent;
         }
     }
 }
