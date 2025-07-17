@@ -517,7 +517,7 @@
                                 <div class="panel-footer" style="display: grid;" id="divShowAllPhysicians" runat="server">
                                     <div>
                                         <span>Show Providers</span>
-                                        <asp:RadioButton ID="rdoActivePhysicians" runat="server" AutoPostBack="true" Text="Active" GroupName="Physicians" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged" style="margin-left: 5px;"/>
+                                        <asp:RadioButton ID="rdoActivePhysicians" runat="server" AutoPostBack="true" Text="Active" GroupName="Physicians" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged" style="margin-left: 5px;" Checked="true"/>
                                         <asp:RadioButton ID="rdoAllActivePhysicians" runat="server" AutoPostBack="true" Text="All Active" GroupName="Physicians" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged" style="margin-left: 3px;"/>
                                         <asp:RadioButton ID="rdoInActivePhysicians" runat="server" AutoPostBack="true" Text="InActive" GroupName="Physicians" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged" style="margin-left: 3px;"/>
                                     </div>

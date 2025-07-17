@@ -2246,6 +2246,8 @@ namespace Acurus.Capella.UI
                     }
                     if (hdnApptPhyId.Value == PhysicianList[i].Id.ToString())
                     {
+                        //CAP-3458
+                        cboFacilityName.ClearSelection();
                         cboFacilityName.Items.FindByText(item.Text).Selected = true;
                         cboFacilityName.Attributes.Add("Tag", PhysicianList[i].Id.ToString());
                     }
