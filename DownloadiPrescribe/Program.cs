@@ -50,6 +50,11 @@ namespace DownloadiPrescribe
                     ImportImageResultsAgent();
                     Console.WriteLine("ImageResultsAgent Method Invoked.");
                     break;
+                case "CDCXmlRegenerateJob":
+                    Console.WriteLine("CDCXmlRegenerateJob Started.");
+                    CDCXmlRegenerateJob();
+                    Console.WriteLine("CDCXmlRegenerateJob Method Invoked.");
+                    break;
             }
             //Console.WriteLine("Order Task Creation Started.");
             //Timer method1Timer = new Timer();
@@ -512,7 +517,56 @@ namespace DownloadiPrescribe
             //Jira CAP-2977
             //}
         }
+        public static void CDCXmlRegenerateJob()
+        {
+            IList<Blob_Progress_Note> ilstBlopProgressNote = new List<Blob_Progress_Note>();
+            BlobProgressNoteManager blobProgressNoteManager = new BlobProgressNoteManager();
+            string sDuration = ConfigurationSettings.AppSettings["Duration"]?.ToString() ?? "";
 
+            ilstBlopProgressNote = blobProgressNoteManager.GetBlobProgressNotesByStatus(new List<string>() { "'Error'", "'Completed'" }, sDuration);
+            Console.WriteLine("Total encounters : " + ilstBlopProgressNote.Count);
+            foreach (Blob_Progress_Note blob_Progress_Note in ilstBlopProgressNote)
+            {
+                Console.WriteLine("HumanID : " + blob_Progress_Note.Human_ID + " EncounterID : " + blob_Progress_Note.Id + " - Start");
+                IsAkidoCDC(blob_Progress_Note.Human_ID.ToString(), blob_Progress_Note.Id.ToString(), "Acurus", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
+                Console.WriteLine("HumanID : " + blob_Progress_Note.Human_ID + " EncounterID : " + blob_Progress_Note.Id + " - End");
+            }
+
+        }
+        public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)
+        {
+            string bIsAkidoEncounter = "false";
+            //Jira CAP-1379
+            int iRetryCount = 0;
+
+        retry:
+            try
+            {
+                iRetryCount = iRetryCount + 1;
+
+                string akidoNoteCDCURL = ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString();
+                akidoNoteCDCURL = akidoNoteCDCURL.Replace("[CapellaHumanID]", sHumanID).Replace("[CapellaEncounterID]", sEncounterID).Replace("[CapellaTransactionBy]", sTransactionBy).Replace("[CapellaTransactionDateTime]", sTransactionDateTime);
+                var myUri = new Uri(akidoNoteCDCURL);
+                string AccessToken = ConfigurationSettings.AppSettings["AkidoNoteCDCURLToken"].ToString();
+                var myWebRequest = WebRequest.Create(myUri);
+                var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                myHttpWebRequest.PreAuthenticate = true;
+                myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
+                myHttpWebRequest.Accept = "application/json";
+
+                var myWebResponse = myWebRequest.GetResponse();
+                var responseStream = myWebResponse.GetResponseStream();
+
+                var myStreamReader = new StreamReader(responseStream, Encoding.Default);
+                var json = myStreamReader.ReadToEnd();
+                responseStream.Close();
+                myWebResponse.Close();
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
         public static bool MoveAndReplace(string sSourceFile, string sDestinationFile)
         {
             if (File.Exists(sDestinationFile))

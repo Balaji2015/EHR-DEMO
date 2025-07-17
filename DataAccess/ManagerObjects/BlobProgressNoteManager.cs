@@ -20,7 +20,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Blob_Progress_Note> GetBlobProgressNotes(ulong ulEncounterID);
 
         void SaveBlobProgressNotesWithTransaction(IList<Blob_Progress_Note> ListToUpdateBlobProgressNotes, string MACAddress);
-
+        IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstStatus, string sDuration = "");
     }
 
     public partial class BlobProgressNoteManager : ManagerBase<Blob_Progress_Note, ulong>, IBlobProgressNoteManager
@@ -50,6 +50,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ICriteria crit = session.GetISession().CreateCriteria(typeof(Blob_Progress_Note)).Add(Expression.Eq("Id", ulEncounterID));
             ilstBlobProgressNotes = crit.List<Blob_Progress_Note>();
 
+            return ilstBlobProgressNotes;
+            
+        }
+        public IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstStatus,string sDuration = "")
+        {
+            IList<Blob_Progress_Note> ilstBlobProgressNotes = new List<Blob_Progress_Note>();
+            session.GetISession().Close();
+            if (sDuration != "")
+            {
+                ISQLQuery sq = session.GetISession().CreateSQLQuery("SELECT B.* FROM cdc_progress_note B where B.Status not in (" + string.Join(",", lstStatus) + ") and Modified_Date_And_Time < NOW() - INTERVAL " + sDuration + " HOUR;")
+                           .AddEntity("B", typeof(Blob_Progress_Note));
+                ilstBlobProgressNotes = sq.List<Blob_Progress_Note>();
+            }
+            else
+            {
+                ISQLQuery sq = session.GetISession().CreateSQLQuery("SELECT B.* FROM cdc_progress_note B where B.Status not in (" + string.Join(",", lstStatus) + ");")
+                           .AddEntity("B", typeof(Blob_Progress_Note));
+                ilstBlobProgressNotes = sq.List<Blob_Progress_Note>();
+            }
             return ilstBlobProgressNotes;
         }
 
