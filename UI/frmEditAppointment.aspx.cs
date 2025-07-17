@@ -1477,6 +1477,20 @@ namespace Acurus.Capella.UI
             OverAllPageLoad.Stop();
             time_taken += "OverAllPageLoad : " + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s; ";
             hdnTimeTaken.Value = time_taken;
+            //CAP-3268
+            if (!IsPostBack)
+            {
+                PhysicianManager physicianManager = new PhysicianManager();
+                var lstMappedFacility = physicianManager.GetFacilityListMappedByPhysician(ClientSession.PhysicianId);
+                if (lstMappedFacility != null && lstMappedFacility.Any(a => a.Facility_Name == hdnFacilityName.Value && a.Status == "N"))
+                {
+                    DisablePanelControls(pnlScheduleAppointment);
+                    btnPatientTask.Enabled = false;
+                    btnPatientDemographics.Enabled = false;
+                    btnSave.Enabled = false;
+                    hdnHideScheduleAppointment.Value = "true";
+                }
+            }
             //logger.Debug("--------------------frmEditAppointment Page Load Completed. Time Taken :'" + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s'--------------------");
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Appointment", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
@@ -8129,6 +8143,22 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(value);
         }
 
+        protected void DisablePanelControls(Control panel)
+        {
+            foreach (Control ctrl in panel.Controls)
+            {
+                if (ctrl is WebControl webCtrl)
+                {
+                    webCtrl.Enabled = false;
+                }
+
+                // Recursively disable nested controls
+                if (ctrl.HasControls())
+                {
+                    DisablePanelControls(ctrl);
+                }
+            }
+        }
         #endregion
     }
 }
