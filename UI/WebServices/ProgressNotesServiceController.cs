@@ -26,6 +26,7 @@ namespace Acurus.Capella.UI.WebServices.API
         {
             CDC_Audit_LogManager cDC_Audit_LogManager = new CDC_Audit_LogManager();
             IList<CDC_Audit_Log> ilstCDC_Audit_Log = new List<CDC_Audit_Log>();
+            ilstCDC_Audit_Log.Add(new CDC_Audit_Log());
             ilstCDC_Audit_Log[0].Human_ID = Convert.ToUInt64(sHumanID ?? "0");
             ilstCDC_Audit_Log[0].API_Name = "LoadCapellaHistoryData";
             ilstCDC_Audit_Log[0].Request = Request.RequestUri.ToString();
