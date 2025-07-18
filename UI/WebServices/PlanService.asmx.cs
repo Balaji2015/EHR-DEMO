@@ -309,26 +309,47 @@ namespace Acurus.Capella.UI.WebServices
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "";
             }
-            //Jira CAP-2830
+            //Jira CAP-3455
+            ////Jira CAP-2830
+            //string sIsAkidoEncounter = "false";
+            //string sExMessage = "";
+            //string sStatus = "";
+            //if (objectDate["ElectronicDeclrChecked"].ToString() == "true")
+            //{
+            //    sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
+            //    if (sIsAkidoEncounter == "true")
+            //    {
+            //        var Validationresult = new { ValidationMessage = "110812" };
+            //        return JsonConvert.SerializeObject(Validationresult);
+            //    }
+            //    else if (sIsAkidoEncounter == "Exception")
+            //    {
+            //        var Validationresult = new { ValidationMessage = "110813_"+ DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt")+"_"+ sExMessage.Replace("'", "") };
+            //        return JsonConvert.SerializeObject(Validationresult);
+            //    }
+            //}
+            ////Jira CAP-2830 - End
+
+            //Jira CAP-3455
             string sIsAkidoEncounter = "false";
             string sExMessage = "";
             string sStatus = "";
+            string sIsSignedInCapella = "false";
             var objectDate = (Dictionary<string, object>)data.FirstOrDefault();
-            if (objectDate["ElectronicDeclrChecked"].ToString() == "true")
+            sIsSignedInCapella = objectDate["ElectronicDeclrChecked"].ToString();
+
+            if (sIsSignedInCapella == "true")
             {
                 sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
-                if (sIsAkidoEncounter == "true")
+                if (sIsAkidoEncounter == "true" || sIsAkidoEncounter == "Exception")
                 {
-                    var Validationresult = new { ValidationMessage = "110812" };
-                    return JsonConvert.SerializeObject(Validationresult);
-                }
-                else if (sIsAkidoEncounter == "Exception")
-                {
-                    var Validationresult = new { ValidationMessage = "110813_"+ DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt")+"_"+ sExMessage.Replace("'", "") };
-                    return JsonConvert.SerializeObject(Validationresult);
+                    if (data.FirstOrDefault() is Dictionary<string, object> dict)
+                    {
+                        dict["ElectronicDeclrChecked"] = "false";
+                    }
                 }
             }
-            //Jira CAP-2830 - End
+            //Jira CAP-3455 - End
             UtilityManager objUtilityMngr = new UtilityManager();
             IList<TreatmentPlan> Treatment_Plan = ((IList<TreatmentPlan>)HttpContext.Current.Session["TreatmentPlan"]);
             IList<Documents> DocumentList = (IList<Documents>)HttpContext.Current.Session["DocumentList"];
@@ -660,6 +681,21 @@ namespace Acurus.Capella.UI.WebServices
             //BugID:48018,48017
             Encounter EncObj = new Encounter();
             EncObj = ClientSession.FillEncounterandWFObject.EncRecord;
+            //Jira CAP-3455
+            if (sIsSignedInCapella == "true")
+            {
+                if (sIsAkidoEncounter == "true")
+                {
+                    var Validationresult = new { ValidationMessage = "110812" };
+                    return JsonConvert.SerializeObject(Validationresult);
+                }
+                else if (sIsAkidoEncounter == "Exception")
+                {
+                    var Validationresult = new { ValidationMessage = "110813_" + DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt") + "_" + sExMessage.Replace("'", "") };
+                    return JsonConvert.SerializeObject(Validationresult);
+                }
+            }
+            //Jira CAP-3455 - End
             var result = new { EncRecord = EncObj };
             return JsonConvert.SerializeObject(result);
         }
