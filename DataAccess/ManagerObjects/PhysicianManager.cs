@@ -20,7 +20,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void UpdatePhysicians(PhysicianLibrary libraries, string sMacAddress);
         void DeletePhysicians(PhysicianLibrary libraries, string sMacAddress);
         IList<PhysicianLibrary> GetPhysicianListbyFacilityForRCM(string FacName, string sActive);
-        IList<PhysicianLibrary> GetInActiveProviderList(string FacName, string sLegalOrg);
+        IList<PhysicianLibrary> GetInActiveProviderList(string FacName, string sLegalOrg, bool isActive);
         IList<MapFacilityPhysician> GetFacilityListMappedByPhysician(ulong physician_id);
         ulong SavePhysicians(PhysicianLibrary libraries, string sMacAddress);//vinoth 15/04/2010
         IList<PhysicianLibrary> GetPhysicianListbyFacility(string FacName, string sActive);
@@ -325,12 +325,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return PhyList;
         }
         //CAP-3268
-        public IList<PhysicianLibrary> GetInActiveProviderList(string FacName, string sLegalOrg)
+        public IList<PhysicianLibrary> GetInActiveProviderList(string FacName, string sLegalOrg, bool isActive)
         {
             IList<PhysicianLibrary> PhyList = new List<PhysicianLibrary>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sq = iMySession.CreateSQLQuery("SELECT p.Physician_Prefix as prefix,p.Physician_First_Name as firstname,p.Physician_Middle_Name as middlename,p.Physician_Last_Name as lastname,p.Physician_Suffix as suffix,u.user_name as username,m.physician_id as ID,m.status as status,m.Legal_Org as legalorg,p.Physician_NPI as npi,if(t.Machine_Technician_Library_ID is null,'0',Machine_Technician_Library_ID) as machine_technician_id,m.Facility_name FROM `map_facility_physician` m left join physician_library p on (m.physician_id =p.physician_library_id) left join user u on (m.physician_id = u.physician_library_id) left join machine_technician_library t on (m.physician_id =t.physician_library_id  and t.facility_name=m.facility_name)  where m.facility_name ='" + FacName + "' and m.status = 'Y' and u.status <> 'A' and u.Legal_Org = '" + sLegalOrg + "'");
+                ISQLQuery sq;
+                if (isActive)
+                {
+                    sq = iMySession.CreateSQLQuery("SELECT p.Physician_Prefix as prefix,p.Physician_First_Name as firstname,p.Physician_Middle_Name as middlename,p.Physician_Last_Name as lastname,p.Physician_Suffix as suffix,u.user_name as username,m.physician_id as ID,m.status as status,m.Legal_Org as legalorg,p.Physician_NPI as npi,if(t.Machine_Technician_Library_ID is null,'0',Machine_Technician_Library_ID) as machine_technician_id,m.Facility_name FROM `map_facility_physician` m left join physician_library p on (m.physician_id =p.physician_library_id) left join user u on (m.physician_id = u.physician_library_id) left join machine_technician_library t on (m.physician_id =t.physician_library_id  and t.facility_name=m.facility_name)  where m.facility_name ='" + FacName + "' and m.status = 'Y' and u.status <> 'A' and u.Legal_Org = '" + sLegalOrg + "'");
+                }
+                else
+                {
+                    sq = iMySession.CreateSQLQuery("SELECT p.Physician_Prefix as prefix,p.Physician_First_Name as firstname,p.Physician_Middle_Name as middlename,p.Physician_Last_Name as lastname,p.Physician_Suffix as suffix,u.user_name as username,m.physician_id as ID,m.status as status,m.Legal_Org as legalorg,p.Physician_NPI as npi,if(t.Machine_Technician_Library_ID is null,'0',Machine_Technician_Library_ID) as machine_technician_id,m.Facility_name FROM `map_facility_physician` m left join physician_library p on (m.physician_id =p.physician_library_id) left join user u on (m.physician_id = u.physician_library_id) left join machine_technician_library t on (m.physician_id =t.physician_library_id  and t.facility_name=m.facility_name)  where m.facility_name ='" + FacName + "' and m.status <> 'Y' and u.status <> 'A' and u.Legal_Org = '" + sLegalOrg + "'");
+                }
 
                 foreach (IList<Object> l in sq.List())
                 {

@@ -2946,10 +2946,10 @@ namespace Acurus.Capella.UI
             return AllPhysicians.Distinct().OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
         }
         //CAP-3268
-        public static IList<PhysicianLibrary> GetInActiveProviderList(string facility_name, string sLegalOrg)
+        public static IList<PhysicianLibrary> GetInActiveProviderList(string facility_name, string sLegalOrg, bool isActive)
         {
             PhysicianManager physicianManager = new PhysicianManager();
-            IList<PhysicianLibrary> lstPhysicianLibrary = physicianManager.GetInActiveProviderList(facility_name, sLegalOrg);
+            IList<PhysicianLibrary> lstPhysicianLibrary = physicianManager.GetInActiveProviderList(facility_name, sLegalOrg, isActive);
 
             if (lstPhysicianLibrary == null || !lstPhysicianLibrary.Any())
                 return new List<PhysicianLibrary>();

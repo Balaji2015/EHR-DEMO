@@ -685,8 +685,32 @@ function schAppointmentScheduler_AppointmentClick(sender, args) {
 
 //CAP-3268
 function schAppointmentScheduler_TimeSlotContextMenu(sender, args) {
+    var columnIndex = 0;
+    $('.rsContentTable tr').each(function (rowIndex) {
+        $(this).find('td').each(function (colIndex) {
+            if ($(this).hasClass('rsSelectedSlot')) {
+                columnIndex = colIndex;
+            }
+        });
+    });
+
+    var resources = sender.get_resources();
+    var res = resources.getResource(columnIndex);
+    var facility = '';
+    if (res != null && res != undefined && res._key) {
+        facility = res._key;
+    }
+    var status = '';
+    $('#ctl00_C5POBody_chklstProviders input[type="checkbox"]:checked').each(function () {
+        var checkbox = $(this);
+        var label = $("label[for='" + $(this).attr("id") + "']").text(); // Get label text
+        if (label == facility) {
+            status = checkbox.closest('span').attr('data-status');
+        }
+    });
+
     var menu = $find("ctl00_C5POBody_schAppointmentScheduler_RadSchedulerContextMenu0");
-    if ($('#ctl00_C5POBody_rdoInActivePhysicians').is(':checked') || $('#ctl00_C5POBody_rdoInActiveProviders').is(':checked')) {
+    if (($('#ctl00_C5POBody_rdoInActivePhysicians').is(':checked') || $('#ctl00_C5POBody_rdoInActiveProviders').is(':checked')) && status == 'N') {
         menu.findItemByText("New Appointment").hide();
     } else {
         menu.findItemByText("New Appointment").show();

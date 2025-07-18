@@ -1390,9 +1390,9 @@ namespace Acurus.Capella.UI
                     List<System.Web.UI.WebControls.ListItem> selected = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).ToList();
                     chklstProviders.Items.Clear();
 
-                    if (FacList != null)
+                    if (lstMappedFacility != null)
                     {
-                        if (FacList.Count == 0)
+                        if (lstMappedFacility.Count == 0)
                         {
                             schAppointmentScheduler.Visible = false;
                             return;
@@ -1401,10 +1401,11 @@ namespace Acurus.Capella.UI
                         {
                             schAppointmentScheduler.Visible = true;
                         }
-                        for (int i = 0; i < FacList.Count; i++)
+                        for (int i = 0; i < lstMappedFacility.Count; i++)
                         {
                             System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
-                            item.Text = FacList[i].Fac_Name;
+                            item.Attributes["data-status"] = lstMappedFacility[i].Status;
+                            item.Text = lstMappedFacility[i].Facility_Name;
                             chklstProviders.Items.Add(item);
                             if (selected.Any(item1 => item1.Text.ToString() == chklstProviders.Items[i].Text.ToString()))
                                 chklstProviders.Items[i].Selected = true;
@@ -1443,6 +1444,7 @@ namespace Acurus.Capella.UI
                         {
                             System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
                             item.Text = FacList[i].Facility_Name;
+                            item.Attributes["data-status"] = FacList[i].Status;
                             chklstProviders.Items.Add(item);
                             chklstProviders.Items[i].Selected = true;
                             if (selected.Any(item1 => item1.Text.ToString() == chklstProviders.Items[i].Text.ToString()))
@@ -1510,14 +1512,21 @@ namespace Acurus.Capella.UI
                 if (rdoInActiveProviders.Checked)
                 {
                     if (!string.IsNullOrEmpty(cboFacilityName.SelectedItem.Text))
-                        PhysicianList = UtilityManager.GetInActiveProviderList(cboFacilityName.SelectedItem.Text, ClientSession.LegalOrg);
+                        PhysicianList = UtilityManager.GetInActiveProviderList(cboFacilityName.SelectedItem.Text, ClientSession.LegalOrg, false);
                 }
                 else
                 {
                     if (chkShowActive.Checked || rdoAllActiveProviders.Checked)
                         PhysicianList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
                     else
+                    {
                         PhysicianList = UtilityManager.GetPhysicianList(cboFacilityName.SelectedItem.Text, ClientSession.LegalOrg);
+                        var otherPhysicianList = UtilityManager.GetInActiveProviderList(cboFacilityName.SelectedItem.Text, ClientSession.LegalOrg, true);
+                        foreach (var item in otherPhysicianList)
+                        {
+                            PhysicianList.Add(item);
+                        }
+                    }
                 }
 
                 List<System.Web.UI.WebControls.ListItem> selected = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).ToList();
@@ -1580,10 +1589,15 @@ namespace Acurus.Capella.UI
                                 {
                                     List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
                                     machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhysicianList[i].PhyColor).ToList();
-                                    if ((machinetechnicians?.Count ?? 0) > 0)
+                                    var filterData = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
+                                    if ((machinetechnicians?.Count ?? 0) > 0 && !filterData.Any(a => a.Value == machinetechnicians[0].machine_technician_library_id))
                                     {
                                         item.Text = machinetechnicians[0].machine_name + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
                                         item.Value = machinetechnicians[0].machine_technician_library_id;
+                                    }
+                                    else
+                                    {
+                                        continue;
                                     }
                                 }
 
@@ -1635,6 +1649,8 @@ namespace Acurus.Capella.UI
                         RefreshMyResources();
                     }
                     else if (newly_selected.Count != selected.Count)
+                        FillAllAppointmentsForDate();
+                    else if (newly_selected.Any(a => selected.Any(x => x.Text == a.Text)))
                         FillAllAppointmentsForDate();
                 }
             }
@@ -2164,14 +2180,21 @@ namespace Acurus.Capella.UI
             //}
             if (rdoInActivePhysicians.Checked)
             {
-                PhysicianList = UtilityManager.GetInActiveProviderList(ClientSession.FacilityName, ClientSession.LegalOrg);
+                PhysicianList = UtilityManager.GetInActiveProviderList(ClientSession.FacilityName, ClientSession.LegalOrg, false);
             }
             else
             {
                 if (rdoAllActivePhysicians.Checked)
                     PhysicianList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
                 else
+                {
                     PhysicianList = UtilityManager.GetPhysicianList(ClientSession.FacilityName, ClientSession.LegalOrg);
+                    var otherPhysicianList = UtilityManager.GetInActiveProviderList(cboFacilityName.SelectedItem.Text, ClientSession.LegalOrg, true);
+                    foreach (var item in otherPhysicianList)
+                    {
+                        PhysicianList.Add(item);
+                    }
+                }
             }
 
             if (PhysicianList.Count > 0)
@@ -4209,6 +4232,7 @@ namespace Acurus.Capella.UI
                 {
                     System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
                     item.Text = facList[i].Facility_Name;
+                    item.Attributes["data-status"] = facList[i].Status;
                     //item.Value = facList[i].Phy_Rec_ID.ToString();
                     chklstProviders.Items.Add(item);
                     if (bSelectDefault)
@@ -4230,6 +4254,11 @@ namespace Acurus.Capella.UI
                 {
                     System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
                     item.Text = facilityList[i].Fac_Name;
+                    var filteredFac = facList.FirstOrDefault(a => a.Facility_Name == facilityList[i].Fac_Name);
+                    if (filteredFac != null)
+                    {
+                        item.Attributes["data-status"] = filteredFac.Status;
+                    }
                     //item.Value = facList.Any(fac => fac.Facility_Name.ToUpper().Trim() == facilityList[i].Fac_Name.ToUpper().Trim()) ? hdnApptPhyId.Value : (0).ToString();
                     chklstProviders.Items.Add(item);
                     if (bSelectDefault)
@@ -4277,10 +4306,24 @@ namespace Acurus.Capella.UI
                     schAppointmentScheduler.MinutesPerRow = 15;
                 }
             }
-            if (chkShowActive.Checked)
-                PhysicianList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
+            if (rdoInActiveProviders.Checked)
+            {
+                PhysicianList = UtilityManager.GetInActiveProviderList(cboFacilityName.SelectedItem.Text, ClientSession.LegalOrg, false);
+            }
             else
-                PhysicianList = UtilityManager.GetPhysicianList(facility_name, ClientSession.LegalOrg);
+            {
+                if (chkShowActive.Checked || rdoAllActiveProviders.Checked)
+                    PhysicianList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
+                else
+                {
+                    PhysicianList = UtilityManager.GetPhysicianList(facility_name, ClientSession.LegalOrg);
+                    var otherPhysicianList = UtilityManager.GetInActiveProviderList(facility_name, ClientSession.LegalOrg, true);
+                    foreach (var item in otherPhysicianList)
+                    {
+                        PhysicianList.Add(item);
+                    }
+                }
+            }
             chklstProviders.Items.Clear();
 
             if (PhysicianList != null)
@@ -4383,10 +4426,15 @@ namespace Acurus.Capella.UI
                             {
                                 List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
                                 machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhysicianList[i].PhyColor).ToList();
-                                if (machinetechnicians.Count > 0)
+                                var filterData = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
+                                if ((machinetechnicians?.Count ?? 0) > 0 && !filterData.Any(a => a.Value == machinetechnicians[0].machine_technician_library_id))
                                 {
                                     item.Text = machinetechnicians[0].machine_name + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
                                     item.Value = machinetechnicians[0].machine_technician_library_id;
+                                }
+                                else
+                                {
+                                    continue;
                                 }
                             }
                         }
