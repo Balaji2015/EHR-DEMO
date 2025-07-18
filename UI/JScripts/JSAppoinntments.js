@@ -892,6 +892,30 @@ function GetClientId(strid) {
 }
 
 function schAppointmentScheduler_TimeSlotClick(sender, args) {
+    var columnIndex = 0;
+    $('.rsContentTable tr').each(function (rowIndex) {
+        $(this).find('td').each(function (colIndex) {
+            if ($(this).hasClass('rsSelectedSlot')) {
+                columnIndex = colIndex;
+            }
+        });
+    });
+
+    var resources = sender.get_resources();
+    var res = resources.getResource(columnIndex);
+    var facility = '';
+    if (res != null && res != undefined && res._key) {
+        facility = res._key;
+    }
+    var status = '';
+    $('#ctl00_C5POBody_chklstProviders input[type="checkbox"]:checked').each(function () {
+        var checkbox = $(this);
+        var label = $("label[for='" + $(this).attr("id") + "']").text(); // Get label text
+        if (label == facility) {
+            status = checkbox.closest('span').attr('data-status');
+        }
+    });
+
     document.getElementById(GetClientId("hdnFindApptHumanID")).value = "";
     var screenname = document.getElementById(GetClientId("hdnSourceScreen")).value;
     if (screenname == "AppointmentFacility") {
@@ -909,7 +933,9 @@ function schAppointmentScheduler_TimeSlotClick(sender, args) {
         var Calendar = document.getElementById(GetClientId("Calendar1"));
         if (AppointmentPastDateValidation(document.getElementById(GetClientId("hdnSelectedDate"))) == false) {
             if (confirm("Do you want to create an appointment in the past?") == true) {
-                OpenFindPatient(TimeSlotFindPatientClick);//checked
+                if (status != 'N') {
+                    OpenFindPatient(TimeSlotFindPatientClick);//checked
+                }
                 return false;
             }
 
@@ -918,7 +944,9 @@ function schAppointmentScheduler_TimeSlotClick(sender, args) {
             }
         }
         else {
-            OpenFindPatient(TimeSlotFindPatientClick);//checked
+            if (status != 'N') {
+                OpenFindPatient(TimeSlotFindPatientClick);//checked
+            }
         }
     }
     else {
@@ -937,7 +965,9 @@ function schAppointmentScheduler_TimeSlotClick(sender, args) {
         var Calendar = document.getElementById(GetClientId("Calendar1"));
         if (AppointmentPastDateValidation(document.getElementById(GetClientId("hdnSelectedDate"))) == false) {
             if (confirm("Do you want to create an appointment in the past?") == true) {
-                OpenFindPatient(TimeSlotFindPatientClick);//checked
+                if (status != 'N') {
+                    OpenFindPatient(TimeSlotFindPatientClick);//checked
+                }
                 return false;
             }
             else {
@@ -945,7 +975,9 @@ function schAppointmentScheduler_TimeSlotClick(sender, args) {
             }
         }
         else {
-            OpenFindPatient(TimeSlotFindPatientClick);//checked
+            if (status != 'N') {
+                OpenFindPatient(TimeSlotFindPatientClick);//checked
+            }
             return false;
         }
         return false;
