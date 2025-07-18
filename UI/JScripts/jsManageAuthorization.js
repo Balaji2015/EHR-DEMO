@@ -1102,9 +1102,7 @@ function DateConvert(DOB) {
 function DatatimeConvert(utcDate) {
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    //CAP-3378
-    //var now = new Date(utcDate + ' UTC');
-    var now = new Date(utcDate.replace(' ', 'T') + 'Z');
+    var now = new Date(utcDate + ' UTC');
     var then = '';
     if (utcDate == '0001-01-01 00:00:00')
         then = '01-01-0001';
