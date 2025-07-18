@@ -318,7 +318,7 @@ function PrintTreatmentNote() {
     var processIFrameNotesElements = $(top.window.document).find('#ProcessiFrameNotes');
 
     if (processIFrameNotesElements?.length > 0 && processIFrameNotesElements[0].contentDocument?.location?.href != null && processIFrameNotesElements[0].contentDocument?.location?.href != undefined) {
-        processIFrameNotesElements[0].location.href = "frmWellnessNotes.aspx?SubMenuName=TREATMENT NOTES" + "&Menu=True";
+        processIFrameNotesElements[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=TREATMENT NOTES" + "&Menu=True";
     }
 
     $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Treatment Notes";
