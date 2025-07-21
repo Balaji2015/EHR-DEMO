@@ -710,7 +710,7 @@ function schAppointmentScheduler_TimeSlotContextMenu(sender, args) {
     });
 
     var menu = $find("ctl00_C5POBody_schAppointmentScheduler_RadSchedulerContextMenu0");
-    if (($('#ctl00_C5POBody_rdoInActivePhysicians').is(':checked') || $('#ctl00_C5POBody_rdoInActiveProviders').is(':checked')) && status == 'N') {
+    if (($('#ctl00_C5POBody_rdoInActivePhysicians').is(':checked') || $('#ctl00_C5POBody_rdoInActiveProviders').is(':checked'))) {
         menu.findItemByText("New Appointment").hide();
     } else {
         menu.findItemByText("New Appointment").show();
@@ -892,6 +892,11 @@ function GetClientId(strid) {
 }
 
 function schAppointmentScheduler_TimeSlotClick(sender, args) {
+    //Cap - 3268
+    if (($('#ctl00_C5POBody_rdoInActivePhysicians').is(':checked') || $('#ctl00_C5POBody_rdoInActiveProviders').is(':checked'))) {
+        return false;
+    } 
+
     var columnIndex = 0;
     $('.rsContentTable tr').each(function (rowIndex) {
         $(this).find('td').each(function (colIndex) {
