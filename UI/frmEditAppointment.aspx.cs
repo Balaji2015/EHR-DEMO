@@ -3281,6 +3281,15 @@ namespace Acurus.Capella.UI
             if (chkShowAllPhysicians.Checked == true)
             {
                 PhyList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(false, string.Empty);
+                //CAP-3499
+                if (PhyList != null)
+                {
+                    var otherPhysicianList = UtilityManager.GetInActiveProviderList("", ClientSession.LegalOrg, true);
+                    foreach (var physician in otherPhysicianList)
+                    {
+                        PhyList.Add(physician);
+                    }
+                }
             }
             else
             {
@@ -4182,6 +4191,15 @@ namespace Acurus.Capella.UI
             if (chkShowAllPhysicians.Checked == true)
             {
                 PhysicianList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
+                //CAP-3499
+                if (PhysicianList != null)
+                {
+                    var otherPhysicianList = UtilityManager.GetInActiveProviderList("", ClientSession.LegalOrg, true);
+                    foreach (var physician in otherPhysicianList)
+                    {
+                        PhysicianList.Add(physician);
+                    }
+                }
             }
             else
             {
@@ -7445,6 +7463,15 @@ namespace Acurus.Capella.UI
                 {
                     //Jira #CAP-168 - check the deactivate (selectedUsers) user count 
                     IList<PhysicianLibrary> PhysicianList = UtilityManager.GetPhysicianList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg);
+                    //CAP-3499
+                    if (PhysicianList != null)
+                    {
+                        var otherPhysicianList = UtilityManager.GetInActiveProviderList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg, true);
+                        foreach (var physician in otherPhysicianList)
+                        {
+                            PhysicianList.Add(physician);
+                        }
+                    }
                     var user = from u in PhysicianList where u.PhyId == ulMyPhysicianID select u.PhyId;
                     IList<ulong> selectedUsers = new List<ulong>();
                     selectedUsers = user.ToList<ulong>();
