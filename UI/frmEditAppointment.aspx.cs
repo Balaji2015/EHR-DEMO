@@ -3285,6 +3285,15 @@ namespace Acurus.Capella.UI
             else
             {
                 PhyList = UtilityManager.GetPhysicianList(cboFacility.Text.Trim().ToUpper(), ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(true, cboFacility.Text);
+                //CAP-3499
+                if (PhyList != null)
+                {
+                    var otherPhysicianList = UtilityManager.GetInActiveProviderList(cboFacility.Text.Trim(), ClientSession.LegalOrg, true);
+                    foreach (var physician in otherPhysicianList)
+                    {
+                        PhyList.Add(physician);
+                    }
+                }
             }
             ddlPhysicianName.Items.Clear();
 
@@ -4177,7 +4186,18 @@ namespace Acurus.Capella.UI
             else
             {
                 if (cboFacility.SelectedItem != null)
+                {
                     PhysicianList = UtilityManager.GetPhysicianList(cboFacility.SelectedItem.Text, ClientSession.LegalOrg);//PhyMngr.GetPhysicianListbyFacility(cboFacility.SelectedItem.Text, "Y");                
+                    //CAP-3499
+                    if (PhysicianList != null)
+                    {
+                        var otherPhysicianList = UtilityManager.GetInActiveProviderList(cboFacility.SelectedItem.Text.Trim(), ClientSession.LegalOrg, true);
+                        foreach (var physician in otherPhysicianList)
+                        {
+                            PhysicianList.Add(physician);
+                        }
+                    }
+                }
                 //if (PhysicianList != null)
                 //{
                 //if (cboFacility.Text.ToUpper() == System.Configuration.ConfigurationManager.AppSettings["CMGFacilityName"].ToString().ToUpper())//staticMngr.getStaticLookupByFieldName("CMG FACILITY NAME")[0].Value.ToUpper())
