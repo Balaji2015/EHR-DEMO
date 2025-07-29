@@ -4381,7 +4381,8 @@ namespace Acurus.Capella.UI
                         PhysicianManager physicianManager = new PhysicianManager();
                         var lstMatchingFacility = physicianManager.GetDefaultPhysicianByFacility(cboFacilityName.SelectedItem.Text.Trim());
                         matchingFacility = lstMatchingFacility.FirstOrDefault();
-                        sDefaultPhysicians = matchingFacility.defaultphysicianid;
+                        //CAP-3518
+                        sDefaultPhysicians = matchingFacility?.defaultphysicianid ?? "";
                     }
                 }
                 string[] lstDefaultPhysicians = sDefaultPhysicians.Split(',');
