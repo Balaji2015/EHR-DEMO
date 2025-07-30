@@ -51,24 +51,31 @@
             height: 20px;
             border-radius: 4px;
         }
-        .RadPicker{
-            padding-left:7px!important;
+
+        .RadPicker {
+            padding-left: 7px !important;
         }
-        #lblLabName{
-            padding-left:125px!important;
-        }       
-        #cboLabName{
+
+        #lblLabName {
+            padding-left: 125px !important;
+        }
+
+        #cboLabName {
             /*padding-left:70px!important;*/
         }
-        #cboErrorReason{
+
+        #cboErrorReason {
             /*padding-left:30px!important;*/
         }
-        #lblCategory{
-            padding-left:90px!important;
+
+        #lblCategory {
+            padding-left: 90px !important;
         }
-        #cboCategory{
+
+        #cboCategory {
             /*padding-left:20px!important;*/
         }
+
         .patient-search-container {
             display: flex;
             align-items: center;
@@ -99,70 +106,84 @@
             height: 24px;
             cursor: pointer;
         }
+
             .clear-icon.disabled {
                 opacity: 0.5;
                 pointer-events: none;
             }
+
         .ui-autocomplete {
             max-height: 200px;
             overflow-y: auto;
             overflow-x: hidden;
             z-index: 1000 !important;
-        }  table.dataTable thead>tr>th.sorting:before,table.dataTable thead>tr>th.sorting:after{
+        }
+
+        table.dataTable thead > tr > th.sorting:before, table.dataTable thead > tr > th.sorting:after {
             width: 0% !important;
         }
 
-table.dataTable > thead > tr > th,
-table.dataTable > thead > tr > td {
-    padding-right: 10px !important;
-    }
-.text-align-center{
-    text-align:center;
-}
-
-.word-break-all{
-    word-break: break-all;
-}
-.dataTables_empty {
-    display: none;
-}
-.dataTables_filter input {
-    width: 355px !important;
-}
-.dataTables_wrapper th {
-    padding: 8px !important;
-}
-.process-word-wrap {
-    word-wrap: break-word;
-}
-.searchicon {
-        background-image: url(../Resources/SearchIcon.png);
-    background-repeat: no-repeat;
-        padding-left: 26px !important;
-}.TableCellBorder {
-            border: 1px solid #9090904d;
- }
- .dataTables_scrollBody>table > thead > tr {
-     visibility: collapse;
- }
- table.dataTable tbody td {
-    font-weight: normal;
-}
-        
-        #EncounterTable thead {
-            visibility:collapse;
+        table.dataTable > thead > tr > th,
+        table.dataTable > thead > tr > td {
+            padding-right: 10px !important;
         }
-   .hide_column{
-    display:none;
-}
 
-   #OutstandingTable .dataTables_length,
-#OutstandingTable .dataTables_filter,
-#OutstandingTable .dataTables_info,
-#OutstandingTable .dataTables_paginate {
-    display: none !important;
-}
+        .text-align-center {
+            text-align: center;
+        }
 
+        .word-break-all {
+            word-break: break-all;
+        }
+
+        .dataTables_empty {
+            display: none;
+        }
+
+        .dataTables_filter input {
+            width: 355px !important;
+        }
+
+        .dataTables_wrapper th {
+            padding: 8px !important;
+        }
+
+        .process-word-wrap {
+            word-wrap: break-word;
+        }
+
+        .searchicon {
+            background-image: url(../Resources/SearchIcon.png);
+            background-repeat: no-repeat;
+            padding-left: 26px !important;
+        }
+
+        .TableCellBorder {
+            border: 1px solid #9090904d;
+        }
+
+        .dataTables_scrollBody > table > thead > tr {
+            visibility: collapse;
+        }
+
+        table.dataTable tbody td {
+            font-weight: normal;
+        }
+
+        #EncounterTable thead {
+            visibility: collapse;
+        }
+
+        .hide_column {
+            display: none;
+        }
+
+        #OutstandingTable .dataTables_length,
+        #OutstandingTable .dataTables_filter,
+        #OutstandingTable .dataTables_info,
+        #OutstandingTable .dataTables_paginate {
+            display: none !important;
+        }
     </style>
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />
@@ -504,6 +525,10 @@ table.dataTable > thead > tr > td {
                                             </asp:Panel>
                                         </td>
                                     </tr>--%>
+                                     </table>
+                                            </asp:Panel>
+                             </td>
+                        </tr>
                                     <tr>
                                         <td style="width: 100%;">
                                            <%-- <asp:ScriptManager ID="ScriptManager1" runat="server" />--%>
@@ -528,6 +553,13 @@ table.dataTable > thead > tr > td {
                                                                 alt="X"
                                                                 title="Click to clear the text field."
                                                                 class="clear-icon" disabled/>
+                                                          <%--  <telerik:RadButton ID="btnDemographics" runat="server"  AutoPostBack="false" EnableViewState="false"
+                                                                Text="Add or Modify" Width="100px" AccessKey="l" Style="position: static; height: 28px !important; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative; font-size: 13px !important;"
+                                                                OnClientClicked="btnDemographics_Clicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle">
+                                                            </telerik:RadButton>--%>
+                                                             
+                                                             <telerik:RadButton ID="btnDemographics" runat="server" AutoPostBack="false" Text="Add / Modify Patient" Width="135px" Style="position: static; height: 30px !important; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;"
+                            OnClientClicking="btnDemographics_Clicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle" Font-Size="13px"></telerik:RadButton>
                                                         </div>
                                                     </asp:Panel>
                                               
@@ -556,7 +588,9 @@ table.dataTable > thead > tr > td {
                                               </div>
                                                 </div>
                                 </asp:Panel>
-                                                            </td></tr>
+                                                            </td>
+
+                                    </tr>
                                                        <%-- <td valign="top" style="width: 100%; height: 200px">
                                                             <telerik:RadGrid ID="grdOutstandingOrders" runat="server" Height="200px" AutoGenerateColumns="False"
                                                                 CellSpacing="0" Width="1150px" CssClass="Gridbodystyle">
@@ -597,16 +631,16 @@ table.dataTable > thead > tr > td {
                                                                 </MasterTableView>
                                                             </telerik:RadGrid>
                                                             <grid></grid>--%>
-                                                        </td>
+                                                       <%-- </td>
                                                     </tr>
                                                 </table>
-                                            </asp:Panel>
+                                            </asp:Panel>--%>
                                         <%--</td>
                                     </tr>
                                 </table>
                             </asp:Panel>--%>
-                        </td>
-                    </tr>
+                       <%-- </td>
+                    </tr>--%>
                     <tr>
                         <td style="width: 100%">
                             <table style="width: 100%; height: 30px">

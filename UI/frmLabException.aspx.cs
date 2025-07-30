@@ -1258,7 +1258,30 @@ namespace Acurus.Capella.UI
             }
             return JsonConvert.SerializeObject(PhyUserList);
         }
+        //CAP-3362
+        [System.Web.Script.Services.ScriptMethod()]
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static string GenerateHumanDetails(string HumanID)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
 
+            OrdersManager orderProxy = new OrdersManager();
+            IList<Orders> listOrders = orderProxy.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "RESULT_PROCESS", Convert.ToUInt64(HumanID));           
+
+            HumanManager HumanMngr = new HumanManager();
+            Human objhm = HumanMngr.GetHumanFromHumanID(Convert.ToUInt32(HumanID));
+            string sPatientname = (objhm.Last_Name + "," + objhm.First_Name + " " + objhm.MI + " | DOB: " + objhm.Date_Of_Death.ToString("dd-MMM-yyyy") + " | " + objhm.Sex + " | ACC#: " + objhm.Id.ToString() + " | EX.ACC#: " + objhm.Patient_Account_External.ToString() + " | ADDR: " + objhm.Street_Address1.ToString() + " | Ph: " + objhm.Home_Phone_No.ToString() + " | PATIENT TYPE: " + objhm.Human_Type.ToString());
+
+            var result = new { HumanDetails = sPatientname, listOrders = listOrders };
+            
+            return JsonConvert.SerializeObject(result);
+        }
 
     }
 }

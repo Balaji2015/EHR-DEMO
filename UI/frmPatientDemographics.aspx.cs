@@ -504,7 +504,8 @@ namespace Acurus.Capella.UI
             Session["WFObjIDNotStarted"] = "0";
             Session["CompAmt"] = "0";
             //Added by priyangha 
-            if (Request["HumanId"] != null && Request["HumanId"].ToString() != "undefined" && System.Text.RegularExpressions.Regex.IsMatch(Request["HumanId"], "^[0-9]*$") == true)
+            //CAP-3362
+            if (Request["HumanId"] != null && Request["HumanId"].ToString() != "undefined" && Request["HumanId"] != "" && System.Text.RegularExpressions.Regex.IsMatch(Request["HumanId"], "^[0-9]*$") == true)
             {
                 ClientSession.HumanId = Convert.ToUInt64(Request["HumanId"]);
             }
@@ -1544,12 +1545,16 @@ namespace Acurus.Capella.UI
                 Session["HumanID"] = txtAccountNo.Text;
 
                 if (Request["Functionality"] == null)
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Patient Demographics", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}GetAddPatientGuarantor('" + YesNoMessage + "');DisplayErrorMessage('420020');", true);
+                {
+                    //CAP-3362
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Patient Demographics", "GetHumanId('" + objHuman.Id + "');  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}GetAddPatientGuarantor('" + YesNoMessage + "');DisplayErrorMessage('420020');", true);
+                }
                 else
                 {
                     string sHuman = JsonConvert.SerializeObject(objHuman);
                     sHuman = sHuman.Replace("'", "&apos");
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Patient Demographics", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}GetAddPatientGuarantor('" + YesNoMessage + "','" + sHuman + "');DisplayErrorMessage('420020');", true);
+                    //CAP - 3362
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Patient Demographics", "GetHumanId('" + objHuman.Id + "');  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}GetAddPatientGuarantor('" + YesNoMessage + "','" + sHuman + "');DisplayErrorMessage('420020');", true);
                 }
 
                 DisablePatientDetails();

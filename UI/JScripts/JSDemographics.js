@@ -3849,3 +3849,6 @@ function EditProviderDetails() {
 
 
 }
+function GetHumanId(e) {    
+    sessionStorage.setItem("HumanId", e);
+}

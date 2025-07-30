@@ -57,15 +57,15 @@ obj.push("Result_Master_ID="+iResultMasterID);
         $find('txtGender').set_value(txtGen);
     }
 }
-function OnClientCloseOrderManagement(oWindow, args) {
-    var arg = args.get_argument();
-    if (arg) {
-        document.getElementById(GetClientId("hdnHumanID")).value = arg.HumanId;
-        document.getElementById('InvisibleButton').click();
+//function OnClientCloseOrderManagement(oWindow, args) {
+//    var arg = args.get_argument();
+//    if (arg) {
+//        document.getElementById(GetClientId("hdnHumanID")).value = arg.HumanId;
+//        document.getElementById('InvisibleButton').click();
 
-    }
+//    }
 
-}
+//}
 function GetRadWindow() {
     var oWindow = null;
     if (window.radWindow) oWindow = window.radWindow;
@@ -761,6 +761,8 @@ function setpatientsearch(sAutosearch) {
     }
 }
 function FindPatientenabled(val, sPatientname) {
+    debugger;
+    $find('btnDemographics').set_enabled(true);
     var txtPatientSearch = document.getElementById('txtPatientSearch');
     debugger;
     if (val == "True") {
@@ -769,6 +771,7 @@ function FindPatientenabled(val, sPatientname) {
         $("#imgClearPatientText").addClass("disabled");
         txtPatientSearch.value = sPatientname;
         txtPatientSearch.attributes['data-human-id'].value = sPatientname;
+        document.getElementById('hdnHumanID').value = HumanId;
         sessionStorage.setItem("valuepatientsearch", sPatientname);
         sessionStorage.setItem("labelpatientsearch", sPatientname);
     }
@@ -792,6 +795,7 @@ function FindPatientenabled(val, sPatientname) {
         sessionStorage.setItem("labelpatientsearch", "");
         txtPatientSearch.value = sPatientname;
         txtPatientSearch.attributes['data-human-id'].value = sPatientname;
+        document.getElementById('hdnHumanID').value = HumanId;
     }
 
 }
@@ -1557,4 +1561,178 @@ function DOBConvert(DOB) {
     if (SplitDOB[1].substring(0, 1) == "0")
         SplitDOB[1] = SplitDOB[1].slice(-1);
     return SplitDOB[2] + "-" + monthNames[parseInt(SplitDOB[1]) - 1] + "-" + SplitDOB[0];
+}
+function btnDemographics_Clicked(sender, args) {
+    debugger;
+    var Humanid = '';
+    var txtPatientSearch = document.getElementById('txtPatientSearch');
+    if (txtPatientSearch.value != '') {
+        Humanid = document.getElementById('hdnHumanID').value;
+    }
+    var obj = new Array();
+    obj.push("HumanId=" + Humanid);
+    obj.push("ScreenName=Demographics");
+    var result = openModal("frmPatientDemographics.aspx", 1230, 1182, obj, 'DemographicsModalWindow');
+    var winObj = $find('DemographicsModalWindow');
+    winObj.add_close(OnClientCloseOrderManagement);
+
+}
+function OnClientCloseOrderManagement(oWindow, args) {
+    debugger;
+    //var vHumanID = '895225';
+    var vHumanID = '';
+    var arg = args.get_argument();
+
+    if (arg != null) {
+        document.getElementById(GetClientId("hdnHumanID")).value = arg.HumanID;
+        vHumanID = arg.HumanID.toString();
+    }
+    else {
+        if (sessionStorage.getItem("HumanId") != null && sessionStorage.getItem("HumanId") != undefined) {
+            document.getElementById(GetClientId("hdnHumanID")).value = sessionStorage.getItem("HumanId");
+            vHumanID = sessionStorage.getItem("HumanId").toString();
+        }
+    }
+
+    var txtPatientSearch = document.getElementById('txtPatientSearch');
+    debugger;
+
+    var WSData = {
+        HumanID: vHumanID,
+    }
+    if (vHumanID != '' && vHumanID != undefined) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "./frmLabException.aspx/GenerateHumanDetails",
+            data: JSON.stringify(WSData),
+            dataType: "json",
+            success: function (data) {
+                debugger
+                var SelectedPatient = JSON.parse(data.d);
+                var HumanDetails = SelectedPatient.HumanDetails;
+                var txtPatientSearch = document.getElementById('txtPatientSearch');
+                txtPatientSearch.value = SelectedPatient.HumanDetails;
+                txtPatientSearch.attributes['data-human-details'].value = JSON.stringify(HumanDetails);
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                $(document).off("click", PreventTyping).off("keydown", PreventTyping).css('cursor', 'default');
+                sessionStorage.setItem("valuepatientsearch", SelectedPatient.HumanDetails);
+                sessionStorage.setItem("labelpatientsearch", SelectedPatient.HumanDetails);
+                //document.getElementById('InvisibleButton').click();
+
+                {
+                    //var objdata = JSON.parse(json.d);
+
+
+                    const dataval = SelectedPatient.listOrders;
+
+
+                    const grouped = {};
+
+                    dataval.forEach(item => {
+                        const key = `${item.Order_Submit_ID}`;
+                        if (!grouped[key]) {
+                            grouped[key] = {
+                                Order_Submit_ID: item.Order_Submit_ID,
+                                Created_Date_And_Time: item.Created_Date_And_Time,
+                                Internal_Property_Lab_Name: item.Internal_Property_Lab_Name,
+                                Lab_Procedure: []
+                            };
+                        }
+                        grouped[key].Lab_Procedure.push(item.Lab_Procedure + "-" + item.Lab_Procedure_Description);
+                    });
+
+                    const result = Object.values(grouped).map(item => ({
+                        ...item,
+                        Lab_Procedure: item.Lab_Procedure.join('; ')
+                    })).sort((a, b) => b.Order_Submit_ID - a.Order_Submit_ID);
+
+                    $("#OutstandingOrders").empty();
+                    $("#OutstandingOrders").append(`
+                            <table id=OutstandingTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
+                            <thead class='header' style='border: 1px;width:96.7%;'>
+                            <tr class='header' >
+                            <th style='border: 1px solid #909090;text-align: center;width:8%'>Order#</th>
+                            <th style='border: 1px solid #909090;text-align: center;width:70%'>Order Description(Procedures)</th>
+                            <th style='border: 1px solid #909090;text-align: center;width:6%'>Order Date</th>
+                            <th style='border: 1px solid #909090;text-align: center;width:6%'>Lab Name</th>
+                            <th style='border: 1px solid #909090; display: none;'>Order_Submit_ID</th>
+                            </tr>
+                            </thead>
+                            </table>`);
+                    $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+                        $('#OutstandingTable').DataTable().columns.adjust();
+                    });
+
+                    var dataTable = new DataTable('#OutstandingTable', {
+                        data: [],
+                        serverSide: false,
+                        lengthChange: false,
+                        processing: false,
+                        ordering: true,
+                        scrollCollapse: false,
+                        scrollY: '145px',
+                        autoWidth: false,
+                        paging: false,
+                        searching: false,
+                        info: false,
+                        dom: 'lrt',
+                        order: [],
+
+                        data: result,//objdata[0].OrdersList,                               
+
+                        columns: [
+
+                            {
+                                data: 'Order_Submit_ID', render: function (data, type, row) {
+                                    return "ACUR" + row.Order_Submit_ID;
+                                },
+                                sClass: 'TableCellBorder word-break-all', sWidth: '8%'
+                            },
+                            { data: 'Lab_Procedure', sClass: 'TableCellBorder word-break-all', sWidth: '70%' },
+
+                            {
+                                data: 'Created_Date_And_Time', render: function (data, type, row) {
+                                    if (row.Created_Date_And_Time == "0001-01-01T00:00:00")
+                                        return "";
+                                    else
+                                        return DOBConvert(row.Created_Date_And_Time.replace("T", " ").split(' ')[0]);
+                                }, sClass: 'TableCellBorder', searchable: false, sWidth: '6% !important',
+                                type: 'date'
+                            },
+
+                            { data: 'Internal_Property_Lab_Name', sClass: 'TableCellBorder', searchable: false, sWidth: '6% !important' },
+
+                            { data: 'Order_Submit_ID', sClass: "hide_column", searchable: false },
+
+                        ],
+
+                    })
+
+
+                    $('#OutstandingTable tbody').on('click', 'tr', function () {
+                        $('#OutstandingTable tr').removeClass("odd");
+                        $('#OutstandingTable tr').removeClass("even");
+                        dataTable.$('tr.highlight').removeClass('highlight');
+                        $(this)[0].classList.add('highlight');
+
+                        document.getElementById('chkNoOrders').checked = false;
+
+                        var data = dataTable.row($(this)).data();
+                        if (data.Order_Submit_ID != 0) {
+                            GridOutstandingSelect = false;
+                            OrderSubmitID = data.Order_Submit_ID;
+                        } else {
+                            GridOutstandingSelect = true;
+                        }
+
+                    });
+
+                    document.getElementById("chkUnmatchedProvider").enabled = false;
+
+                }
+
+            }
+        });
+    }
 }
