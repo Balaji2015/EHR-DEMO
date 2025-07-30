@@ -265,10 +265,11 @@
                                         <tr style="width: 100%">
                                             <td style="width: 95%"></td>                                            
                                             <td style="width: 2%;text-align:right;">
+                                                <%--CAP-3474: Removing the fixed width attribute to adjust the button to auto for better text visibility--%>
                                                 <telerik:RadButton ID="btnAdd" runat="server" ToolTip="Add" ButtonType="LinkButton" CssClass="greenbutton"
                                                     OnClientClicked="btnAdd_Clicked" OnClick="btnAdd_Click"
-                                                    Style="text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px;"
-                                                    Width="58px">
+                                                    Style="text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; width: auto !important;">
+
                                                     <ContentTemplate>
                                                         <span id="SpanAdd" runat="server"  class="underline">A</span><span id="SpanAdditionalword" runat="server">dd</span>
                                                     </ContentTemplate>

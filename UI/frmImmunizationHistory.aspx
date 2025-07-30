@@ -332,7 +332,7 @@
                                             <td align="right">
                                                 <%--//cap-632 : Design Changes--%>
                                                 <telerik:RadButton ID="btnSave" runat="server" OnClick="btnSave_Click" OnClientClicked="saveEnabled" 
-                                                    Text="Add"  AccessKey="A" CssClass="greenbutton teleriknormalbuttonstyle" Style="margin-left: 0px; top: -48px; left: 0px; position: static; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative; height: 29px !important; font-size: 13px !important; width: 58px;" ButtonType="LinkButton" >
+                                                    Text="Add"  AccessKey="A" CssClass="greenbutton teleriknormalbuttonstyle" Style="margin-left: 0px; top: -48px; left: 0px; position: static; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative; height: 29px !important; font-size: 13px !important; width: auto !important;" ButtonType="LinkButton" >
                                                         <ContentTemplate>
                                                         <span id="SpanAdd" runat="server">A</span><span id="SpanAdditionalword" runat="server" class="changebuttoncolor">dd</span>
                                                     </ContentTemplate>

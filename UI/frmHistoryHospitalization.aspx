@@ -277,7 +277,7 @@
                                                                         <td align="right" style="width: 75%">
                                                                             <telerik:RadButton ID="btnAdd" runat="server" Text="Add"
                                                                                 OnClick="btnAdd_Click" OnClientClicked="btnAdd_Clicked" AccessKey="A"
-                                                                                Style=" text-align: center; position: static; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative; Width:50px; height:26px !important; padding: 4px 12px !important; font-size: 13px !important;"  ButtonType="LinkButton" CssClass="greenbutton teleriknormalbuttonstyle" >
+                                                                                Style=" text-align: center; position: static; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative; Width: auto !important; height:26px !important; padding: 4px 12px !important; font-size: 13px !important;"  ButtonType="LinkButton" CssClass="greenbutton teleriknormalbuttonstyle" >
                                                                                
                                                                                 <ContentTemplate>
                                                                                     <span id="SpanAdd" runat="server" >A</span><span id="SpanAdditionalword" runat="server">dd</span>
