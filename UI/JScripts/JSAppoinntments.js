@@ -860,7 +860,12 @@ function schAppointmentScheduler_AppointmentContextMenu(sender, args) {
         menu.findItemByText("Open Patient Chart").hide();
     }
     if (Appointment._description == "CHECK_OUT_COMPLETE" || Appointment._description == "CHECK_OUT") {
+        //CAP-3515
+        if ($('#ctl00_C5POBody_rdoInActivePhysicians').is(':checked') || $('#ctl00_C5POBody_rdoInActiveProviders').is(':checked')) {
+            menu.findItemByText("New Appointment").hide();
+        } else {
         menu.findItemByText("New Appointment").show();
+        }
         menu.findItemByText("Edit Appointment").hide();
         menu.findItemByText("View Appointment").show();
         menu.findItemByText("Check In").hide();

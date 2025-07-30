@@ -649,7 +649,8 @@ namespace Acurus.Capella.UI
             {
                 cboFacilityName.Enabled = false;
                 chklstProviders.Enabled = false;
-                chkShowActive.Enabled = false;
+                //CAP-3491
+                //chkShowActive.Enabled = false;
             }
             schAppointmentScheduler.EnableAjaxSkinRendering = true;
             //OverAllPageLoad.Stop();
@@ -664,31 +665,37 @@ namespace Acurus.Capella.UI
                 rdoInActiveProviders.Checked = false;
                 rdoActiveProviders.Checked = true;
             }
+            //CAP-3491
+            if (rdoInActivePhysicians.Checked)
+            {
+                chkShowActive.Checked = true;
+            }
             #region New Code
             //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
             //{
             //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
             //}
-            if (ApplicationObject.facilityLibraryList != null && cboFacilityName.SelectedItem != null)
-            {
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
-                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                if (cboFacilityName.SelectedItem != null)
-                {
-                    //if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
-                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
-                    {
-                        chkShowActive.Enabled = true;
-                    }
-                    else
-                    {
-                        chkShowActive.Enabled = false;
-                    }
-                }
+            //CAP-3491
+            //if (ApplicationObject.facilityLibraryList != null && cboFacilityName.SelectedItem != null)
+            //{
+            //    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
+            //    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+            //    if (cboFacilityName.SelectedItem != null)
+            //    {
+            //        //if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
+            //        if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+            //        {
+            //            chkShowActive.Enabled = true;
+            //        }
+            //        else
+            //        {
+            //            chkShowActive.Enabled = false;
+            //        }
+            //    }
 
-                else
-                    chkShowActive.Enabled = true;
-            }
+            //    else
+            //        chkShowActive.Enabled = true;
+            //}
             if (hdnSourceScreen.Value == "AppointmentFacility" || ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
                 FillCheckListBoxForPhysicianSetUp(hdnApptFacName.Value, true);
             else
@@ -1365,13 +1372,14 @@ namespace Acurus.Capella.UI
                     //FacList = ApplicationObject.facilityLibraryList;
                     //CAP-3268
                     PhysicianManager physicianManager = new PhysicianManager();
-                    var lstMappedFacility = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(hdnApptPhyId.Value));
+                    //CAP-3493
+                    var lstMappedFacility = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(string.IsNullOrEmpty(hdnApptPhyId.Value) ? "0" : hdnApptPhyId.Value));
                     var lstFacilityNames = lstMappedFacility.Select(a => a.Facility_Name).ToList();
 
                     var fac = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg && lstFacilityNames.Contains(f.Fac_Name) select f;
                     FacList = fac.ToList<FacilityLibrary>();
-
-                    if (FacList != null)
+                    //CAP-3493
+                    if (FacList != null && FacList.Count > 0)
                     {
                         if (FacList[0].Start_Time != string.Empty)
                             dtStart = Convert.ToDateTime(FacList[0].Start_Time);
@@ -1423,7 +1431,16 @@ namespace Acurus.Capella.UI
                 {
                     IList<MapFacilityPhysician> FacList = new List<MapFacilityPhysician>();
                     if (cboFacilityName.SelectedItem != null)
-                        FacList = UtilityManager.GetFacilityListMappedToPhysician(cboFacilityName.SelectedItem.Value);
+                    {
+                        //CAP-3491
+                        //FacList = UtilityManager.GetFacilityListMappedToPhysician(cboFacilityName.SelectedItem.Value);
+                        PhysicianManager physicianManager = new PhysicianManager();
+                        FacList = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(string.IsNullOrEmpty(hdnApptPhyId.Value) ? "0" : hdnApptPhyId.Value));
+                        if(FacList != null && FacList.Count > 0)
+                        {
+                            FacList = FacList.Where(a => a.Status == "Y").ToList();
+                        }
+                    }
 
                     List<System.Web.UI.WebControls.ListItem> selected = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).ToList();
                     chklstProviders.Items.Clear();
@@ -2281,12 +2298,13 @@ namespace Acurus.Capella.UI
             
             if (rdoInActivePhysicians.Checked)
             {
-                chkShowActive.Enabled = true;
                 chkShowActive.Checked = true;
             }
             else
             {
-                chkShowActive.Enabled = false;
+                //CAP-3491
+                //chkShowActive.Enabled = false;
+                chkShowActive.Checked = false;
             }
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
@@ -3125,7 +3143,8 @@ namespace Acurus.Capella.UI
 
                 if (System.Text.RegularExpressions.Regex.IsMatch(hdnApptPhyId.Value, "^[0-9]*$") == true)
                 {
-                    PhyIDList.Add(Convert.ToUInt64(hdnApptPhyId.Value));
+                    //CAP-3493
+                    PhyIDList.Add(Convert.ToUInt64(string.IsNullOrEmpty(hdnApptPhyId.Value) ? "0" : hdnApptPhyId.Value));
                 }
                 facilityList = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList<string>();
                 string time_taken = "";
@@ -4185,6 +4204,11 @@ namespace Acurus.Capella.UI
                 //facList = UtilityManager.GetFacilityListMappedToPhysician(hdnApptPhyId.Value.ToString());
                 PhysicianManager physicianManager = new PhysicianManager();
                 facList = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(hdnApptPhyId.Value));
+                //CAP-3491
+                if (facList != null && facList.Count > 0 && chkShowActive.Checked == false)
+                {
+                    facList = facList.Where(a => a.Status == "Y").ToList();
+            }
             }
             //IList<FacilityLibrary> facilityList = ApplicationObject.facilityLibraryList;
             var faclist = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
@@ -4203,7 +4227,8 @@ namespace Acurus.Capella.UI
                 var fac = from f in facilityList where f.Fac_Name == facList[0].Facility_Name select f;
                 TempFac = fac.ToList<FacilityLibrary>();
                 schAppointmentScheduler.Visible = true;
-                chkShowActive.Checked = false;
+                //CAP-3491
+                //chkShowActive.Checked = false;
             }
 
             DateTime dtStart = new DateTime();
@@ -4249,16 +4274,13 @@ namespace Acurus.Capella.UI
             {
                 //facList = UtilityManager.GetFacilityListMappedToPhysician(hdnApptPhyId.Value);
                 PhysicianManager physicianManager = new PhysicianManager();
-                facList = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(hdnApptPhyId.Value));
-                for (int i = 0; i < facilityList.Count; i++)
+                //CAP-3493
+                facList = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(string.IsNullOrEmpty(hdnApptPhyId.Value) ? "0" : hdnApptPhyId.Value));
+                for (int i = 0; i < facList.Count; i++)
                 {
                     System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
-                    item.Text = facilityList[i].Fac_Name;
-                    var filteredFac = facList.FirstOrDefault(a => a.Facility_Name == facilityList[i].Fac_Name);
-                    if (filteredFac != null)
-                    {
-                        item.Attributes["data-status"] = filteredFac.Status;
-                    }
+                    item.Text = facList[i].Facility_Name;
+                    item.Attributes["data-status"] = facList[i].Status;
                     //item.Value = facList.Any(fac => fac.Facility_Name.ToUpper().Trim() == facilityList[i].Fac_Name.ToUpper().Trim()) ? hdnApptPhyId.Value : (0).ToString();
                     chklstProviders.Items.Add(item);
                     if (bSelectDefault)
@@ -4359,7 +4381,8 @@ namespace Acurus.Capella.UI
                         PhysicianManager physicianManager = new PhysicianManager();
                         var lstMatchingFacility = physicianManager.GetDefaultPhysicianByFacility(cboFacilityName.SelectedItem.Text.Trim());
                         matchingFacility = lstMatchingFacility.FirstOrDefault();
-                        sDefaultPhysicians = matchingFacility.defaultphysicianid;
+                        //CAP-3518
+                        sDefaultPhysicians = matchingFacility?.defaultphysicianid ?? "";
                     }
                 }
                 string[] lstDefaultPhysicians = sDefaultPhysicians.Split(',');
