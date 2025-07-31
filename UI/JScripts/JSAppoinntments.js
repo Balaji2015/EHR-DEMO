@@ -1234,7 +1234,13 @@ function schAppoinmentScheduler_DoubleClick(sender, args) {
 }
 function CloseAppointmentModal() {
     //Jira CAP-1217
-    $(top.window.document).find("#ctl00_C5POBody_btnRefresh")[0].click();
+    //Jira - Cap - 3841 - Else add for this ticket
+    if ($(top.window.document).find("#ctl00_C5POBody_btnRefresh")[0] != undefined && $(top.window.document).find("#ctl00_C5POBody_btnRefresh")[0] != null) {
+        $(top.window.document).find("#ctl00_C5POBody_btnRefresh")[0].click();
+    } else {
+        $("#ctl00_C5POBody_btnRefresh").trigger('click');
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    }    
     self.close();
 }
 function AppmntLoad() {
