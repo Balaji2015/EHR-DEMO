@@ -2158,14 +2158,22 @@ namespace Acurus.Capella.UI
         protected void btnPhysiciancalenderFacility_Click(object sender, EventArgs e)
         {
             IList<ulong> PhyIDList = new List<ulong>();
-            for (int k = 0; k < chklstProviders.Items.Count; k++)
+            //CAP-3493
+            if (chklstProviders.Items.Count > 0)
             {
-                if (chklstProviders.Items[k].Selected == true)
+                for (int k = 0; k < chklstProviders.Items.Count; k++)
                 {
-                    PhyIDList.Add(Convert.ToUInt64(chklstProviders.Items[k].Value));
-                    //Added by bala for Appointment facility base screen
-                    hdnApptPhyId.Value = chklstProviders.Items[k].Value;
+                    if (chklstProviders.Items[k].Selected == true)
+                    {
+                        PhyIDList.Add(Convert.ToUInt64(chklstProviders.Items[k].Value));
+                        //Added by bala for Appointment facility base screen
+                        hdnApptPhyId.Value = chklstProviders.Items[k].Value;
+                    }
                 }
+            }
+            else
+            {
+                hdnApptPhyId.Value = "0";
             }
             hdnSourceScreen.Value = "AppointmentFacility";
             hdnApptFacName.Value = cboFacilityName.SelectedItem.Text.Replace("#", "_");
