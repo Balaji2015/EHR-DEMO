@@ -24,6 +24,9 @@ namespace Acurus.Capella.UI.WebServices.API
         [HttpGet]
         public IHttpActionResult LoadCapellaHistoryData(string sHumanID, string sCategory = "", bool bIsForce = false)
         {
+            HumanManager humanManager = new HumanManager();
+            Human objHuman = new Human();
+            string sAuthorizedLegalOrg = ConfigurationSettings.AppSettings["LegalOrgForHydration"]?.ToString() ?? "";
             CDC_Audit_LogManager cDC_Audit_LogManager = new CDC_Audit_LogManager();
             IList<CDC_Audit_Log> ilstCDC_Audit_Log = new List<CDC_Audit_Log>();
             ilstCDC_Audit_Log.Add(new CDC_Audit_Log());
@@ -44,8 +47,9 @@ namespace Acurus.Capella.UI.WebServices.API
                     cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { status = "Unauthorized", ErrorDescription = "The remote server returned an error: (403) Forbidden." });
                 }
-
-                if (sHumanID == "")
+                //Jira CAP-3519
+                //if (sHumanID == "")
+                if (sHumanID == "" || sHumanID == "0")
                 {
                     ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", status = ""ValidationError"", ErrorDescription = ""HumanID is not valid. Cannot load Capella history data.""";
                     ilstCDC_Audit_Log[0].Modified_By = "Acurus";
@@ -61,6 +65,16 @@ namespace Acurus.Capella.UI.WebServices.API
                     ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
                     cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Category is not valid. Cannot load Capella history data." });
+                }
+                //Jira CAP-3519
+                objHuman = humanManager.GetHumanFromHumanID(Convert.ToUInt64(sHumanID));
+                if (!(sAuthorizedLegalOrg.Split(',')).Contains(objHuman.Legal_Org))
+                {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", status = ""ValidationError"", ErrorDescription = ""This patient is not part of " + sAuthorizedLegalOrg + @" Legal Org. Cannot load Capella history data.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
+                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "This patient is not part of " + sAuthorizedLegalOrg + " Legal Org. Cannot load Capella history data." });
                 }
                 //CAP-3112
                 //if (!CapellaTaskManager.TryStartTask(sHumanID, ""))
@@ -274,6 +288,10 @@ namespace Acurus.Capella.UI.WebServices.API
         [HttpGet]
         public IHttpActionResult LoadProgressNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
         {
+            HumanManager humanManager = new HumanManager();
+            Human objHuman = new Human();
+            string sAuthorizedLegalOrg = ConfigurationSettings.AppSettings["LegalOrgForHydration"]?.ToString() ?? "";
+
             CDC_Audit_LogManager cDC_Audit_LogManager = new CDC_Audit_LogManager();
             IList<CDC_Audit_Log> ilstCDC_Audit_Log = new List<CDC_Audit_Log>();
             ilstCDC_Audit_Log.Add(new CDC_Audit_Log());
@@ -304,7 +322,24 @@ namespace Acurus.Capella.UI.WebServices.API
                     cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "EncounterID is not valid. Cannot generate progress note." });
                 }
-
+                //Jira CAP-3519
+                if (sHumanID == "" || sHumanID == "0")
+                {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", EncounterID = " + sEncounterID + @", status = ""ValidationError"", ErrorDescription = ""HumanID is not valid. Cannot generate progress note.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
+                    return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "HumanID is not valid. Cannot generate progress note." });
+                }
+                objHuman = humanManager.GetHumanFromHumanID(Convert.ToUInt64(sHumanID));
+                if (!(sAuthorizedLegalOrg.Split(',')).Contains(objHuman.Legal_Org))
+                {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", status = ""ValidationError"", ErrorDescription = ""This patient is not part of " + sAuthorizedLegalOrg + @" Legal Org. Cannot generate progress note.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
+                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "This patient is not part of " + sAuthorizedLegalOrg + " Legal Org. Cannot generate progress note." });
+                }
                 //CAP-3112
                 //if (!CapellaTaskManager.TryStartTask("", sEncounterID))
                 //{
