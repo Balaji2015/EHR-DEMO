@@ -10597,10 +10597,10 @@ from charge_line_item cl LEFT JOIN charge_header c  on (cl.Charge_Header_ID =c.C
 	</sql-query>
 
 
-	<sql-query name="Get.HumanCurrentProcess">
-		<!--<![CDATA[select w.WF_Object_Id, w.Obj_System_Id, w.Obj_Type, w.Obj_Sub_Type, w.Facility_Name, w.Current_Process, cast(w.Current_Arrival_Time as CHAR(100)), w.Current_Owner, w.Priority, w.Parent_Obj_Type, w.Parent_Obj_System_Id, w.Process_Allocation, w.Version, w.Doc_Type, w.Doc_Sub_Type, e.encounter_id from wf_object w
+	<!--<sql-query name="Get.HumanCurrentProcess">
+		--><!--<![CDATA[select w.WF_Object_Id, w.Obj_System_Id, w.Obj_Type, w.Obj_Sub_Type, w.Facility_Name, w.Current_Process, cast(w.Current_Arrival_Time as CHAR(100)), w.Current_Owner, w.Priority, w.Parent_Obj_Type, w.Parent_Obj_System_Id, w.Process_Allocation, w.Version, w.Doc_Type, w.Doc_Sub_Type, e.encounter_id from wf_object w
 inner join encounter e on e.encounter_id=w.obj_system_id
-where e.human_id=? and w.obj_type in(:ObjType);]]>-->
+where e.human_id=? and w.obj_type in(:ObjType);]]>--><!--
 		<![CDATA[select w.WF_Object_Id, w.Obj_System_Id, w.Obj_Type, w.Obj_Sub_Type, w.Facility_Name, w.Current_Process,
 cast(w.Current_Arrival_Time as CHAR(100)), w.Current_Owner, w.Priority, w.Parent_Obj_Type, w.Parent_Obj_System_Id,
 w.Process_Allocation, w.Version, w.Doc_Type, w.Doc_Sub_Type, e.encounter_id,cast(e.Appointment_Date as CHAR(100)),
@@ -10612,6 +10612,24 @@ select w.WF_Object_Id, w.Obj_System_Id, w.Obj_Type, w.Obj_Sub_Type, w.Facility_N
 cast(w.Current_Arrival_Time as CHAR(100)), w.Current_Owner, w.Priority, w.Parent_Obj_Type, w.Parent_Obj_System_Id,
 w.Process_Allocation, w.Version, w.Doc_Type, w.Doc_Sub_Type, e.encounter_id,cast(e.Appointment_Date as CHAR(100)),
 cast(e.Date_of_service as CHAR(100)),u.Person_Name,(select u1.person_name from user u1 where u1.physician_library_id=e.Encounter_Provider_ID and u1.physician_library_id<>0),e.Assigned_Med_Asst_User_Name,e.Batch_Status from wf_object_arc w
+inner join encounter_arc e on e.encounter_id=w.obj_system_id inner join user u on u.physician_library_id=e.Appointment_Provider_ID
+where e.human_id= :HumanID and w.obj_type in(:ObjType) and w.Current_Process not like '%DELETE%'  group by w.wf_object_id;]]>
+	</sql-query>-->
+	<sql-query name="Get.HumanCurrentProcess">
+		<!--<![CDATA[select w.WF_Object_Id, w.Obj_System_Id, w.Obj_Type, w.Obj_Sub_Type, w.Facility_Name, w.Current_Process, cast(w.Current_Arrival_Time as CHAR(100)), w.Current_Owner, w.Priority, w.Parent_Obj_Type, w.Parent_Obj_System_Id, w.Process_Allocation, w.Version, w.Doc_Type, w.Doc_Sub_Type, e.encounter_id from wf_object w
+inner join encounter e on e.encounter_id=w.obj_system_id
+where e.human_id=? and w.obj_type in(:ObjType);]]>-->
+		<![CDATA[select w.WF_Object_Id, w.Obj_System_Id, w.Obj_Type, w.Obj_Sub_Type, w.Facility_Name, w.Current_Process,
+cast(w.Current_Arrival_Time as CHAR(100)), w.Current_Owner, w.Priority, w.Parent_Obj_Type, w.Parent_Obj_System_Id,
+w.Process_Allocation, w.Version, w.Doc_Type, w.Doc_Sub_Type, e.encounter_id,cast(e.Appointment_Date as CHAR(100)),
+cast(e.Date_of_service as CHAR(100)),if (e.Appointment_Provider_ID!=0 , u.Person_Name , ""),(select u1.person_name from user u1 where u1.physician_library_id=e.Encounter_Provider_ID and u1.physician_library_id<>0),e.Assigned_Med_Asst_User_Name,e.Batch_Status from wf_object w
+inner join encounter e on e.encounter_id=w.obj_system_id inner join user u on u.physician_library_id=e.Appointment_Provider_ID
+where e.human_id= :HumanID and w.obj_type in(:ObjType) and w.Current_Process not like '%DELETE%'  group by w.wf_object_id
+union all 
+select w.WF_Object_Id, w.Obj_System_Id, w.Obj_Type, w.Obj_Sub_Type, w.Facility_Name, w.Current_Process,
+cast(w.Current_Arrival_Time as CHAR(100)), w.Current_Owner, w.Priority, w.Parent_Obj_Type, w.Parent_Obj_System_Id,
+w.Process_Allocation, w.Version, w.Doc_Type, w.Doc_Sub_Type, e.encounter_id,cast(e.Appointment_Date as CHAR(100)),
+cast(e.Date_of_service as CHAR(100)),if (e.Appointment_Provider_ID!=0 , u.Person_Name , ""),(select u1.person_name from user u1 where u1.physician_library_id=e.Encounter_Provider_ID and u1.physician_library_id<>0),e.Assigned_Med_Asst_User_Name,e.Batch_Status from wf_object_arc w
 inner join encounter_arc e on e.encounter_id=w.obj_system_id inner join user u on u.physician_library_id=e.Appointment_Provider_ID
 where e.human_id= :HumanID and w.obj_type in(:ObjType) and w.Current_Process not like '%DELETE%'  group by w.wf_object_id;]]>
 	</sql-query>
