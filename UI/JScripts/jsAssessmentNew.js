@@ -1339,13 +1339,20 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             return array;
         }
     }
-    //Jira - #CAP-80
-    //$('#dlstICD10').load("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
-    $('#dlstICD10').load("htmICD10.html?version" + localStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
+    //CAP-3456
+    ////Jira - #CAP-80
+    ////$('#dlstICD10').load("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
+    //$('#dlstICD10').load("htmICD10.html?version" + localStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
+    //    arrICD10Codes = $.map($('#dlstICD10 option'), function (li) {
+    //        return $(li).attr("value");
+    //    });
+
+    //});
+    $.get("htmICD10.html?version=" + localStorage.getItem("ScriptVersion").split('|')[0].trim(), function (data) {
+        $('#dlstICD10').html(data);
         arrICD10Codes = $.map($('#dlstICD10 option'), function (li) {
             return $(li).attr("value");
         });
-
     });
 
     $("#txtICD10").autocomplete({
