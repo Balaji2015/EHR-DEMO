@@ -922,7 +922,8 @@ function PrintInterpretation() {
             notes = document.getElementById("txtProvNoteshistory").attributes.InterpretationText.value;
         }
     }
-    if (!notes.includes("Test Reviewed: ")) {
+    //CAP-3525
+    if (!notes.includes("Test Reviewed: ") || notes.indexOf(';') == -1) {
         DisplayErrorMessage('115059');
         OnPageLoad(false);
         return false;
