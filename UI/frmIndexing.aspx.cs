@@ -872,8 +872,9 @@ namespace Acurus.Capella.UI
                     var temp = lstorders.Where(a => a.Lab_Procedure != "Paper Order").Select(a => a.Order_Submit_ID).Distinct();
                     if (temp != null)
                     {
-                        var facilityAncillary = from f in ApplicationObject.facilityLibraryList where f.Is_Ancillary == "Y" select f;
-                        IList<FacilityLibrary> ilstAncillaryFac = facilityAncillary.ToList<FacilityLibrary>();
+                        //CAP-3383
+                        //var facilityAncillary = from f in ApplicationObject.facilityLibraryList where f.Is_Ancillary == "Y" select f;
+                        //IList<FacilityLibrary> ilstAncillaryFac = facilityAncillary.ToList<FacilityLibrary>();
 
                         foreach (ulong submittedorders in temp)
                         {
@@ -885,32 +886,33 @@ namespace Acurus.Capella.UI
                             foreach (Orders item in lstorders.Where(a => a.Order_Submit_ID == submittedorders))
                             {
                                 bIsSkip = false;
-                                var AncLab = (from l in ilstAncillaryFac where l.Short_Name.ToUpper() == item.Order_Code_Type.ToUpper() select l).ToList();
+                                //CAP-3383
+                                //var AncLab = (from l in ilstAncillaryFac where l.Short_Name.ToUpper() == item.Order_Code_Type.ToUpper() select l).ToList();
                                 //Cap - 1118
                                 var scanorder = (from m in lstscan where m.Order_ID == submittedorders select m).ToList();
-                                if (AncLab.Count > 0)
-                                {
-                                    if (item.Encounter_ID == 0)
-                                    {
-                                        bIsSkip = true;
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        EncounterManager encMngr = new EncounterManager();
-                                        IList<Encounter> encList = encMngr.GetEncounterByEncounterIDIncludeArchive(item.Encounter_ID);
-                                        if (encList.Count > 0)
-                                        {
-                                            if (encList[0].Order_Submit_ID == 0)
-                                            {
-                                                bIsSkip = true;
-                                                continue;
-                                            }
-                                        }
-                                    }
-                                }
+                                //if (AncLab.Count > 0)
+                                //{
+                                //    if (item.Encounter_ID == 0)
+                                //    {
+                                //        bIsSkip = true;
+                                //        continue;
+                                //    }
+                                //    else
+                                //    {
+                                //        EncounterManager encMngr = new EncounterManager();
+                                //        IList<Encounter> encList = encMngr.GetEncounterByEncounterIDIncludeArchive(item.Encounter_ID);
+                                //        if (encList.Count > 0)
+                                //        {
+                                //            if (encList[0].Order_Submit_ID == 0)
+                                //            {
+                                //                bIsSkip = true;
+                                //                continue;
+                                //            }
+                                //        }
+                                //    }
+                                //}
                                 //Cap - 1118
-                                else if (scanorder.Count > 0)
+                                if (scanorder.Count > 0)
                                 {
                                     bIsSkip = true;
                                     continue;
