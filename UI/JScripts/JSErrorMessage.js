@@ -3049,7 +3049,8 @@ function StartLoadingForNotes() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     let intervalId = setInterval(function () {
         var i = document.cookie.slice(document.cookie.indexOf("StopLoadingForNotes")).split("=")[1];
-        if (i == "true") {
+        //CAP-3460
+        if (i.includes("true")) {
             StopIntervalAndStopLoading(intervalId);
         }
     }, 1000);
