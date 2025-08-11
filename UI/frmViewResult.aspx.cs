@@ -1676,8 +1676,17 @@ namespace Acurus.Capella.UI
                                 {
                                     if (reviewcomments[i].Contains("Test Reviewed: ") == true)
                                     {
-
-                                        NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                                        //CAP-3525
+                                        //NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                                        int semiColonIndex = reviewcomments[i].IndexOf(";");
+                                        if (semiColonIndex >= 0)
+                                        {
+                                            NotesHistory += reviewcomments[i].Substring(0, semiColonIndex).Replace("[[[Test Reviewed: ", "");
+                                        }
+                                        else
+                                        {
+                                            NotesHistory += reviewcomments[i].Replace("[[[Test Reviewed: ", "");
+                                        }
                                         //Cap - 686
                                         if (notesattribute == string.Empty)
                                         {
