@@ -713,6 +713,13 @@ function OpenResultInterpretation() {
                                 }
                                 if (Noteselect?.TxtNotes != undefined && Noteselect?.TxtNotes != null) {
                                     iFrameWindow.getElementById("txtSummary").value = Noteselect.TxtNotes;
+                                    //Cap - 3385
+                                    if (Noteselect?.TxtNotes != "") {
+                                        localStorage.setItem("IsInterpretationFilled", "Y");
+                                    }
+                                    else {
+                                        localStorage.setItem("IsInterpretationFilled", "N");
+                                    }
                                 }
                             }
                         }

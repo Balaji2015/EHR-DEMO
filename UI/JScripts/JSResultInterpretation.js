@@ -135,6 +135,14 @@ function btnOkClick() {
 
 
 function ddlTemplate_Onchange() {
+    //Cap - 3385
+    var IsFilled = localStorage.getItem("IsInterpretationFilled");
+
+    if (IsFilled == "Y") {
+        DisplayErrorMessage('1105003');
+        return false;
+    }         
+
     if (document.getElementById('ddlTemplate').value == '') {
         document.getElementById("btnSaveInt").disabled = true;
         //document.getElementById("btnPrintInterpretation").disabled = true;
@@ -147,7 +155,18 @@ function ddlTemplate_Onchange() {
     }
     return false;
 }
+//Cap - 3385
+function ddlTemplate_Alert() {
+    var IsFilled = localStorage.getItem("IsInterpretationFilled");
 
+    if (IsFilled == "Y") {
+        DisplayErrorMessage('1105003');
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 
 function PrintInterpretation() {
     $(top.window.document).find("#PrintPDFModal").modal({ backdrop: 'static', keyboard: false }, 'show');

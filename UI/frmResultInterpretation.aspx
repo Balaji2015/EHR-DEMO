@@ -56,7 +56,7 @@
                         <asp:Label ID="lblTemplate" runat="server" CssClass="spanstyle" Text="Template" Font-Bold="true"></asp:Label>
                     </td>
                     <td>
-                        <asp:DropDownList ID="ddlTemplate" CssClass="Editabletxtbox" runat="server" AutoPostBack="true" Width="600px" EnableViewState="true" OnSelectedIndexChanged="ddlTemplate_SelectedIndexChanged" onchange="ddlTemplate_Onchange();">
+                        <asp:DropDownList ID="ddlTemplate" CssClass="Editabletxtbox" runat="server" AutoPostBack="true" Width="600px" EnableViewState="true" onmousedown="return ddlTemplate_Alert();" OnSelectedIndexChanged="ddlTemplate_SelectedIndexChanged"  onchange="ddlTemplate_Onchange();">
                         </asp:DropDownList>
                     </td>
                 </tr>
