@@ -1342,7 +1342,19 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            bool issuccess = FillPatientStrip(Convert.ToUInt64(Request["Human_id"]));
+            //Cap - 3479
+            //bool issuccess = FillPatientStrip(Convert.ToUInt64(Request["Human_id"]));
+        ln:
+            bool issuccess = false;
+            try
+            {
+                 issuccess = FillPatientStrip(Convert.ToUInt64(Request["Human_id"]));
+            }
+            catch(Exception ex) {
+                UtilityManager.GenerateXML(Request["Human_id"].ToString(), "Human");
+
+                goto ln;
+            }   
             if (!issuccess)
             {
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Request["Human_id"].ToString() + "','Human','Appointment');", true);
