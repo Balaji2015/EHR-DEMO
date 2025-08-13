@@ -328,11 +328,13 @@ function OnClientCloseWindow() {   //BugID:42368
 }
 
 function reloadSummary() {
-    var enc_id = sessionStorage.getItem("EncId_PatSummaryBar");
-    var enc_DOS = sessionStorage.getItem("Enc_DOS");
-    //CAP-2596
-    var encounterId = parseInt(enc_id);
-    if ((encounterId??0) > 0) {
+    //CAP-3363
+    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
+        var enc_id = sessionStorage.getItem("EncId_PatSummaryBar");
+        var enc_DOS = sessionStorage.getItem("Enc_DOS");
+        //CAP-2596, CAP-3363
+        //var encounterId = parseInt(enc_id);
+        //if ((encounterId??0) > 0) {
         //sessionStorage.removeItem("EncId_PatSummaryBar");
         //sessionStorage.removeItem("Enc_DOS");
         $.ajax({
@@ -381,8 +383,8 @@ function reloadSummary() {
             }
 
         });
+        //}
     }
-    
 }
 var list = "";
 var iCount = 0;

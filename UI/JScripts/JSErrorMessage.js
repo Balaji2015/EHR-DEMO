@@ -2666,10 +2666,10 @@ function reloadPatientSummaryBarXmlRegenerate() {
     var enc_DOS = sessionStorage.getItem("Enc_DOS_XMl_Regenerate");
     sessionStorage.removeItem("EncId_PatSummaryBar_XMl_Regenerate");
     sessionStorage.removeItem("Enc_DOS_XMl_Regenerate");
-
-    //CAP-2596
-    var encounterId = parseInt(enc_id);
-    if ((encounterId ?? 0) > 0) {
+    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
+        //CAP-2596, CAP-3363
+        //var encounterId = parseInt(enc_id);
+        //if ((encounterId ?? 0) > 0) {
         $.ajax({
             type: "POST",
             url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
@@ -2694,6 +2694,7 @@ function reloadPatientSummaryBarXmlRegenerate() {
             }
 
         });
+        //}
     }
 }
 

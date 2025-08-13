@@ -748,17 +748,20 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
-
-                //if (ilstHumanBlobFinal[1] != null)
-                if (ilstHumanBlobFinal[1] != null && ((IList<object>)ilstHumanBlobFinal[1]).Count > 0)
+                //CAP-3363
+                if (ClientSession.EncounterId != 0)
                 {
-                    if ((((IList<object>)ilstHumanBlobFinal[1])[0]) != null && (((IList<object>)ilstHumanBlobFinal[1])[0]).GetType().Name == "PatientResults")
+                    //if (ilstHumanBlobFinal[1] != null)
+                    if (ilstHumanBlobFinal[1] != null && ((IList<object>)ilstHumanBlobFinal[1]).Count > 0)
                     {
-                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[1]).Count; iCount++)
+                        if ((((IList<object>)ilstHumanBlobFinal[1])[0]) != null && (((IList<object>)ilstHumanBlobFinal[1])[0]).GetType().Name == "PatientResults")
                         {
-                            if (((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]).Encounter_ID == ClientSession.EncounterId && ((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]).Results_Type == "Vitals")
+                            for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[1]).Count; iCount++)
                             {
-                                objFillPatientChart.VitalsList.Add((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]);
+                                if (((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]).Encounter_ID == ClientSession.EncounterId && ((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]).Results_Type == "Vitals")
+                                {
+                                    objFillPatientChart.VitalsList.Add((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]);
+                                }
                             }
                         }
                     }
