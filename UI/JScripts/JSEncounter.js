@@ -659,10 +659,10 @@ function reloadSummary() {
     var enc_DOS = sessionStorage.getItem("Enc_DOS");
     //sessionStorage.removeItem("EncId_PatSummaryBar");
     //sessionStorage.removeItem("Enc_DOS");
-
-    //CAP-2596
-    var encounterId = parseInt(enc_id);
-    if ((encounterId ?? 0) > 0) {
+    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
+        //CAP-2596, CAP-3363
+        //var encounterId = parseInt(enc_id);
+        //if ((encounterId ?? 0) > 0) {
         $.ajax({
             type: "POST",
             url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
@@ -684,8 +684,8 @@ function reloadSummary() {
             }
 
         });
+        //}
     }
-
     RefreshNotification("Notify");
 }
 
@@ -2120,9 +2120,10 @@ function FeedbackCodingException(Addendumid) {
 }
 
 function reloadSummaryBar(encounterId, dateOfService) {
-    //CAP-2596
-    var encounterId = parseInt(encounterId);
-    if ((encounterId ?? 0) > 0) {
+    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
+        //CAP-2596, CAP-3363
+        //var encounterId = parseInt(encounterId);
+        //if ((encounterId ?? 0) > 0) {
         $.ajax({
             type: "POST",
             url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
@@ -2143,6 +2144,7 @@ function reloadSummaryBar(encounterId, dateOfService) {
             }
 
         });
+        //}
     }
     RefreshNotification("Notify");
 }

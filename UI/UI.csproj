@@ -1983,6 +1983,7 @@
       <DependentUpon>ProgressNotesService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WebServices\DrFirstServiceController.cs" />
     <Compile Include="WebServices\ProgressNotesServiceController.cs" />
     <Compile Include="WebServices\QuestionnaireService.asmx.cs">
       <DependentUpon>QuestionnaireService.asmx</DependentUpon>

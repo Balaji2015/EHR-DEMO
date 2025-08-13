@@ -2898,6 +2898,7 @@
 	<Message number="1105007" Type="OKCANCEL" Text="Are you sure you want to delete?"></Message>
 	<Message number="1105008" Type="OK" Text="you are viewing first page of the document."/>
 	<Message number="1105009" Type="OK" Text="you are viewing last page of the document."/>
+	<Message number="1105010" Type="OK" Text="Interpretation report already exists for the attached result."/>
 	<!--Add Physician-->
 	<Message number="172500" Type="OK" Text="Please Enter Physician Last Name." />
 	<Message number="172501" Type="OK" Text="Please Enter Physician First Name." />
