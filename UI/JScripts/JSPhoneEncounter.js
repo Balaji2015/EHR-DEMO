@@ -3238,7 +3238,8 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
     function CheckICDValue(ICD) {
         var iresult = true;
         for (var j = 0; j < lstSelectedICD.length; j++) {
-            if (lstSelectedICD[j].split('~')[0].trim() == ICD.trim()) {
+            //CAP-3541: Applying the sanity check to avoid undefined based exceptions.
+            if (lstSelectedICD[j]?.split('~')[0]?.trim() == ICD?.trim()) {
                 iresult = false;
             }
         }
@@ -3621,7 +3622,7 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                         }
                         for (var i = 0; i < $scope.EandMCodingICDTable.length; i++) {
                             for (var j = 0; j < DeleteArrayTempICD.length; j++) {
-                                if (DeleteArrayTempICD[j] == $('#tblEandMCodingICD tbody tr')[i].children[8].innerText.trim()) {
+                                if (DeleteArrayTempICD[j] == $('#tblEandMCodingICD tbody tr')[i]?.children[8]?.innerText?.trim()) {
                                     // $('#tblEandMCodingICD tbody tr')[i].remove();
 
                                     $("#tblEandMCodingICD tbody tr").find('td#ICD').each(function () {

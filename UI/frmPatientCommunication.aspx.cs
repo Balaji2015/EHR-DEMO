@@ -434,13 +434,14 @@ namespace Acurus.Capella.UI
                 return "Session Expired";
             }
             IList<string> patientlst = new List<string>();
+            //CAP-3522
             PatientNotesManager objPatNotesMngr = new PatientNotesManager();
             if (chkshowall == "false" && facility == "")
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg, sExcludeUserRole: "Auditor");
             else if (chkshowall == "false" && facility != "")
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(facility, ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(facility, ClientSession.LegalOrg, sExcludeUserRole: "Auditor");
             else
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL", ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL", ClientSession.LegalOrg, sExcludeUserRole: "Auditor");
             var Result = new { AssignedTo = patientlst };
             return JsonConvert.SerializeObject(Result);
         }

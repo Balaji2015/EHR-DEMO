@@ -7825,7 +7825,11 @@ namespace Acurus.Capella.UI
 
             return sFilename;
         }
-        public static string ReplaceHexadecimal( string xmlContent) {
+        public static string ReplaceHexadecimal(string xmlContent)
+        {
+            //Jira CAP-3558,3562
+            xmlContent = xmlContent.Replace("&#xA;", "\n");
+            //Jira CAP-3558,3562 - End
             string sReg = @"&#x?[0-9a-fA-F]+;?";
             xmlContent = Regex.Replace(xmlContent, sReg, " ");
             string shReg = @"^0x[0-9a-fA-F]+$|^[0-9a-fA-F]{2,}$";

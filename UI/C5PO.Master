@@ -6,7 +6,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>CAPELLA 5.0</title>
-  
+
+   <script>document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <meta name="viewport" content="width=device-width,
          initial-scale=1" />
     <asp:ContentPlaceHolder ID="head" runat="server">

@@ -32,9 +32,10 @@ function CheckUserFields() {
 
 function RadWindowClose() {
     var oWindow = null;
-    if (window.radWindow)
+    if (window?.radWindow)
         oWindow = window.radWindow;
-    else if (window.frameElement.radWindow)
+    //CAP-3540: Applying the null check to avoid the exceptions
+    else if (window?.frameElement?.radWindow)
         oWindow = window.frameElement.radWindow;
     if (oWindow != null) {
         oWindow.close();

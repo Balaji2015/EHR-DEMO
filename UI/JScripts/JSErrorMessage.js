@@ -2533,7 +2533,11 @@ function ToolStripAlert(message) {
     if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert")!=null && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null) {
         $(top.window.document).find("#CheckAlert")[0].style.display = "block";
     }
-    $(top.window.document).find("#innerMsgText")[0].innerText = message;
+
+    //CAP-3539: Applying undefined and null check to prevent the exceptions
+    if ($(top.window.document).find("#innerMsgText") != undefined && $(top.window.document).find("#innerMsgText") != null && $(top.window.document).find("#innerMsgText")[0] != undefined && $(top.window.document).find("#innerMsgText")[0] != null) {
+        $(top.window.document).find("#innerMsgText")[0].innerText = message;
+    }
 
     setTimeout(function () { ToolStripAlertHide(); }, 5000);
 }
