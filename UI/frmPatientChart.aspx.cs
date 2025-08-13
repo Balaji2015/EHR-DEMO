@@ -1683,6 +1683,14 @@ namespace Acurus.Capella.UI
                     li.Text = string.Concat(strPatientstriptext.Substring(0, 195), "...");
                 }
 
+                //Jira CAP-3559
+                string sPrivateString = strPatientstriptext.Substring(0, strPatientstriptext.IndexOf("|   Acct #"));
+                HtmlGenericControl span = new HtmlGenericControl("span");
+                span.InnerText = sPrivateString;
+                span.Attributes.Add("data-private", "");
+                li.Text = li.Text.Replace(sPrivateString, "");
+                lblPatientStrip.Controls.Add(span);
+                //Jira CAP-3559 - End
 
                 lblPatientStrip.Controls.Add(li);
                 lblPatientStrip.Controls.Add(icon);

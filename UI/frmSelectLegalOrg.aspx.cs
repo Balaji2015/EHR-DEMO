@@ -654,7 +654,9 @@ namespace Acurus.Capella.UI
                     Response.SetCookie(new HttpCookie("CEMailAddress") { Value = login[0].EMail_Address.ToString(), HttpOnly = false });
                     Response.SetCookie(new HttpCookie("CLegalOrg") { Value = login[0].Legal_Org.ToString(), HttpOnly = false });
                     Response.SetCookie(new HttpCookie("CUserCarrier") { Value = objLoginDTO.UserCarrier.ToString(), HttpOnly = false });
-
+                    Response.SetCookie(new HttpCookie("CLogRocketClientID") { Value = System.Configuration.ConfigurationSettings.AppSettings["LogRocketClientID"]?.ToString() ?? "", HttpOnly = false });
+                    Response.SetCookie(new HttpCookie("CIsEnableLogRocket") { Value = System.Configuration.ConfigurationSettings.AppSettings["IsEnableLogRocket"]?.ToString() ?? "", HttpOnly = false });
+                    Response.SetCookie(new HttpCookie("CVersion") { Value = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"]?.ToString() ?? "", HttpOnly = false });
                     //ClientSession.DefaultNoofDays = login[0].Default_MyQ_Days;
                     ClientSession.Is_RCopia_Notification_Required = login[0].Is_RCopia_Notification_Required;
                     ClientSession.PhysicianId = login[0].Physician_Library_ID;
@@ -979,7 +981,9 @@ namespace Acurus.Capella.UI
                 Response.SetCookie(new HttpCookie("CEMailAddress") { Value = login[0].EMail_Address.ToString(), HttpOnly = false });
                 Response.SetCookie(new HttpCookie("CLegalOrg") { Value = login[0].Legal_Org.ToString(), HttpOnly = false });
                 Response.SetCookie(new HttpCookie("CUserCarrier") { Value = ClientSession.UserCarrier.ToString(), HttpOnly = false });
-
+                Response.SetCookie(new HttpCookie("CLogRocketClientID") { Value = System.Configuration.ConfigurationSettings.AppSettings["LogRocketClientID"]?.ToString() ?? "", HttpOnly = false });
+                Response.SetCookie(new HttpCookie("CIsEnableLogRocket") { Value = System.Configuration.ConfigurationSettings.AppSettings["IsEnableLogRocket"]?.ToString() ?? "", HttpOnly = false });
+                Response.SetCookie(new HttpCookie("CVersion") { Value = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"]?.ToString() ?? "", HttpOnly = false });
                 Session["LandingScnID"] = login[0].Landing_Screen_ID;
 
                 IList<ScnTab> ScnTabList;

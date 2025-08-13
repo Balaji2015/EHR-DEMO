@@ -119,10 +119,10 @@ function reloadSummaryEprescription() {
     var enc_DOS = sessionStorage.getItem("Enc_DOS");
     //sessionStorage.removeItem("EncId_PatSummaryBar");
     //sessionStorage.removeItem("Enc_DOS");
-
-    //CAP-2596
-    var encounterId = parseInt(enc_id);
-    if ((encounterId ?? 0) > 0) {
+    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
+        //CAP-2596, CAP-3363
+        //var encounterId = parseInt(enc_id);
+        //if ((encounterId ?? 0) > 0) {
         $.ajax({
             type: "POST",
             url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
@@ -135,17 +135,24 @@ function reloadSummaryEprescription() {
                 if (xhr.status == 999)
                     window.location = "/frmSessionExpired.aspx";
                 else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //CAP-3537 - avoid undefined JSON to be parse
+                    var msg = "";
+
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        msg = log?.Message ?? (typeof (log) === 'string') ? log : "Something went wrong!";
+                    }
+                    else {
+                        msg = xhr.responseText;
+                    }
+
+                    alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${msg}`);
                 }
             }
-
         });
+        //}
     }
-
     //LoadNotification("Notify");
 }
 function OnSuccessSummaryBarEprescription(response) {

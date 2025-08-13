@@ -5,6 +5,7 @@
 <asp:Content ID="PatientChartHeader" ContentPlaceHolderID="head" runat="server">
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <%--<link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />--%>
+     <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <link href="CSS/fontawesome.min.css" rel="stylesheet" type="text/css" />
     <link href="CSS/solid.min.css" rel="stylesheet" />
     <%--<script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>--%>

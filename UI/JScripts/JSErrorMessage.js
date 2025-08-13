@@ -2533,7 +2533,11 @@ function ToolStripAlert(message) {
     if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert")!=null && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null) {
         $(top.window.document).find("#CheckAlert")[0].style.display = "block";
     }
-    $(top.window.document).find("#innerMsgText")[0].innerText = message;
+
+    //CAP-3539: Applying undefined and null check to prevent the exceptions
+    if ($(top.window.document).find("#innerMsgText") != undefined && $(top.window.document).find("#innerMsgText") != null && $(top.window.document).find("#innerMsgText")[0] != undefined && $(top.window.document).find("#innerMsgText")[0] != null) {
+        $(top.window.document).find("#innerMsgText")[0].innerText = message;
+    }
 
     setTimeout(function () { ToolStripAlertHide(); }, 5000);
 }
@@ -2666,10 +2670,10 @@ function reloadPatientSummaryBarXmlRegenerate() {
     var enc_DOS = sessionStorage.getItem("Enc_DOS_XMl_Regenerate");
     sessionStorage.removeItem("EncId_PatSummaryBar_XMl_Regenerate");
     sessionStorage.removeItem("Enc_DOS_XMl_Regenerate");
-
-    //CAP-2596
-    var encounterId = parseInt(enc_id);
-    if ((encounterId ?? 0) > 0) {
+    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
+        //CAP-2596, CAP-3363
+        //var encounterId = parseInt(enc_id);
+        //if ((encounterId ?? 0) > 0) {
         $.ajax({
             type: "POST",
             url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
@@ -2694,6 +2698,7 @@ function reloadPatientSummaryBarXmlRegenerate() {
             }
 
         });
+        //}
     }
 }
 

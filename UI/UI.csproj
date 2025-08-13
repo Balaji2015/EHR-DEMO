@@ -437,6 +437,7 @@
     <Content Include="JScripts\jsAssessmentNew.js" />
     <Content Include="JScripts\JSErroredSignedReports.js" />
     <Content Include="JScripts\JSEFaxManagement.js" />
+    <Content Include="JScripts\JsLogRocket.js" />
     <Content Include="JScripts\JSRCopiaDuplicateAllergy.js" />
     <Content Include="JScripts\JSRCopiaPatientMerge.js" />
     <Content Include="JScripts\JSImpersonateUser.js" />
