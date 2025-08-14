@@ -253,7 +253,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                return "DisplayErrorMessage-'700010'";
+                return "DisplayErrorMessage-700010";
             }
 
 
