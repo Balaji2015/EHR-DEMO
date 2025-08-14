@@ -253,7 +253,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                return "DisplayErrorMessage-700010";
+                return  new{data = Compress(JsonConvert.SerializeObject("DisplayErrorMessage-700010"))};
             }
 
 

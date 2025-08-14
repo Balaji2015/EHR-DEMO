@@ -462,13 +462,12 @@ function FillGrid() {
             dataSrc: function (json) {
                 //var objdata = json.d;
                 var objdata = json.d;
-                if (objdata.indexOf("DisplayErrorMessage") > -1) {
-                    DisplayErrorMessage(objdata.split("-")[1]);
+                objdata.data = Decompress(objdata.data);
+                if (objdata.data.indexOf("DisplayErrorMessage") > -1) {
+                    DisplayErrorMessage(objdata.data.split("-")[1]);
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return;
                 }
-                objdata.data = Decompress(objdata.data);
-               
                 json.data = objdata.data;
                 return json.data;
             },
