@@ -1139,6 +1139,7 @@
 	<Message number="700013" Type="OK" Text="The current process is not an allocatable process. So, Update Owner can not be done."/>
 	<Message number="700014" Type="OK" Text="The Selected Encounter is already archived. Please contact support team."/>
 	<Message number="700015" Type="OK" Text="This is not an allocatable process, cannot allow Update Owner  "/>
+	<Message number="700016" Type="OK" Text="This encounter is in general queue. So, Update Owner can not be done."/>
 
 	<Message number="430001" Type="ToolStrip" Text="Saved successfully." />
 	<Message number="430002" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?"/>

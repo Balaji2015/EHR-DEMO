@@ -846,12 +846,16 @@ namespace Acurus.Capella.UI
             string sLocal_Time = UtilityManager.ConvertToLocal(Convert.ToDateTime(localTime)).ToString("yyyy-MM-dd hh:mm:ss tt");
             bool bIsCheckinProvider = false;
             /*if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")*///to update DOS when Technician/MA processes the encounter for the first time -- CMG Ancilliary
-            if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS" || ClientSession.UserCurrentProcess == "PROVIDER_PROCESS") //to update DOS when Technician/MA/Provider processes the encounter for the first time -- CMG Ancilliary 
+            //Jira CAP-3586
+            //if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS" || ClientSession.UserCurrentProcess == "PROVIDER_PROCESS") //to update DOS when Technician/MA/Provider processes the encounter for the first time -- CMG Ancilliary 
+            if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS" || ClientSession.UserCurrentProcess == "PROVIDER_PROCESS" || ClientSession.UserCurrentProcess == "AKIDO_SCRIBE_PROCESS") //to update DOS when Technician/MA/Provider processes the encounter for the first time -- CMG Ancilliary 
             {
                 if (data[6] == "0001-01-01T00:00:00")
                 {
-                    //Jira CAP-2129
-                    if (ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
+                    //Jira CAP-3586
+                    ////Jira CAP-2129
+                    //if (ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
+                    if (ClientSession.UserCurrentProcess == "PROVIDER_PROCESS" || ClientSession.UserCurrentProcess == "AKIDO_SCRIBE_PROCESS")
                     {
                         bIsCheckinProvider = true;
                     }

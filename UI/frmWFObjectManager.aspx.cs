@@ -1003,10 +1003,14 @@ namespace Acurus.Capella.UI
                         EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                         IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()));
 
-                        if (ilstEncounterBlob == null && ilstEncounterBlob.Count == 0)
+                        //Jira CAP-3587
+                        //if (ilstEncounterBlob == null && ilstEncounterBlob.Count == 0)
+                        if (ilstEncounterBlob == null || ilstEncounterBlob.Count == 0)
                         {
                             //ScriptManager.RegisterStartupScript(this, this.GetType(), "string.Empty", "DisplayErrorMessage('700013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                            return "DisplayErrorMessage-700013-return";
+                            //Jira CAP-3587
+                            //return "DisplayErrorMessage-700013-return";
+                            return "DisplayErrorMessage-700016-return";
                         }
 
                         //    string FileName = "Encounter" + "_" + grdAdminModule.SelectedItems[0].Cells[2].Text + ".xml";
