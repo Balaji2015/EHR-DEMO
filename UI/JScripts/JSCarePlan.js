@@ -1237,6 +1237,11 @@ function SaveCarePlan() {
                     objCarePlanList.Care_Name_Value = lbl.innerText.trim();
                     if (lbl.parentNode.nextElementSibling.nextElementSibling.children.length != 0) {
                         objCarePlanList.Plan_Date = lbl.parentNode.nextElementSibling.nextElementSibling.children[0].value;
+                        //CAP-3464
+                        var plan_Date = objCarePlanList.Plan_Date?.split("-");
+                        if (plan_Date?.length == 3 && plan_Date[0].length == 4) {
+                            objCarePlanList.Plan_Date = plan_Date[2] + "-" + plan_Date[1] + "-" + plan_Date[0];
+                        }
                         if (objCarePlanList.Plan_Date != "") {
                             var plan_date = Date.parse(objCarePlanList.Plan_Date);
                             if (plan_date >= bCheckDOB) {
