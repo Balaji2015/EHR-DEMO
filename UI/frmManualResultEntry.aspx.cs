@@ -1194,7 +1194,8 @@ namespace Acurus.Capella.UI
                             }
 
                             # region Result Master
-                            if (OrderAndSubmitList[l].ResultMasterList[0].MSH_Date_And_Time_Of_Message != string.Empty)
+                            //CAP-3584
+                            if (OrderAndSubmitList[l].ResultMasterList.Any() && OrderAndSubmitList[l].ResultMasterList[0].MSH_Date_And_Time_Of_Message != string.Empty)
                             {
                                 //Commented And Added By Saravanakumar On 25-06-2013 BugId:16874
                                 //dtpDateReported.Value = DateTime.ParseExact(OrderAndSubmitList[l].ResultMasterList[0].MSH_Date_And_Time_Of_Message, "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
@@ -1203,7 +1204,7 @@ namespace Acurus.Capella.UI
                             }
                             else
                             {
-                                dtpDateReported.DateInput.DateFormat = " ";
+                                dtpDateReported.DateInput.DateFormat = "";
                             }
                             IList<OrdersSubmit> orderSubmitList = new List<OrdersSubmit>();
                             for (int i = 0; i < ResultDto.Count; i++)
@@ -1231,7 +1232,8 @@ namespace Acurus.Capella.UI
                             }
                             if (chkFasting.Enabled == true)
                             {
-                                if (OrderAndSubmitList[l].ResultMasterList[0].PID_Fasting == "Y")
+                                //CAP-3584
+                                if (OrderAndSubmitList[l].ResultMasterList.Any() && OrderAndSubmitList[l].ResultMasterList[0].PID_Fasting == "Y")
                                 {
                                     chkFasting.Checked = true;
                                 }
@@ -1258,19 +1260,23 @@ namespace Acurus.Capella.UI
                             #endregion
 
                             # region Result OBR
-                            dtpDateCollected.SelectedDate = UtilityManager.ConvertToLocal(DateTime.ParseExact(OrderAndSubmitList[l].ResultOBRList[0].OBR_Specimen_Collection_Date_And_Time, "yyyyMMddHHmm", CultureInfo.InvariantCulture));
+                            //CAP-3584
+                            if (OrderAndSubmitList[l].ResultOBRList.Any())
+                            {
+                                dtpDateCollected.SelectedDate = UtilityManager.ConvertToLocal(DateTime.ParseExact(OrderAndSubmitList[l].ResultOBRList[0].OBR_Specimen_Collection_Date_And_Time, "yyyyMMddHHmm", CultureInfo.InvariantCulture));
+                            }
 
-                            if (OrderAndSubmitList[l].ResultOBRList[0].OBR_Order_Result_Status.ToUpper() == "F")
+                            if (OrderAndSubmitList[l].ResultOBRList.Any() && OrderAndSubmitList[l].ResultOBRList[0].OBR_Order_Result_Status.ToUpper() == "F")
                             {
                                 cboReportStatus.Text = "FINAL";
                                 cboReportStatus.SelectedIndex = cboReportStatus.Items.FindItemByText(cboReportStatus.Text).Index;
                             }
-                            else if (OrderAndSubmitList[l].ResultOBRList[0].OBR_Order_Result_Status.ToUpper() == "P")
+                            else if (OrderAndSubmitList[l].ResultOBRList.Any() && OrderAndSubmitList[l].ResultOBRList[0].OBR_Order_Result_Status.ToUpper() == "P")
                             {
                                 cboReportStatus.Text = "PRELIMINARY";
                                 cboReportStatus.SelectedIndex = cboReportStatus.Items.FindItemByText(cboReportStatus.Text).Index;
                             }
-                            else if (OrderAndSubmitList[l].ResultOBRList[0].OBR_Order_Result_Status.ToUpper() == "C")
+                            else if (OrderAndSubmitList[l].ResultOBRList.Any() && OrderAndSubmitList[l].ResultOBRList[0].OBR_Order_Result_Status.ToUpper() == "C")
                             {
                                 cboReportStatus.Text = "CORRECTED RESULTS";
                                 cboReportStatus.SelectedIndex = cboReportStatus.Items.FindItemByText(cboReportStatus.Text).Index;
@@ -1300,13 +1306,15 @@ namespace Acurus.Capella.UI
                             }
                             else
                             {
-                                if (UpdatePatientResultList[0].Captured_date_and_time != null)
+                                //CAP-3584
+                                if (UpdatePatientResultList.Any() && UpdatePatientResultList[0].Captured_date_and_time != null)
                                 {
                                     dtpDateCollected.Enabled = true;
                                     string date = UtilityManager.ConvertToLocal(UpdatePatientResultList[0].Captured_date_and_time).ToString("dd-MMM-yyyy hh:mm tt");
                                     dtpDateCollected.SelectedDate = Convert.ToDateTime(date);
                                 }
-                                else
+                                //CAP-3584
+                                else if (orderSubmitList.Any() && orderSubmitList[0].Specimen_Collection_Date_And_Time != null)
                                 {
                                     dtpDateCollected.Enabled = true;
                                     string date = (orderSubmitList[0].Specimen_Collection_Date_And_Time).ToString("dd-MMM-yyyy hh:mm tt");
