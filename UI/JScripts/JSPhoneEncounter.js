@@ -92,6 +92,21 @@ function datetime() {
             }, ampm: true
         });
     }
+    //Cap - 3582
+    if (!($('#txtSigneddate').prop('disabled'))) {
+        $("#txtSigneddate").datetimepicker({
+            maxDate: '0',
+            beforeShow: function () {
+                jQuery(this).datepicker('option', 'maxDate', jQuery('#txtSigneddate').val());
+            },
+            timepicker: true,
+            closeOnDateSelect: true, format: 'd-M-Y h:i A',
+            onSelect: function () {
+                EnableSave();
+
+            }, ampm: true
+        });
+    }
 }
 function GetWin() {
     var wind = GetRadWindow();
@@ -102,6 +117,19 @@ function GetWin() {
         maxDate: '0',
         beforeShow: function () {
             jQuery(this).datepicker('option', 'maxDate', jQuery('#txtCalldate').val());
+        },
+        timepicker: true,
+        closeOnDateSelect: true, format: 'd-M-Y h:i A',
+        onSelect: function () {
+            EnableSave();
+
+        }, ampm: true
+    });
+    //Cap - 3582
+    $("#txtSigneddate").datetimepicker({
+        maxDate: '0',
+        beforeShow: function () {
+            jQuery(this).datepicker('option', 'maxDate', jQuery('#txtSigneddate').val());
         },
         timepicker: true,
         closeOnDateSelect: true, format: 'd-M-Y h:i A',
@@ -132,10 +160,25 @@ function pageLoad() {
 
         }, ampm: true
     });
+    //Cap - 3582
+    $("#txtSigneddate").datetimepicker({
+        maxDate: '0',
+        beforeShow: function () {
+            jQuery(this).datepicker('option', 'maxDate', jQuery('#txtSigneddate').val());
+        },
+        timepicker: true,
+        closeOnDateSelect: true, format: 'd-M-Y h:i A',
+        onSelect: function () {
+            EnableSave();
+
+        }, ampm: true
+    });
 }
 
 function CalldateMethod() {
     $("#txtCalldate")[0].value = getLocalTime();
+    //Cap - 3582
+    $("#txtSigneddate")[0].value = getLocalTime();
 }
 function getLocalTime() {
     var e = new Date,
@@ -361,6 +404,12 @@ var HumanID = QuerystringValues.split('&')[1].split('=')[1]; //QuerystringValues
 myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
     //{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChartPhoneEncounter(); } //change
     //jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css("display", "block");
+//Cap - 3582
+    document.getElementById("txtAssignedTo").disabled = true;
+    document.getElementById('imgclearAssignTo').style.visibility = "hidden";
+    document.getElementById("txtSigneddate").disabled = true;
+    document.getElementById("txtSigneddate").value = "";
+
     CallDurationAutosuggestLoad = [];
     cboSelectPhysician.addEventListener('change', CboPhysicianChange);
     cboCallDuration.addEventListener('change', cboCalldurationselectedindex);
@@ -1466,6 +1515,245 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             bBool = false;
         }
     });
+    //Cap - 3582
+
+    var arrAssignto = [];
+    var bBool = false;
+    var bcheck = true;
+    var intAssigntoLength = -1;
+    var isViewResultScreen = false;
+    $("#txtAssignedTo").autocomplete({
+        source: function (request, response) {
+            if (intAssigntoLength == 0 && bcheck && bBool == false) {
+                arrAssignto = [];
+                bBool = true;
+                //Jira CAP-2153
+                var sUserRole = "";
+                var sUrl = "";
+                if ($('#rdbMA')[0]?.value != undefined && $('#rdbMA')[0]?.value != null && $('#rdbProvider')[0]?.value != undefined && $('#rdbProvider')[0]?.value != null) {
+                    isViewResultScreen = true;
+                    if ($('#rdbMA')[0].checked == true) {
+                        sUserRole = "MEDICAL ASSISTANT";
+                    }
+                    else if ($('#rdbProvider')[0].checked == true) {
+                        sUserRole = "PHYSICIAN";
+                    }
+                }
+                else {
+                    sUserRole = "";
+                }
+
+                //Jira CAP-2153-End
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "frmPatientCommunication.aspx/SearchAssigned",
+                    data: JSON.stringify({
+                        "sUserName": document.getElementById("txtAssignedTo").value.slice(0, 3),
+                        "sUserRole": sUserRole,
+                    }),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        var jsonData = $.parseJSON(data.d);
+                        //Jira CAP-2140
+                        arrAssignto = jsonData.AssignedTo;
+                        jsonData.AssignedTo = jsonData.AssignedTo.slice(0, 100);
+                        //Jira CAP-2140 End
+                        if (jsonData.AssignedTo.length == 0) {
+                            jsonData.AssignedTo.push('No matches found.')
+                            response($.map(jsonData, function (item) {
+                                return {
+                                    label: item
+
+                                }
+                            }));
+                        }
+                        else {
+                            if (arrAssignto.length != 0) {
+                                var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
+                                results = results.slice(0, 100);
+                                if (results.length == 0) {
+                                    results.push('No matches found.')
+                                    response($.map(results, function (item) {
+                                        return {
+                                            label: item
+                                        }
+                                    }));
+                                }
+                                else {
+                                    response($.map(results, function (item) {
+                                        return {
+                                            label: item.split('|')[1],
+                                            val: item.split('|')[0]
+                                        }
+                                    }));
+                                }
+                            }
+                            else {
+                                response($.map(jsonData.AssignedTo, function (item) {
+                                    //arrAssignto.push(item);
+                                    return {
+                                        label: item.split('|')[1],
+                                        val: item.split('|')[0]
+                                    }
+                                }));
+                            }
+                        }
+
+                        $("#txtAssignedTo").focus();
+                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    },
+                    error: function OnError(xhr) {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        if (xhr.status == 999)
+                            window.location = "/frmSessionExpired.aspx";
+                        else {
+                            var log = JSON.parse(xhr.responseText);
+                            console.log(log);
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
+                        }
+                    }
+
+                });
+
+            }
+            if ($("#txtAssignedTo").val().length > 2) {
+                if (arrAssignto.length != 0) {
+                    var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
+                    results = results.slice(0, 100);
+                    if (results.length == 0) {
+                        results.push('No matches found.')
+                        response($.map(results, function (item) {
+                            return {
+                                label: item
+                            }
+                        }));
+                    }
+                    else {
+                        response($.map(results, function (item) {
+                            return {
+                                label: item.split('|')[1],
+                                val: item.split('|')[0]
+                            }
+                        }));
+                    }
+                }
+            }
+        },
+        minlength: 2,
+        multiple: true,
+        mustMatch: false,
+        open: function () {
+            $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtAssignedTo').width());
+            $('.ui-autocomplete.ui-menu.ui-widget').find('li').css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" });
+            $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+            $(".ui-autocomplete").find('a:contains("No matches found.")').on("click", function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            });
+        },
+        select: function (event, ui) {
+            event.preventDefault();
+
+            if (ui.item.label != "No matches found.") {
+                bBool = false;
+                document.getElementById("txtAssignedTo").value = ui.item.label;
+                document.getElementById("txtAssignedTo").attributes["val"] = ui.item.val;
+                document.getElementById("txtAssignedTo").title = ui.item.label;
+                document.getElementById("txtAssignedTo").disabled = true;
+                //Jira CAP-2153
+                if (isViewResultScreen == true) {
+                    document.getElementById("hdnAssignTo").value = ui.item.val;
+                }
+            }
+            else {
+                $('#txtAssignedTo').val("");
+                bBool = false;
+            }
+        }
+    }).on("paste", function (e) {
+        intAssigntoLength = -1;
+        arrAssignto = [];
+        $(".ui-autocomplete").hide();
+    }).on("keydown", function (e) {
+        if (e.which == 8) {
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if ($("#txtAssignedTo").val().length <= 3)
+                bBool = false;
+            else
+                bBool = true;
+            $("#txtAssignedTo").focus();
+            bcheck = false;
+        }
+        else if (e.which == 46) {
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            bBool = false;
+            bcheck = false;
+        }
+        else {
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            bcheck = true;
+        }
+
+    }).on("input", function (e) {
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if ($("#txtAssignedTo").val().length >= 3) {
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            intAssigntoLength = 0;
+        }
+        else if ($("#txtAssignedTo").val().length != 0 && intAssigntoLength != -1) {
+            intAssigntoLength = intAssigntoLength + 1;
+        }
+        if ($("#txtAssignedTo").val().length < 2) {
+            intAssigntoLength = -1;
+            arrAssignto = [];
+            $(".ui-autocomplete").hide();
+            bBool = false;
+        }
+    });
+
+
+    $("#imgclearAssignTo").on("click", function () {
+        $('#txtAssignedTo').val('').focus();
+
+        $(".ui-autocomplete").hide();
+        document.getElementById("txtAssignedTo").value = "";
+        document.getElementById("txtAssignedTo").attributes["val"] = "";
+        document.getElementById("txtAssignedTo").title = "";
+        document.getElementById("txtAssignedTo").disabled = false;
+    });
+
+    $scope.chkSignedAkidoNote = function ($event) {
+        if ($event.target.checked) {
+            document.getElementById("chkElectronicallySigned").disabled = true;
+            document.getElementById("txtAssignedTo").disabled = false;
+            document.getElementById('imgclearAssignTo').style.visibility = "visible";
+            document.getElementById("txtSigneddate").disabled = false;
+            $("#txtSigneddate")[0].value = getLocalTime();
+            $('#lblOwner').removeClass('spanstyle');
+            $('#lblOwner').addClass('MandLabelstyle');
+            document.getElementById("lblOwner").innerHTML = "Owner*";
+        }
+        else {
+            $("#imgclearAssignTo").trigger("click");
+            document.getElementById("chkElectronicallySigned").disabled = false;
+            document.getElementById("txtAssignedTo").disabled = true;
+            document.getElementById("txtSigneddate").disabled = true;
+            document.getElementById("txtSigneddate").value = "";
+            document.getElementById('imgclearAssignTo').style.visibility = "hidden";
+            $('#lblOwner').removeClass('MandLabelstyle');
+            $('#lblOwner').addClass('spanstyle')
+            document.getElementById("lblOwner").innerHTML = "Owner";
+           
+        }
+        document.getElementById("chkElectronicallySigned").checked = false;
+        
+    }
+
     $scope.LoadFavouriteCPTs = function () {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         var arrListCPTs = [];
@@ -2638,8 +2926,20 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             AutoSaveUnsuccessful();
             return;
         }
-
-
+        //Cap - 3582
+        if (document.getElementById("chkSignedAkidoNote").checked && (document.getElementById("txtAssignedTo").attributes["val"] == undefined || document.getElementById("txtAssignedTo").attributes["val"] == null || document.getElementById("txtAssignedTo").attributes["val"] == "")) {
+            DisplayErrorMessage('7430013');
+            bSaveCheck = true;
+            AutoSaveUnsuccessful();
+            return;
+        }
+        if (document.getElementById("chkSignedAkidoNote").checked && (document.getElementById("txtSigneddate").value == null || document.getElementById("txtSigneddate").value == '')) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            DisplayErrorMessage('7430014');
+            bSaveCheck = true;
+            AutoSaveUnsuccessful();
+            return;
+        }
         var bcheckNoChrg = false;
         for (var iRowCPT = 1; iRowCPT < $('#tblEandMCodingCPT tr').length; iRowCPT++) {
             if ($('#tblEandMCodingCPT tr')[iRowCPT].cells[1].innerText.trim().toUpperCase() == "NCVST" || $('#tblEandMCodingCPT tr')[iRowCPT].cells[1].innerText.trim().toUpperCase() == "NO CHARGE" ||
@@ -3004,7 +3304,9 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             }
         }
         //CAP-713 - Add Electronically Signed
-        if (document.getElementById("chkElectronicallySigned").checked == false) {
+        //Cap - 3582
+        //if (document.getElementById("chkElectronicallySigned").checked == false) {
+        if (document.getElementById("chkElectronicallySigned").checked == false && document.getElementById("chkSignedAkidoNote").checked == false) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             DisplayErrorMessage('7430004');
             bSaveCheck = true;
@@ -3032,7 +3334,11 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 sNotes: document.getElementById('txtNotes').value,
                 sSubmitMode: submitmode,
                 sPhyID: $('#cboSelectPhysician option:selected').attr('id'),
-                sDOSPhyName: $('#cboSelectPhysician option:selected').text()
+                sDOSPhyName: $('#cboSelectPhysician option:selected').text(),
+                sPhoneEncounterOwner: document.getElementById("txtAssignedTo").attributes["val"],
+                sPhoneEncounterSignedDate: document.getElementById('txtSigneddate').value,
+                sIsSignedAkidoNote : document.getElementById("chkSignedAkidoNote").checked
+
             }),
             headers: {
                 "Content-Type": "application/json; charset=utf-8",

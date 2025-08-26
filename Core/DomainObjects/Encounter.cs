@@ -127,6 +127,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private DateTime _E_M_Submitted_Date_And_Time = DateTime.MinValue;
         private string _Is_Signed_in_Akido_Note = "N";
         private string _Is_Auth_Verified = "N";
+        private string _Phone_Encounter_Owner = string.Empty;
         #endregion
 
         #region Constructors
@@ -246,6 +247,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_E_M_Submitted_Date_And_Time);
             sb.Append(_Is_Signed_in_Akido_Note);
             sb.Append(_Is_Auth_Verified);
+            sb.Append(_Phone_Encounter_Owner);
             return sb.ToString().GetHashCode();
         }
 
@@ -1391,8 +1393,13 @@ namespace Acurus.Capella.Core.DomainObjects
                 _Is_Auth_Verified = value;
             }
         }
-
-
+        [DataMember]
+        public virtual string Phone_Encounter_Owner
+        {
+            get { return _Phone_Encounter_Owner; }
+            set { _Phone_Encounter_Owner = value; }
+        }
+       
     }
 
 

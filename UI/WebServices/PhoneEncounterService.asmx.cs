@@ -569,13 +569,13 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
         #endregion
 
         [System.Web.Services.WebMethod(EnableSession = true)]
-        public string SavePhoneEncounterPlanEandMCoding(object[] arylstCPT, object[] arylstICD, object[] arylstDelCPT, object[] arylstDelICD, ulong ulHumanID, string sCallMins, string sCallerName, string sCallSpokenTo, string sCallDate, string sNotes, string sSubmitMode, string sPhyID, string sDOSPhyName)
+        public string SavePhoneEncounterPlanEandMCoding(object[] arylstCPT, object[] arylstICD, object[] arylstDelCPT, object[] arylstDelICD, ulong ulHumanID, string sCallMins, string sCallerName, string sCallSpokenTo, string sCallDate, string sNotes, string sSubmitMode, string sPhyID, string sDOSPhyName, string sPhoneEncounterOwner, string sPhoneEncounterSignedDate, string sIsSignedAkidoNote)
         {
-            string sResult = Save(arylstCPT, arylstICD, arylstDelCPT, arylstDelICD, ulHumanID, sCallMins, sCallerName, sCallSpokenTo, sCallDate, sNotes, sSubmitMode, ClientSession.UserName, sPhyID, sDOSPhyName);
+            string sResult = Save(arylstCPT, arylstICD, arylstDelCPT, arylstDelICD, ulHumanID, sCallMins, sCallerName, sCallSpokenTo, sCallDate, sNotes, sSubmitMode, ClientSession.UserName, sPhyID, sDOSPhyName, sPhoneEncounterOwner, sPhoneEncounterSignedDate, sIsSignedAkidoNote);
             return sResult;
         }
 
-        string Save(object[] arylstCPT, object[] arylstICD, object[] arylstDelCPT, object[] arylstDelICD, ulong ulHumanID, string sCallMins, string sCallerName, string sCallSpokenTo, string sCallDate, string sNotes, string sSubmitMode, string sPhyName, string sPhyID, string sDOSPhyName)
+        string Save(object[] arylstCPT, object[] arylstICD, object[] arylstDelCPT, object[] arylstDelICD, ulong ulHumanID, string sCallMins, string sCallerName, string sCallSpokenTo, string sCallDate, string sNotes, string sSubmitMode, string sPhyName, string sPhyID, string sDOSPhyName,string sPhoneEncounterOwner, string sPhoneEncounterSignedDate,string sIsSignedAkidoNote)
         {
             EAndMCodingManager objEandMManager = new EAndMCodingManager();
             UserManager userManger = new UserManager();
@@ -618,6 +618,13 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
             EncRecord.Local_Time = UtilityManager.ConvertToLocal(EncRecord.Date_of_Service).ToString("yyyy-MM-dd hh:mm:ss tt");
             EncRecord.Is_EandM_Submitted = "Y";
             EncRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
+            //Cap - 3582
+            if (sIsSignedAkidoNote == "True")
+            {
+                EncRecord.Phone_Encounter_Owner = sPhoneEncounterOwner;
+                EncRecord.Encounter_Provider_Signed_Date = UtilityManager.ConvertToUniversal(Convert.ToDateTime(sPhoneEncounterSignedDate));
+                EncRecord.Is_Signed_in_Akido_Note = "Y";
+            }
 
             //if (EncRecord.Is_EandM_Submitted == "Y")//By naveena For Submitting esuper bill second time
             //{
