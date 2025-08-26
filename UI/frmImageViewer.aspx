@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>Image Viewer</title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <link href="CSS/font-awesome.min4.5.0.css" rel="stylesheet" />
     <link href="CSS/ScanningAndIndexing.css" rel="stylesheet" />
@@ -104,10 +105,10 @@
                             <%--<i class="fa fa-print" id="Print" style="margin-left: 15px; cursor: pointer;" title="Print" onclick="print();"></i>--%>
                         </div>
                     </div>
-                    <div style="margin-top: 0px; height: 585px; width: 1000px; border: 1px solid #6A9C73; overflow: auto;" id="imgholder" runat="server">
+                    <div style="margin-top: 0px; height: 585px; width: 1000px; border: 1px solid #6A9C73; overflow: auto;" id="imgholder" runat="server" class="class-hide-this">
                         <img id="_imgBig" runat="server" alt="Uploaded File Not available in the location, it may be deleted or corrupted.Please Contact Support." />
                     </div>
-                    <div style="margin-top: 0px; height:585px !important; width: 1000px; border: 1px solid #6A9C73; overflow: auto; display: none" id="PDFholder" runat="server">
+                    <div style="margin-top: 0px; height:585px !important; width: 1000px; border: 1px solid #6A9C73; overflow: auto; display: none" id="PDFholder" runat="server" class="class-hide-this">
                         <iframe id="bigImgPDF" runat="server" style="width: 100%;height: 585px !important; overflow: hidden;" frameborder="0"></iframe>
                     </div>
 
