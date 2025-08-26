@@ -2996,6 +2996,21 @@ namespace Acurus.Capella.UI
             //    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "RefreshNotification('Notify');", true);
             //}
 
+            //CAP-3293
+            hdnAkidoChartProfileURL.Value = ConfigurationSettings.AppSettings["AkidoChartProfileURL"].ToString() ?? "";
+            if (ClientSession.UserPermissionDTO.Scntab != null)
+            {
+                var scn_id = (from p in ClientSession.UserPermissionDTO.Scntab where p.SCN_Name == "frmAkidoPatientProfile" select p).ToList();
+                if (scn_id.Count() > 0)
+                {
+                    var akidoPatientProfile = from p in ClientSession.UserPermissionDTO.Screens where p.SCN_ID == Convert.ToInt32(scn_id[0].SCN_ID) && p.Permission == "U" select p;
+                    if (akidoPatientProfile.Count() > 0)
+                    {
+                        trAkidoChartProfile.Visible = true;
+                    }
+                }
+            }
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Load", " StopLoadFromPatChart();ToolStripAlertHidexml();", true);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - PageLoad : End", DateTime.Now, sGroup_ID_Log, "frmPatientChart");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart : End", DateTime.Now, sGroup_ID_Log, "frmPatientChart");

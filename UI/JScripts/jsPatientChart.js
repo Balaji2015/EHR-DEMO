@@ -390,113 +390,121 @@ var list = "";
 var iCount = 0;
 var activemenu = "";
 function CheckMe(MenuName, e) {
-    if (MenuName != 'Exam') {
-        if ($("#ctl00_C5POBody_dvTest")[0].style.display == "block") {
+    //CAP-3293
+    if (MenuName == 'AkidoChartProfile') {
+        var capella_patientid = document.getElementById('ctl00_C5POBody_hdnHumanNo').value;
+        var akidoChartProfileURL = document.getElementById('ctl00_C5POBody_hdnAkidoChartProfileURL').value;
+        akidoChartProfileURL = akidoChartProfileURL.replace("[capella_patientid]", capella_patientid);
+        window.open(akidoChartProfileURL, "_blank");
+    }
+    else {
+        if (MenuName != 'Exam') {
+            if ($("#ctl00_C5POBody_dvTest")[0].style.display == "block") {
 
-            $("#ctl00_C5POBody_dvTest").css("display", "none");
-            $("#divPatChartContainer").css("display", "none");
-            $("#Encountersimg")[0].style.color = "#3275B1";
-            $("#EncountersText")[0].style.color = "#000000";
-            $("#Resultsimg")[0].style.color = "#3275B1";
-            $("#ResultsText")[0].style.color = "#000000";
-            $("#PatientTaskimg")[0].style.color = "#3275B1";
-            $("#PatientTaskText")[0].style.color = "#000000";
-            $("#Examimg")[0].style.color = "#3275B1";
-            $("#ExamText")[0].style.color = "#000000";
-            $("#Documentimg")[0].style.color = "#3275B1";
-            $("#DocumentText")[0].style.color = "#000000";
-            $("#SummaryofCareimg")[0].style.color = "#3275B1";
-            $("#SummaryofCareText")[0].style.color = "#000000";
-            $("#Analyticsimg")[0].style.color = "#3275B1";
-            $("#AnalyticsText")[0].style.color = "#000000";
+                $("#ctl00_C5POBody_dvTest").css("display", "none");
+                $("#divPatChartContainer").css("display", "none");
+                $("#Encountersimg")[0].style.color = "#3275B1";
+                $("#EncountersText")[0].style.color = "#000000";
+                $("#Resultsimg")[0].style.color = "#3275B1";
+                $("#ResultsText")[0].style.color = "#000000";
+                $("#PatientTaskimg")[0].style.color = "#3275B1";
+                $("#PatientTaskText")[0].style.color = "#000000";
+                $("#Examimg")[0].style.color = "#3275B1";
+                $("#ExamText")[0].style.color = "#000000";
+                $("#Documentimg")[0].style.color = "#3275B1";
+                $("#DocumentText")[0].style.color = "#000000";
+                $("#SummaryofCareimg")[0].style.color = "#3275B1";
+                $("#SummaryofCareText")[0].style.color = "#000000";
+                $("#Analyticsimg")[0].style.color = "#3275B1";
+                $("#AnalyticsText")[0].style.color = "#000000";
+
+            }
+            else {
+                $("#ctl00_C5POBody_dvTest").css("display", "block");
+                $("#divPatChartContainer").css("display", "block");
+                $("#Resultsimg")[0].style.color = "#3275B1";
+                $("#ResultsText")[0].style.color = "#000000";
+                activemenu = "";
+            }
 
         }
         else {
-            $("#ctl00_C5POBody_dvTest").css("display", "block");
-            $("#divPatChartContainer").css("display", "block");
-            $("#Resultsimg")[0].style.color = "#3275B1";
-            $("#ResultsText")[0].style.color = "#000000";
-            activemenu = "";
-        }
+            if ($("#ctl00_C5POBody_dvTest")[0].style.display == "block") {
 
-    }
-    else {
-        if ($("#ctl00_C5POBody_dvTest")[0].style.display == "block") {
+                $("#ctl00_C5POBody_dvTest").css("display", "none");
+                $("#divPatChartContainer").css("display", "none");
+                $("#Encountersimg")[0].style.color = "#3275B1";
+                $("#EncountersText")[0].style.color = "#000000";
+                $("#Resultsimg")[0].style.color = "#3275B1";
+                $("#ResultsText")[0].style.color = "#000000";
+                $("#PatientTaskimg")[0].style.color = "#3275B1";
+                $("#PatientTaskText")[0].style.color = "#000000";
+                $("#Examimg")[0].style.color = "#3275B1";
+                $("#ExamText")[0].style.color = "#000000";
+                $("#Documentimg")[0].style.color = "#3275B1";
+                $("#DocumentText")[0].style.color = "#000000";
+                $("#SummaryofCareimg")[0].style.color = "#3275B1";
+                $("#SummaryofCareText")[0].style.color = "#000000";
+                $("#Analyticsimg")[0].style.color = "#3275B1";
+                $("#AnalyticsText")[0].style.color = "#000000";
 
-            $("#ctl00_C5POBody_dvTest").css("display", "none");
-            $("#divPatChartContainer").css("display", "none");
-            $("#Encountersimg")[0].style.color = "#3275B1";
-            $("#EncountersText")[0].style.color = "#000000";
-            $("#Resultsimg")[0].style.color = "#3275B1";
-            $("#ResultsText")[0].style.color = "#000000";
-            $("#PatientTaskimg")[0].style.color = "#3275B1";
-            $("#PatientTaskText")[0].style.color = "#000000";
-            $("#Examimg")[0].style.color = "#3275B1";
-            $("#ExamText")[0].style.color = "#000000";
-            $("#Documentimg")[0].style.color = "#3275B1";
-            $("#DocumentText")[0].style.color = "#000000";
-            $("#SummaryofCareimg")[0].style.color = "#3275B1";
-            $("#SummaryofCareText")[0].style.color = "#000000";
-            $("#Analyticsimg")[0].style.color = "#3275B1";
-            $("#AnalyticsText")[0].style.color = "#000000";
-
-        }
-    }
-    if (activemenu != MenuName) {
-        $(e)[0].style.color = "#fe5c00";
-        $(e)[0].nextElementSibling.style.color = "#fe5c00";
-        if (MenuName != 'Exam') {
-            $("#divPatChartContainer").css("display", "block");
-        }
-        $("#ctl00_C5POBody_dvTest").css("display", "block");
-
-        activemenu = MenuName;
-
-        jQuery(top.window.parent.document).find('#divLoadingPatChart').css('display', "block");
-        var WSData = "{\"text\":\"" + document.getElementById('ctl00_C5POBody_hdnHumanNo').value + "|" + MenuName + "\"}";
-        $.ajax({
-            type: "POST",
-            url: "frmDLC.aspx/SearchDescrption",
-            data: WSData,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-                $('#divTreeview').empty();
-                makeUL(data.d, MenuName)
-                $('#divTreeview')[0].appendChild(list);
-                list = "";
-                jQuery(top.window.parent.document).find('#divLoadingPatChart').css('display', "none");
-                $("#ctl00_C5POBody_dvCheck").find("li").removeClass("collapsed");
-                $("#liEncounters").removeClass("collapsed");
-
-            },
-            error: function OnError(xhr) {
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    //CAP-792
-                    if (isValidJSON(xhr.responseText)) {
-                        var log = JSON.parse(xhr.responseText);
-                        console.log(log);
-                        alert("USER MESSAGE:\n" + xhr.status + "-" + xhr.statusText +
-                            ". \nCannot process request. Please Login again and retry. If issue persists, Please contact Support.\n\nEXCEPTION DETAILS: \nException Type" +
-                            log.ExceptionType + " \nMessage: " + log.Message);
-                    }
-                    else {
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry.");
-                    }
-                }
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
-        });
-        iCount++;
+        }
+        if (activemenu != MenuName) {
+            $(e)[0].style.color = "#fe5c00";
+            $(e)[0].nextElementSibling.style.color = "#fe5c00";
+            if (MenuName != 'Exam') {
+                $("#divPatChartContainer").css("display", "block");
+            }
+            $("#ctl00_C5POBody_dvTest").css("display", "block");
+
+            activemenu = MenuName;
+
+            jQuery(top.window.parent.document).find('#divLoadingPatChart').css('display', "block");
+            var WSData = "{\"text\":\"" + document.getElementById('ctl00_C5POBody_hdnHumanNo').value + "|" + MenuName + "\"}";
+            $.ajax({
+                type: "POST",
+                url: "frmDLC.aspx/SearchDescrption",
+                data: WSData,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $('#divTreeview').empty();
+                    makeUL(data.d, MenuName)
+                    $('#divTreeview')[0].appendChild(list);
+                    list = "";
+                    jQuery(top.window.parent.document).find('#divLoadingPatChart').css('display', "none");
+                    $("#ctl00_C5POBody_dvCheck").find("li").removeClass("collapsed");
+                    $("#liEncounters").removeClass("collapsed");
+
+                },
+                error: function OnError(xhr) {
+                    if (xhr.status == 999)
+                        window.location = "/frmSessionExpired.aspx";
+                    else {
+                        //CAP-792
+                        if (isValidJSON(xhr.responseText)) {
+                            var log = JSON.parse(xhr.responseText);
+                            console.log(log);
+                            alert("USER MESSAGE:\n" + xhr.status + "-" + xhr.statusText +
+                                ". \nCannot process request. Please Login again and retry. If issue persists, Please contact Support.\n\nEXCEPTION DETAILS: \nException Type" +
+                                log.ExceptionType + " \nMessage: " + log.Message);
+                        }
+                        else {
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry.");
+                        }
+                    }
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                }
+            });
+            iCount++;
 
 
-        $('#ctl00_C5POBody_dvCheck')[0].style.display = "block";
+            $('#ctl00_C5POBody_dvCheck')[0].style.display = "block";
 
+        }
     }
-
 }
 
 var backcolor = '';

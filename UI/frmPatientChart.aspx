@@ -662,6 +662,14 @@
                                     <hr style="height:1.5px;border-width:0;color:gray;background-color:#dedede;margin-top: 5px;margin-bottom: 5px;width:71px;"/>
                                 </td>
                             </tr>
+                             <tr id="trAkidoChartProfile" runat="server" visible="false">
+                                 <td style="text-align:center;">
+                                     <i class="fas fa-paste"  style="color:#3275B1;font-size:25px;cursor: pointer;"  onclick="return CheckMe('AkidoChartProfile',this);" id="AkidoChartProfile"></i>
+                                     <p class="patientchartformat" style="font-weight: bold; padding-top: 2px; font-size: 11px; margin-left: 4px; text-align: center;cursor: pointer;" onclick="return CheckMe('AkidoChartProfile',AkidoChartProfile);" id="AkidoChartProfileText" title="Notes\Results\Files">Akido Chart Profile
+                                     </p>
+                                     <hr style="height:1.5px;border-width:0;color:gray;background-color:#dedede;margin-top: 5px;margin-bottom: 5px;width:71px;"/>
+                                 </td>
+                             </tr>
                             <tr>
                                 <td>
                             <i class="fas fa-exchange-alt"  style="margin-left: 24px;color:#3275B1;font-size:25px;cursor: pointer;"  onclick="return CheckMe('Summary of Care',this);" id="SummaryofCareimg"></i>
@@ -747,6 +755,7 @@
     <asp:HiddenField ID="hdnPatientStrip" runat="server" EnableViewState="false" />
     <asp:HiddenField ID="hdnScreen" runat="server" EnableViewState="false" /><%--//CAP-1511--%>
     <asp:HiddenField ID="hdnSubScreen" runat="server" EnableViewState="false" /><%--//CAP-1511--%>
+    <asp:HiddenField ID="hdnAkidoChartProfileURL" runat="server" EnableViewState="false" />
     <asp:Button ID="hdnbtngeneratexml" runat="server" OnClick="hdnbtngeneratexml_Click"  style="display:none" />
 
         <script src="JScripts/jquery-2.1.3.js"></script>
