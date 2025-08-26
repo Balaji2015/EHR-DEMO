@@ -1201,11 +1201,18 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             return array;
         }
     }
-    $('#dlstICD10').load("htmICD10.html", function () {
-        arrICD10Codes = $.map($('#dlstICD10 option'), function (li) {
-            return $(li).attr("value");
-        });
-    });
+    //CAP-3465
+    //$('#dlstICD10').load("htmICD10.html", function () {
+    //    arrICD10Codes = $.map($('#dlstICD10 option'), function (li) {
+    //        return $(li).attr("value");
+    //    });
+    //});
+    $("#dlstICD10").load("htmICD10.html?version=" + localStorage.getItem("ScriptVersion").split('|')[0].trim(),
+        function () {
+            var select = document.getElementById("dlstICD10");
+            arrICD10Codes = Array.from(select.options, opt => opt.value);
+        }
+    );
     $("#txtICD10").autocomplete({
         source:
                 function (request, response) {
