@@ -487,7 +487,15 @@ namespace Acurus.Capella.UI
                 objEncounter = new Encounter();
                 objEncounter = encList[0];
                 objEncounter.Is_Physician_Asst_Process = sIs_Physician_Asst_Process;
-                EncProxyMngr.UpdateEncounter(objEncounter, string.Empty, new object[] { "false" });
+                //Jira CAP-3587
+                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                bool bIsUpdateinBlob = true;
+                IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(objEncounter.Id);
+                if (ilstEncounterBlob.Count == 0)
+                {
+                    bIsUpdateinBlob = false;
+                }
+                EncProxyMngr.UpdateEncounter(objEncounter, string.Empty, new object[] { "false" }, bIsUpdateinBlob);
             }
 
         }
@@ -1003,14 +1011,10 @@ namespace Acurus.Capella.UI
                         EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                         IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()));
 
-                        //Jira CAP-3587
-                        //if (ilstEncounterBlob == null && ilstEncounterBlob.Count == 0)
-                        if (ilstEncounterBlob == null || ilstEncounterBlob.Count == 0)
+                        if (ilstEncounterBlob == null && ilstEncounterBlob.Count == 0)
                         {
                             //ScriptManager.RegisterStartupScript(this, this.GetType(), "string.Empty", "DisplayErrorMessage('700013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                            //Jira CAP-3587
-                            //return "DisplayErrorMessage-700013-return";
-                            return "DisplayErrorMessage-700016-return";
+                            return "DisplayErrorMessage-700013-return";
                         }
 
                         //    string FileName = "Encounter" + "_" + grdAdminModule.SelectedItems[0].Cells[2].Text + ".xml";
@@ -1345,7 +1349,15 @@ namespace Acurus.Capella.UI
                             {
                                 enc.Assigned_Med_Asst_User_Name = sUpdateOwner.User_Name;
                             }
-                            encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" });
+                            //Jira CAP-3587
+                            EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                            bool bIsUpdateinBlob = true;
+                            IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(enc.Id);
+                            if (ilstEncounterBlob.Count == 0)
+                            {
+                                bIsUpdateinBlob = false;
+                            }
+                            encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" }, bIsUpdateinBlob);
                         }
                     }
                     if (root.GetProperty("Current Process").GetString() == "SCRIBE_PROCESS" || root.GetProperty("Current Process").GetString() == "AKIDO_SCRIBE_PROCESS" || root.GetProperty("Current Process").GetString() == "SCRIBE_CORRECTION" || root.GetProperty("Current Process").GetString() == "SCRIBE_REVIEW_CORRECTION")
@@ -1371,7 +1383,15 @@ namespace Acurus.Capella.UI
                             {
                                 enc.Assigned_Scribe_User_Name = sUpdateOwner.User_Name;
                             }
-                            encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" });
+                            //Jira CAP-3587
+                            EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                            bool bIsUpdateinBlob = true;
+                            IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(enc.Id);
+                            if (ilstEncounterBlob.Count == 0)
+                            {
+                                bIsUpdateinBlob = false;
+                            }
+                            encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" }, bIsUpdateinBlob);
                         }
                     }
                 }
