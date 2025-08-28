@@ -1139,7 +1139,6 @@
 	<Message number="700013" Type="OK" Text="The current process is not an allocatable process. So, Update Owner can not be done."/>
 	<Message number="700014" Type="OK" Text="The Selected Encounter is already archived. Please contact support team."/>
 	<Message number="700015" Type="OK" Text="This is not an allocatable process, cannot allow Update Owner  "/>
-	<Message number="700016" Type="OK" Text="This encounter is in general queue. So, Update Owner can not be done."/>
 
 	<Message number="430001" Type="ToolStrip" Text="Saved successfully." />
 	<Message number="430002" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?"/>
@@ -2199,8 +2198,9 @@
 	<Message number="7430010" Type="OK" Text="Please enter Call Duration."></Message>
 	<Message number="7430011" Type="OK" Text="Please Select Physician." />
 	<Message number="7430012" Type="OK" Text="Batch is created. Phone Encounter cannot be cancelled." />
-	<Message number="7430013" Type="OK" Text="Please enter the Owner." />
+	<Message number="7430013" Type="OK" Text="Please select a valid Owner." />
 	<Message number="7430014" Type="OK" Text="Please enter the Signed Date Time." />
+	<Message number="7430015" Type="OK" Text="Signed Date cannot be greater than Call Date." />
 
 	<Message number="851001" Type="OKCANCEL" Text="Would you like to clear all the fields without saving?" />
 	<Message number="851002" Type="OKCANCEL" Text="There are unsaved changes.&#xD;Click &apos;OK&apos; to go back &amp; save the changes or&#xD;Click &apos;Cancel&apos; to proceed without saving." />

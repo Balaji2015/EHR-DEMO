@@ -2933,6 +2933,7 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
         }
         //Cap - 3582
         if (document.getElementById("chkSignedAkidoNote").checked && (document.getElementById("txtAssignedTo").attributes["val"] == undefined || document.getElementById("txtAssignedTo").attributes["val"] == null || document.getElementById("txtAssignedTo").attributes["val"] == "")) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             DisplayErrorMessage('7430013');
             bSaveCheck = true;
             AutoSaveUnsuccessful();
@@ -2944,6 +2945,17 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             bSaveCheck = true;
             AutoSaveUnsuccessful();
             return;
+        }
+        if (document.getElementById('txtSigneddate').value != undefined && document.getElementById('txtSigneddate').value != "") {
+            let signedDate = new Date(document.getElementById('txtSigneddate').value);
+            let CallDate = new Date(document.getElementById('txtCalldate').value);
+            if (signedDate < CallDate) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                DisplayErrorMessage('7430015');
+                bSaveCheck = true;
+                AutoSaveUnsuccessful();
+                return;
+            }
         }
         var bcheckNoChrg = false;
         for (var iRowCPT = 1; iRowCPT < $('#tblEandMCodingCPT tr').length; iRowCPT++) {
@@ -3318,8 +3330,16 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             AutoSaveUnsuccessful();
             return;
         }
+        //Cap - 3582
+        var sPhoneEncounterOwnerVal = "";
+        var sPhoneEncounterSignedVal = "";
+        if (document.getElementById("txtAssignedTo").attributes["val"] != undefined && document.getElementById("txtAssignedTo").attributes["val"] != null) {
+            sPhoneEncounterOwnerVal = document.getElementById("txtAssignedTo").attributes["val"];
+        }
 
-
+        if (document.getElementById('txtSigneddate').value != undefined && document.getElementById('txtSigneddate').value != null) {
+            sPhoneEncounterSignedVal = document.getElementById('txtSigneddate').value;
+        }
         //localStorage.setItem("bSave", "true");
         //window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
 
@@ -3340,8 +3360,8 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 sSubmitMode: submitmode,
                 sPhyID: $('#cboSelectPhysician option:selected').attr('id'),
                 sDOSPhyName: $('#cboSelectPhysician option:selected').text(),
-                sPhoneEncounterOwner: document.getElementById("txtAssignedTo").attributes["val"],
-                sPhoneEncounterSignedDate: document.getElementById('txtSigneddate').value,
+                sPhoneEncounterOwner: sPhoneEncounterOwnerVal,
+                sPhoneEncounterSignedDate: sPhoneEncounterSignedVal,
                 sIsSignedAkidoNote : document.getElementById("chkSignedAkidoNote").checked
 
             }),

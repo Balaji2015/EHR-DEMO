@@ -11,7 +11,8 @@
     //$(top.window.document).find("#ProcessModalExam")[0].style.width = "120%";
     //$(top.window.document).find("#ProcessModalExam")[0].style.zIndex = "5000";
     $(top.window.document).find('#ProcessFrameExam')[0].contentDocument.location.href = "frmImageViewer.aspx?Source=EXAM&DocType=" + sDocType + "&DocDate=" + sdocdate + "&DocPhy=" + sdocPhy;
-    $(top.window.document).find("#ModalTitleExam")[0].textContent = "Image Viewer - " + sDocType + " ( " + $(window.top.document).find('#ctl00_C5POBody_lblPatientStrip').text() + " )";;
+    //$(top.window.document).find("#ModalTitleExam")[0].textContent = "Image Viewer - " + sDocType + " ( " + $(window.top.document).find('#ctl00_C5POBody_lblPatientStrip').text() + " )";;
+    $(top.window.document).find("#ModalTitleExam")[0].innerHTML = "Image Viewer - " + sDocType + " ( " + $(window.top.document).find('#ctl00_C5POBody_lblPatientStrip').html() + " )";;
 
     return false;
 }
@@ -26,7 +27,8 @@ function OpenViewerforCompare(sDocType, sdocdate, sdocPhy) {
     //$(top.window.document).find("#ProcessModalCompare")[0].style.width = "1250px";
     //$(top.window.document).find("#ProcessModalCompare")[0].style.zIndex = "5000";
     $(top.window.document).find('#ProcessFrameCompare')[0].contentDocument.location.href = "frmImageCompare.aspx?Source=EXAM&DocType=" + sDocType + "&DocDate=" + sdocdate + "&DocPhy=" + sdocPhy;
-    $(top.window.document).find("#ModalTitleCompare")[0].textContent = "Image Compare - " + sDocType + " ( " + $(window.top.document).find('#ctl00_C5POBody_lblPatientStrip').text() + " )";
+    //$(top.window.document).find("#ModalTitleCompare")[0].textContent = "Image Compare - " + sDocType + " ( " + $(window.top.document).find('#ctl00_C5POBody_lblPatientStrip').text() + " )";
+    $(top.window.document).find("#ModalTitleCompare")[0].innerHTML = "Image Compare - " + sDocType + " ( " + $(window.top.document).find('#ctl00_C5POBody_lblPatientStrip').html() + " )";
 
     return false;
 }
