@@ -4482,7 +4482,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //$Muthusamy 
 
 
-        public void UpdateResultMasterListForLab(ulong ResultMasterID, ulong Human_ID, ulong Order_ID, ulong Matching_Patient_ID, string PhysicianNPI, bool bCheck, string MacAddress, ulong ulAutoPhyID)
+        public void UpdateResultMasterListForLab(ulong ResultMasterID, ulong Human_ID, ulong Order_ID, ulong Matching_Patient_ID, string PhysicianNPI, bool bCheck, string MacAddress, ulong ulAutoPhyID, string sModifiedBy)
         {
 
             PhysicianManager phyMngr = new PhysicianManager();
@@ -4515,7 +4515,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (objResultMaster != null)
             {
                 objResultMaster.Matching_Patient_Id = Human_ID;
-                objResultMaster.Modified_By = Current_Owner;
+                //CAP - 3528
+                //objResultMaster.Modified_By = Current_Owner;
+                objResultMaster.Modified_By = sModifiedBy;
                 objResultMaster.Modified_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
                 //Jira CAP-3251
                 if (objResultMaster.Matching_Physician_Id == 0)
@@ -4607,14 +4609,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
             ErrorLogManager objErrorLogManager = new ErrorLogManager();
-            objErrorLogManager.UpdateErrorLogByResultMasterID(ResultMasterID, Current_Owner, MacAddress);
+            //CAP - 3528
+            //objErrorLogManager.UpdateErrorLogByResultMasterID(ResultMasterID, Current_Owner, MacAddress);
+            objErrorLogManager.UpdateErrorLogByResultMasterID(ResultMasterID, sModifiedBy, MacAddress);
             //}
 
 
 
         }
 
-        public void UpdateResultMasterAndWf_Object(ulong ResultMasterID, ulong order_Submit_ID, ulong Human_ID, string NPINumber, string MacAddress)
+        public void UpdateResultMasterAndWf_Object(ulong ResultMasterID, ulong order_Submit_ID, ulong Human_ID, string NPINumber, string MacAddress,string sModifiedBy)
         {
             //CAP-3187
             //PhysicianManager phyMngr = new PhysicianManager();
@@ -4638,7 +4642,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 objResultMaster.Matching_Patient_Id = Human_ID;
                 objResultMaster.Order_ID = order_Submit_ID;
-                objResultMaster.Modified_By = Current_Owner;
+                //CAP-3528
+                //objResultMaster.Modified_By = Current_Owner;
+                objResultMaster.Modified_By = sModifiedBy;
                 objResultMaster.Modified_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
                 //Jira CAP-3251
                 if (objResultMaster.Matching_Physician_Id == 0)
@@ -4668,7 +4674,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
             ErrorLogManager objErrorLogManager = new ErrorLogManager();
-            objErrorLogManager.UpdateErrorLogByResultMasterID(ResultMasterID, Current_Owner, MacAddress);
+            //CAP-3528
+            //objErrorLogManager.UpdateErrorLogByResultMasterID(ResultMasterID, Current_Owner, MacAddress);
+            objErrorLogManager.UpdateErrorLogByResultMasterID(ResultMasterID, sModifiedBy, MacAddress);
         }
 
         public ResultMaster SaveResultMasterItem(ResultMaster objResultMaster, ulong ulFileManagementIndexID)

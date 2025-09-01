@@ -1203,19 +1203,19 @@ namespace Acurus.Capella.UI
                 HumanID = "0";
             }
 
-            bool bCheck = true;
+            bool bCheck = true;            
             ulong ulAutoPhysID = Convert.ToUInt64(System.Configuration.ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"]);
             ResultMasterManager resultmasterMngr = new ResultMasterManager();
 
             string Val = string.Empty;
             if (!chkNoOrders)
             {
-                resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt64(HumanID), NPINumbers, string.Empty);
+                resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt64(HumanID), NPINumbers, string.Empty, ClientSession.UserName);
                 Val = "7100010";
             }
             else if (chkNoOrders)
             {
-                resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(HumanID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt32(Matching_Patient_ID), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
+                resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(HumanID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt32(Matching_Patient_ID), NPINumbers, bCheck, string.Empty, ulAutoPhysID, ClientSession.UserName);
                 Val = "7100010";
             }
             return JsonConvert.SerializeObject(Val);
