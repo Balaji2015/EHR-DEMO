@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>Image Viewer</title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <link href="CSS/font-awesome.min4.5.0.css" rel="stylesheet" />
     <link href="CSS/ScanningAndIndexing.css" rel="stylesheet" />
@@ -96,7 +97,7 @@
           
             <tr style="height: 100%">
                 <td style="width: 10%; height: 610px; overflow-y: hidden;">
-                    <div runat="server" id="_plcImgsThumbs" style="height: 585px;width:75px; overflow-y: scroll;"></div>
+                    <div runat="server" id="_plcImgsThumbs" style="height: 585px;width:75px; overflow-y: scroll;" class="class-hide-this"></div>
                     <br />
                 </td>
                 <td style="width: 40%; height: 100%;">
@@ -118,17 +119,17 @@
                    
                             </div>
                              </div>
-                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;" id="imgholder" runat="server">
+                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;" id="imgholder" runat="server" class="class-hide-this">
                         <img id="_imgBigActual" runat="server"  style="height: 600px; width: 575px;object-fit:contain;"  />
                     </div>
-                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto; display: none" id="PDFholder" runat="server">
+                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto; display: none" id="PDFholder" runat="server" class="class-hide-this">
                         <iframe id="bigImgPDF" runat="server"  frameborder="0"  style="height: 600px; width: 575px;"></iframe>
                     </div>
                     
                 </td>
 
                  <td style="width: 10%; height: 610px; overflow-y: hidden;">
-                    <div runat="server" id="_plcImgsThumbsComp" style="height: 585px;width:80px; overflow-y: scroll;"></div>
+                    <div runat="server" id="_plcImgsThumbsComp" style="height: 585px;width:80px; overflow-y: scroll;" class="class-hide-this"></div>
                     <br />
                 </td>
                 <td style="width: 40%; height: 100%;">
@@ -148,10 +149,10 @@
                                         <i class="fa fa-print" id="Printcom" style="margin-left: 15px; cursor: pointer;" title="Print" onclick="printCompare();"></i>&nbsp;&nbsp;
                     </div>
                         </div>
-                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;" id="imgholdercom" runat="server">
+                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;" id="imgholdercom" runat="server" class="class-hide-this">
                         <img id="_imgBigCompare" runat="server"  style="height: 600px; width: 575px;object-fit:contain;"/>
                     </div>
-                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;display: none" id="PDFholderComp" runat="server">
+                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;display: none" id="PDFholderComp" runat="server" class="class-hide-this">
                         <iframe id="bigImgPDFCompare" runat="server" style="height: 600px; width: 575px; overflow: hidden;" frameborder="0"></iframe>
                     </div>
                     

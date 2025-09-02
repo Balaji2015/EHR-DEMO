@@ -1510,7 +1510,16 @@ namespace Acurus.Capella.UI
             {
                 objdocument = DocumentMngr.SaveDocumentsAndMoveToNextProcess(SaveDocList.ToArray<Documents>(), UpdateDoclist.ToArray<Documents>(), DeleteDoclist.ToArray<Documents>(), SaveList.ToArray<TreatmentPlan>(), UpdateList.ToArray<TreatmentPlan>(), null, ClientSession.EncounterId, ClientSession.HumanId, Convert.ToUInt64(Request["SPHYID"].ToString()), EncRecord, ClientSession.UserName, ButtonName, ClientSession.FacilityName, utc, Convert.ToBoolean(Request["MTR"]), string.Empty, ClientSession.UserRole, CloseType,false);
             }
-            
+
+            //Jira CAP-3577
+            if (ButtonName.ToUpper() == "MOVE TO NEXT PROCESS" || ButtonName.ToUpper() == "MOVE TO PHYSICIAN ASSISTANT")
+            {
+                if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && ClientSession.EncounterId != 0 && !Convert.ToDateTime(EncRecord.Encounter_Provider_Signed_Date).ToString("yyyy-MM-dd").Contains("0001-01-01"))
+                {
+                    EncounterBlobManager.IsAkidoCDC(ClientSession.HumanId.ToString(), ClientSession.EncounterId.ToString(), ClientSession.UserName, DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+            }
+
             hdnSaveDetails.Value = "false";
             EncRecord = objdocument.EncounterObj;
             ClientSession.FillEncounterandWFObject.EncRecord = EncRecord;

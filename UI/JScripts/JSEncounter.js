@@ -2091,7 +2091,9 @@ function CreateCodingException() {
     $(top.window.document).find("#TabmdldlgException")[0].style.width = "950px";
     $(top.window.document).find("#TabmdldlgException")[0].style.height = "680px";
     var sPath = ""
-    var patientName = $(top.window.document).find('#ctl00_C5POBody_lblPatientStrip')[0].innerHTML.split('|')[0].trim();
+    //Jira CAP-3559
+    //var patientName = $(top.window.document).find('#ctl00_C5POBody_lblPatientStrip')[0].innerHTML.split('|')[0].trim();
+    var patientName = $(top.window.document).find('#ctl00_C5POBody_lblPatientStrip')[0].innerText.split('|')[0].trim();
     sPath = "frmException.aspx?formName=" + "Create Coding Exception" + "&PatientName=" + patientName;
     $(top.window.document).find("#TabExceptionFrame")[0].style.height = "605px";
     $(top.window.document).find("#TabExceptionFrame")[0].contentDocument.location.href = sPath;
@@ -2108,8 +2110,11 @@ function FeedbackCodingException(Addendumid) {
         $(top.window.document).find("#TabmdldlgException")[0].style.height = "800px";
         var sPath = "";
         var patientName = "";
-        if ($("[id*='lblPatientStrip']") != null && $("[id*='lblPatientStrip']") != undefined && $("[id*='lblPatientStrip']")[0] != undefined)
-            patientName = $("[id*='lblPatientStrip']")[0].innerHTML.split('|')[0].trim();
+        if ($("[id*='lblPatientStrip']") != null && $("[id*='lblPatientStrip']") != undefined && $("[id*='lblPatientStrip']")[0] != undefined) {
+            //Jira CAP-3559
+            //patientName = $("[id*='lblPatientStrip']")[0].innerHTML.split('|')[0].trim();
+            patientName = $("[id*='lblPatientStrip']")[0].innerText.split('|')[0].trim();
+        }
         sPath = "frmException.aspx?formName=" + "Feedback for Coding Exception" + "&PatientName=" + patientName + "&AddendumID=" + Addendumid;
         $(top.window.document).find("#TabExceptionFrame")[0].style.height = "725px";
         $(top.window.document).find("#TabExceptionFrame")[0].contentDocument.location.href = sPath;

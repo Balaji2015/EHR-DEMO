@@ -1022,6 +1022,8 @@ namespace Acurus.Capella.UI
                 string Encounter_Reviewed_Id = "";
                 string sIsPhoneEncounter = "";
                 string sCreatedBy = "";
+                string sIsSignedAkidoNote = "";
+                string sPhoneEncounterOwner = "";
              
                 //XDocument xmlDocumentType = XDocument.Load(strXmlEncounterPath);
                 TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
@@ -1040,6 +1042,10 @@ namespace Acurus.Capella.UI
                         Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
                         sIsPhoneEncounter= Encounter.Attribute("Is_Phone_Encounter").Value;
                         sCreatedBy= Encounter.Attribute("Created_By").Value;
+                        
+                        //CAP-3610
+                        sIsSignedAkidoNote = Encounter.Attribute("Is_Signed_in_Akido_Note")?.Value ?? "";
+                        sPhoneEncounterOwner = Encounter.Attribute("Phone_Encounter_Owner")?.Value ?? "";
                     }
 
                     //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
@@ -1079,23 +1085,33 @@ namespace Acurus.Capella.UI
                 //Jira #CAP-858
                 //if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM")
                 //    lblSignedPhysician.InnerText = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
-
+                
                 if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsPhoneEncounter != "Y")
                 {
                     lblSignedPhysician.InnerText = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
                 }
                 else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsPhoneEncounter == "Y")
                 {
-                    if (Encounter_Provider_Name != "")
+                    //CAP-3610
+                    if (sIsSignedAkidoNote != "Y")
                     {
-                        lblSignedPhysician.InnerText = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                        if (Encounter_Provider_Name != "")
+                        {
+                            lblSignedPhysician.InnerText = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                        }
+                        else
+                        {
+                            lblSignedPhysician.InnerText = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
+                        }
                     }
                     else
                     {
-                        lblSignedPhysician.InnerText = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
+                        UserManager userManager = new UserManager();
+                        var users = userManager.GetUser(sPhoneEncounterOwner);
+                        string sPersonName = users.FirstOrDefault()?.person_name ?? "";
+                        lblSignedPhysician.InnerText = "Electronically Signed by " + sPersonName + " at " + Encounter_signedDate;
                     }
                 }
-                
 
                 string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
                 StaticLookupManager staticMngr = new StaticLookupManager();
@@ -2141,6 +2157,8 @@ margin:0in 0in 0in 9in;
             string Encounter_Reviewed_Id = "";
             string sIsphoneEncounter = "";
             string sCreatedBy = "";
+            string sIsSignedAkidoNote = "";
+            string sPhoneEncounterOwner = "";
 
             TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
             XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
@@ -2157,6 +2175,10 @@ margin:0in 0in 0in 9in;
                     Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
                     sIsphoneEncounter = Encounter.Attribute("Is_Phone_Encounter").Value;
                     sCreatedBy = Encounter.Attribute("Created_By").Value;
+
+                    //CAP-3610
+                    sIsSignedAkidoNote = Encounter.Attribute("Is_Signed_in_Akido_Note")?.Value ?? "";
+                    sPhoneEncounterOwner = Encounter.Attribute("Phone_Encounter_Owner")?.Value ?? "";
                 }
 
                 //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
@@ -2266,13 +2288,24 @@ margin:0in 0in 0in 9in;
             }
             else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter == "Y")
             {
-                if (Encounter_Provider_Name != "")
+                //CAP-3610
+                if (sIsSignedAkidoNote != "Y")
                 {
-                    strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                    if (Encounter_Provider_Name != "")
+                    {
+                        strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                    }
+                    else
+                    {
+                        strfooterProvider = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
+                    }
                 }
                 else
                 {
-                    strfooterProvider = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
+                    UserManager userManager = new UserManager();
+                    var users = userManager.GetUser(sPhoneEncounterOwner);
+                    string sPersonName = users.FirstOrDefault()?.person_name ?? "";
+                    strfooterProvider = "Electronically Signed by " + sPersonName + " at " + Encounter_signedDate;
                 }
             }
             //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +

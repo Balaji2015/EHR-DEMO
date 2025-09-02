@@ -119,6 +119,7 @@
 </body>--%>
 <head>
     <title>Medication</title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

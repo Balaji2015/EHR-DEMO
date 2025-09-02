@@ -60,7 +60,9 @@ function OpenException() {
     $(top.window.document).find("#TabmdldlgException")[0].style.width = "950px";
     $(top.window.document).find("#TabmdldlgException")[0].style.height = "800px";
     var sPath = ""
-    var patientName = $("[id*='lblPatientStrip']")[0].innerHTML.split('|')[0].trim();
+    //Jira CAP-3559
+    //var patientName = $("[id*='lblPatientStrip']")[0].innerHTML.split('|')[0].trim();
+    var patientName = $("[id*='lblPatientStrip']")[0].innerText.split('|')[0].trim();
     sPath = "frmException.aspx?formName=" + "Feedback for Coding Exception" + "&PatientName=" + patientName;
     $(top.window.document).find("#TabExceptionFrame")[0].style.height = "725px";
     $(top.window.document).find("#TabExceptionFrame")[0].contentDocument.location.href = sPath;

@@ -117,7 +117,8 @@ namespace Acurus.Capella.UI.WebServices.API
                 var releaseDate = ConfigurationSettings.AppSettings["ReleaseDate"] ?? "";
                 var TriggerReleaseDate = ConfigurationSettings.AppSettings["TriggerReleaseDate"] ?? "";
                 var thresholdDate = ConfigurationSettings.AppSettings["ThresholdDate"] ?? "";
-
+                //Jira CAP-3577
+                string sAllocatedProcessForHydration = ConfigurationSettings.AppSettings["AllocatedProcessForHydration"]?.ToString() ?? "";
                 //Jira CAP-3112 - Start
                 //if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
                 //{
@@ -246,7 +247,9 @@ namespace Acurus.Capella.UI.WebServices.API
                 //Jira CAP-3112
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
                 {
-                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01';";
+                    //Jira CAP-3577
+                    //string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01';";
+                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process in ('"+ sAllocatedProcessForHydration.Replace("|","','") + "') and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process in ('"+ sAllocatedProcessForHydration.Replace("|", "','") + "') and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01';";
 
                     DataSet result = DBConnector.ReadData(string.Format(encounterByHumanIDQury, sHumanID, thresholdDate, releaseDate));
 
@@ -291,7 +294,9 @@ namespace Acurus.Capella.UI.WebServices.API
             HumanManager humanManager = new HumanManager();
             Human objHuman = new Human();
             string sAuthorizedLegalOrg = ConfigurationSettings.AppSettings["LegalOrgForHydration"]?.ToString() ?? "";
-
+            //Jira CAP-3577
+            string sAllocatedProcessForHydration = ConfigurationSettings.AppSettings["AllocatedProcessForHydration"]?.ToString() ?? "";
+            
             CDC_Audit_LogManager cDC_Audit_LogManager = new CDC_Audit_LogManager();
             IList<CDC_Audit_Log> ilstCDC_Audit_Log = new List<CDC_Audit_Log>();
             ilstCDC_Audit_Log.Add(new CDC_Audit_Log());
@@ -372,7 +377,9 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 string current_Process = result.Tables[0].Rows[0]["Current_Process"].ToString();
                 string Encounter_Provider_SignDate = Convert.ToDateTime(result.Tables[0].Rows[0]["Encounter_Provider_Signed_Date"]).ToString("yyyy-MM-dd");
-                if (current_Process != "DOCUMENT_COMPLETE")
+                //Jira CAP-3577
+                //if (current_Process != "DOCUMENT_COMPLETE")
+                if (!sAllocatedProcessForHydration.Split('|').Contains(current_Process))
                 {
                     ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", EncounterID = " + sEncounterID + @", status = ""ValidationError"", ErrorDescription = ""Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note.""";
                     ilstCDC_Audit_Log[0].Modified_By = "Acurus";
@@ -1080,6 +1087,10 @@ namespace Acurus.Capella.UI.WebServices.API
                                     string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "").Replace(": " + sNotesName, "") : "";
                                     sCreatedAt = (sCreatedAt.IndexOf(" PM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" PM: ")), "") : sCreatedAt;
                                     sCreatedAt = (sCreatedAt.IndexOf(" AM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" AM: ")), "") : sCreatedAt;
+                                    //Jira CAP-3617
+                                    sCreatedAt = (sCreatedAt.IndexOf("PM:") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf("PM:")), "PM") : sCreatedAt;
+                                    sCreatedAt = (sCreatedAt.IndexOf("AM:") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf("AM:")), "AM") : sCreatedAt;
+                                    //Jira CAP-3617 - End
                                     //Get ProviderUserID
                                     string sProviderUserID = string.Empty;
                                     if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
@@ -1170,6 +1181,10 @@ namespace Acurus.Capella.UI.WebServices.API
                                     string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "").Replace(": " + sNotesName, "") : "";
                                     sCreatedAt = (sCreatedAt.IndexOf(" PM: ") > -1)? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" PM: ")), ""): sCreatedAt;
                                     sCreatedAt = (sCreatedAt.IndexOf(" AM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" AM: ")), "") : sCreatedAt;
+                                    //Jira CAP-3617
+                                    sCreatedAt = (sCreatedAt.IndexOf("PM:") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf("PM:")), "PM") : sCreatedAt;
+                                    sCreatedAt = (sCreatedAt.IndexOf("AM:") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf("AM:")), "AM") : sCreatedAt;
+                                    //Jira CAP-3617 - End
                                     string[] tempCreatedByFinal = sectopns[i].Split(new string[] { " Signed by " }, System.StringSplitOptions.RemoveEmptyEntries);
 
                                     string tempCreatedBy = tempCreatedByFinal.Length > 1 ? tempCreatedByFinal[1].Split(new string[] { " on " }, System.StringSplitOptions.RemoveEmptyEntries)[0] : "";
