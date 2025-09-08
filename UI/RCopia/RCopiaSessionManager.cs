@@ -944,7 +944,9 @@ namespace Acurus.Capella.UI.RCopia
                 //sUriReq = sUriReq.Replace(":", "%3A");
                 //sUriReq = sUriReq.Replace("@", "%40");
                 //sUriReq = sUriReq.Replace("=", "%3D");
-                //sUriReq = sUriReq.Replace("&", "%26");
+                //CAP-3639
+                sUriReq = sUriReq.Replace("&amp;", "&");
+                sUriReq = sUriReq.Replace("&", "%26");
                 //sUriReq = sUriReq.Replace("$", "%24");
 
                 //Commented for CAP-1366 as the input uri is wrongly changed in the below code. Input URI itself is correct and it should not be changed.
@@ -1410,7 +1412,9 @@ namespace Acurus.Capella.UI.RCopia
                 //sUriReq = sUriReq.Replace(":", "%3A");
                 //sUriReq = sUriReq.Replace("@", "%40");
                 //sUriReq = sUriReq.Replace("=", "%3D");
-                //sUriReq = sUriReq.Replace("&", "%26");
+                //CAP-3639
+                sUriReq = sUriReq.Replace("&amp;", "&");
+                sUriReq = sUriReq.Replace("&", "%26");
                 //sUriReq = sUriReq.Replace("$", "%24");
 
                 //Commented for CAP-1366 as the input uri is wrongly changed in the below code. Input URI itself is correct and it should not be changed.
