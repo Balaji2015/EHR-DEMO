@@ -40,6 +40,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<StaticLookup> GetLookupValuesbyDocTypeSubTypeAndvalue(string Field_Name, string DocType, string SubDocType, string Value);
         IList<StaticLookup> getStaticLookupByFieldNameAndSorder(string Field_Name, string sOrder);
         IList<StaticLookup> getStaticLookupByFieldName(string[] Field_Name, string sOrder);
+        IList<StaticLookup> GetStaticLookupByFieldNameAndPartialValue(string sFieldName, string sValue);
     }
     public partial class StaticLookupManager : ManagerBase<StaticLookup, ulong>, IStaticLookupManager
     {
@@ -356,6 +357,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ICriteria criteria = iMySession.CreateCriteria(typeof(StaticLookup)).Add(Expression.Eq("Field_Name", sFieldName.ToUpper())).Add(Expression.Eq("Value", sValue));
+                staticList = criteria.List<StaticLookup>();
+                iMySession.Close();
+            }
+            return staticList;
+        }
+
+        public IList<StaticLookup> GetStaticLookupByFieldNameAndPartialValue(string sFieldName, string sValue)
+        {
+            //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            IList<StaticLookup> staticList = new List<StaticLookup>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria criteria = iMySession.CreateCriteria(typeof(StaticLookup)).Add(Expression.Eq("Field_Name", sFieldName.ToUpper())).Add(Expression.Like("Value", "%" + sValue + "%")).AddOrder(Order.Asc("Sort_Order"));
                 staticList = criteria.List<StaticLookup>();
                 iMySession.Close();
             }

@@ -22,6 +22,7 @@ using System.Web.UI.HtmlControls;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Acurus.Capella.UI
 {
@@ -612,7 +613,9 @@ namespace Acurus.Capella.UI
                             if (!dictionary.Keys.Contains(ilistSocHis[0].Social_Info))
                             {
                                 //CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, ilistSocHis[0].Is_Mandatory, ilistSocHis[0]);//For BUg id:63606
-                                CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, Is_Mandatory, ilistSocHis[0]);
+                                //Cap - 3604
+                                //CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, Is_Mandatory, ilistSocHis[0]);
+                                CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, Is_Mandatory, ilistSocHis[0], objStaticLookup[i].Default_Value);
                                 dictionary.Add(ilistSocHis[0].Social_Info, ilistSocHis[0].Id.ToString());
                             }
                         }
@@ -623,7 +626,9 @@ namespace Acurus.Capella.UI
                                 Is_Mandatory = "Y";
                             if (!dictionary.Keys.Contains(objStaticLookup[i].Value))
                             {
-                                CreateDynamicControlsForSocial(objStaticLookup[i].Value, Is_Mandatory, null);
+                                //Cap - 3604
+                                //CreateDynamicControlsForSocial(objStaticLookup[i].Value, Is_Mandatory, null);
+                                CreateDynamicControlsForSocial(objStaticLookup[i].Value, Is_Mandatory, null, objStaticLookup[i].Default_Value);
                                 dictionary.Add(objStaticLookup[i].Value, "0");
                             }
                         }
@@ -647,7 +652,9 @@ namespace Acurus.Capella.UI
                     if (!dictionary.Keys.Contains(SocialHistoryDetails[i].Social_Info))
                     {
                         //CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Is_Mandatory, SocialHistoryDetails[i]); //For BUg id:63606
-                        CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i]);
+                        //Cap - 3604
+                        //CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i]);
+                        CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i], ilistSLookup[0].Default_Value);
                         dictionary.Add(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Id.ToString());
                     }
                 }
@@ -853,7 +860,7 @@ namespace Acurus.Capella.UI
             }
         }
 
-        public void CreateDynamicControlsForSocial(string HistoryInfo, string Is_Mandatory, SocialHistory pastMedicalList)
+        public void CreateDynamicControlsForSocial(string HistoryInfo, string Is_Mandatory, SocialHistory pastMedicalList, string Default_Value)
         {
             TableCell tc = new TableCell();
             TableRow tr1 = new TableRow();
@@ -928,54 +935,96 @@ namespace Acurus.Capella.UI
             }
             tc.Controls.Add(chkBoxNo);
             tr1.Cells.Add(tc);
-            
-            tc = new TableCell();
+            //Cap - 3604
             var options = new HtmlSelect();
-            //RadComboBox options = new RadComboBox();
-            //options.ID = "cbo" + HistoryInfo.Replace(" ", "");
-            //options.AutoPostBack = false;
-            //options.AllowCustomText = false;
-            //options.Attributes.Add("onkeypress", "EnableSave();");
-            //options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
-            //options.CssClass = "Editabletxtbox";
-
-            options.ID = "cbo" + HistoryInfo.Replace(" ", "");
-            //options.AutoPostBack = false;
-            //options.AllowCustomText = false;
-            options.Attributes.Add("onchange", "OnClientSelectedIndex();");
-            // options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
-            //options.Attributes.Add("onSelectedIndexChanged", "OnClientSelectedIndex();");
-            options.Attributes.Add("class", "Editabletxtbox");
-            if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
+            if (Default_Value == "TEXTBOX")
             {
+                tc = new TableCell();
+                TextBox txt = new TextBox();
+                txt.ID = "txt" + HistoryInfo.Replace(" ", "");
+                txt.Text = "";
+                txt.Attributes.Add("class", "Editabletxtbox");
+                txt.Attributes.Add("onkeyup", "myAutocomplete(this);");
+                txt.Attributes.Add("onkeypress", "myAutocomplete(this);");
+                txt.EnableViewState = false;
+                txt.Width = Unit.Pixel(310);
                 if (chkBoxYes.Checked == true)
-                    //options.Enabled = true;
-                    options.Disabled = false;
+                    txt.Enabled = true;
                 else
-                    //options.Enabled = false;
-                    options.Disabled = true;
+                {
+                    txt.Enabled = false;
+                    txt.Text = "";
+                }
+
+                System.Web.UI.WebControls.Image img = new System.Web.UI.WebControls.Image();
+                img.ID = "img" + HistoryInfo.Replace(" ", "");
+                img.ImageUrl = "Resources/Delete-Blue.png";
+                img.Width = 12;
+                img.Height = 12;
+                img.Style.Add("margin-left", "-15px");
+                img.Attributes.Add("onclick", "ClearTextbox(event);");
+
+                if (chkBoxYes.Checked == true)
+                    img.Enabled = true;
+                else
+                {
+                    img.Enabled = false;
+                    txt.Text = "";
+                }
+
+                tc.Controls.Add(txt);
+                tc.Controls.Add(img);
+                tr1.Cells.Add(tc);
             }
             else
             {
-                if (chkBoxYes.Checked || chkBoxNo.Checked)
-                    // options.Enabled = true;
-                    options.Disabled = false;
+
+                tc = new TableCell();
+                //RadComboBox options = new RadComboBox();
+                //options.ID = "cbo" + HistoryInfo.Replace(" ", "");
+                //options.AutoPostBack = false;
+                //options.AllowCustomText = false;
+                //options.Attributes.Add("onkeypress", "EnableSave();");
+                //options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
+                //options.CssClass = "Editabletxtbox";
+
+                options.ID = "cbo" + HistoryInfo.Replace(" ", "");
+                //options.AutoPostBack = false;
+                //options.AllowCustomText = false;
+                options.Attributes.Add("onchange", "OnClientSelectedIndex();");
+                // options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
+                //options.Attributes.Add("onSelectedIndexChanged", "OnClientSelectedIndex();");
+                options.Attributes.Add("class", "Editabletxtbox");
+                if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
+                {
+                    if (chkBoxYes.Checked == true)
+                        //options.Enabled = true;
+                        options.Disabled = false;
+                    else
+                        //options.Enabled = false;
+                        options.Disabled = true;
+                }
                 else
-                    //options.Enabled = false;
-                    options.Disabled = true;
-                //options.Attributes.Add("Style", "Height:320px;");
-                //options.Height = Unit.Pixel(320);
+                {
+                    if (chkBoxYes.Checked || chkBoxNo.Checked)
+                        // options.Enabled = true;
+                        options.Disabled = false;
+                    else
+                        //options.Enabled = false;
+                        options.Disabled = true;
+                    //options.Attributes.Add("Style", "Height:320px;");
+                    //options.Height = Unit.Pixel(320);
+                }
+
+                // options.Width = 320;
+                //options.BackColor = Color.White;
+
+                //options.Attributes.Add("Style", "");
+                options.Attributes.Add("Style", "BackColor:White;Width:320px;");
+
+                tc.Controls.Add(options);
+                tr1.Cells.Add(tc);
             }
-
-           // options.Width = 320;
-            //options.BackColor = Color.White;
-
-            //options.Attributes.Add("Style", "");
-            options.Attributes.Add("Style", "BackColor:White;Width:320px;");
-
-            tc.Controls.Add(options);
-            tr1.Cells.Add(tc);
-
 
             CustomDLCNew userCtrl = (CustomDLCNew)LoadControl("~/UserControls/customDLCNew.ascx");
             tc = new TableCell();
@@ -1093,8 +1142,17 @@ namespace Acurus.Capella.UI
                 //    options.Disabled= true;
                 //}
             }
-            if (!IsPostBack || options.Items.Count == 0)
+            //Cap - 3604
+            //if (!IsPostBack || options.Items.Count == 0)
+            if ((!IsPostBack || options.Items.Count == 0) && Default_Value != "TEXTBOX")
+            {
                 LoadOptionForCombo(HistoryInfo);
+            }
+            else if (Default_Value == "TEXTBOX" && pastMedicalList != null)
+            {
+                TextBox txt = divSocialHistoryControls.FindControl("txt" + HistoryInfo.Replace(" ", "")) as TextBox;
+                txt.Text = pastMedicalList.Value;
+            }
 
             if (HistoryInfo.ToUpper().Contains("TOBACCO"))
             {
@@ -1312,7 +1370,9 @@ namespace Acurus.Capella.UI
                 }
                 else
                     SocialHistoryObject.Snomed_Reason_Not_Performed = string.Empty;
-                if (chk.ID.Contains("chkYes") && chk.Checked == true)
+                //Cap - 3604
+                //if (chk.ID.Contains("chkYes") && chk.Checked == true)
+                if (chk.ID.Contains("chkYes") && chk.Checked == true && chk.ID != "chkYesOccupationIndustry")
                 {
                     SocialHistoryObject.Is_Present = "Y";
                     //SocialHistoryObject.Value = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Text : string.Empty;
@@ -1325,7 +1385,19 @@ namespace Acurus.Capella.UI
                     SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo
 
                 }
-                else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true)
+                //Cap - 3604                
+                else if (chk.ID.Contains("chkYes") && chk.Checked == true && chk.ID == "chkYesOccupationIndustry")
+                {
+                    SocialHistoryObject.Is_Present = "Y";
+                    TextBox txt = divSocialHistoryControls.FindControl("txt" + item.Key.Replace(" ", "")) as TextBox;
+                    SocialHistoryObject.Value = txt.Text;
+
+                    SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo
+
+                }
+                //Cap - 3604
+                //else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true)
+                else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true && chkNo.ID != "chkNoOccupationIndustry")
                 {
                     SocialHistoryObject.Is_Present = "N";
                     //SocialHistoryObject.Value = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Text : string.Empty;
@@ -1335,6 +1407,16 @@ namespace Acurus.Capella.UI
 
                     if (recodes != "" && recodes.Split('-').Count() > 1)
                         SocialHistoryObject.Recodes = recodes.Split('-')[1];
+                    SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo
+
+                }
+                //Cap - 3604
+                else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true && chkNo.ID == "chkNoOccupationIndustry")
+                {
+                    SocialHistoryObject.Is_Present = "N";
+                    TextBox txt = divSocialHistoryControls.FindControl("txt" + item.Key.Replace(" ", "")) as TextBox;
+                    SocialHistoryObject.Value = txt.Text;
+                    SocialHistoryObject.Recodes = "";
                     SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo
 
                 }
@@ -2149,6 +2231,43 @@ namespace Acurus.Capella.UI
             //{
                 Iteams.SelectedIndex=0;
             //}
+        }
+        //Cap - 3604
+        [System.Web.Script.Services.ScriptMethod()]
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static string GetOccupationIndustry(string text_searched)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+
+            }
+            StaticLookupManager objStaticLookupMgr = new StaticLookupManager();
+            IList<StaticLookup> lststaticOccupation = new List<StaticLookup>();
+
+            lststaticOccupation = objStaticLookupMgr.GetStaticLookupByFieldNameAndPartialValue("SOCIAL HISTORY OPTION FOR OCCUPATION INDUSTRY", text_searched);
+
+            if (lststaticOccupation.Count() == 0)
+            {
+                var lstFinalResult = new
+                {
+                    Result = "No matches found."
+                };
+                return JsonConvert.SerializeObject(lstFinalResult);
+            }
+            else
+            {
+                var lstFinalResult = new
+                {
+                    Matching_Result = lststaticOccupation
+                };
+                return JsonConvert.SerializeObject(lstFinalResult);
+            }
+
+
         }
     }
 }

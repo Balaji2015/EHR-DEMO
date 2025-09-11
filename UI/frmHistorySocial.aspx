@@ -33,8 +33,79 @@
          #tag:hover {
             text-decoration: underline;
         }
+          .ui-dialog-titlebar-close {
+            display: none !important;
+        }
+
+        .ui-widget {
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+            float: none !important;
+            margin-left: 45px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane button {
+            width: 60px !important;
+        }
+
+        .ui-dialog .ui-dialog-titlebar {
+            padding: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-title {
+            font-size: 12px !important;
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+            height: 155px !important;
+            border: 2px solid !important;
+            border-radius: 13px !important;
+            top: 504px !important;
+            left: 568px !important;
+        }
+
+        .ui-dialog .ui-dialog-content {
+            min-height: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane {
+            margin-top: -10px !important;
+            font-size: 14px !important;
+            /*padding: 0px !important ;*/
+        }
+
+        .ui-widget-content {
+            border: 0px !important;
+        }
+
+        .ui-widget-header, .ui-state-default, ui-button {
+            font-weight: bold !important;
+            font-size: 12px !important;
+            font-family: sans-serif !important;
+        }
+
+
+        .ui-widget {
+            border: 1px solid #adadad !important;
+            background-color: #F7F7F7 !important;
+        }
+          .ui-autocomplete {
+                -webkit-margin-before: 3px !important;
+                max-height: 150px;
+                overflow-y: auto;
+            }
+
+            .ui-state-focus {
+                color: #808080;
+                background-color: #bbe2f1 !important;
+                outline: none;
+                border: 0px !important;
+            }
     </style>
-    
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="CSS/style.css" rel="stylesheet" type="text/css" />
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
      <link href="CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
@@ -126,6 +197,10 @@
         <asp:HiddenField ID="hdnDivPosition" EnableViewState="false" runat="server" />
         <asp:HiddenField ID="hdnreason"  runat="server" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+            <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
+                <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
+                <link href="CSS/jquery-ui.css?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" rel="stylesheet" />
+              <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
             <script src="JScripts/JSocialHistory.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
@@ -135,6 +210,7 @@
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
             <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+            <link href="CSS/style.css" rel="stylesheet" type="text/css" />
             <script type="text/javascript">
                 //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(EndRequestHandler);
                 //function EndRequestHandler(sender, args) {

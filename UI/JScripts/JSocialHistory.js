@@ -118,27 +118,180 @@ function disable(ctrlId, ctrlName) {
     EnableSave();
     document.getElementById(ctrlId).checked = true;
     var crltxt = ctrlId.replace(ctrlName, "DLC") + "_txtDLC";
-    var ctrlcbo = ctrlId.replace(ctrlName, "cbo")
-   // var combo = $find(ctrlcbo);
+    var ctrlcbo = ctrlId.replace(ctrlName, "cbo");
+    //Cap - 3604
+    var ctrltxt = ctrlId.replace(ctrlName, "txt");
+    var ctrlimg = ctrlId.replace(ctrlName, "img");
+
+    // var combo = $find(ctrlcbo);
     var combo = document.getElementById(ctrlcbo);
-    if (ctrlName == "chkYes" && ctrlId != "chkYesSexuallyActive") {
-        //combo.enable();
-        combo.disabled = false;
+    //Cap - 3604
+    var txtbox = document.getElementById(ctrltxt);
+
+    if (ctrlName == "chkYes" && ctrlId == 'chkYesOccupationIndustry') {
+        txtbox.disabled = false;
+        document.getElementById(ctrlimg).removeAttribute("disabled");
+    }
+    else if (ctrlName == "chkNo" && ctrlId == 'chkNoOccupationIndustry') {
+        txtbox.disabled = true;
+        document.getElementById(ctrlimg).setAttribute("disabled", "disabled");
+        txtbox.value = "";
     }
     else {
-        //combo.disable();
-        
-        $("select#" + ctrlcbo).prop('selectedIndex', 0);
-        combo.disabled = true;
-    }
+        if (ctrlName == "chkYes" && ctrlId != "chkYesSexuallyActive" && ctrlId != "chkYesPregnancyStatus") {
+            //combo.enable();
+            combo.disabled = false;
+        }
+        else {
+            //combo.disable();
 
+            $("select#" + ctrlcbo).prop('selectedIndex', 0);
+            combo.disabled = true;
+        }
+    }
     if (ctrlId == "chkNoTobaccoUseandExposure" || ctrlId == "chkYesTobaccoUseandExposure") {
-        combo.disabled = false;  
-        
+        combo.disabled = false;
+
     }
     defaultselectionTobacca(ctrlId);
-    
+
 }
+//Cap - 3604
+function ClearTextbox(e) {
+    var Idval = e.target.id.replace("img", "txt");
+    document.getElementById(Idval).value = "";
+    $("#txtOccupationIndustry").attr("OccupationVal", "");
+    $("#txtOccupationIndustry").val = "";
+    document.getElementById("txtOccupationIndustry").disabled = false;
+}
+
+//Cap - 3604
+function myAutocomplete() {
+    $("#txtOccupationIndustry").autocomplete({
+        source: function (request, response) {
+            if ($("#txtOccupationIndustry").val().trim().length > 2) {
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                var strkeyWords = $("#txtOccupationIndustry").val().split(' ');
+                var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+                arrPatient = [];
+                var WSData = {
+                    text_searched: strkeyWords[0]
+                };
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "./frmHistorySocial.aspx/GetOccupationIndustry",
+                    data: JSON.stringify(WSData),
+                    dataType: "json",
+                    success: function (data) {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+                        var jsonData = $.parseJSON(data.d);
+                        if (jsonData.Error != undefined) {
+                            alert(jsonData.Error);
+                            return;
+                        }
+                        if (jsonData.Result != undefined) {
+                            var no_matches = [];
+                            no_matches.push(jsonData.Result);
+                            response($.map(no_matches, function (item) {
+                                return {
+                                    label: item,
+                                    val: ""
+                                }
+                            }));
+                        }
+                        else {
+                            var results;
+                            if (bMoreThanOneKeyword)
+                                results = Filter(jsonData, request.term);
+                            else
+                                results = jsonData.Matching_Result;
+
+                            arrPatient = jsonData.Matching_Result;
+                            response($.map(results, function (item) {
+                                return {
+                                    label: item.Value,
+                                    val: JSON.stringify(item.Value),
+                                    value: item.Value
+                                }
+                            }));
+                        }
+                    }, error: function OnError(xhr) {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        if (xhr.status == 999)
+                            window.location = "/frmSessionExpired.aspx";
+                        else {
+                            var log = JSON.parse(xhr.responseText);
+                            console.log(log);
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
+                        }
+
+
+                    }
+                })
+
+            }
+        },
+        minlength: 0,
+        multiple: true,
+        mustMatch: false,
+        select: OccupationSelect,
+        open: function () {
+            $('.ui-autocomplete.ui-menu.ui-widget').width("312px");
+            $('.ui-autocomplete.ui-menu.ui-widget').css("left", "19.7%");
+            $('.ui-autocomplete.ui-menu.ui-widget').find('li').css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" });
+            //$('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+            $('#txtOccupationIndustry').focus();
+        },
+        focus: function () { return false; }
+    }).on("paste", function (e) {
+
+        arrPatient = [];
+        $(".ui-autocomplete").hide();
+    }).on("input", function (e) {
+        $("#ctl00_C5POBody_txtPlanSearch").css("color", "black").attr({ "dataVal": "" });
+
+
+    }).on("click", function (e) {
+
+    }).on("focus", function (e) {
+
+    })
+
+    $("#txtOccupationIndustry").data("ui-autocomplete")._renderItem = function (ul, item) {
+
+        if (item.label != "No matches found.") {
+
+            var list_item = $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .append(item.label)
+                .appendTo(ul);
+
+            return list_item;
+        }
+        else
+            return $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .addClass("disabled")
+                .append(item.label)
+                .appendTo(ul).on("click", function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                });
+    };
+}
+
+function OccupationSelect(event, ui) {
+    $("#txtOccupationIndustry").val = ui.item.value;
+    $("#txtOccupationIndustry").attr("OccupationVal", ui.item.value);
+    document.getElementById("txtOccupationIndustry").disabled = true;
+    EnableSave();
+}
+
 //CAP-1760 - Tobacco use & exposure - NO but "Light cigrette smoker" status is selected by default
 //function defaultselectionTobacca(ctrlId) {
 //    if(ctrlId == "chkYesTobaccoUseandExposure")
@@ -184,22 +337,38 @@ function enable(testId, chkName) {
     document.getElementById(testId).checked = false;
     var crltxt = testId.replace(chkName, "DLC") + "_txtDLC";
     var ctrlcbo = testId.replace(chkName, "cbo")
+    var ctrltxt = testId.replace(chkName, "txt");
+    var ctrlimg = testId.replace(chkName, "img");
+
     //var combo = $find(ctrlcbo);
     var combo = document.getElementById(ctrlcbo);
     //combo.disable();
-    if (combo.id == 'cboTobaccoUseandExposure' && combo.item(0).text != "")
-    {
-        var option = document.createElement("option");
-        option.text = "";
-        option.value = "";
-        option.setAttribute("option","Yes");
-        combo.add(option, combo[0]);
+    var txtbox = document.getElementById(ctrltxt);
+
+    if (chkName == "chkYes" && testId == 'chkYesOccupationIndustry') {
+        txtbox.disabled = true;
+        document.getElementById(ctrlimg).setAttribute("disabled", "disabled");
+        txtbox.value = "";
     }
-    combo.disabled = true;
-    $("select#" + ctrlcbo).prop('selectedIndex', 0);
-   
+    else if (chkName == "chkNo" && testId == 'chkNoOccupationIndustry') {
+        txtbox.disabled = true;
+        document.getElementById(ctrlimg).setAttribute("disabled", "disabled");
+        txtbox.value = "";
+    }
+    else {
+        if (combo.id == 'cboTobaccoUseandExposure' && combo.item(0).text != "") {
+            var option = document.createElement("option");
+            option.text = "";
+            option.value = "";
+            option.setAttribute("option", "Yes");
+            combo.add(option, combo[0]);
+        }
+        combo.disabled = true;
+        $("select#" + ctrlcbo).prop('selectedIndex', 0);
+    }
+
     //combo.clearSelection();
-    
+
     var TFamilyDiseaseControlD = testId.replace(chkName, "DLC") + "_listDLC";
     document.getElementById(TFamilyDiseaseControlD).style.display = "none";
     var listcontrolSocialHistory = document.getElementById(testId.replace(chkName, "DLC") + "_pbDropdown");
@@ -284,6 +453,13 @@ function btnSave_Clicked(sender, args) {
     else if (document.getElementById("chkYesDrugUse") != null && (document.getElementById("chkYesDrugUse").checked == false && document.getElementById("chkNoDrugUse").checked == false && document.getElementById("lblDrugUse").getAttribute("class") == "MandLabelstyle")) {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180020');
+        top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        sender.set_autoPostBack(false);
+    }
+    else if (document.getElementById("txtOccupationIndustry").value != undefined && document.getElementById("txtOccupationIndustry").value != "" && ($("#txtOccupationIndustry").attr("OccupationVal") == undefined || $("#txtOccupationIndustry").attr("OccupationVal") == "")) {
+        PFSH_SaveUnsuccessful();
+        DisplayErrorMessage('180058');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         sender.set_autoPostBack(false);
