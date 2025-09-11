@@ -1252,6 +1252,7 @@
 	<Message number="230163" Type="OK" Text="Test Date cannot be earlier than the Collection Date." />
 	<Message number="230164" Type="OK" Text="Please fill at least one encounter." />
 	<Message number="230165" Type="ToolStrip" Text="Saved successfully."></Message>
+	<Message number="230166" Type="OK" Text="This facility is not integrated with the selected lab. Please contact support to submit the order electronically."></Message>
 
 
 	<Message number="720001" Type="ToolStrip" Text="Saved successfully."></Message>

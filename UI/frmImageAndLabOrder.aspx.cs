@@ -2019,6 +2019,24 @@ namespace Acurus.Capella.UI
                 }
             }
 
+            //CAP-3602
+            if ((cboLab.Items[cboLab.SelectedIndex].Text == "Quest Diagnostics") || (cboLab.Items[cboLab.SelectedIndex].Text == "LabCorp"))
+            {
+                var facilityLibrary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
+                var ilistFacilityList = facilityLibrary.ToList<FacilityLibrary>();
+                if (ilistFacilityList != null && ilistFacilityList.Any())
+                {
+                    if (ilistFacilityList.Any(a => string.IsNullOrEmpty(a.Quest_Account_Number)) && cboLab.Items[cboLab.SelectedIndex].Text == "Quest Diagnostics")
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230166','',''); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    }
+                    else if (ilistFacilityList.Any(a => string.IsNullOrEmpty(a.LabCorp_Account_Number)) && cboLab.Items[cboLab.SelectedIndex].Text == "LabCorp")
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230166','',''); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    }
+                }
+            }
+
             return true;
         }
         private OrdersAssessment CreateOrderAssObj(string ICD, ulong AssID, string Source)

@@ -369,7 +369,9 @@ namespace Acurus.Capella.UI
                                                 if ((machinetechnicians?.Count ?? 0) > 0)
                                                 {
                                                     cboItem.Text = machinetechnicians[0].machine_name + " - " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyLastName;
-                                                    cboItem.Value = machinetechnicians[0].machine_technician_library_id;
+                                                    //CAP-3635
+                                                    //cboItem.Value = machinetechnicians[0].machine_technician_library_id;
+                                                    cboItem.Value = PhyList1[i].Id.ToString() + "|" + machinetechnicians[0].machine_technician_library_id;
                                                     cboItem.Attributes.Add("title", cboItem.Text);
                                                 }
                                             }
@@ -394,7 +396,9 @@ namespace Acurus.Capella.UI
                                                 cboItem.Text += " " + PhyList1[i].PhyMiddleName;
                                             if (PhyList1[i].PhySuffix != String.Empty)
                                                 cboItem.Text += "," + PhyList1[i].PhySuffix;
-                                            cboItem.Value = PhyList1[i].Id.ToString();
+                                            //CAP-3635
+                                            //cboItem.Value = PhyList1[i].Id.ToString();
+                                            cboItem.Value = PhyList1[i].Id.ToString() + "|0";
                                             cboItem.Attributes.Add("title", cboItem.Text);
                                         }
                                         this.cboFacilityName.Items.Add(cboItem); ;
@@ -2293,10 +2297,12 @@ namespace Acurus.Capella.UI
                                     //CAP-3550
                                     var comboBoxItems = cboFacilityName.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
                                     string text = machinetechnicians[0].machine_name + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
-                                    if (!comboBoxItems.Any(a => a.Value == PhysicianList[i].PhyColor && a.Text == text))
+                                    if (!comboBoxItems.Any(a => a.Value == (PhysicianList[i].Id.ToString() + "|" + machinetechnicians[0].machine_technician_library_id) && a.Text == text))
                                     {
                                         item.Text = text; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                        item.Value = machinetechnicians[0].machine_technician_library_id;
+                                        //CAP-3635
+                                        //item.Value = machinetechnicians[0].machine_technician_library_id;
+                                        item.Value = PhysicianList[i].Id.ToString() + "|" + machinetechnicians[0].machine_technician_library_id;
                                     }
                                     else
                                     {
@@ -2323,7 +2329,9 @@ namespace Acurus.Capella.UI
                                 item.Text += " " + PhysicianList[i].PhyMiddleName;
                             if (PhysicianList[i].PhySuffix != String.Empty)
                                 item.Text += "," + PhysicianList[i].PhySuffix;
-                            item.Value = PhysicianList[i].Id.ToString();
+                            //CAP-3635
+                            //item.Value = PhysicianList[i].Id.ToString();
+                            item.Value = PhysicianList[i].Id.ToString() + "|0";
                         }
                         this.cboFacilityName.Items.Add(item);
                     }
@@ -4212,7 +4220,17 @@ namespace Acurus.Capella.UI
         {
             //bug id 71401
             if (cboFacilityName.SelectedItem != null)
-                hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.ToString();
+            {
+                //CAP-3635
+                if (cboFacilityName.SelectedItem.Value.Contains("|"))
+                {
+                    hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.Split('|')[0].ToString();
+                }
+                else
+                {
+                    hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.ToString();
+                }
+            }
 
             //Commented for bug id 71401 - Start
             //IList<PhysicianLibrary> phyList = UtilityManager.GetPhysicianList(facility_name);
