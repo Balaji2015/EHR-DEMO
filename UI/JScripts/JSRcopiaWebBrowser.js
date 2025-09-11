@@ -119,40 +119,38 @@ function reloadSummaryEprescription() {
     var enc_DOS = sessionStorage.getItem("Enc_DOS");
     //sessionStorage.removeItem("EncId_PatSummaryBar");
     //sessionStorage.removeItem("Enc_DOS");
-    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
-        //CAP-2596, CAP-3363
-        //var encounterId = parseInt(enc_id);
-        //if ((encounterId ?? 0) > 0) {
-        $.ajax({
-            type: "POST",
-            url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
-            // data: JSON.stringify({ EncID: "", Enc_DOS: "" }),
-            data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: OnSuccessSummaryBarEprescription,
-            error: function OnError(xhr) {
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    //CAP-3537 - avoid undefined JSON to be parse
-                    var msg = "";
+    //CAP-2596, CAP-3363
+    //var encounterId = parseInt(enc_id);
+    //if ((encounterId ?? 0) > 0) {
+    $.ajax({
+        type: "POST",
+        url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
+        // data: JSON.stringify({ EncID: "", Enc_DOS: "" }),
+        data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSuccessSummaryBarEprescription,
+        error: function OnError(xhr) {
+            if (xhr.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else {
+                //CAP-3537 - avoid undefined JSON to be parse
+                var msg = "";
 
-                    if (isValidJSON(xhr.responseText)) {
-                        var log = JSON.parse(xhr.responseText);
-                        console.log(log);
-                        msg = log?.Message ?? (typeof (log) === 'string') ? log : "Something went wrong!";
-                    }
-                    else {
-                        msg = xhr.responseText;
-                    }
-
-                    alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${msg}`);
+                if (isValidJSON(xhr.responseText)) {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    msg = log?.Message ?? (typeof (log) === 'string') ? log : "Something went wrong!";
                 }
+                else {
+                    msg = xhr.responseText;
+                }
+
+                alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${msg}`);
             }
-        });
-        //}
-    }
+        }
+    });
+    //}
     //LoadNotification("Notify");
 }
 function OnSuccessSummaryBarEprescription(response) {
