@@ -97,7 +97,7 @@
           
             <tr style="height: 100%">
                 <td style="width: 10%; height: 610px; overflow-y: hidden;">
-                    <div runat="server" id="_plcImgsThumbs" style="height: 585px;width:75px; overflow-y: scroll;" class="class-hide-this"></div>
+                    <div runat="server" id="_plcImgsThumbs" style="height: 585px;width:75px; overflow-y: scroll;"></div>
                     <br />
                 </td>
                 <td style="width: 40%; height: 100%;">
@@ -119,17 +119,17 @@
                    
                             </div>
                              </div>
-                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;" id="imgholder" runat="server" class="class-hide-this">
+                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;" id="imgholder" runat="server" >
                         <img id="_imgBigActual" runat="server"  style="height: 600px; width: 575px;object-fit:contain;"  />
                     </div>
-                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto; display: none" id="PDFholder" runat="server" class="class-hide-this">
+                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto; display: none" id="PDFholder" runat="server" >
                         <iframe id="bigImgPDF" runat="server"  frameborder="0"  style="height: 600px; width: 575px;"></iframe>
                     </div>
                     
                 </td>
 
                  <td style="width: 10%; height: 610px; overflow-y: hidden;">
-                    <div runat="server" id="_plcImgsThumbsComp" style="height: 585px;width:80px; overflow-y: scroll;" class="class-hide-this"></div>
+                    <div runat="server" id="_plcImgsThumbsComp" style="height: 585px;width:80px; overflow-y: scroll;" ></div>
                     <br />
                 </td>
                 <td style="width: 40%; height: 100%;">
@@ -149,10 +149,10 @@
                                         <i class="fa fa-print" id="Printcom" style="margin-left: 15px; cursor: pointer;" title="Print" onclick="printCompare();"></i>&nbsp;&nbsp;
                     </div>
                         </div>
-                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;" id="imgholdercom" runat="server" class="class-hide-this">
+                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;" id="imgholdercom" runat="server" >
                         <img id="_imgBigCompare" runat="server"  style="height: 600px; width: 575px;object-fit:contain;"/>
                     </div>
-                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;display: none" id="PDFholderComp" runat="server" class="class-hide-this">
+                    <div style="margin-top: 0px; height: 600px; width: 575px; border: 1px solid #6A9C73; overflow: auto;display: none" id="PDFholderComp" runat="server" >
                         <iframe id="bigImgPDFCompare" runat="server" style="height: 600px; width: 575px; overflow: hidden;" frameborder="0"></iframe>
                     </div>
                     
