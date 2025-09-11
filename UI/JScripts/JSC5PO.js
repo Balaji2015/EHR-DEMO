@@ -3527,33 +3527,31 @@ function reloadSummaryEprescription() {
     //sessionStorage.removeItem("EncId_PatSummaryBar");
     //sessionStorage.removeItem("Enc_DOS");
     //CAP-3363
-    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
-        //CAP-2596, CAP-3363
-        //var encounterId = parseInt(enc_id);
-        //if ((encounterId ?? 0) > 0) { 
-        $.ajax({
-            type: "POST",
-            url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
-            // data: JSON.stringify({ EncID: "", Enc_DOS: "" }),
-            data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: OnSuccessSummaryBarEprescription,
-            error: function OnError(xhr) {
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
+    //CAP-2596, CAP-3363
+    //var encounterId = parseInt(enc_id);
+    //if ((encounterId ?? 0) > 0) { 
+    $.ajax({
+        type: "POST",
+        url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
+        // data: JSON.stringify({ EncID: "", Enc_DOS: "" }),
+        data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSuccessSummaryBarEprescription,
+        error: function OnError(xhr) {
+            if (xhr.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else {
+                var log = JSON.parse(xhr.responseText);
+                console.log(log);
+                alert("USER MESSAGE:\n" +
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
+        }
 
-        });
-        //}
-    }
+    });
+    //}
     RefreshNotification("Notify");
 }
 

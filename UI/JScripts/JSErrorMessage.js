@@ -2670,36 +2670,34 @@ function reloadPatientSummaryBarXmlRegenerate() {
     var enc_DOS = sessionStorage.getItem("Enc_DOS_XMl_Regenerate");
     sessionStorage.removeItem("EncId_PatSummaryBar_XMl_Regenerate");
     sessionStorage.removeItem("Enc_DOS_XMl_Regenerate");
-    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
-        //CAP-2596, CAP-3363
-        //var encounterId = parseInt(enc_id);
-        //if ((encounterId ?? 0) > 0) {
-        $.ajax({
-            type: "POST",
-            url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
-            data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: OnSuccessSummaryBar,
-            error: function OnError(xhr) {
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
-                        log.Message.indexOf("is an unexpected token") > 0) {
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
-                    }
+    //CAP-2596, CAP-3363
+    //var encounterId = parseInt(enc_id);
+    //if ((encounterId ?? 0) > 0) {
+    $.ajax({
+        type: "POST",
+        url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
+        data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSuccessSummaryBar,
+        error: function OnError(xhr) {
+            if (xhr.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else {
+                var log = JSON.parse(xhr.responseText);
+                console.log(log);
+                if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
+                    log.Message.indexOf("is an unexpected token") > 0) {
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        }
 
-        });
-        //}
-    }
+    });
+    //}
 }
 
 function navigateRestrictMultipleTabClick() {

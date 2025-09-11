@@ -332,8 +332,8 @@ function OnClientCloseWindow() {   //BugID:42368
 }
 
 function reloadSummary() {
-    //CAP-3363
-    if ($("#ctl00_C5POBody_pnlSummarybar").length > 0) {
+    //CAP-3363, CAP-3634
+    if ($("#ctl00_C5POBody_hdnDisplaySummarybar").val() != "false") {
         var enc_id = sessionStorage.getItem("EncId_PatSummaryBar");
         var enc_DOS = sessionStorage.getItem("Enc_DOS");
         //CAP-2596, CAP-3363

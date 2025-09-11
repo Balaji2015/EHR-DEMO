@@ -489,11 +489,14 @@ namespace Acurus.Capella.UI
             if (Request["from"] != null && Request["from"].ToString().IndexOf("viewresult") > -1)
             {
                 tblPatientSummary.Visible = false;
-
+                //CAP-3634
+                hdnDisplaySummarybar.Value = "false";
             }
             if (Request["from"] != null && Request["from"].ToString().IndexOf("openpatientchart") > -1)
             {
                 tblPatientSummary.Visible = false;
+                //CAP-3634
+                hdnDisplaySummarybar.Value = "false";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "invisibleResult();", true);
             }
 
@@ -2575,11 +2578,14 @@ namespace Acurus.Capella.UI
                 if (Request["from"] != null && Request["from"].ToString().IndexOf("viewresult") > -1)
                 {
                     tblPatientSummary.Visible = false;
-
+                    //CAP-3634
+                    hdnDisplaySummarybar.Value = "false";
                 }
                 if (Request["from"] != null && Request["from"].ToString().IndexOf("openpatientchart") > -1)
                 {
                     tblPatientSummary.Visible = false;
+                    //CAP-3634
+                    hdnDisplaySummarybar.Value = "false";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "invisibleResult();", true);
                 }
 
