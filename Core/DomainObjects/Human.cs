@@ -170,6 +170,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private ulong _Primary_Carrier_ID = 0;
         private string _sIsTranslatorRequired = "N";
         private string _Dynamics_Number = string.Empty;
+        private string _Tribal_Affiliation = string.Empty;
         #endregion
 
         #region HashCode Value
@@ -332,6 +333,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Legal_Org);
             sb.Append(_Primary_Carrier_ID);
             sb.Append(_sIsTranslatorRequired);
+            sb.Append(_Tribal_Affiliation);
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -1314,6 +1316,13 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Dynamics_Number; }
             set { _Dynamics_Number = value; }
+        }
+        //CAP-3554
+        [DataMember]
+        public virtual string Tribal_Affiliation
+        {
+            get { return _Tribal_Affiliation; }
+            set { _Tribal_Affiliation = value; }
         }
         #endregion
 

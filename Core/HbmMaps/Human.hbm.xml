@@ -161,6 +161,7 @@
     <property name="Primary_Carrier_ID" column="Primary_Carrier_ID" />
 	<property name="Is_Translator_Required" column="Is_Translator_Required" />
 	  <property name="Dynamics_Number" column="Dynamics_Number" />
+	  <property name="Tribal_Affiliation" column="Tribal_Affiliation" />
 
     <bag name="PatientInsuredBag" cascade="all" lazy="false" inverse="true" >
       <key column="Human_ID" />

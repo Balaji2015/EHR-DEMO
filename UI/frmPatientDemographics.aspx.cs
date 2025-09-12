@@ -1295,6 +1295,8 @@ namespace Acurus.Capella.UI
                 objHuman.Birth_Date = Convert.ToDateTime(dtpPatientDOB.Text);
                 //CAP-602 - Add new field in Human table so pass data to the DB
                 objHuman.Dynamics_Number = txtDynamicsNumber.Text;
+                //CAP-3554
+                objHuman.Tribal_Affiliation = hdnTribalAffn.Value ?? "";
                 if (chkGuarantorIsPatient.Checked == false)
                 {
                     if (dtpGuarantorDOB.Text == "")
@@ -1635,6 +1637,8 @@ namespace Acurus.Capella.UI
                 }
                 //CAP-602 - Add new field in Human table so pass data to the DB
                 objHuman.Dynamics_Number = txtDynamicsNumber.Text;
+                //CAP-3554
+                objHuman.Tribal_Affiliation = hdnTribalAffn.Value ?? "";
                 HumanDTO CheckHuman = new HumanDTO();
                 if (txtMedicalRecordno.Text.ToUpper() != objHuman.Medical_Record_Number.ToUpper() && txtExternalAccNo.Text.ToUpper() != objHuman.Patient_Account_External.ToUpper())
                     //Cap - 1883
@@ -2690,6 +2694,8 @@ namespace Acurus.Capella.UI
                 txtExternalAccNo.Text = objHumanDTO.HumanDetails.Patient_Account_External;
                 //CAP-602 - Add new field in Human table so get data to the DB
                 txtDynamicsNumber.Text = objHumanDTO.HumanDetails.Dynamics_Number;
+                //CAP-3554
+                hdnTribalAffn.Value = objHumanDTO.HumanDetails.Tribal_Affiliation;
                 for (int i = 0; i < ddlDefaultFacility.Items.Count; i++)
                 {
                     if (Convert.ToString(ddlDefaultFacility.Items[i].Text).ToUpper() == objHumanDTO.HumanDetails.Facility_Name.ToUpper())
@@ -5979,5 +5985,21 @@ namespace Acurus.Capella.UI
             }
         }
 
+        //CAP-3554
+        [WebMethod(EnableSession = true)]
+        public static string LoadTribalAffiliation(string searchText)
+        {
+            StaticLookupManager staticLookUpMngr = new StaticLookupManager();
+            IList<StaticLookup> iStaticlookuplist = staticLookUpMngr.GetStaticLookupByFieldNameAndPartialValue("Tribal Affiliation", searchText);
+            List<string> result = new List<string>();
+            if (iStaticlookuplist.Any())
+            {
+                foreach (var item in iStaticlookuplist)
+                {
+                    result.Add(item.Default_Value + "|" + item.Value);
+                }
+            }
+            return JsonConvert.SerializeObject(result);
+        }
     }
 }

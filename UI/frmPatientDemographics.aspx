@@ -872,32 +872,17 @@
                                         </tr>
                                     </table>
                                 </td>
-                                                                   
-                                 <td style="width:11%">
-                                    <asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang" CssClass="spanstyle" EnableViewState="false"></asp:Label>
-                                    <%--<asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang*" ForeColor="Red"
-                                    EnableViewState="false"></asp:Label>--%>
-                                                
+                                     <td>
+                                         <asp:Label ID="lblTribalAffn" runat="server" Text="Tribal Affiliation" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                     </td>
+                                <td style="width:11%">
+                                    <%--<input id="txtTribalAffn" onchange="AutoSave();" class="Editabletxtbox" style="width: 160px;" runat="server" EnableViewState="false"/>--%>
+                                    <asp:TextBox ID="txtTribalAffn" runat="server" onkeypress="AutoSave();" CssClass="Editabletxtbox" EnableViewState="false" Style="width: 160px;"></asp:TextBox>
                                 </td>
-                                          
-                                 
-                               <td style="width:11%">
-                                    <table width="220%">
-                                        <tr>
-                                            <td style="width:50%">
-                                    <asp:DropDownList ID="ddlPreferredLanguage" onchange="showTip(this);" runat="server" CssClass="Editabletxtbox"
-                                        onmouseover="OnMouseHover(this);" Width="115%">
-                                         </asp:DropDownList>
-                                   </td>
-                                       <td style="width:28%; text-align:right;">
-                                     <asp:CheckBox ID="chkReqTranslator" runat="server"  onclick="AutoSave();"
-                                                 CssClass="spanstyle" />
-                                     <asp:Label ID="Translator" runat="server" Text="Req.</br>Translator" CssClass="spanstyle" EnableViewState="false"></asp:Label>
-                                        </td>
-                                      </tr>
-                                        </table>
-                                                                                        
-                                           </tr>
+                                <td>
+                                    <img id="imgClearTribalAffn" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top: -5px;position: absolute;right: 70px;cursor: pointer;width: 10px;"/>
+                                </td>
+                            </tr>
                             <tr style="width:100%">
                                 <td style="width:11%">
                                     <asp:Label ID="lblLicenseState" runat="server" Text="License State" CssClass="spanstyle" EnableViewState="false"></asp:Label>
@@ -1111,6 +1096,19 @@
                                 </td>
                                  <td>&nbsp;
                                 </td>--%>
+                            </tr>
+                            <tr style="width:100%">
+                                <td style="width:11%">
+                                    <asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                </td>
+                                <td style="width:11%" colspan="2">
+                                    <asp:DropDownList ID="ddlPreferredLanguage" onchange="showTip(this);" runat="server" CssClass="Editabletxtbox" onmouseover="OnMouseHover(this);" Width="80%" Style="margin-top: 10px;">
+                                    </asp:DropDownList>
+                                </td>
+                                <td style="width:11%">
+                                    <asp:CheckBox ID="chkReqTranslator" runat="server"  onclick="AutoSave();" CssClass="spanstyle" />
+                                    <asp:Label ID="Translator" runat="server" Text="Req. Translator" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                </td>
                             </tr>
                             <%--<tr>
                                 <td class="style199">
@@ -1970,6 +1968,7 @@
                 <asp:HiddenField ID="hdnFacilityName" runat="server" />
                  <asp:HiddenField ID="hdnProviderId" runat="server" EnableViewState="false" />
                 <asp:HiddenField ID="hdnCategory" runat="server" EnableViewState="false" />               
+                <asp:HiddenField ID="hdnTribalAffn" runat="server" />
                 <br />
             </div>
             <div id="divLoading" class="modal" runat="server" style="text-align: center; display: none">
