@@ -1954,7 +1954,9 @@ $(document).ready(function () {
         document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
     }
     $('#ctl00_C5POBody_txtTribalAffn').val($('#ctl00_C5POBody_hdnTribalAffn').val());
-    document.getElementById("ctl00_C5POBody_txtTribalAffn").disabled = true;
+    if ($('#ctl00_C5POBody_txtTribalAffn').val() != '') {
+        document.getElementById("ctl00_C5POBody_txtTribalAffn").disabled = true;
+    }
 });
 
 function loadgrid() {

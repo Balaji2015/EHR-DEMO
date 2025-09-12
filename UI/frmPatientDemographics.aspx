@@ -450,14 +450,74 @@
             }
 
             .ui-state-focus {
-                color: #808080;
-                background-color: #bbe2f1 !important;
-                outline: none;
-                border: 0px !important;
+                color: #000000 !important;
+                background-color: #cccccc !important;
+                border: 1px solid #939393 !important;
+                border-radius:2px !important;
             }
             #tbodupolicyinfo tr td {
                 word-break: break-word;
             }
+
+            .ui-dialog-titlebar-close {
+    display: none !important;
+}
+
+.ui-widget {
+    font-family: Verdana,Arial,sans-serif !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: none !important;
+    margin-left: 45px !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    width: 60px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 0px !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    font-size: 12px !important;
+    font-family: Verdana,Arial,sans-serif !important;
+}
+
+.ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+    height: 155px !important;
+    border: 2px solid !important;
+    border-radius: 13px !important;
+    top: 504px !important;
+    left: 568px !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    min-height: 0px !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    margin-top: -10px !important;
+    font-size: 14px !important;
+    /*padding: 0px !important ;*/
+}
+
+.ui-widget-content {
+    border: 0px !important;
+}
+
+.ui-widget-header, .ui-state-default, ui-button {
+    font-weight: bold !important;
+    font-size: 12px !important;
+    font-family: sans-serif !important;
+}
+
+
+.ui-widget {
+    border: 1px solid #adadad !important;
+    background-color: #F7F7F7 !important;
+}
         </style>
     </head>
     <body>
@@ -880,7 +940,7 @@
                                     <asp:TextBox ID="txtTribalAffn" runat="server" onkeypress="AutoSave();" CssClass="Editabletxtbox" EnableViewState="false" Style="width: 160px;"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <img id="imgClearTribalAffn" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top: -5px;position: absolute;right: 70px;cursor: pointer;width: 10px;"/>
+                                    <img id="imgClearTribalAffn" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top: -5px;position: absolute;right: 75px;cursor: pointer;width: 10px;"/>
                                 </td>
                             </tr>
                             <tr style="width:100%">
@@ -1609,7 +1669,7 @@
                                     </td>
                                       <td style="width: 40%; text-align: left;">
                                         <span  class="MandLabelstyle">Plan</span><span class="manredforstar">* &nbsp;</span> 
-                                       <asp:TextBox ID="txtPlanSearch" CssClass="spanstyle" runat="server" Width="72%" onchange="AutoSave();" ></asp:TextBox>
+                                       <asp:TextBox ID="txtPlanSearch" CssClass="spanstyle Editabletxtbox" runat="server" Width="72%" onchange="AutoSave();" ></asp:TextBox>
                                        <img id="imgClearplanText" src="Resources/Delete-Blue.png" runat="server" alt="X" title="Click to clear the text field." style="width:10px;margin-top:-5px;"/>
                                        </td>
                                       <td>
