@@ -917,6 +917,12 @@ function PatientInformationValidation() {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
+    if ($('#ctl00_C5POBody_txtTribalAffn').val() != $('#ctl00_C5POBody_hdnTribalAffn').val()) {
+        DisplayErrorMessage('420094');
+        document.getElementById(GetClientId("txtTribalAffn")).focus();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
     document.getElementById(GetClientId("hdnSexualOrientationSpecify")).value = document.getElementById(GetClientId("TxtSexualOrientationSpecify")).value;
     document.getElementById(GetClientId("hdnGenderIdentity")).value = document.getElementById(GetClientId("TxtGenderIdentity")).value;
 
@@ -1947,7 +1953,8 @@ $(document).ready(function () {
         document.getElementById('imginsuredText').style.visibility = "hidden";
         document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
     }
-
+    $('#ctl00_C5POBody_txtTribalAffn').val($('#ctl00_C5POBody_hdnTribalAffn').val());
+    document.getElementById("ctl00_C5POBody_txtTribalAffn").disabled = true;
 });
 
 function loadgrid() {
@@ -3852,3 +3859,186 @@ function EditProviderDetails() {
 function GetHumanId(e) {    
     sessionStorage.setItem("HumanId", e);
 }
+
+var arrAssignto = [];
+var bBool = false;
+var bcheck = true;
+var intAssigntoLength = -1;
+$("#ctl00_C5POBody_txtTribalAffn").autocomplete({
+    source: function (request, response) {
+        if (intAssigntoLength == 0 && bcheck && bBool == false) {
+            arrAssignto = [];
+            bBool = true;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "frmPatientDemographics.aspx/LoadTribalAffiliation",
+                data: JSON.stringify({ "searchText": request.term }),
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    debugger
+                    var jsonData = $.parseJSON(data.d);
+                    arrAssignto = jsonData;
+                    if (jsonData.length == 0) {
+                        jsonData.push('No matches found.')
+                        response($.map(jsonData, function (item) {
+                            return {
+                                label: item
+                            }
+                        }));
+                    }
+                    else {
+                        if (arrAssignto.length != 0) {
+                            var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
+                            results = results.slice(0, 100);
+                            if (results.length == 0) {
+                                results.push('No matches found.')
+                                response($.map(results, function (item) {
+                                    return {
+                                        label: item
+                                    }
+                                }));
+                            }
+                            else {
+                                response($.map(results, function (item) {
+                                    return {
+                                        label: item.split('|')[1],
+                                        val: item.split('|')[0]
+                                    }
+                                }));
+                            }
+                        }
+                        else {
+                            response($.map(jsonData.AssignedTo, function (item) {
+                                //arrAssignto.push(item);
+                                return {
+                                    label: item.split('|')[1],
+                                    val: item.split('|')[0]
+                                }
+                            }));
+                        }
+                    }
+                    $("#ctl00_C5POBody_txtTribalAffn").focus();
+                    if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                },
+                error: function OnError(xhr) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    if (xhr.status == 999)
+                        window.location = "/frmSessionExpired.aspx";
+                    else {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
+                    }
+                }
+
+            });
+        }
+        if ($("#ctl00_C5POBody_txtTribalAffn").val().length > 2) {
+            if (arrAssignto.length != 0) {
+                var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
+                results = results.slice(0, 100);
+                if (results.length == 0) {
+                    results.push('No matches found.')
+                    response($.map(results, function (item) {
+                        return {
+                            label: item
+                        }
+                    }));
+                }
+                else {
+                    response($.map(results, function (item) {
+                        return {
+                            label: item.split('|')[1],
+                            val: item.split('|')[0]
+                        }
+                    }));
+                }
+            }
+        }
+    },
+    minlength: 2,
+    multiple: true,
+    mustMatch: false,
+    open: function () {
+        $('.ui-autocomplete.ui-menu.ui-widget').width($('#ctl00_C5POBody_txtTribalAffn').width());
+        $('.ui-autocomplete.ui-menu.ui-widget').find('li').css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" });
+        $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+        $(".ui-autocomplete").find('a:contains("No matches found.")').on("click", function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        });
+    },
+    select: function (event, ui) {
+        event.preventDefault();
+
+        if (ui.item.label != "No matches found.") {
+            bBool = false;
+            document.getElementById("ctl00_C5POBody_txtTribalAffn").value = ui.item.label;
+            document.getElementById("ctl00_C5POBody_txtTribalAffn").attributes["val"] = ui.item.val;
+            document.getElementById("ctl00_C5POBody_txtTribalAffn").title = ui.item.label;
+            document.getElementById("ctl00_C5POBody_txtTribalAffn").disabled = true;
+            document.getElementById("ctl00_C5POBody_hdnTribalAffn").value = ui.item.label;
+            $('#ctl00_C5POBody_txtTribalAffn').attr('value', ui.item.label);
+        }
+        else {
+            $('#ctl00_C5POBody_txtTribalAffn').val("");
+            bBool = false;
+        }
+    }
+}).on("paste", function (e) {
+    intAssigntoLength = -1;
+    arrAssignto = [];
+    $(".ui-autocomplete").hide();
+}).on("keydown", function (e) {
+    if (e.which == 8) {
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if ($("#ctl00_C5POBody_txtTribalAffn").val().length <= 3)
+            bBool = false;
+        else
+            bBool = true;
+        $("#ctl00_C5POBody_txtTribalAffn").focus();
+        bcheck = false;
+    }
+    else if (e.which == 46) {
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        bBool = false;
+        bcheck = false;
+    }
+    else {
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        bcheck = true;
+    }
+
+}).on("input", function (e) {
+    if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    if ($("#ctl00_C5POBody_txtTribalAffn").val().length >= 3) {
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        intAssigntoLength = 0;
+    }
+    else if ($("#ctl00_C5POBody_txtTribalAffn").val().length != 0 && intAssigntoLength != -1) {
+        intAssigntoLength = intAssigntoLength + 1;
+    }
+    if ($("#ctl00_C5POBody_txtTribalAffn").val().length < 2) {
+        intAssigntoLength = -1;
+        arrAssignto = [];
+        $(".ui-autocomplete").hide();
+        bBool = false;
+    }
+});
+
+
+$("#imgClearTribalAffn").on("click", function () {
+    $('#ctl00_C5POBody_txtTribalAffn').val('').focus();
+    $(".ui-autocomplete").hide();
+    document.getElementById("ctl00_C5POBody_txtTribalAffn").value = "";
+    document.getElementById("ctl00_C5POBody_txtTribalAffn").attributes["val"] = "";
+    document.getElementById("ctl00_C5POBody_txtTribalAffn").title = "";
+    document.getElementById("ctl00_C5POBody_txtTribalAffn").disabled = false;
+    document.getElementById("ctl00_C5POBody_hdnTribalAffn").value = "";
+    AutoSave();
+});

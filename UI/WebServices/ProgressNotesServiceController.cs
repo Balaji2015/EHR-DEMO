@@ -2,8 +2,8 @@
 using Acurus.Capella.Core.DTOJson;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -680,7 +680,8 @@ namespace Acurus.Capella.UI.WebServices.API
                 string sTyepeOfPattern = string.Empty;
                 string sSection = string.Empty;
                 sFinalOutPut = "{";
-                for (int i = 0; i < doc.SelectNodes("content/p").Count; i++)
+                //for (int i = 0; i < doc.SelectNodes("content/p").Count; i++)
+                for (int i = 0; i <= doc.SelectNodes("content/p").Count; i++)
                 {
                     sTyepeOfPattern = string.Empty;
                     sSection = string.Empty;
@@ -852,7 +853,8 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 }
                 string sFooter = string.Empty;
-                string sFooterNode = ",\"Footer" + "\":[";
+                //string sFooterNode = "\"Footer" + "\":[";
+                bool bIsPaEncounter = false;
                 if (strfooterF == "")
                 {
                     sFooter = "";
@@ -860,7 +862,10 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
                 else if (strfooterPA != "" && strfooterP != "")
                 {
-                    sFooter = strfooterPA + "  " + strfooterP;
+                    //Jira CAP-3642
+                    //sFooter = strfooterPA + " " + strfooterP;
+                    sFooter = strfooterPA;
+                    bIsPaEncounter = true;
                     //sFinalOutPut = sFinalOutPut + sFooter;
                 }
                 else
@@ -873,18 +878,55 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     strSignedAt = Convert.ToDateTime(strSignedAt).ToString("o");
                 }
+                //Jira CAP-3642
+                var FinalJson = JObject.Parse(sFinalOutPut + "}");
 
-                sFinalOutPut = sFinalOutPut + sFooterNode
-                                    + "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
+                if (bIsPaEncounter && strfooterP != string.Empty)
+                {
+                    string sNewammentment = "{\"" + "text" + "\":\"" + strfooterP.Replace("\r\n", @"\n").Replace("\n", @"\n") + "\"," +
+                                            "\"" + "createdBy" + "\":\"" + "" + "\"," +
+                                            "\"" + "UserID" + "\":\"" + "" + "\"," +
+                                            "\"" + "ProviderID" + "\":\"" + "" + "\"," +
+                                            "\"" + "ReviewedBy" + "\":\"" + "" + "\"," +
+                                            "\"" + "ReviewedUserID" + "\":\"" + "" + "\"," +
+                                            "\"" + "ReviewedProviderID" + "\":\"" + "" + "\"," +
+                                            "\"" + "createdAt" + "\":\"" + "" + "\"}";
+                    var NewJson = JObject.Parse(sNewammentment);
+                    if (FinalJson["Amendment Notes"]?.Children() != null)
+                    {
+                        FinalJson["Amendment Notes"] = new JArray { FinalJson["Amendment Notes"].Children(), NewJson };
+                    }
+                    else
+                    {
+                        FinalJson["Amendment Notes"] = new JArray { NewJson };
+                    }
+                }
+
+                //Jira CAP-3642
+                //sFinalOutPut = sFinalOutPut + sFooterNode
+                //                    + "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
+                //                    "\"" + "signedBy" + "\":\"" + (strSignedBy?.Trim() ?? "") + "\"," +
+                //                    "\"" + "UserID" + "\":\"" + (strSignedUserEmail ?? "") + "\"," +
+                //                    "\"" + "ProviderID" + "\":\"" + (strSignedUserId ?? "") + "\"," +
+                //                    "\"" + "ReviewedBy" + "\":\"" + (strReviewedBy ?? "") + "\"," +
+                //                    "\"" + "ReviewedUserID" + "\":\"" + (strReviewedUserEmail ?? "") + "\"," +
+                //                    "\"" + "ReviewedProviderID" + "\":\"" + (strProviderUserId ?? "") + "\"," +
+                //                    "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}]";
+
+                string sFooterNode  =  "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
                                     "\"" + "signedBy" + "\":\"" + (strSignedBy?.Trim() ?? "") + "\"," +
                                     "\"" + "UserID" + "\":\"" + (strSignedUserEmail ?? "") + "\"," +
                                     "\"" + "ProviderID" + "\":\"" + (strSignedUserId ?? "") + "\"," +
                                     "\"" + "ReviewedBy" + "\":\"" + (strReviewedBy ?? "") + "\"," +
                                     "\"" + "ReviewedUserID" + "\":\"" + (strReviewedUserEmail ?? "") + "\"," +
                                     "\"" + "ReviewedProviderID" + "\":\"" + (strProviderUserId ?? "") + "\"," +
-                                    "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}]";
-
-                sFinalOutPut = sFinalOutPut.Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "").Replace("</subtab>", "").Replace("<subtab />", "") + "}";
+                                    "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}";
+                var NewFooterJson = JObject.Parse(sFooterNode);
+                FinalJson["Footer"] = new JArray { NewFooterJson };
+                sFinalOutPut = FinalJson.ToString();
+                //Jira CAP-3642
+                //sFinalOutPut = sFinalOutPut.Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "").Replace("</subtab>", "").Replace("<subtab />", "") + "}";
+                sFinalOutPut = sFinalOutPut.Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "").Replace("</subtab>", "").Replace("<subtab />", "");
                 //}
 
 

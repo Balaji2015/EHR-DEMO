@@ -105,10 +105,10 @@
                             <%--<i class="fa fa-print" id="Print" style="margin-left: 15px; cursor: pointer;" title="Print" onclick="print();"></i>--%>
                         </div>
                     </div>
-                    <div style="margin-top: 0px; height: 585px; width: 1000px; border: 1px solid #6A9C73; overflow: auto;" id="imgholder" runat="server" class="class-hide-this">
+                    <div style="margin-top: 0px; height: 585px; width: 1000px; border: 1px solid #6A9C73; overflow: auto;" id="imgholder" runat="server">
                         <img id="_imgBig" runat="server" alt="Uploaded File Not available in the location, it may be deleted or corrupted.Please Contact Support." />
                     </div>
-                    <div style="margin-top: 0px; height:585px !important; width: 1000px; border: 1px solid #6A9C73; overflow: auto; display: none" id="PDFholder" runat="server" class="class-hide-this">
+                    <div style="margin-top: 0px; height:585px !important; width: 1000px; border: 1px solid #6A9C73; overflow: auto; display: none" id="PDFholder" runat="server">
                         <iframe id="bigImgPDF" runat="server" style="width: 100%;height: 585px !important; overflow: hidden;" frameborder="0"></iframe>
                     </div>
 

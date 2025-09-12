@@ -555,40 +555,22 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.ImageButton ImageGranularity;
 
         /// <summary>
-        /// lblPreferredLanguage control.
+        /// lblTribalAffn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPreferredLanguage;
+        protected global::System.Web.UI.WebControls.Label lblTribalAffn;
 
         /// <summary>
-        /// ddlPreferredLanguage control.
+        /// txtTribalAffn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPreferredLanguage;
-
-        /// <summary>
-        /// chkReqTranslator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkReqTranslator;
-
-        /// <summary>
-        /// Translator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Translator;
+        protected global::System.Web.UI.WebControls.TextBox txtTribalAffn;
 
         /// <summary>
         /// lblLicenseState control.
@@ -904,6 +886,42 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadMaskedTextBox msktxtFaxNumber;
+
+        /// <summary>
+        /// lblPreferredLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPreferredLanguage;
+
+        /// <summary>
+        /// ddlPreferredLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPreferredLanguage;
+
+        /// <summary>
+        /// chkReqTranslator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkReqTranslator;
+
+        /// <summary>
+        /// Translator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Translator;
 
         /// <summary>
         /// pnlCareGiverInfo control.
@@ -2659,6 +2677,15 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCategory;
+
+        /// <summary>
+        /// hdnTribalAffn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnTribalAffn;
 
         /// <summary>
         /// divLoading control.
