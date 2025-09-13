@@ -1809,7 +1809,8 @@ namespace Acurus.Capella.UI
                                 //cboPreviousProcess.Items.Add(new RadComboBoxItem("SCHEDULED"));
                                 //cboPreviousProcess.Items.Add("SCHEDULED");
                                 strings.Add("SCHEDULED");
-
+                                //CAP-3581
+                                strings.Add("AKIDO_SCRIBE_PROCESS");
                                 //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                                 return JsonConvert.SerializeObject(strings);
                             }
@@ -2181,7 +2182,9 @@ namespace Acurus.Capella.UI
                 //GridDataItem grdSelectedItem = (GridDataItem)grdAdminModule.SelectedItems[0];
                 //GridDataItem selectedItem = (GridDataItem)grdAdminModule.SelectedItems[0];
 
-                if (root.GetProperty("Current Process").GetString() != string.Empty && root.GetProperty("Current Process").GetString().ToUpper() == "MA_PROCESS" && root.GetProperty("Date of Service").GetString() != "01-Jan-0001 12:00 AM")
+                //CAP-3581
+                //if (root.GetProperty("Current Process").GetString() != string.Empty && root.GetProperty("Current Process").GetString().ToUpper() == "MA_PROCESS" && root.GetProperty("Date of Service").GetString() != "01-Jan-0001 12:00 AM")
+                if (root.GetProperty("Current Process").GetString() != string.Empty && root.GetProperty("Current Process").GetString().ToUpper() == "MA_PROCESS" && root.GetProperty("Date of Service").GetString() != "01-Jan-0001 12:00 AM" && scboPreviousProcess != "AKIDO_SCRIBE_PROCESS")
                 {
                     //ScriptManager.RegisterStartupScript(this, this.GetType(), "string.Empty", "DisplayErrorMessage('700012');NotSaved();", true);
                     return "DisplayErrorMessage-700012-NotSaved-return";
@@ -2208,20 +2211,87 @@ namespace Acurus.Capella.UI
 
                 if (root.GetProperty("Current Process").GetString() == "MA_PROCESS")
                 {
-                    if (root.GetProperty("Encounter ID").GetString() != string.Empty && root.GetProperty("Object Type").GetString() != string.Empty)
+                    //CAP-3581
+                    if (scboPreviousProcess == "SCHEDULED")
                     {
-                        WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), root.GetProperty("Object Type").GetString(), "UNKNOWN", scboPreviousProcess, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
+                        if (root.GetProperty("Encounter ID").GetString() != string.Empty && root.GetProperty("Object Type").GetString() != string.Empty)
+                        {
+                            WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), root.GetProperty("Object Type").GetString(), "UNKNOWN", scboPreviousProcess, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
+                        }
+                        WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), "ENCOUNTER", "UNKNOWN", scboPreviousProcess, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
+
+                        WFObjectManager wfObjMngr = new WFObjectManager();
+                        WFObject DocumentationWfObject = null;
+                        DocumentationWfObject = wfObjMngr.GetByObjectSystemId(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), "DOCUMENTATION");
+                        wfObjMngr.DeleteDocumentationObject(DocumentationWfObject);
+
+                        WFObject BillingWfObject = null;
+                        BillingWfObject = wfObjMngr.GetByObjectSystemId(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), "BILLING");
+                        wfObjMngr.DeleteDocumentationObject(BillingWfObject);
                     }
-                    WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), "ENCOUNTER", "UNKNOWN", scboPreviousProcess, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
+                    //CAP-3581
+                    else if (scboPreviousProcess == "AKIDO_SCRIBE_PROCESS")
+                    {
+                        if (root.GetProperty("Encounter ID").GetString() != string.Empty && root.GetProperty("Object Type").GetString() != string.Empty)
+                        {
+                            //Jira #CAP-724 -start
+                            //Jira #CAP-855
+                            string sExMessage = "";
+                            string sStatus = "";
+                            string sIsAkidoEncounter = "false";
+                            string sIsCapellaEncounter = string.Empty;
+                            //Jira CAP-1990
+                            //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage);
+                            sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(string.Empty, Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()));
+                            if (sIsCapellaEncounter != "Y")
+                            {
+                                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(root.GetProperty("Encounter ID").GetString().ToString(), out sExMessage, out sStatus);
+                            }
+                            //Jira CAP-1990
+                            //if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sIsAkidoEncounter == "false")
+                            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && scboPreviousProcess == "AKIDO_SCRIBE_PROCESS" && sStatus != System.Configuration.ConfigurationSettings.AppSettings["AkidoSignedStatus"].ToString())
+                            {
+                                //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011196'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                                return "DisplayErrorMessage-1011196-return";
+                            }
+                            else if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
+                            {
+                                //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011199'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                                return "DisplayErrorMessage-1011199-return";
+                            }
+                            //Jira #CAP-724 -end
+                            WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), root.GetProperty("Object Type").GetString(), "UNKNOWN", scboPreviousProcess, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
 
-                    WFObjectManager wfObjMngr = new WFObjectManager();
-                    WFObject DocumentationWfObject = null;
-                    DocumentationWfObject = wfObjMngr.GetByObjectSystemId(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), "DOCUMENTATION");
-                    wfObjMngr.DeleteDocumentationObject(DocumentationWfObject);
+                            //WfObjectMngr.MoveToNextProcess(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text),"ENCOUNTER",1,"UNKNOWN",)
+                            //    (Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), "ENCOUNTER", "UNKNOWN", cboPreviousProcess.SelectedItem.Text, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
 
-                    WFObject BillingWfObject = null;
-                    BillingWfObject = wfObjMngr.GetByObjectSystemId(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()), "BILLING");
-                    wfObjMngr.DeleteDocumentationObject(BillingWfObject);
+                            if (sStatus == System.Configuration.ConfigurationSettings.AppSettings["AkidoSignedStatus"].ToString())
+                            {
+                                EncounterManager objEncounter = new EncounterManager();
+                                IList<Encounter> ilstUpdateEncounter = new List<Encounter>();
+
+                                ilstUpdateEncounter = objEncounter.GetEncounterByEncounterID(Convert.ToUInt64(root.GetProperty("Encounter ID").GetString()));
+                                if (ilstUpdateEncounter.Count > 0)
+                                {
+                                    ilstUpdateEncounter[0].Is_Signed_in_Akido_Note = "Y";
+                                    ilstUpdateEncounter[0].Modified_By = ClientSession.UserName;
+                                    ilstUpdateEncounter[0].Modified_Date_and_Time = UtilityManager.ConvertToUniversal(); ;
+
+                                    //Jira CAP-2887
+                                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                                    bool bIsUpdateinBlob = true;
+                                    IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ilstUpdateEncounter.FirstOrDefault().Id);
+                                    if (ilstEncounterBlob.Count == 0)
+                                    {
+                                        bIsUpdateinBlob = false;
+                                    }
+                                    //Jira CAP-2887
+                                    // objEncounter.SaveandMoveAkidoEncounter(ilstUpdateEncounter);
+                                    objEncounter.SaveandMoveAkidoEncounter(ilstUpdateEncounter, bIsUpdateinBlob);
+                                }
+                            }
+                        }
+                    }
                 }
                 //Jira #CAP-706-start
                 else if (root.GetProperty("Current Process").GetString() == "PROVIDER_PROCESS")
