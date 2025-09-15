@@ -476,14 +476,14 @@ function btnSave_Clicked(sender, args) {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         sender.set_autoPostBack(false);
     }
-    else if (document.getElementById("txtOccupationIndustry").value != undefined && document.getElementById("txtOccupationIndustry").value != "" && ($("#txtOccupationIndustry").attr("OccupationVal") == undefined || $("#txtOccupationIndustry").attr("OccupationVal") == "")) {
+    else if (document.getElementById("txtOccupationIndustry") != null && document.getElementById("txtOccupationIndustry").value != undefined && document.getElementById("txtOccupationIndustry").value != "" && ($("#txtOccupationIndustry").attr("OccupationVal") == undefined || $("#txtOccupationIndustry").attr("OccupationVal") == "")) {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180058');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         sender.set_autoPostBack(false);
     }
-    else if (document.getElementById("txtOccupation").value != undefined && document.getElementById("txtOccupation").value != "" && ($("#txtOccupation").attr("OccupationVal") == undefined || $("#txtOccupation").attr("OccupationVal") == "")) {
+    else if (document.getElementById("txtOccupation")!= null && document.getElementById("txtOccupation").value != undefined && document.getElementById("txtOccupation").value != "" && ($("#txtOccupation").attr("OccupationVal") == undefined || $("#txtOccupation").attr("OccupationVal") == "")) {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180059');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
