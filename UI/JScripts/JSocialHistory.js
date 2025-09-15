@@ -128,15 +128,16 @@ function disable(ctrlId, ctrlName) {
     //Cap - 3604
     var txtbox = document.getElementById(ctrltxt);
 
-    if (ctrlName == "chkYes" && ctrlId == 'chkYesOccupationIndustry') {
+    if (ctrlName == "chkYes" && $("#" + ctrltxt)[0] != undefined) {
         txtbox.disabled = false;
+        txtbox.removeAttribute("readonly");
         document.getElementById(ctrlimg).setAttribute("onclick", "ClearTextbox(event);");
-        $("#" + ctrlimg).show();
+        document.getElementById(ctrlimg).src = "Resources/Delete-Blue.png";
     }
-    else if (ctrlName == "chkNo" && ctrlId == 'chkNoOccupationIndustry') {
+    else if (ctrlName == "chkNo" && $("#" + ctrltxt)[0] != undefined) {
         txtbox.disabled = true;
         document.getElementById(ctrlimg).setAttribute("onclick", "");
-        $("#"+ctrlimg).hide();
+        document.getElementById(ctrlimg).src = "Resources/Delete-Grey.png";
         txtbox.value = "";
     }
     else {
@@ -167,11 +168,15 @@ function ClearTextbox(e) {
     $("#" + Idval).val = "";
     document.getElementById("hdn" + HdnId).value = "";
     document.getElementById(Idval).disabled = false;
+    document.getElementById(Idval).removeAttribute("readonly");
+    EnableSave();
 }
 
 //Cap - 3604
 function myAutocomplete(e) {
     var AutocompleteId = e.id
+    let labelText = $("#" + AutocompleteId).closest("tr").find("td")[0].innerText;
+
     $("#" + AutocompleteId).autocomplete({
         source: function (request, response) {
             if ($("#" + AutocompleteId).val().trim().length > 2) {
@@ -180,7 +185,8 @@ function myAutocomplete(e) {
                 var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
                 arrPatient = [];
                 var WSData = {
-                    text_searched: strkeyWords[0]
+                    text_searched: strkeyWords[0],
+                    TextLabel: labelText
                 };
 
                 $.ajax({
@@ -355,16 +361,17 @@ function enable(testId, chkName) {
     //combo.disable();
     var txtbox = document.getElementById(ctrltxt);
 
-    if (chkName == "chkYes" && testId == 'chkYesOccupationIndustry') {
-        txtbox.disabled = true;
+    if (chkName == "chkYes" && $("#" + ctrltxt)[0] != undefined) {
+        txtbox.disabled = false;
+        txtbox.removeAttribute("readonly");
         document.getElementById(ctrlimg).setAttribute("onclick", "ClearTextbox(event);");
-        $("#" + ctrlimg).show();
+        document.getElementById(ctrlimg).src = "Resources/Delete-Blue.png";
         txtbox.value = "";
     }
-    else if (chkName == "chkNo" && testId == 'chkNoOccupationIndustry') {
+    else if (chkName == "chkNo" && $("#" + ctrltxt)[0] != undefined) {
         txtbox.disabled = true;
         document.getElementById(ctrlimg).setAttribute("onclick", "");
-        $("#" + ctrlimg).hide();
+        document.getElementById(ctrlimg).src = "Resources/Delete-Grey.png";
         txtbox.value = "";
     }
     else {
@@ -472,6 +479,13 @@ function btnSave_Clicked(sender, args) {
     else if (document.getElementById("txtOccupationIndustry").value != undefined && document.getElementById("txtOccupationIndustry").value != "" && ($("#txtOccupationIndustry").attr("OccupationVal") == undefined || $("#txtOccupationIndustry").attr("OccupationVal") == "")) {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180058');
+        top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        sender.set_autoPostBack(false);
+    }
+    else if (document.getElementById("txtOccupation").value != undefined && document.getElementById("txtOccupation").value != "" && ($("#txtOccupation").attr("OccupationVal") == undefined || $("#txtOccupation").attr("OccupationVal") == "")) {
+        PFSH_SaveUnsuccessful();
+        DisplayErrorMessage('180059');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         sender.set_autoPostBack(false);

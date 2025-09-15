@@ -960,30 +960,38 @@ namespace Acurus.Capella.UI
                     txt.Attributes.Add("onkeypress", "myAutocomplete(this);");
                     txt.EnableViewState = false;
                     txt.Width = Unit.Pixel(310);
-                    if (chkBoxYes.Checked == true)
-                        txt.Enabled = true;
-                    else
-                    {
-                        txt.Enabled = false;
-                        txt.Text = "";
-                    }
+                if (chkBoxYes.Checked == true)
+                {
+                    txt.Enabled = true;
+                    txt.ReadOnly = true;
+                }
+
+                else
+                {
+                    txt.Enabled = false;
+                    txt.Text = "";
+                }
 
                     System.Web.UI.WebControls.Image img = new System.Web.UI.WebControls.Image();
-                    img.ID = "img" + HistoryInfo.Replace(" ", "");
-                    img.ImageUrl = "Resources/Delete-Blue.png";
+                    img.ID = "img" + HistoryInfo.Replace(" ", "");                    
                     img.Width = 12;
                     img.Height = 12;
                     img.Style.Add("margin-left", "-15px");
                     img.Attributes.Add("onclick", "ClearTextbox(event);");
 
-                    if (chkBoxYes.Checked == true)
-                        img.Enabled = true;
-                    else
-                    {
-                        img.Enabled = false;
-                        img.Attributes.Add("onclick", "");
-                        txt.Text = "";
-                    }
+                if (chkBoxYes.Checked == true)
+                {
+                    img.Enabled = true;
+                    img.ImageUrl = "Resources/Delete-Blue.png";
+                }
+
+                else
+                {
+                    img.Enabled = false;
+                    img.ImageUrl = "Resources/Delete-Grey.png";
+                    img.Attributes.Add("onclick", "");
+                    txt.Text = "";
+                }
 
                     tc.Controls.Add(txt);
                     tc.Controls.Add(img);
@@ -2262,7 +2270,7 @@ namespace Acurus.Capella.UI
         //Cap - 3604
         [System.Web.Script.Services.ScriptMethod()]
         [System.Web.Services.WebMethod(EnableSession = true)]
-        public static string GetOccupationIndustry(string text_searched)
+        public static string GetOccupationIndustry(string text_searched, string TextLabel)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -2275,7 +2283,7 @@ namespace Acurus.Capella.UI
             StaticLookupManager objStaticLookupMgr = new StaticLookupManager();
             IList<StaticLookup> lststaticOccupation = new List<StaticLookup>();
 
-            lststaticOccupation = objStaticLookupMgr.GetStaticLookupByFieldNameAndPartialValue("SOCIAL HISTORY OPTION FOR OCCUPATION INDUSTRY", text_searched);
+            lststaticOccupation = objStaticLookupMgr.GetStaticLookupByFieldNameAndPartialValue("SOCIAL HISTORY OPTION FOR "+TextLabel, text_searched);
 
             if (lststaticOccupation.Count() == 0)
             {
