@@ -181,11 +181,11 @@ function myAutocomplete(e) {
         source: function (request, response) {
             if ($("#" + AutocompleteId).val().trim().length > 2) {
                 { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-                var strkeyWords = $("#" + AutocompleteId).val().split(' ');
+                var strkeyWords = $("#" + AutocompleteId).val();
                 var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
                 arrPatient = [];
                 var WSData = {
-                    text_searched: strkeyWords[0],
+                    text_searched: strkeyWords,
                     TextLabel: labelText
                 };
 
@@ -216,7 +216,7 @@ function myAutocomplete(e) {
                         else {
                             var results;
                             if (bMoreThanOneKeyword)
-                                results = Filter(jsonData, request.term);
+                                results = Filter(jsonData.Matching_Result, request.term);
                             else
                                 results = jsonData.Matching_Result;
 
@@ -307,7 +307,23 @@ function OccupationSelect(event, ui) {
     document.getElementById(EventId).disabled = true;
     EnableSave();
 }
-
+function Filter(array, terms) {
+    arrayOfTerms = terms.split(" ");
+    if (arrayOfTerms.length > 1 && arrayOfTerms[1].trim() != "") {
+        var first_resultant = array;
+        var resultant;
+        for (var i = 1; i < arrayOfTerms.length; i++) {
+            resultant = $.grep(first_resultant, function (item) {
+                return item.label.toLowerCase().indexOf(arrayOfTerms[i].toLowerCase()) > -1;
+            });
+            first_resultant = resultant;
+        }
+        return first_resultant;
+    }
+    else {
+        return array;
+    }
+}
 //CAP-1760 - Tobacco use & exposure - NO but "Light cigrette smoker" status is selected by default
 //function defaultselectionTobacca(ctrlId) {
 //    if(ctrlId == "chkYesTobaccoUseandExposure")

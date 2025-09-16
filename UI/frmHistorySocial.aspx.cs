@@ -1173,6 +1173,11 @@ namespace Acurus.Capella.UI
                     TextBox txt = divSocialHistoryControls.FindControl("txt" + HistoryInfo.Replace(" ", "")) as TextBox;
                     txt.Text = pastMedicalList.Value;
                     txt.Attributes.Add("OccupationVal", pastMedicalList.Value);
+                if (chkBoxYes.Checked == true && pastMedicalList.Value =="")
+                {
+                    txt.Enabled = true;
+                }
+
                 }
 
                 if (HistoryInfo.ToUpper().Contains("TOBACCO"))
