@@ -962,8 +962,7 @@ namespace Acurus.Capella.UI
                     txt.Width = Unit.Pixel(310);
                 if (chkBoxYes.Checked == true)
                 {
-                    txt.Enabled = true;
-                    txt.ReadOnly = true;
+                    txt.Enabled = false;
                 }
 
                 else
@@ -1327,7 +1326,7 @@ namespace Acurus.Capella.UI
                 CheckBox chkNo = ((CheckBox)divSocialHistoryControls.FindControl("chkNo" + item.Key.Replace(" ", "")));
                 //RadComboBox rcb = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", "") + "ReasonNotPerformed"));//added by Shilpa-reason_not_performed cbo
                 CustomDLCNew sSnomed = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", "")));
-                TextBox txt = divSocialHistoryControls.FindControl("txt" + item.Key.Replace(" ", "")) as TextBox;
+                TextBox txt = (TextBox)divSocialHistoryControls.FindControl("txt" + item.Key.Replace(" ", "")); 
 
                 if (chk.ID.Contains("chkYes"))
                 {
@@ -1426,7 +1425,7 @@ namespace Acurus.Capella.UI
                     string hdnId = "hdn" + item.Key.Replace(" ", "");
                     HiddenField hdn = divSocialHistoryControls.FindControl(hdnId) as HiddenField;
                     SocialHistoryObject.Is_Present = "Y";
-                    SocialHistoryObject.Value = txt.Text;
+                    SocialHistoryObject.Value = Request.Form["txt" + item.Key.Replace(" ", "")];
                     SocialHistoryObject.Recodes = hdn.Value;
                     SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo
 
