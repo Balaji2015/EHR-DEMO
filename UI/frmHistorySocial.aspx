@@ -197,6 +197,7 @@
         <asp:HiddenField ID="hdnDivPosition" EnableViewState="false" runat="server" />
         <asp:HiddenField ID="hdnreason"  runat="server" />
         <asp:HiddenField ID="hdnOccupationIndustry"  runat="server" />
+        <asp:HiddenField ID="hdnOccupation"  runat="server" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
                 <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
