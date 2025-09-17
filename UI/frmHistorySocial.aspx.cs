@@ -592,6 +592,36 @@ namespace Acurus.Capella.UI
 
         private void LoadData()
         {
+            //Cap - 3594 - Getting gender for this bug
+            string humanSex = string.Empty;
+            if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
+            {
+                humanSex = ClientSession.PatientPaneList[0].Sex;
+                
+            }
+            else
+            {
+                IList<Human> objhuman = new List<Human>();
+                IList<string> ilstHumanTagList = new List<string>();
+                ilstHumanTagList.Add("HumanList");
+
+                IList<object> ilstHumanFinal = new List<object>();
+                ilstHumanFinal = UtilityManager.ReadBlob(Convert.ToUInt64(ClientSession.HumanId), ilstHumanTagList);
+
+                if (ilstHumanFinal.Count > 0 && ilstHumanFinal != null)
+                {
+                    if (ilstHumanFinal[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanFinal[0]).Count; iCount++)
+                        {
+                            objhuman.Add((Human)((IList<object>)ilstHumanFinal[0])[iCount]);
+                        }                      
+                        humanSex = objhuman[0].Sex;                       
+                    }
+                }
+            }
+
+
             bool ctrl = false;
             if (Session["objStaticLookup"] == null)
             {
@@ -616,7 +646,7 @@ namespace Acurus.Capella.UI
                                 //Cap - 3604
                                 //CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, Is_Mandatory, ilistSocHis[0]);
                                 //Cap - 3594
-                                if (objStaticLookup[i].Doc_Type == "" || objStaticLookup[i].Doc_Type.ToUpper() == ClientSession.PatientPaneList[0].Sex.ToUpper())
+                                if (objStaticLookup[i].Doc_Type == "" || objStaticLookup[i].Doc_Type.ToUpper() == humanSex.ToUpper())
                                 {
                                     CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, Is_Mandatory, ilistSocHis[0], objStaticLookup[i].Default_Value);
                                     dictionary.Add(ilistSocHis[0].Social_Info, ilistSocHis[0].Id.ToString());
@@ -633,7 +663,7 @@ namespace Acurus.Capella.UI
                                 //Cap - 3604
                                 //CreateDynamicControlsForSocial(objStaticLookup[i].Value, Is_Mandatory, null);
                                 //Cap - 3594
-                                if (objStaticLookup[i].Doc_Type == "" || objStaticLookup[i].Doc_Type.ToUpper() == ClientSession.PatientPaneList[0].Sex.ToUpper())
+                                if (objStaticLookup[i].Doc_Type == "" || objStaticLookup[i].Doc_Type.ToUpper() == humanSex.ToUpper())
                                 {
                                     CreateDynamicControlsForSocial(objStaticLookup[i].Value, Is_Mandatory, null, objStaticLookup[i].Default_Value);
                                     dictionary.Add(objStaticLookup[i].Value, "0");
@@ -663,7 +693,7 @@ namespace Acurus.Capella.UI
                         //Cap - 3604
                         //CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i]);
                         //Cap - 3594
-                        if (ilistSLookup[0].Doc_Type == "" || ilistSLookup[0].Doc_Type.ToUpper() == ClientSession.PatientPaneList[0].Sex.ToUpper())
+                        if (ilistSLookup[0].Doc_Type == "" || ilistSLookup[0].Doc_Type.ToUpper() == humanSex.ToUpper())
                         {
                             CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i], ilistSLookup[0].Default_Value);
                             dictionary.Add(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Id.ToString());
@@ -1173,6 +1203,11 @@ namespace Acurus.Capella.UI
                     TextBox txt = divSocialHistoryControls.FindControl("txt" + HistoryInfo.Replace(" ", "")) as TextBox;
                     txt.Text = pastMedicalList.Value;
                     txt.Attributes.Add("OccupationVal", pastMedicalList.Value);
+                if (chkBoxYes.Checked == true && pastMedicalList.Value =="")
+                {
+                    txt.Enabled = true;
+                }
+
                 }
 
                 if (HistoryInfo.ToUpper().Contains("TOBACCO"))
