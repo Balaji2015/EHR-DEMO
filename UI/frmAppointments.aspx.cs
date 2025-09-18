@@ -398,7 +398,7 @@ namespace Acurus.Capella.UI
                                                 cboItem.Text += "," + PhyList1[i].PhySuffix;
                                             //CAP-3635
                                             //cboItem.Value = PhyList1[i].Id.ToString();
-                                            cboItem.Value = PhyList1[i].Id.ToString() + "|0";
+                                            cboItem.Value = PhyList1[i].Id.ToString() + "|" + PhyList1[i].Id.ToString();
                                             cboItem.Attributes.Add("title", cboItem.Text);
                                         }
                                         this.cboFacilityName.Items.Add(cboItem); ;
@@ -1628,20 +1628,7 @@ namespace Acurus.Capella.UI
                                             item.Text = text; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
                                             item.Value = machinetechnicians[0].machine_technician_library_id;
                                         }
-                                        else
-                                        {
-                                            continue;
-                                        }
                                     }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }
-                                //CAP-3662
-                                else
-                                {
-                                    continue;
                                 }
                             }
                             else
@@ -2308,21 +2295,7 @@ namespace Acurus.Capella.UI
                                         //item.Value = machinetechnicians[0].machine_technician_library_id;
                                         item.Value = PhysicianList[i].Id.ToString() + "|" + machinetechnicians[0].machine_technician_library_id;
                                     }
-                                    else
-                                    {
-                                        continue;
-                                    }
                                 }
-                                //CAP-3662
-                                else
-                                {
-                                    continue;
-                                }
-                            }
-                            //CAP-3662
-                            else
-                            {
-                                continue;
                             }
                         }
                         else
@@ -2345,7 +2318,7 @@ namespace Acurus.Capella.UI
                                 item.Text += "," + PhysicianList[i].PhySuffix;
                             //CAP-3635
                             //item.Value = PhysicianList[i].Id.ToString();
-                            item.Value = PhysicianList[i].Id.ToString() + "|0";
+                            item.Value = PhysicianList[i].Id.ToString() + "|" + PhysicianList[i].Id.ToString();
                         }
                         this.cboFacilityName.Items.Add(item);
                     }
@@ -4557,20 +4530,7 @@ namespace Acurus.Capella.UI
                                         item.Text = text; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
                                         item.Value = machinetechnicians[0].machine_technician_library_id;
                                     }
-                                    else
-                                    {
-                                        continue;
-                                    }
                                 }
-                                else
-                                {
-                                    continue;
-                                }
-                            }
-                            //CAP-3662
-                            else
-                            {
-                                continue;
                             }
                         }
                         else
@@ -4614,13 +4574,13 @@ namespace Acurus.Capella.UI
             {
                 var comboBoxItems = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
                 chklstProviders.Items.Clear();
-                chklstProviders.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
+                chklstProviders.Items.AddRange(comboBoxItems.Where(a => !string.IsNullOrWhiteSpace(a.Text)).OrderBy(a => a.Text.Trim()).ToArray());
             }
             else
             {
                 var comboBoxItems = cboFacilityName.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
                 cboFacilityName.Items.Clear();
-                cboFacilityName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
+                cboFacilityName.Items.AddRange(comboBoxItems.Where(a => !string.IsNullOrWhiteSpace(a.Text)).OrderBy(a => a.Text.Trim()).ToArray());
             }
         }
         #endregion

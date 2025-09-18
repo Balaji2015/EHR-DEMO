@@ -928,7 +928,8 @@ namespace Acurus.Capella.UI
                     //CAP-2024
                     var comboBoxItems = ddlPhysicianName.Items.Cast<RadComboBoxItem>().ToList();
                     ddlPhysicianName.Items.Clear();
-                    ddlPhysicianName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
+                    //CAP-3693
+                    ddlPhysicianName.Items.AddRange(comboBoxItems.Where(a => !string.IsNullOrWhiteSpace(a.Text)).OrderBy(a => a.Text.Trim()).ToArray());
                 }
                 //Jira #CAP-168
                 if (ddlPhysicianName.Items.Count == 0 || ddlPhysicianName.SelectedItem.Text == "" || ddlPhysicianName.SelectedItem.Text == string.Empty || ddlPhysicianName.SelectedItem.Text == null)
@@ -3469,7 +3470,8 @@ namespace Acurus.Capella.UI
             //CAP-2024
             var comboBoxItems = ddlPhysicianName.Items.Cast<RadComboBoxItem>().ToList();
             ddlPhysicianName.Items.Clear();
-            ddlPhysicianName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
+            //CAP-3693
+            ddlPhysicianName.Items.AddRange(comboBoxItems.Where(a => !string.IsNullOrWhiteSpace(a.Text)).OrderBy(a => a.Text.Trim()).ToArray());
 
             btnSave.Enabled = true;
 
@@ -4386,7 +4388,8 @@ namespace Acurus.Capella.UI
                 //CAP-2024
                 var comboBoxItems = ddlPhysicianName.Items.Cast<RadComboBoxItem>().ToList();
                 ddlPhysicianName.Items.Clear();
-                ddlPhysicianName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
+                //CAP-3693
+                ddlPhysicianName.Items.AddRange(comboBoxItems.Where(a => !string.IsNullOrWhiteSpace(a.Text)).OrderBy(a => a.Text.Trim()).ToArray());
             }
 
             ClientSession.PhysicianId = ddlPhysicianName.SelectedValue != null && ddlPhysicianName.SelectedValue.Trim() != "" ? Convert.ToUInt64(ddlPhysicianName.SelectedValue) : 0;
