@@ -4061,7 +4061,7 @@ function listSpecificEthnicityChange(listId) {
     Tag = listId[listId.selectedIndex]?.value;
     if (txtValue == "[Empty]") {
         SpecificEthnicityTag = ""
-        ClearRace();
+        ClearEthnicityChange();
     }
     else {
         if (SpecificEthnicityTag == "") {
@@ -4102,4 +4102,7 @@ function SpecificEthnicityImageButton(sender, args) {
     }
     SaveEnable();
     return false;
+}
+function ClearEthnicityChange() {
+    document.getElementById(GetClientId("txtSpecificEthnicity")).value = "";
 }
