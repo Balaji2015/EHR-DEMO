@@ -988,17 +988,17 @@ namespace Acurus.Capella.UI
                 tr1.Cells.Add(tc);
                 //Cap - 3604
                 var options = new HtmlSelect();
-                if (Default_Value == "TEXTBOX")
-                {
-                    tc = new TableCell();
-                    TextBox txt = new TextBox();
-                    txt.ID = "txt" + HistoryInfo.Replace(" ", "");
-                    txt.Text = "";
-                    txt.Attributes.Add("class", "Editabletxtbox");
-                    txt.Attributes.Add("onkeyup", "myAutocomplete(this);");
-                    txt.Attributes.Add("onkeypress", "myAutocomplete(this);");
-                    txt.EnableViewState = false;
-                    txt.Width = Unit.Pixel(310);
+            if (Default_Value == "TEXTBOX")
+            {
+                tc = new TableCell();
+                TextBox txt = new TextBox();
+                txt.ID = "txt" + HistoryInfo.Replace(" ", "");
+                txt.Text = "";
+                txt.Attributes.Add("class", "Editabletxtbox");
+                txt.Attributes.Add("onkeyup", "myAutocomplete(this);");
+                txt.Attributes.Add("onkeypress", "myAutocomplete(this);");
+                txt.EnableViewState = false;
+                txt.Width = Unit.Pixel(310);
                 if (chkBoxYes.Checked == true)
                 {
                     txt.Enabled = false;
@@ -1010,12 +1010,12 @@ namespace Acurus.Capella.UI
                     txt.Text = "";
                 }
 
-                    System.Web.UI.WebControls.Image img = new System.Web.UI.WebControls.Image();
-                    img.ID = "img" + HistoryInfo.Replace(" ", "");                    
-                    img.Width = 12;
-                    img.Height = 12;
-                    img.Style.Add("margin-left", "-15px");
-                    img.Attributes.Add("onclick", "ClearTextbox(event);");
+                System.Web.UI.WebControls.Image img = new System.Web.UI.WebControls.Image();
+                img.ID = "img" + HistoryInfo.Replace(" ", "");
+                img.Width = 12;
+                img.Height = 12;
+                img.Style.Add("margin-left", "-15px");
+                img.Attributes.Add("onclick", "ClearTextbox(event);");
 
                 if (chkBoxYes.Checked == true)
                 {
@@ -1031,59 +1031,63 @@ namespace Acurus.Capella.UI
                     txt.Text = "";
                 }
 
-                    tc.Controls.Add(txt);
-                    tc.Controls.Add(img);
-                    tr1.Cells.Add(tc);
+                tc.Controls.Add(txt);
+                tc.Controls.Add(img);
+                tr1.Cells.Add(tc);
+            }
+            else
+            {
+
+                tc = new TableCell();
+                //RadComboBox options = new RadComboBox();
+                //options.ID = "cbo" + HistoryInfo.Replace(" ", "");
+                //options.AutoPostBack = false;
+                //options.AllowCustomText = false;
+                //options.Attributes.Add("onkeypress", "EnableSave();");
+                //options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
+                //options.CssClass = "Editabletxtbox";
+
+                options.ID = "cbo" + HistoryInfo.Replace(" ", "");
+                //options.AutoPostBack = false;
+                //options.AllowCustomText = false;
+                options.Attributes.Add("onchange", "OnClientSelectedIndex();");
+                // options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
+                //options.Attributes.Add("onSelectedIndexChanged", "OnClientSelectedIndex();");
+                options.Attributes.Add("class", "Editabletxtbox");
+                if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
+                {
+                    if (chkBoxYes.Checked == true)
+                        //options.Enabled = true;
+                        options.Disabled = false;
+                    else
+                        //options.Enabled = false;
+                        options.Disabled = true;
                 }
                 else
                 {
-
-                    tc = new TableCell();
-                    //RadComboBox options = new RadComboBox();
-                    //options.ID = "cbo" + HistoryInfo.Replace(" ", "");
-                    //options.AutoPostBack = false;
-                    //options.AllowCustomText = false;
-                    //options.Attributes.Add("onkeypress", "EnableSave();");
-                    //options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
-                    //options.CssClass = "Editabletxtbox";
-
-                    options.ID = "cbo" + HistoryInfo.Replace(" ", "");
-                    //options.AutoPostBack = false;
-                    //options.AllowCustomText = false;
-                    options.Attributes.Add("onchange", "OnClientSelectedIndex();");
-                    // options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
-                    //options.Attributes.Add("onSelectedIndexChanged", "OnClientSelectedIndex();");
-                    options.Attributes.Add("class", "Editabletxtbox");
-                    if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
-                    {
-                        if (chkBoxYes.Checked == true)
-                            //options.Enabled = true;
-                            options.Disabled = false;
-                        else
-                            //options.Enabled = false;
-                            options.Disabled = true;
-                    }
+                    if (chkBoxYes.Checked || chkBoxNo.Checked)
+                        // options.Enabled = true;
+                        options.Disabled = false;
                     else
-                    {
-                        if (chkBoxYes.Checked || chkBoxNo.Checked)
-                            // options.Enabled = true;
-                            options.Disabled = false;
-                        else
-                            //options.Enabled = false;
-                            options.Disabled = true;
-                        //options.Attributes.Add("Style", "Height:320px;");
-                        //options.Height = Unit.Pixel(320);
-                    }
-
-                    // options.Width = 320;
-                    //options.BackColor = Color.White;
-
-                    //options.Attributes.Add("Style", "");
-                    options.Attributes.Add("Style", "BackColor:White;Width:320px;");
-
-                    tc.Controls.Add(options);
-                    tr1.Cells.Add(tc);
+                        //options.Enabled = false;
+                        options.Disabled = true;
+                    //options.Attributes.Add("Style", "Height:320px;");
+                    //options.Height = Unit.Pixel(320);
                 }
+                //Cap - 3664
+                if (HistoryInfo.Replace(" ", "") == "SexuallyActive" || HistoryInfo.Replace(" ", "") == "PregnancyStatus")
+                {
+                    options.Disabled = true;
+                }
+                // options.Width = 320;
+                //options.BackColor = Color.White;
+
+                //options.Attributes.Add("Style", "");
+                options.Attributes.Add("Style", "BackColor:White;Width:320px;");
+
+                tc.Controls.Add(options);
+                tr1.Cells.Add(tc);
+            }
 
                 CustomDLCNew userCtrl = (CustomDLCNew)LoadControl("~/UserControls/customDLCNew.ascx");
                 tc = new TableCell();

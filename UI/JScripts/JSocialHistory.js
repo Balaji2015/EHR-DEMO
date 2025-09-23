@@ -377,14 +377,7 @@ function enable(testId, chkName) {
     //combo.disable();
     var txtbox = document.getElementById(ctrltxt);
 
-    if (chkName == "chkYes" && $("#" + ctrltxt)[0] != undefined) {
-        txtbox.disabled = false;
-        txtbox.removeAttribute("readonly");
-        document.getElementById(ctrlimg).setAttribute("onclick", "ClearTextbox(event);");
-        document.getElementById(ctrlimg).src = "Resources/Delete-Blue.png";
-        txtbox.value = "";
-    }
-    else if (chkName == "chkNo" && $("#" + ctrltxt)[0] != undefined) {
+    if ($("#" + ctrltxt)[0] != undefined) {
         txtbox.disabled = true;
         document.getElementById(ctrlimg).setAttribute("onclick", "");
         document.getElementById(ctrlimg).src = "Resources/Delete-Grey.png";
