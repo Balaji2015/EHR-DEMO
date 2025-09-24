@@ -891,8 +891,8 @@
                                             <td style="width: 95%">
                                                 <asp:TextBox ID="txtSpecificEthnicity" runat="server" TextMode="MultiLine" Style="position: static; resize: none;" CssClass="Editabletxtbox"
                                                     MaxLength="32767" nospell="true"
-                                                    Width="150px" oncopy="return false" onpaste="return false" oncut="return false"
-                                                    onblur="return textboxReleaveSpecificEthnicity(this,event);" />
+                                                    Width="150px" oncopy="return false" onpaste="return false" oncut="return false" onmouseover="OnMouseHoverText(this);"
+                                                    onblur="return textboxReleaveSpecificEthnicity(this,event);" /> 
                                                 <asp:ListBox ID="listSpecificEthnicity" runat="server" onblur="return textboxReleaveSpecificEthnicity(this,event);" CssClass="Editabletxtbox"
                                                     Style="display: none; position: absolute; width: 155px;" Font-Bold="false" onclick="return listSpecificEthnicityChange(this);"></asp:ListBox>
                                             </td>
@@ -913,7 +913,7 @@
                                             <td style="width: 95%">
                                                 <asp:TextBox ID="txtRace" runat="server" TextMode="MultiLine" Style="position: static; resize: none;" CssClass="Editabletxtbox"
                                                     MaxLength="32767" nospell="true"
-                                                    Width="130px" oncopy="return false" onpaste="return false" oncut="return false"
+                                                    Width="130px" oncopy="return false" onpaste="return false" oncut="return false" onmouseover="OnMouseHoverText(this);"
                                                     onblur="return textboxReleave(this,event);" />
                                                 <asp:ListBox ID="listRace" runat="server" onblur="return textboxReleave(this,event);" CssClass="Editabletxtbox"
                                                     Style="display: none; position: absolute; width: 130px;" Font-Bold="false" onclick="return listRaceChange(this);"></asp:ListBox>
@@ -936,7 +936,7 @@
                                             <td style="width: 95%">
                                                 <asp:TextBox ID="txtGranularity" runat="server" TextMode="MultiLine" Style="position: static; resize: none;"
                                                     MaxLength="32767" nospell="true" CssClass="Editabletxtbox"
-                                                    Width="147px" oncopy="return false" onpaste="return false" oncut="return false"
+                                                    Width="147px" oncopy="return false" onpaste="return false" oncut="return false" onmouseover="OnMouseHoverText(this);"
                                                     onblur="return textboxReleaveGranular(this,event);" />
                                                 <asp:ListBox ID="ListGranularity" runat="server" onblur="return textboxReleaveGranular(this,event);" CssClass="Editabletxtbox"
                                                     Style="display: none; position: absolute; width: 147px;" Font-Bold="false" onclick="return listGranularityChange(this);"></asp:ListBox>

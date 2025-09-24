@@ -1404,6 +1404,11 @@ function OnMouseHover(ddl) {
 
     document.getElementById(GetClientId(ddl.id)).title = document.getElementById(GetClientId(ddl.id)).options[document.getElementById(GetClientId(ddl.id)).selectedIndex].text;
 }
+
+function OnMouseHoverText(ddl) {
+
+    document.getElementById(GetClientId(ddl.id)).title = document.getElementById(GetClientId(ddl.id)).value;
+}
 function ShowLoading() {
 }
 
