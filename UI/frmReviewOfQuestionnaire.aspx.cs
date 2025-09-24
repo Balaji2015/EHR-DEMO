@@ -85,7 +85,7 @@ namespace Acurus.Capella.UI
                     }
                 }
                 QuestionnaireLookupManager RoqMngr = new QuestionnaireLookupManager();
-                roqList = RoqMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, ClientSession.EncounterId, false);
+                roqList = RoqMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, ClientSession.EncounterId, false, ClientSession.HumanId);
                 Session["fillRoq"] = roqList;
             }
 
@@ -154,7 +154,7 @@ namespace Acurus.Capella.UI
 
             if (fillQuestion != null && fillQuestion.Count == 0)
             {
-                systemNames = RoqMngr.GetHealthQuestionLookupListFromLocal(sMyCategory, DateTime.MinValue, DateTime.MinValue, ClientSession.PhysicianUserName, ClientSession.EncounterId, false);
+                systemNames = RoqMngr.GetHealthQuestionLookupListFromLocal(sMyCategory, DateTime.MinValue, DateTime.MinValue, ClientSession.PhysicianUserName, ClientSession.EncounterId, false, ClientSession.HumanId);
                 for (int k = 0; k < systemNames.Count; k++)
                 {
 
@@ -348,7 +348,7 @@ namespace Acurus.Capella.UI
 
             if (fillQuestion != null && fillQuestion.Count == 0)
             {
-                systemNames = RoqMngr.GetHealthQuestionLookupListFromLocal(sMyCategory, DateTime.MinValue, DateTime.MinValue, ClientSession.PhysicianUserName, ClientSession.EncounterId, false);
+                systemNames = RoqMngr.GetHealthQuestionLookupListFromLocal(sMyCategory, DateTime.MinValue, DateTime.MinValue, ClientSession.PhysicianUserName, ClientSession.EncounterId, false, ClientSession.HumanId);
                 for (int k = 0; k < systemNames.Count; k++)
                 {
 
@@ -1284,7 +1284,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                roqList = RoqMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, prevEncID, false);
+                roqList = RoqMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, prevEncID, false, ClientSession.HumanId);
 
                 groupBoxCreationCopyPrevious(roqList, noOfSymptomRows, symptomMaxHeight);
 

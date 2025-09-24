@@ -12,8 +12,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
     public interface IQuestionnaireLookupManager : IManagerBase<Questionnaire_Lookup, ulong>
     {
-        IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromServer(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus);
-        IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromLocal(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus);
+        IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromServer(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus, ulong ulHumanID);
+        IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromLocal(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus, ulong ulHumanID);
         IList<Questionnaire_Lookup> BatchOperationsToQuestionnaireLookup(IList<Questionnaire_Lookup> addList, IList<Questionnaire_Lookup> updateList, IList<Questionnaire_Lookup> deleteList, string sMACAddress, string sUserName, string sQuestion);
         IList<Questionnaire_Lookup> GetQuestionnaireLookup(string UserName);
         IList<Questionnaire_Lookup> GetHealthQuestionCategoryList(string UserName);
@@ -43,7 +43,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         #region Implementation
 
 
-        public IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromServer(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus)
+        public IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromServer(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus, ulong ulHumanID)
         {
 
             ArrayList arylstQuestionnaireLookup = null;
@@ -103,19 +103,43 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //fillHealthScreen.Is_Calculation_Required = objArrQuestionnaireLookup[15].ToString();
                     if (objArrQuestionnaireLookup[16] != null)
                     fillHealthScreen.Is_Notes = objArrQuestionnaireLookup[16].ToString();
+                    //CAP-3628
+                    if (objArrQuestionnaireLookup[17] != null)
+                        fillHealthScreen.Controls = objArrQuestionnaireLookup[17].ToString();
+                    if (objArrQuestionnaireLookup[18] != null)
+                        fillHealthScreen.Question_Loinc_Code = objArrQuestionnaireLookup[18].ToString();
+                    if (objArrQuestionnaireLookup[19] != null)
+                        fillHealthScreen.Options_Loinc_Code = objArrQuestionnaireLookup[19].ToString();
+                    if (objArrQuestionnaireLookup[20] != null
+                        && !string.IsNullOrEmpty(objArrQuestionnaireLookup[20].ToString()))
+                    {
+                        using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                        {
+                            string where_Criteria = objArrQuestionnaireLookup[20].ToString();
+                            ISQLQuery QuerySQL = iMySession.CreateSQLQuery(where_Criteria.Replace(":Human_ID", ulHumanID.ToString()));
+                            ArrayList ArysqlList = new ArrayList(QuerySQL.List());
+
+                            if (ArysqlList != null && ArysqlList.Count > 0)
+                            {
+                                fillHealthScreen.Where_Criteria = ArysqlList[0].ToString();
+                            }
+                        }
+                    }
                     fillHealthScreenList.Add(fillHealthScreen);
 
                 }
                 if (arylstQuestionnaireLookup.Count == 0)
                 {
                     QuestionnaireLookupManager questionnaireMngr = new QuestionnaireLookupManager();
-                    fillHealthScreenList = questionnaireMngr.GetHealthQuestionLookupListFromLocal(sCategory, PatientDoB, AppintmentDate, UserName, ulEncID, sStatus);
+                    //CAP-3628
+                    //fillHealthScreenList = questionnaireMngr.GetHealthQuestionLookupListFromLocal(sCategory, PatientDoB, AppintmentDate, UserName, ulEncID, sStatus);
+                    fillHealthScreenList = questionnaireMngr.GetHealthQuestionLookupListFromLocal(sCategory, PatientDoB, AppintmentDate, UserName, ulEncID, sStatus, ulHumanID);
                 }
             }
             return fillHealthScreenList;
         }
 
-        public IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromServercopyprevious(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus)
+        public IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromServercopyprevious(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus, ulong ulHumanID)
         {
 
             ArrayList arylstQuestionnaireLookup = null;
@@ -177,20 +201,44 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //fillHealthScreen.Is_Calculation_Required = objArrQuestionnaireLookup[15].ToString();
                     if (objArrQuestionnaireLookup[16] != null)
                         fillHealthScreen.Is_Notes = objArrQuestionnaireLookup[16].ToString();
+                    //CAP-3628
+                    if (objArrQuestionnaireLookup[17] != null)
+                        fillHealthScreen.Controls = objArrQuestionnaireLookup[17].ToString();
+                    if (objArrQuestionnaireLookup[18] != null)
+                        fillHealthScreen.Question_Loinc_Code = objArrQuestionnaireLookup[18].ToString();
+                    if (objArrQuestionnaireLookup[19] != null)
+                        fillHealthScreen.Options_Loinc_Code = objArrQuestionnaireLookup[19].ToString();
+                    if (objArrQuestionnaireLookup[20] != null
+                        && !string.IsNullOrEmpty(objArrQuestionnaireLookup[20].ToString()))
+                    {
+                        using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                        {
+                            string where_Criteria = objArrQuestionnaireLookup[20].ToString();
+                            ISQLQuery QuerySQL = iMySession.CreateSQLQuery(where_Criteria.Replace(":Human_ID", ulHumanID.ToString()));
+                            ArrayList ArysqlList = new ArrayList(QuerySQL.List());
+
+                            if (ArysqlList != null && ArysqlList.Count > 0)
+                            {
+                                fillHealthScreen.Where_Criteria = ArysqlList[0].ToString();
+                            }
+                        }
+                    }
                     fillHealthScreenList.Add(fillHealthScreen);
 
                 }
                 if (arylstQuestionnaireLookup.Count == 0)
                 {
                     QuestionnaireLookupManager questionnaireMngr = new QuestionnaireLookupManager();
-                    fillHealthScreenList = questionnaireMngr.GetHealthQuestionLookupListFromLocal(sCategory, PatientDoB, AppintmentDate, UserName, ulEncID, sStatus);
+                    //CAP-3628
+                    //fillHealthScreenList = questionnaireMngr.GetHealthQuestionLookupListFromLocal(sCategory, PatientDoB, AppintmentDate, UserName, ulEncID, sStatus);
+                    fillHealthScreenList = questionnaireMngr.GetHealthQuestionLookupListFromLocal(sCategory, PatientDoB, AppintmentDate, UserName, ulEncID, sStatus, ulHumanID);
                 }
             }
             return fillHealthScreenList;
         }
 
 
-        public IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromLocal(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus)
+        public IList<FillHealthcareQuestionnaire> GetHealthQuestionLookupListFromLocal(string sCategory, DateTime PatientDoB, DateTime AppintmentDate, string UserName, ulong ulEncID, bool sStatus, ulong ulHumanID)
         {
 
             ArrayList arylstQuestionnaireLookup = null;
@@ -303,6 +351,28 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //fillHealthScreen.Is_Calculation_Required = objArrQuestionnaireLookup[15].ToString();
                     if (objArrQuestionnaireLookup[16] != null)
                     fillHealthScreen.Is_Notes = objArrQuestionnaireLookup[16].ToString();
+                    //CAP-3628
+                    if (objArrQuestionnaireLookup[17] != null)
+                        fillHealthScreen.Controls = objArrQuestionnaireLookup[17].ToString();
+                    if (objArrQuestionnaireLookup[18] != null)
+                        fillHealthScreen.Question_Loinc_Code = objArrQuestionnaireLookup[18].ToString();
+                    if (objArrQuestionnaireLookup[19] != null)
+                        fillHealthScreen.Options_Loinc_Code = objArrQuestionnaireLookup[19].ToString();
+                    if (objArrQuestionnaireLookup[20] != null
+                        && !string.IsNullOrEmpty(objArrQuestionnaireLookup[20].ToString()))
+                    {
+                        using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                        {
+                            string where_Criteria = objArrQuestionnaireLookup[20].ToString();
+                            ISQLQuery QuerySQL = iMySession.CreateSQLQuery(where_Criteria.Replace(":Human_ID", ulHumanID.ToString()));
+                            ArrayList ArysqlList = new ArrayList(QuerySQL.List());
+
+                            if (ArysqlList != null && ArysqlList.Count > 0)
+                            {
+                                fillHealthScreen.Where_Criteria = ArysqlList[0].ToString();
+                            }
+                        }
+                    }
                     fillHealthScreenList.Add(fillHealthScreen);
 
                 }

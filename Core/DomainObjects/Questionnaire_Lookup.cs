@@ -22,6 +22,10 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Normal_Question_Status = string.Empty;
         private string _Is_Ros_Type = string.Empty;
         private string _Is_Notes = string.Empty;
+        private string _Controls = string.Empty;
+        private string _Question_Loinc_Code = string.Empty;
+        private string _Options_Loinc_Code = string.Empty;
+        private string _Where_Criteria = string.Empty;
         #endregion
 
         #region Methods
@@ -44,6 +48,10 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Normal_Question_Status);
             sb.Append(_Is_Ros_Type);
             sb.Append(_Is_Notes);
+            sb.Append(_Controls);
+            sb.Append(_Question_Loinc_Code);
+            sb.Append(_Options_Loinc_Code);
+            sb.Append(_Where_Criteria);
             return sb.ToString().GetHashCode();
         }
 
@@ -135,6 +143,30 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Is_Notes; }
             set { _Is_Notes = value; }
+        }
+        [DataMember]
+        public virtual string Controls
+        {
+            get { return _Controls; }
+            set { _Controls = value; }
+        }
+        [DataMember]
+        public virtual string Question_Loinc_Code
+        {
+            get { return _Question_Loinc_Code; }
+            set { _Question_Loinc_Code = value; }
+        }
+        [DataMember]
+        public virtual string Options_Loinc_Code
+        {
+            get { return _Options_Loinc_Code; }
+            set { _Options_Loinc_Code = value; }
+        }
+        [DataMember]
+        public virtual string Where_Criteria
+        {
+            get { return _Where_Criteria; }
+            set { _Where_Criteria = value; }
         }
         #endregion
     }

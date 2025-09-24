@@ -4830,7 +4830,7 @@ FROM test_lookup t  where t.category=? and t.user_name=? and  t.status='Active']
 		<![CDATA[SELECT 0 as HealthCare_Questionnaire_ID, e.Questionnaire_Lookup_ID,e.Questionnaire_Category,e.Questionnaire_Type,
 e.Question,'' as Selected_Option,e.Lookup_Values as Possible_Options,'' as Notes,'' as CreatedBy,
 '0001-01-01 00:00:00' as CreatedDateandTime,'' as Modified_By,'0001-01-01 00:00:00' as Modified_Date_And_Time,
-   0 as Version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes
+   0 as Version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes,e.Controls,e.Question_Loinc_Code,e.Options_Loinc_Code,e.Where_Criteria 
    FROM questionnaire_lookup e  where e.User_Name=? and e.Questionnaire_Category=? order by e.sort_order]]>
 
 	</sql-query>
@@ -4839,7 +4839,7 @@ e.Question,'' as Selected_Option,e.Lookup_Values as Possible_Options,'' as Notes
 		<![CDATA[select x.HealthCare_Questionnaire_ID,x.Questionnaire_Lookup_ID,
     x.Questionnaire_Category,x.Questionnaire_Type,x.Question,x.Selected_Option,e.Lookup_Values as Possible_Options,
   x.Notes,x.Created_By,cast(x.Created_Date_And_Time as char(100)),x.Modified_By,cast(x.Modified_Date_And_Time as char(100)),
-  x.version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes from healthcare_questionnaire x,questionnaire_lookup e where x.Questionnaire_Lookup_ID=e.Questionnaire_Lookup_ID
+  x.version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes,e.Controls,e.Question_Loinc_Code,e.Options_Loinc_Code,e.Where_Criteria from healthcare_questionnaire x,questionnaire_lookup e where x.Questionnaire_Lookup_ID=e.Questionnaire_Lookup_ID
    and x.Encounter_ID=? and x.Questionnaire_Category=?]]>
 	</sql-query>
 
@@ -4847,13 +4847,13 @@ e.Question,'' as Selected_Option,e.Lookup_Values as Possible_Options,'' as Notes
 		<![CDATA[select x.HealthCare_Questionnaire_ID,x.Questionnaire_Lookup_ID,
     x.Questionnaire_Category,x.Questionnaire_Type,x.Question,x.Selected_Option,e.Lookup_Values as Possible_Options,
   x.Notes,x.Created_By,cast(x.Created_Date_And_Time as char(100)),x.Modified_By,cast(x.Modified_Date_And_Time as char(100)),
-  x.version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes from healthcare_questionnaire x,questionnaire_lookup e where x.Questionnaire_Lookup_ID=e.Questionnaire_Lookup_ID
+  x.version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes,e.Controls,e.Question_Loinc_Code,e.Options_Loinc_Code,e.Where_Criteria from healthcare_questionnaire x,questionnaire_lookup e where x.Questionnaire_Lookup_ID=e.Questionnaire_Lookup_ID
    and x.Encounter_ID=? and x.Questionnaire_Category=?
    union 
    select x.HealthCare_Questionnaire_ID,x.Questionnaire_Lookup_ID,
     x.Questionnaire_Category,x.Questionnaire_Type,x.Question,x.Selected_Option,e.Lookup_Values as Possible_Options,
   x.Notes,x.Created_By,cast(x.Created_Date_And_Time as char(100)),x.Modified_By,cast(x.Modified_Date_And_Time as char(100)),
-  x.version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes from healthcare_questionnaire_arc x,questionnaire_lookup e where x.Questionnaire_Lookup_ID=e.Questionnaire_Lookup_ID
+  x.version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes,e.Controls,e.Question_Loinc_Code,e.Options_Loinc_Code,e.Where_Criteria from healthcare_questionnaire_arc x,questionnaire_lookup e where x.Questionnaire_Lookup_ID=e.Questionnaire_Lookup_ID
    and x.Encounter_ID=? and x.Questionnaire_Category=?
    ]]>
 	</sql-query>
@@ -7381,7 +7381,7 @@ h.last_name,h.first_name,h.mi,h.suffix,w.Current_Owner
 	<sql-query name="Get.Questionnaire.Lookup.model">
 		<![CDATA[SELECT 0 as HealthCare_Questionnaire_ID, e.Questionnaire_Lookup_ID,e.Questionnaire_Category,e.Questionnaire_Type,
 e.Question,'' as Selected_Option,e.Lookup_Values as Possible_Options,'' as Notes,'' as CreatedBy,'0001-01-01 00:00:00' as CreatedDateandTime,
-'' as Modified_By,'0001-01-01 00:00:00' as Modified_Date_And_Time,0 as Version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes
+'' as Modified_By,'0001-01-01 00:00:00' as Modified_Date_And_Time,0 as Version,0 as UpdateFlag,e.Normal_Question_Status as Normal_Question_Status,e.Is_Calculation_Required,e.Is_Notes,e.Controls,e.Question_Loinc_Code,e.Options_Loinc_Code,e.Where_Criteria 
 FROM questionnaire_lookup e  where e.User_Name=? and e.Questionnaire_Category=?
 and ? between e.From_Months and e.To_Months order by e.Sort_Order;]]>
 	</sql-query>

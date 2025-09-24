@@ -256,6 +256,11 @@ $(document).ready(function () {
                         localStorage.setItem("PrevSubTab", target[0].innerText);
                         localStorage.setItem("bSave", "true");
                     }
+                    if (FirstName == "SDOH Assessment") {
+                        var target = $('#myTabs li:eq(46) a').tab('show');
+                        localStorage.setItem("PrevSubTab", target[0].innerText);
+                        localStorage.setItem("bSave", "true");
+                    }
                     //End
 
                     var Is_Ros_type = $("#" + FirstName + " iframe").attr('rostype');
@@ -1230,6 +1235,26 @@ $('.nav-tabs a').on('shown.bs.tab', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 $('.clsIframe').contents()[45].all.namedItem('btnSave').click();
+                setTimeout(function () {
+                    if (localStorage.getItem("bSave") == "true") {
+                        //$(dvdialog).dialog("close");
+                        //$(dvdialog).remove();
+                        paneID = $(event.target).attr('href');
+                        ClickTab($(event.target)[0].innerText, paneID);
+                    }
+                    else {
+                        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                        //$(dvdialog).dialog("close");
+                        //$(dvdialog).remove();
+                        PrevTab.tab('show');
+                        return;
+                    }
+                }, 1000);
+            }
+            else if (PrevTab[0].innerText == "SDOH Assessment") {
+                event.preventDefault();
+                event.stopPropagation();
+                $('.clsIframe').contents()[46].all.namedItem('btnSave').click();
                 setTimeout(function () {
                     if (localStorage.getItem("bSave") == "true") {
                         //$(dvdialog).dialog("close");

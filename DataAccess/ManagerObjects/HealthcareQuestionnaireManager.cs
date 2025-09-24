@@ -135,7 +135,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (HealthQuestionList != null && HealthQuestionList.Count > 0)
             {
                 //HealthQuestionScreenList = GetFillHealthQuestionnaire(HealthQuestionnaireList, HealthQuestionList, "UPDATE");
-                HealthQuestionScreenList = QuestionMngr.GetHealthQuestionLookupListFromServer(HealthQuestionList[0].Questionnaire_Category, PatientDOB, dtpAppointmentDate, HealthQuestionList[0].Created_By, HealthQuestionList[0].Encounter_ID, sStaus);
+                //CAP-3628
+                //HealthQuestionScreenList = QuestionMngr.GetHealthQuestionLookupListFromServer(HealthQuestionList[0].Questionnaire_Category, PatientDOB, dtpAppointmentDate, HealthQuestionList[0].Created_By, HealthQuestionList[0].Encounter_ID, sStaus);
+                HealthQuestionScreenList = QuestionMngr.GetHealthQuestionLookupListFromServer(HealthQuestionList[0].Questionnaire_Category, PatientDOB, dtpAppointmentDate, HealthQuestionList[0].Created_By, HealthQuestionList[0].Encounter_ID, sStaus, HealthQuestionList[0].Human_ID);
             }
             //GenerateXml XMLObj = new GenerateXml(); //code comment by balaji.T
             //if (HealthQuestionList != null && HealthQuestionList.Count > 0)
