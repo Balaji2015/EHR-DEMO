@@ -39,6 +39,8 @@ function clearall() {
                 }
             }
         }
+        document.querySelectorAll('#frmHealthQuestionnaire select').forEach(select => select.selectedIndex = 0);
+        document.querySelectorAll('#frmHealthQuestionnaire textarea').forEach(textarea => textarea.value = '');
         if (document.getElementById("txtTotalScore") != undefined) {
             document.getElementById("txtTotalScore").value = '';
         }
@@ -422,28 +424,53 @@ function chkCheckedChange(NormalQuestionStatus) {
             var NormalAns = ques[1].replace(/#/g, "'");
             var PossbileAns = ques[2].replace(/#/g, "'").split('|');
             var QuesType = ques[3].trim();
+            var Controls = ques[4].trim();
             if (NormalAns != '') {
                 var index = PossbileAns.indexOf(NormalAns);
                 PossbileAns.splice(index, 1);
                 PossbileAns;
-                var sToBeChecked = 'rdbtn ' + NormalAns + ' ' + Question + '-' + QuesType + '-' + k;
-                var sNotToBeChecked = [];
-                for (var x = 0; x < PossbileAns.length; x++)
+                if (Controls == 'RadioButton') {
+                    var sToBeChecked = 'rdbtn ' + NormalAns + ' ' + Question + '-' + QuesType + '-' + k;
+                    var sNotToBeChecked = [];
+                    for (var x = 0; x < PossbileAns.length; x++)
                     if (PossbileAns[x]!='')
-                        sNotToBeChecked.push('rdbtn ' + PossbileAns[x] + ' ' + Question + '-' + QuesType + '-' + k);
-                var rdbtnAns = document.getElementById(sToBeChecked);
+                            sNotToBeChecked.push('rdbtn ' + PossbileAns[x] + ' ' + Question + '-' + QuesType + '-' + k);
+                    var rdbtnAns = document.getElementById(sToBeChecked);
                 var IsOthersChecked=false;
                 if (document.getElementById('chkQuestion')!=null && document.getElementById('chkQuestion').checked) {
-                    for (var n = 0; n < sNotToBeChecked.length; n++) {
+                        for (var n = 0; n < sNotToBeChecked.length; n++) {
                         if (document.getElementById(sNotToBeChecked[n])!=null && document.getElementById(sNotToBeChecked[n]).checked == true)
-                            IsOthersChecked = true;
-                    }
+                                IsOthersChecked = true;
+                        }
                     if (rdbtnAns!=null && IsOthersChecked == false)
-                        rdbtnAns.checked = true;
+                            rdbtnAns.checked = true;
+                    }
+                    else
+                        if (rdbtnAns != null)
+                            rdbtnAns.checked = false;
+                } else if (Controls == 'ComboBox') {
+                    var sToBeChecked = Question.replace(":", "").trim() + "-" + QuesType.trim() + "-" + k;
+                    sToBeChecked = sToBeChecked.replace(/[^a-zA-Z0-9]/g, "_");
+                    var comboAns = document.getElementById("cbo_" + sToBeChecked);
+                    if (comboAns) {
+                        if (document.getElementById('chkQuestion') != null && document.getElementById('chkQuestion').checked) {
+                            comboAns.value = NormalAns
+                        } else {
+                            comboAns.value = "";
+                        }
+                    }
+                } else if (Controls == 'MultiSelectTextBox') {
+                    var sToBeChecked = Question.replace(":", "").trim() + "-" + QuesType.trim() + "-" + k;
+                    sToBeChecked = sToBeChecked.replace(/[^a-zA-Z0-9]/g, "_");
+                    var comboAns = document.getElementById("txtArea_" + sToBeChecked);
+                    if (comboAns) {
+                        if (document.getElementById('chkQuestion') != null && document.getElementById('chkQuestion').checked) {
+                            comboAns.value = NormalAns
+                        } else {
+                            comboAns.value = "";
+                        }
+                    }
                 }
-                else
-                    if (rdbtnAns != null)
-                        rdbtnAns.checked = false;
             }
         }
     }
@@ -712,5 +739,47 @@ function btnSaveEnabled(val) {
     else {
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
         localStorage.setItem("bSave", "true");
+    }
+}
+
+function ClickMultiSelect(id) {
+    var isOpen = $('#img_' + id).attr('isOpen');
+    if (isOpen == false || isOpen == "false") {
+        $('#lstBox_' + id).css("display", "block");
+        $('#lstBox_' + id).css("position", "absolute");
+        $('#img_' + id).attr('isOpen', 'true');
+    }
+    else {
+        $('#lstBox_' + id).css("display", "none");
+        $('#lstBox_' + id).css("position", "absolute");
+        $('#img_' + id).attr('isOpen', 'false');
+    }
+    EnableSave();
+    return false;
+}
+var RaceTag = "", Tag = "";
+function listMultiSelectChange(listId, id) {
+    var txtbox = $('#txtArea_' + id).val();
+    var txtValue = listId[listId.selectedIndex].text;
+    Tag = listId[listId.selectedIndex].value;
+    if (txtValue == "[Empty]") {
+        RaceTag = ""
+        $('#txtArea_' + id).val("");
+    }
+    else {
+        if (RaceTag == "") {
+            RaceTag = Tag;
+        }
+        else {
+            RaceTag = RaceTag + "," + Tag;
+        }
+        if (txtbox == '' && txtbox.indexOf(txtValue) == -1) {
+            txtbox = txtValue;
+            $('#txtArea_' + id).val(txtbox);
+        }
+        else if (txtbox.indexOf(txtValue) == -1) {
+            txtbox = txtbox + "," + txtValue;
+            $('#txtArea_' + id).val(txtbox);
+        }
     }
 }

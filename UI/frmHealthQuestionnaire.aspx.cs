@@ -19,6 +19,7 @@ using Acurus.Capella.UI;
 using Acurus.Capella.UI.UserControls;
 using System.Web.UI.HtmlControls;
 using System.Web.Services;
+using System.Text.RegularExpressions;
 
 
 
@@ -83,7 +84,9 @@ namespace Acurus.Capella.UI
                         PatientDOB = PatientPaneList[0].Birth_Date;
                     }
                 }
-                healthQuestionScreenList = questionnaireMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, ClientSession.EncounterId, true);
+                //CAP-3628
+                //healthQuestionScreenList = questionnaireMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, ClientSession.EncounterId, true);
+                healthQuestionScreenList = questionnaireMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, ClientSession.EncounterId, true, ClientSession.HumanId);
                 Session["healthQuestionScreenList"] = healthQuestionScreenList;
                 IList<StaticLookup> ilstStaticlookup = new List<StaticLookup>();
                 StaticLookupManager objStaticLookupMngr = new StaticLookupManager();
@@ -96,9 +99,9 @@ namespace Acurus.Capella.UI
                     else
                         hdnScorelevel.Value += "|" + ilstStaticlookup[i].Value + "$" + ilstStaticlookup[i].Description;
                 }
-                 IList<StaticLookup> ilstStaticlookupPercentage = new List<StaticLookup>();
-                 ilstStaticlookupPercentage = objStaticLookupMngr.getStaticLookupByFieldName("QUESTIONNAIRE PERCENTAGE DESCRIPTION-" + sMyCategory);
-                 for (int i = 0; i < ilstStaticlookupPercentage.Count; i++)
+                IList<StaticLookup> ilstStaticlookupPercentage = new List<StaticLookup>();
+                ilstStaticlookupPercentage = objStaticLookupMngr.getStaticLookupByFieldName("QUESTIONNAIRE PERCENTAGE DESCRIPTION-" + sMyCategory);
+                for (int i = 0; i < ilstStaticlookupPercentage.Count; i++)
                 {
                     if (i == 0)
                         hdnPercentageLevel.Value = ilstStaticlookupPercentage[i].Value + "$" + ilstStaticlookupPercentage[i].Description;
@@ -111,41 +114,41 @@ namespace Acurus.Capella.UI
 
             //    CopyPreviousEncounter(false);
             //    CopyPreviousEncounter(false);
-               
+
             //}
             //else
             //{
             //    if (HdnCopyButton.Value != "")
             //    {
-                    if (Session["healthQuestionScreenList"] != null)
-                        healthQuestionScreenList = (IList<FillHealthcareQuestionnaire>)Session["healthQuestionScreenList"];
+            if (Session["healthQuestionScreenList"] != null)
+                healthQuestionScreenList = (IList<FillHealthcareQuestionnaire>)Session["healthQuestionScreenList"];
 
-                    if (healthQuestionScreenList != null && healthQuestionScreenList.Count == 0)
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('118504');", true);
-                        return;
-                    }
+            if (healthQuestionScreenList != null && healthQuestionScreenList.Count == 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('118504');", true);
+                return;
+            }
 
 
-                    if (!IsPostBack)
-                    {
-                        bIspostback=false;
-                        FillMyQuestionList(healthQuestionScreenList);
-                    }
-                    else
-                    {
-                        bIspostback = true;
-                        FillMyQuestionList(healthQuestionScreenList);
+            if (!IsPostBack)
+            {
+                bIspostback = false;
+                FillMyQuestionList(healthQuestionScreenList);
+            }
+            else
+            {
+                bIspostback = true;
+                FillMyQuestionList(healthQuestionScreenList);
 
-                        //if (Session["Version"] != null)
-                        //    HashVersion = (Hashtable)Session["Version"];
-                        //if (Session["HealthQuestionnaireID"] != null)
-                        //    HashHealthQuestionnaireID = (Hashtable)Session["HealthQuestionnaireID"];
-                        //if (Session["QuestionnaireLookupID"] != null)
-                        //    HashQuestionnaireLookupID = (Hashtable)Session["QuestionnaireLookupID"];
-                    }
-                //}
-               
+                //if (Session["Version"] != null)
+                //    HashVersion = (Hashtable)Session["Version"];
+                //if (Session["HealthQuestionnaireID"] != null)
+                //    HashHealthQuestionnaireID = (Hashtable)Session["HealthQuestionnaireID"];
+                //if (Session["QuestionnaireLookupID"] != null)
+                //    HashQuestionnaireLookupID = (Hashtable)Session["QuestionnaireLookupID"];
+            }
+            //}
+
             //}
             if (!IsPostBack)
             {
@@ -281,7 +284,7 @@ namespace Acurus.Capella.UI
                     //lblquestion.Style.Add("color", "Black");
                     //lblquestion.Style.Add("background-color", "White");
                     //lblquestion.Style.Add("font-family", "Serif");
-                    if(healthQuestionScreenList[i].Questionnaire_Category=="ADL Screening")
+                    if (healthQuestionScreenList[i].Questionnaire_Category == "ADL Screening")
                         lblquestion.Style.Add("Width", "200px");
                     else if (healthQuestionScreenList[i].Questionnaire_Category == "Lawton Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Oswestry Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Neck Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Spine Intake")
                         lblquestion.Style.Add("Width", "250px");
@@ -375,145 +378,242 @@ namespace Acurus.Capella.UI
 
                     tr1.Cells.Add(tc);
 
-                    if (straryOption.Count > 0)
+
+                    //if (chkQuestion.Visible == false)
+                    //{
+                    //    foreach (string strOpt in straryOption)
+                    //    {
+                    //        if (strOpt == "No")
+                    //        {
+                    //            chkQuestion.Visible = true;
+                    //        }
+                    //    }
+                    //}
+
+                    //string maxlengthRecord = straryOption.OrderByDescending(s => s.Length).First();
+
+                    Table dt = new Table();
+                    TableRow rowRadioButton = new TableRow();
+                    Boolean btrue = false;
+                    HtmlSelect rowComboBox = null;
+                    TextBox rowTextBox = null;
+                    string id = healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString();
+                    id = Regex.Replace(id, @"[^a-zA-Z0-9]", "_");
+                    switch (healthQuestionScreenList[i].Controls.ToUpper())
                     {
-                        //if (chkQuestion.Visible == false)
-                        //{
-                        //    foreach (string strOpt in straryOption)
-                        //    {
-                        //        if (strOpt == "No")
-                        //        {
-                        //            chkQuestion.Visible = true;
-                        //        }
-                        //    }
-                        //}
-
-                        //string maxlengthRecord = straryOption.OrderByDescending(s => s.Length).First();
-
-                        Table dt = new Table();
-                        TableRow rowRadioButton = new TableRow();
-                        Boolean btrue = false;
-                        for (int j = 0; j < straryOption.Count; j++)
-                        {
-                            int icount = j % 2;
-                            if (healthQuestionScreenList[i].Questionnaire_Category == "Lawton Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Katz Index Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Oswestry Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Neck Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Spine Intake")
+                        case "RADIOBUTTON":
+                            if (straryOption.Count > 0)
                             {
-                                if (icount == 0)
+                                for (int j = 0; j < straryOption.Count; j++)
                                 {
-                                    rowRadioButton = new TableRow();
-                                    tc = new TableCell();
-                                }
-                            }
-                            
-                            
-                            RadioButton rdbtn = new RadioButton();
-                            rdbtn.Attributes.Add("class", "Editabletxtbox");
-                            //if (maxlengthRecord.Length > 15)
-                            //    rdbtn.Width = 180;
-                            //else if (maxlengthRecord.Length < 16)
-                            //{
-                            //    rdbtn.Width = 100;
-                            //    plhRadioButton.Width = 255;
-                            //    plhRadioButton.CssClass = "AlignPanelCenter";
-                            //}
-                           
-                            if (healthQuestionScreenList[i].Is_Notes.ToUpper() != "N")
-                            {
-                                if (healthQuestionScreenList[i].Questionnaire_Category == "ADL Screening")
-                                {
-                                    rdbtn.Width = 215;
-                                }
-                                else if (healthQuestionScreenList[i].Questionnaire_Category == "Lawton Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Katz Index Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Oswestry Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Neck Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Spine Intake")
-                                {
-                                    
-                                    if (icount == 0)
+                                    int icount = j % 2;
+                                    if (healthQuestionScreenList[i].Questionnaire_Category == "Lawton Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Katz Index Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Oswestry Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Neck Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Spine Intake")
                                     {
-                                        rdbtn.Width = 265;
-                                        rdbtn.Style.Add("float", "left");
+                                        if (icount == 0)
+                                        {
+                                            rowRadioButton = new TableRow();
+                                            tc = new TableCell();
+                                        }
+                                    }
+
+
+                                    RadioButton rdbtn = new RadioButton();
+                                    rdbtn.Attributes.Add("class", "Editabletxtbox");
+                                    //if (maxlengthRecord.Length > 15)
+                                    //    rdbtn.Width = 180;
+                                    //else if (maxlengthRecord.Length < 16)
+                                    //{
+                                    //    rdbtn.Width = 100;
+                                    //    plhRadioButton.Width = 255;
+                                    //    plhRadioButton.CssClass = "AlignPanelCenter";
+                                    //}
+
+                                    if (healthQuestionScreenList[i].Is_Notes.ToUpper() != "N")
+                                    {
+                                        if (healthQuestionScreenList[i].Questionnaire_Category == "ADL Screening")
+                                        {
+                                            rdbtn.Width = 215;
+                                        }
+                                        else if (healthQuestionScreenList[i].Questionnaire_Category == "Lawton Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Katz Index Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Oswestry Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Neck Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Spine Intake")
+                                        {
+
+                                            if (icount == 0)
+                                            {
+                                                rdbtn.Width = 265;
+                                                rdbtn.Style.Add("float", "left");
+                                            }
+                                            else
+                                            {
+                                                rdbtn.Width = 185;
+                                                rdbtn.Style.Add("float", "right");
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            if (sLength.Length > 15)
+                                                rdbtn.Width = 180;
+                                            else if (sLength.Length < 16)
+                                            {
+                                                rdbtn.Width = 100;
+                                                plhRadioButton.Width = 255;
+                                                plhRadioButton.CssClass = "AlignPanelCenter";
+                                            }
+                                        }
+
                                     }
                                     else
                                     {
-                                        rdbtn.Width = 185;
-                                        rdbtn.Style.Add("float", "right");
-                                    }
-                                       
-                                }
-                                else
-                                {
-                                    if (sLength.Length > 15)
-                                        rdbtn.Width = 180;
-                                    else if (sLength.Length < 16)
-                                    {
-                                        rdbtn.Width = 100;
-                                        plhRadioButton.Width = 255;
+                                        if (j == straryOption.Count - 1)
+                                            rdbtn.Style.Add("width", "100%");//.Width = 250;
+                                        else
+                                            rdbtn.Width = 50;
+                                        plhRadioButton.Width = 720;
                                         plhRadioButton.CssClass = "AlignPanelCenter";
                                     }
-                                }
-                                
-                            }
-                            else
-                            {
-                                if (j == straryOption.Count - 1)
-                                    rdbtn.Style.Add("width", "100%");//.Width = 250;
-                                else
-                                    rdbtn.Width = 50;
-                                plhRadioButton.Width = 720;
-                                plhRadioButton.CssClass = "AlignPanelCenter";
-                            }
-                            //if (icount == 0)
-                            //{
-                            //    rdbtn.Style.Add("float", "left");
-                            //}
-                            //else
-                            //{
-                            //    rdbtn.Style.Add("float", "right");
-                            //}
-                            rdbtn.EnableViewState = false;
-                            rdbtn.ID = "rdbtn" + " " + straryOption[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString();
-                            rdbtn.Text = straryOption[j];
-                            rdbtn.Font.Size = new FontUnit("8.5pt");
-                            if (healthQuestionScreenList[i].Is_Notes.ToUpper() != "N")
-                            {
-                                rdbtn.CssClass = "radioWithProperWrap";
-                            }
-                                
-                            rdbtn.Attributes.Add("onClick", "EnableSave(event);");
-                            rdbtn.Attributes.Add("onChange", "Questionnairechanged();");
+                                    //if (icount == 0)
+                                    //{
+                                    //    rdbtn.Style.Add("float", "left");
+                                    //}
+                                    //else
+                                    //{
+                                    //    rdbtn.Style.Add("float", "right");
+                                    //}
+                                    rdbtn.EnableViewState = false;
+                                    rdbtn.ID = "rdbtn" + " " + straryOption[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString();
+                                    rdbtn.Text = straryOption[j];
+                                    rdbtn.Font.Size = new FontUnit("8.5pt");
+                                    if (healthQuestionScreenList[i].Is_Notes.ToUpper() != "N")
+                                    {
+                                        rdbtn.CssClass = "radioWithProperWrap";
+                                    }
 
-                            if (healthQuestionScreenList[i].Selected_Option.Trim() == rdbtn.Text.Trim())
-                            {
-                                rdbtn.Checked = true;
-                            }
-                            rdbtn.GroupName = "question" + i.ToString();
-                            //plhRadioButton.Controls.Add(rdbtn);
-                            if (healthQuestionScreenList[i].Questionnaire_Category == "Lawton Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Katz Index Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Oswestry Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Neck Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Spine Intake")
-                            {
-                                tc.Controls.Add(rdbtn);
-                                rowRadioButton.Cells.Add(tc);
-                                if (icount == 1)
-                                    dt.Controls.Add(rowRadioButton);
-                                else if (j == straryOption.Count - 1)
-                                    dt.Controls.Add(rowRadioButton);
-                                btrue = true;
+                                    rdbtn.Attributes.Add("onClick", "EnableSave(event);");
+                                    rdbtn.Attributes.Add("onChange", "Questionnairechanged();");
+
+                                    if (healthQuestionScreenList[i].Selected_Option.Trim() == rdbtn.Text.Trim())
+                                    {
+                                        rdbtn.Checked = true;
+                                    }
+                                    rdbtn.GroupName = "question" + i.ToString();
+                                    //plhRadioButton.Controls.Add(rdbtn);
+                                    if (healthQuestionScreenList[i].Questionnaire_Category == "Lawton Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Katz Index Screening" || healthQuestionScreenList[i].Questionnaire_Category == "Oswestry Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Neck Disability Index" || healthQuestionScreenList[i].Questionnaire_Category == "Spine Intake")
+                                    {
+                                        tc.Controls.Add(rdbtn);
+                                        rowRadioButton.Cells.Add(tc);
+                                        if (icount == 1)
+                                            dt.Controls.Add(rowRadioButton);
+                                        else if (j == straryOption.Count - 1)
+                                            dt.Controls.Add(rowRadioButton);
+                                        btrue = true;
+                                    }
+                                    else
+                                        plhRadioButton.Controls.Add(rdbtn);
+
+                                }
                             }
                             else
-                                plhRadioButton.Controls.Add(rdbtn);
-                           
-                        }
-                        if(btrue)
-                            plhRadioButton.Controls.Add(dt);
-                    }
-                    else
-                    {
-                        for (int j = 0; j < 2; j++)
-                        {
+                            {
+                                for (int j = 0; j < 2; j++)
+                                {
+                                    tc = new TableCell();
+                                    RadioButton rdbtn1 = new RadioButton();
+                                    rdbtn1.EnableViewState = false;
+                                    rdbtn1.Visible = false;
+                                    plhRadioButton.Controls.Add(rdbtn1);
+                                }
+                            }
+                            break;
+                        case "COMBOBOX":
+
+                            rowComboBox = new HtmlSelect();
+                            rowComboBox.ID = "cbo_" + id;
+                            rowComboBox.Style.Add("Width", 200 + "px");
+                            rowComboBox.Style.Add("font-family", "Serif");
+                            rowComboBox.Style.Add("font-size", "small");
+                            rowComboBox.Items.Clear();
+                            rowComboBox.Items.Add(new ListItem(""));
+                            for (int j = 0; j < straryOption.Count; j++)
+                            {
+                                ListItem tempItem = new ListItem();
+                                if (healthQuestionScreenList[i].Selected_Option.Trim() == straryOption[j].Trim())
+                                {
+                                    tempItem.Selected = true;
+                                }
+                                tempItem.Text = straryOption[j];
+                                rowComboBox.Items.Add(tempItem);
+                            }
+                            rowComboBox.Attributes.Add("onkeypress", "EnableSave(event);");
+                            rowComboBox.Attributes.Add("onchange", "EnableSave(event);");
+                            rowComboBox.Attributes.Add("class", "combo SelectStyle spanstyle");
+                            tc.Controls.Add(new LiteralControl("&nbsp;"));
+                            tc.Controls.Add(rowComboBox);
+                            rowComboBox.Dispose();
+
+                            break;
+                        case "READONLYTEXTBOX":
+
                             tc = new TableCell();
-                            RadioButton rdbtn1 = new RadioButton();
-                            rdbtn1.EnableViewState = false;
-                            rdbtn1.Visible = false;
-                            plhRadioButton.Controls.Add(rdbtn1);
-                        }
+                            rowTextBox = new TextBox();
+                            rowTextBox.ID = "txt_" + id;
+                            rowTextBox.EnableViewState = false;
+                            rowTextBox.Width = 200;
+                            rowTextBox.Text = healthQuestionScreenList[i].Where_Criteria;
+                            rowTextBox.ToolTip = healthQuestionScreenList[i].Where_Criteria;
+                            rowTextBox.ReadOnly = true;
+                            rowTextBox.Attributes.Add("class", "nonEditabletxtbox");
+                            plhRadioButton.Controls.Add(rowTextBox);
+
+                            break;
+                        case "MULTISELECTTEXTBOX":
+
+                            HtmlTextArea txtarea = new HtmlTextArea();
+                            txtarea.ID = "txtArea_" + id;
+                            txtarea.Style.Add(HtmlTextWriterStyle.Width, 200 + "px");
+                            txtarea.Style.Add(HtmlTextWriterStyle.Height, "30px");
+                            txtarea.Attributes.Add("height", "75px");
+                            txtarea.Style.Add("resize", "none");
+                            txtarea.Value = healthQuestionScreenList[i].Selected_Option;
+                            plhRadioButton.Controls.Add(txtarea);
+                            txtarea.Dispose();
+
+                            ImageButton imageButton = new ImageButton();
+                            imageButton.ID = "img_" + id;
+                            imageButton.ImageUrl = "~/Resources/Dropdownimg.jpg";
+                            imageButton.Style.Add("margin-bottom", "10px");
+                            imageButton.Style.Add("margin-left", "5px");
+                            imageButton.OnClientClick = $"return ClickMultiSelect('{id}');";
+                            imageButton.Attributes.Add("isOpen", "false");
+                            imageButton.CausesValidation = false;
+                            plhRadioButton.Controls.Add(imageButton);
+
+                            ListBox rowListBox = new ListBox();
+                            rowListBox.ID = "lstBox_" + id;
+                            rowListBox.EnableViewState = false;
+                            rowListBox.Width = 200;
+                            rowListBox.SelectionMode = ListSelectionMode.Multiple;
+                            rowListBox.Style.Add("display", "none");
+                            rowListBox.Attributes.Add("onclick", $"listMultiSelectChange(this, '{id}');");
+                            rowListBox.CssClass = "multiSelectBox";
+                            rowListBox.Items.Add(new ListItem("[Empty]"));
+                            for (int j = 0; j < straryOption.Count; j++)
+                            {
+                                ListItem tempItem = new ListItem();
+                                if (!string.IsNullOrEmpty(healthQuestionScreenList[i].Selected_Option)
+                                    && healthQuestionScreenList[i].Selected_Option.Split(',').Any(a => a == straryOption[j]))
+                                {
+                                    tempItem.Selected = true;
+                                }
+                                tempItem.Text = straryOption[j];
+                                rowListBox.Items.Add(tempItem);
+                            }
+                            plhRadioButton.Controls.Add(rowListBox);
+
+                            break;
                     }
+                    if (btrue)
+                        plhRadioButton.Controls.Add(dt);
+
                     if (healthQuestionScreenList[i].Question.ToUpper() == "TOTAL SCORE")
                     {
                         tc = new TableCell();
@@ -530,9 +630,9 @@ namespace Acurus.Capella.UI
                         }
                         else
                             if (hdnTotalScore.Value != string.Empty)
-                                txtTotalScore.Text = hdnTotalScore.Value;
-                            else
-                                txtTotalScore.Text = string.Empty;
+                            txtTotalScore.Text = hdnTotalScore.Value;
+                        else
+                            txtTotalScore.Text = string.Empty;
                         txtTotalScore.ReadOnly = true;
                         //txtTotalScore.Style.Add("background-color", "lightgray");
                         txtTotalScore.Attributes.Add("class", "nonEditabletxtbox");
@@ -556,9 +656,9 @@ namespace Acurus.Capella.UI
                         }
                         else
                             if (hdnPercentage.Value != string.Empty)
-                                txtPercentage.Text = hdnPercentage.Value;
-                            else
-                                txtPercentage.Text = string.Empty;
+                            txtPercentage.Text = hdnPercentage.Value;
+                        else
+                            txtPercentage.Text = string.Empty;
                         txtPercentage.ReadOnly = true;
                         //txtPercentage.Style.Add("background-color", "lightgray");
                         txtPercentage.Attributes.Add("class", "nonEditabletxtbox");
@@ -608,7 +708,7 @@ namespace Acurus.Capella.UI
 
                         if (healthQuestionScreenList[i].Question.ToUpper() == "TOTAL SCORE" || healthQuestionScreenList[i].Question.ToUpper() == "PERCENTAGE(%)")
                         {
-                        } 
+                        }
                         else
                             userCtrl.Attributes.Add("style", "padding: 0px 0px 20px");
                         tc.Controls.Add(userCtrl);
@@ -698,7 +798,7 @@ namespace Acurus.Capella.UI
             //}
 
             Session["healthQuestionScreenList"] = healthQuestionScreenList;
-            if(healthQuestionScreenList!=null)
+            if (healthQuestionScreenList != null)
             {
                 var TotalScore = (from q in healthQuestionScreenList where q.Question.ToUpper() == "TOTAL SCORE" select q).ToList<FillHealthcareQuestionnaire>();
                 if (TotalScore.Count() > 0)
@@ -746,26 +846,67 @@ namespace Acurus.Capella.UI
                     questionTemp.Questionnaire_Lookup_ID = healthQuestionScreenList[i].Questionnaire_Lookup_ID;
 
                     questionTemp.Questionnaire_Category = healthQuestionScreenList[i].Questionnaire_Category;
-                   
+
                     try
                     {
+                        string controlId = healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString();
+                        controlId = Regex.Replace(controlId, @"[^a-zA-Z0-9]", "_");
                         string[] sPossibleOptions = healthQuestionScreenList[i].Possible_Options.Split('|');
-
-                        for (int j = 1; j < sPossibleOptions.Length; j++)
+                        switch (healthQuestionScreenList[i].Controls.ToUpper())
                         {
-                            if (((RadioButton)divHealthQuestionnaire.FindControl("rdbtn" + " " + sPossibleOptions[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString())).Checked == true)
-                            {
-                                questionTemp.Selected_Option = ((RadioButton)divHealthQuestionnaire.FindControl("rdbtn" + " " + sPossibleOptions[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString())).Text;
+                            case "RADIOBUTTON":
+
+                                for (int j = 1; j < sPossibleOptions.Length; j++)
+                                {
+                                    if (((RadioButton)divHealthQuestionnaire.FindControl("rdbtn" + " " + sPossibleOptions[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString())).Checked == true)
+                                    {
+                                        questionTemp.Selected_Option = ((RadioButton)divHealthQuestionnaire.FindControl("rdbtn" + " " + sPossibleOptions[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString())).Text;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        questionTemp.Selected_Option = "";
+                                    }
+                                }
+
                                 break;
-                            }
-                            else
-                            {
-                                questionTemp.Selected_Option = "";
-                            }
+                            case "COMBOBOX":
 
+                                if (!string.IsNullOrEmpty(((HtmlSelect)divHealthQuestionnaire.FindControl("cbo_" + controlId)).Value))
+                                {
+                                    questionTemp.Selected_Option = ((HtmlSelect)divHealthQuestionnaire.FindControl("cbo_" + controlId)).Value;
+                                }
+                                else
+                                {
+                                    questionTemp.Selected_Option = "";
+                                }
 
+                                break;
+                            case "READONLYTEXTBOX":
+
+                                if (!string.IsNullOrEmpty(((TextBox)divHealthQuestionnaire.FindControl("txt_" + controlId)).Text))
+                                {
+                                    questionTemp.Selected_Option = ((TextBox)divHealthQuestionnaire.FindControl("txt_" + controlId)).Text;
+                                }
+                                else
+                                {
+                                    questionTemp.Selected_Option = "";
+                                }
+
+                                break;
+                            case "MULTISELECTTEXTBOX":
+
+                                if (!string.IsNullOrEmpty(((HtmlTextArea)divHealthQuestionnaire.FindControl("txtArea_" + controlId)).Value))
+                                {
+                                    questionTemp.Selected_Option = ((HtmlTextArea)divHealthQuestionnaire.FindControl("txtArea_" + controlId)).Value;
+                                }
+                                else
+                                {
+                                    questionTemp.Selected_Option = "";
+                                }
+
+                                break;
                         }
-
                     }
                     catch
                     {
@@ -822,21 +963,65 @@ namespace Acurus.Capella.UI
 
                     try
                     {
+                        string controlId = healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString();
+                        controlId = Regex.Replace(controlId, @"[^a-zA-Z0-9]", "_");
                         string[] sPossibleOptions = healthQuestionScreenList[i].Possible_Options.Split('|');
 
-                        for (int j = 1; j < sPossibleOptions.Length; j++)
+                        switch (healthQuestionScreenList[i].Controls.ToUpper())
                         {
-                            if (((RadioButton)divHealthQuestionnaire.FindControl("rdbtn" + " " + sPossibleOptions[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString())).Checked == true)
-                            {
-                                questionTemp.Selected_Option = ((RadioButton)divHealthQuestionnaire.FindControl("rdbtn" + " " + sPossibleOptions[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString())).Text;
-                                break;
-                            }
-                            else
-                            {
-                                questionTemp.Selected_Option = "";
-                            }
-                        }
+                            case "RADIOBUTTON":
 
+                                for (int j = 1; j < sPossibleOptions.Length; j++)
+                                {
+                                    if (((RadioButton)divHealthQuestionnaire.FindControl("rdbtn" + " " + sPossibleOptions[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString())).Checked == true)
+                                    {
+                                        questionTemp.Selected_Option = ((RadioButton)divHealthQuestionnaire.FindControl("rdbtn" + " " + sPossibleOptions[j].Trim() + " " + healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString())).Text;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        questionTemp.Selected_Option = "";
+                                    }
+                                }
+
+                                break;
+                            case "COMBOBOX":
+
+                                if (!string.IsNullOrEmpty(((HtmlSelect)divHealthQuestionnaire.FindControl("cbo_" + controlId)).Value))
+                                {
+                                    questionTemp.Selected_Option = ((HtmlSelect)divHealthQuestionnaire.FindControl("cbo_" + controlId)).Value;
+                                }
+                                else
+                                {
+                                    questionTemp.Selected_Option = "";
+                                }
+
+                                break;
+                            case "READONLYTEXTBOX":
+
+                                if (!string.IsNullOrEmpty(((TextBox)divHealthQuestionnaire.FindControl("txt_" + controlId)).Text))
+                                {
+                                    questionTemp.Selected_Option = ((TextBox)divHealthQuestionnaire.FindControl("txt_" + controlId)).Text;
+                                }
+                                else
+                                {
+                                    questionTemp.Selected_Option = "";
+                                }
+
+                                break;
+                            case "MULTISELECTTEXTBOX":
+
+                                if (!string.IsNullOrEmpty(((HtmlTextArea)divHealthQuestionnaire.FindControl("txtArea_" + controlId)).Value))
+                                {
+                                    questionTemp.Selected_Option = ((HtmlTextArea)divHealthQuestionnaire.FindControl("txtArea_" + controlId)).Value;
+                                }
+                                else
+                                {
+                                    questionTemp.Selected_Option = "";
+                                }
+
+                                break;
+                        }
                     }
                     catch
                     {
@@ -923,7 +1108,7 @@ namespace Acurus.Capella.UI
             string Questionnarie_Default_option = string.Empty;
             for (int i = 0; i < healthQuestionScreenList.Count; i++)
             {
-                Questionnarie_Default_option += healthQuestionScreenList[i].Question + "^" + healthQuestionScreenList[i].Normal_Question_Status.Replace("'", "#") + "^" + healthQuestionScreenList[i].Possible_Options.Replace("'", "#") + "^" + healthQuestionScreenList[i].Questionnaire_Type + "~";
+                Questionnarie_Default_option += healthQuestionScreenList[i].Question + "^" + healthQuestionScreenList[i].Normal_Question_Status.Replace("'", "#") + "^" + healthQuestionScreenList[i].Possible_Options.Replace("'", "#") + "^" + healthQuestionScreenList[i].Questionnaire_Type + "^" + healthQuestionScreenList[i].Controls + "~";
             }
             btnSave.Disabled = false;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "CallAlert", "chkCheckedChange('" + Questionnarie_Default_option + "');", true);
@@ -1072,7 +1257,7 @@ namespace Acurus.Capella.UI
 
             if (strType == "CAT Screening")
             {
-                strPath = sBIRTReportUrl + "Healthcare_Questionnaire_Report - CAT_Screening.rptdesign" + sDBConnection+ "&strEncounterId=" + strEncounterId + "&strQuestionnaire_Type=" + strCategory + "&strDemographics=" + strDemographics.Replace("#", "%23").Replace("|", "%7C") + "&strFooterText=" + strFooterText.Replace("#", "%23").Replace("|", "%7C") + "&legal_org=" + ClientSession.LegalOrg + "&__title=" + strCategory + " " + "Questionnaire";
+                strPath = sBIRTReportUrl + "Healthcare_Questionnaire_Report - CAT_Screening.rptdesign" + sDBConnection + "&strEncounterId=" + strEncounterId + "&strQuestionnaire_Type=" + strCategory + "&strDemographics=" + strDemographics.Replace("#", "%23").Replace("|", "%7C") + "&strFooterText=" + strFooterText.Replace("#", "%23").Replace("|", "%7C") + "&legal_org=" + ClientSession.LegalOrg + "&__title=" + strCategory + " " + "Questionnaire";
             }
             else
             {
@@ -1109,23 +1294,23 @@ namespace Acurus.Capella.UI
             if (!isPrevEncPresent)
             {
                 if (bsaved)
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncMissing", "savedSuccessfully(); onCopyPrevious('210010');", true);
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncMissing", "savedSuccessfully(); onCopyPrevious('210010');", true);
                 else
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncMissing", "onCopyPrevious('210010'); ", true);
                 isAlert = true;
             }
             else if (!isPhysicianProcess)
             {
-                if(bsaved)
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(),"PrevEncNotPhysicianProcess", "savedSuccessfully(); onCopyPrevious('210016');", true);
+                if (bsaved)
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncNotPhysicianProcess", "savedSuccessfully(); onCopyPrevious('210016');", true);
                 else
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncNotPhysicianProcess", "onCopyPrevious('210016');", true);
                 isAlert = true;
             }
             if (!isPrevEncQuestionnairePresent)
             {
-                if(bsaved)
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(),"PrevEncQDataNotPresent", "savedSuccessfully(); onCopyPrevious('170014');", true);
+                if (bsaved)
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncQDataNotPresent", "savedSuccessfully(); onCopyPrevious('170014');", true);
                 else
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncQDataNotPresent", "onCopyPrevious('170014');", true);
                 isAlert = true;
@@ -1136,7 +1321,7 @@ namespace Acurus.Capella.UI
                     healthQuestionScreenList = (IList<FillHealthcareQuestionnaire>)Session["healthQuestionScreenList"];
 
                 FillMyQuestionList(healthQuestionScreenList);
-               
+
                 return;
                 //if (Session["Version"] != null)
                 //    HashVersion = (Hashtable)Session["Version"];
@@ -1152,15 +1337,17 @@ namespace Acurus.Capella.UI
                 Session["healthQuestionScreenList_CurrEnc"] = healthQuestionScreenList_CurrEnc;
                 IList<FillHealthcareQuestionnaire> healthQuestionScreenList1 = new List<FillHealthcareQuestionnaire>();
                 QuestionnaireLookupManager questionnaireMngr = new QuestionnaireLookupManager();
-                healthQuestionScreenList1 = questionnaireMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, prevEncID, true);
+                //CAP-3628
+                //healthQuestionScreenList1 = questionnaireMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, prevEncID, true);
+                healthQuestionScreenList1 = questionnaireMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, prevEncID, true, ClientSession.HumanId);
                 if (healthQuestionScreenList1.Count == healthQuestionScreenList_CurrEnc.Count)
                 {
                     for (int i = 0; i < healthQuestionScreenList1.Count; i++)
                     {
-                       
+
                         healthQuestionScreenList_CurrEnc[i].Selected_Option = healthQuestionScreenList1[i].Selected_Option;
                         healthQuestionScreenList_CurrEnc[i].Notes = healthQuestionScreenList1[i].Notes;
-                      
+
                     }
                 }
 

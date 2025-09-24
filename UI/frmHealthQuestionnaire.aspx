@@ -97,6 +97,12 @@
             font-size: 12px !important;
             font-family: sans-serif;
         }
+        .SelectStyle {
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-left: 3px;
+        }
     </style>
     <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
     <link href="~/CSS/font-awesome.css" rel="stylesheet" type="text/css" />

@@ -30,12 +30,16 @@ namespace Acurus.Capella.Core.DTO
         private string _Is_Calculation_Required = string.Empty;
         private string _Normal_Question_Status = string.Empty;
         private string _Is_Notes = string.Empty;
-       // private IList<Healthcare_Questionnaire> _Question_List;
+        private string _Controls = string.Empty;
+        private string _Question_Loinc_Code = string.Empty;
+        private string _Options_Loinc_Code = string.Empty;
+        private string _Where_Criteria = string.Empty;
+        // private IList<Healthcare_Questionnaire> _Question_List;
 
-       
 
-        
-       
+
+
+
         public ulong HealthCare_Questionnaire_ID
         {
             get { return _HealthCare_Questionnaire_ID; }
@@ -205,6 +209,25 @@ namespace Acurus.Capella.Core.DTO
             get { return _Is_Notes; }
             set { _Is_Notes = value; }
         }
-
+        public string Controls
+        {
+            get { return _Controls; }
+            set { _Controls = value; }
+        }
+        public string Question_Loinc_Code
+        {
+            get { return _Question_Loinc_Code; }
+            set { _Question_Loinc_Code = value; }
+        }
+        public string Options_Loinc_Code
+        {
+            get { return _Options_Loinc_Code; }
+            set { _Options_Loinc_Code = value; }
+        }
+        public string Where_Criteria
+        {
+            get { return _Where_Criteria; }
+            set { _Where_Criteria = value; }
+        }
     }
 }

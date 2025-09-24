@@ -1594,6 +1594,9 @@ function tabAutoSave(CurrentTab, sender) {
             else if (subtab == "Home Safety") {
                 $('.clsIframe').contents()[1].all.namedItem('HomeSafety').children[0].contentDocument.all.namedItem('btnSave').click();
             }
+            else if (subtab == "SDOH Assessment") {
+                $('.clsIframe').contents()[1].all.namedItem('SDOHAssessment').children[0].contentDocument.all.namedItem('btnSave').click();
+            }
             //$(dvdialog).dialog("close");
             enableAutoSave();
             CurTab.tab('show');
