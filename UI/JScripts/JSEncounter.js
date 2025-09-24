@@ -655,6 +655,7 @@ function refreshSummaryBar(tabname) {
 }
 
 function reloadSummary() {
+    debugger;
     var enc_id = sessionStorage.getItem("EncId_PatSummaryBar");
     var enc_DOS = sessionStorage.getItem("Enc_DOS");
     //sessionStorage.removeItem("EncId_PatSummaryBar");
@@ -692,11 +693,18 @@ function OnSuccessSummaryBar(response) {
 
     if (response != null) {
 
-        top.window.document.getElementById("ctl00_C5POBody_lblAllergies").innerHTML = response.d[0];
-        top.window.document.getElementById("ctl00_C5POBody_lblCheifComplaints").innerHTML = response.d[1];
-        top.window.document.getElementById("ctl00_C5POBody_lblProblemList").innerHTML = response.d[2];
-        top.window.document.getElementById("ctl00_C5POBody_lblVitals").innerHTML = response.d[3];
-        top.window.document.getElementById("ctl00_C5POBody_lblMedication").innerHTML = response.d[4];
+        //CAP-3686
+        var elementIds = ["ctl00_C5POBody_lblAllergies", "ctl00_C5POBody_lblCheifComplaints", "ctl00_C5POBody_lblProblemList", "ctl00_C5POBody_lblVitals", "ctl00_C5POBody_lblMedication"]
+        var element;
+        for (var i = 0; i < elementIds.length; i++)
+        {
+            element = top.window.document.getElementById(elementIds[i]);
+            if (element != undefined && element != null)
+            {
+                element.innerHTML = response.d[i];
+            }
+        }
+
         if (response.d[5].replace("Allergies :<br/>", "").length != 0)
             top.window.document.getElementById("Allergies_tooltp").innerText = response.d[5].replace(regex, "\n") + "\n";
         else
@@ -1447,7 +1455,8 @@ function tabAutoSave(CurrentTab, sender) {
         localStorage.setItem('IsSaveCompleted', false);
         autoSaveAndMoveToNextProcess(sender);
         if (CurTab[0].innerText == "CC / HPI") {
-            $('.clsIframe').contents()[0].all.namedItem('btnAdd').click();
+            //CAP-3687
+            $('.clsIframe')?.contents()[0]?.all?.namedItem('btnAdd')?.click();
             //$(dvdialog).dialog("close");
             enableAutoSave();
             CurTab.tab('show');
