@@ -1711,7 +1711,8 @@ function CheckIsBMIIsValid() {
 
                             else
                                 document.getElementById('txtNotesWeight_txtDLC').value = document.getElementById('txtNotesWeight_txtDLC').value.replace(heightnotes[i].trim() + ", ", "");
-                            if (document.getElementById('txtNotesBMI_txtDLC').value != "" && document.getElementById('txtNotesBMI_txtDLC').value.indexOf(heightnotes[i].trim()) > -1 && document.getElementById('txtNotesHeight_txtDLC').value.indexOf(heightnotes[i].trim()) <= -1)
+                            //CAP-3680
+                            if (document.getElementById('txtNotesBMI_txtDLC')?.value != undefined && document.getElementById('txtNotesBMI_txtDLC')?.value != null && document.getElementById('txtNotesBMI_txtDLC')?.value != "" && document.getElementById('txtNotesBMI_txtDLC')?.value?.indexOf(heightnotes[i]?.trim()) > -1 && document.getElementById('txtNotesHeight_txtDLC')?.value?.indexOf(heightnotes[i]?.trim()) <= -1)
                                 document.getElementById('txtNotesBMI_txtDLC').value = document.getElementById('txtNotesBMI_txtDLC').value.replace(heightnotes[i].trim(), "");
 
                             var notes = document.getElementById('txtNotesBMI_txtDLC').value.split(',');
