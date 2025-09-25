@@ -3575,10 +3575,13 @@ function OnSuccessSummaryBarEprescription(response) {
         if (top?.window?.document?.getElementById("ctl00_C5POBody_lblMedication") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblMedication") != null) {
             top.window.document.getElementById("ctl00_C5POBody_lblMedication").innerHTML = response.d[4];
         }
-        if (response.d[5].replace("Allergies :<br/>", "").length != 0)
-            top.window.document.getElementById("Allergies_tooltp").innerText = response.d[5].replace(regex, "\n") + "\n";
-        else
-            top.window.document.getElementById("Allergies_tooltp").innerText = "";
+        //CAP-3682
+        if (top?.window?.document?.getElementById("Allergies_tooltp") != undefined && top?.window?.document?.getElementById("Allergies_tooltp") != null) {
+            if (response.d[5].replace("Allergies :<br/>", "").length != 0)
+                top.window.document.getElementById("Allergies_tooltp").innerText = response.d[5].replace(regex, "\n") + "\n";
+            else
+                top.window.document.getElementById("Allergies_tooltp").innerText = "";
+        }
         //CAP-1614
         if (top?.window?.document?.getElementById("CheifComplaints_tooltp") != undefined && top?.window?.document?.getElementById("CheifComplaints_tooltp") != null) {
         if (response.d[6].replace("Chief Complaints :<br/><br/>", "").length != 0)
