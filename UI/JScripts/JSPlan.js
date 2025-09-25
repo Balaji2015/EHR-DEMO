@@ -655,7 +655,8 @@ function SavePlan() {
 
             var planitem = new Plan();
             planitem.Plan = $(datarows[rc])[0].children[0].innerHTML.split("<br>").join("\n");
-            planitem.Plan_For_Plan = $(datarows[rc])[0].children[1].children[0].children[0].value;//$(datarows[rc])[0].children[2].val();
+            //CAP-3688
+            planitem.Plan_For_Plan = $(datarows[rc])[0]?.children[1]?.children[0]?.children[0]?.value;//$(datarows[rc])[0].children[2].val();
             planitem.Id = $(datarows[rc])[0].children[2].innerText;
             Planlistitems[i] = planitem;
             i++;

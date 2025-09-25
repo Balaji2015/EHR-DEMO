@@ -61,9 +61,9 @@ namespace Acurus.Capella.UI.WebServices
         }
 
         [WebMethod(EnableSession = true)]
-        public string SaveHumanHistoryAddress(string sHumanID,string sStreet_Address1,string sStreet_Address2 ,
-            string sCity,string sState,string sZipCode,string sStart_Date,string sEnd_Date,
-            string sHuman_Address_ID,string sInsertOrUpdate)
+        public string SaveHumanHistoryAddress(string sHumanID, string sStreet_Address1, string sStreet_Address2,
+            string sCity, string sState, string sZipCode, string sStart_Date, string sEnd_Date,
+            string sHuman_Address_ID, string sInsertOrUpdate)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -91,12 +91,18 @@ namespace Acurus.Capella.UI.WebServices
                     Created_By = ClientSession.UserName,
                     Created_Date_And_Time = DateTime.UtcNow
                 });
+
+                if (ilstHuman_Addresses.Count > 0)
+                {
+                    Human_AddressMngr.SaveHuman_AddressWithTransaction(ilstHuman_Addresses, null, string.Empty);
+                }
             }
             else if (sInsertOrUpdate.ToUpper() == "UPDATE")
             {
                 ilstHuman_Addresses = Human_AddressMngr.GetHumanAddressByHumanAddressID(sHuman_Address_ID);
 
-                if (ilstHuman_Addresses.Count > 0) {
+                if (ilstHuman_Addresses.Count > 0)
+                {
 
                     ilstHuman_Addresses[0].Street_Address1 = sStreet_Address1;
                     ilstHuman_Addresses[0].Street_Address2 = sStreet_Address2;
@@ -107,13 +113,11 @@ namespace Acurus.Capella.UI.WebServices
                     ilstHuman_Addresses[0].End_Date = sEnd_Date;
                     ilstHuman_Addresses[0].Modified_By = ClientSession.UserName;
                     ilstHuman_Addresses[0].Modified_Date_And_Time = DateTime.UtcNow;
+
+                    Human_AddressMngr.SaveHuman_AddressWithTransaction(null, ilstHuman_Addresses, string.Empty);
                 }
-                
             }
-            if (ilstHuman_Addresses.Count > 0)
-            {
-                Human_AddressMngr.SaveHuman_AddressWithTransaction(ilstHuman_Addresses, string.Empty);
-            }
+
             var Status = new { status = sStatus };
             return JsonConvert.SerializeObject(Status);
         }

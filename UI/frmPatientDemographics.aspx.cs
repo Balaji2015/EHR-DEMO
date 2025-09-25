@@ -73,10 +73,7 @@ namespace Acurus.Capella.UI
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (ClientSession.UserName.ToUpper() != "SSELVA")
-            {
-                btnOpenAddressHistory.Visible = false;
-            }
+            
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Startloadcursor", "{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}", true);
 
             txtNotes.txtDLC.Attributes.Add("onkeypress", "change(this);");

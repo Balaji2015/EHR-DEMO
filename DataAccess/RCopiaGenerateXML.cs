@@ -1291,8 +1291,8 @@ namespace Acurus.Capella.DataAccess
             ilstRcopSett = rcopiaSettingsMngr.GetRcopia_Settings(sLegalOrg);
             if (ilstRcopSett.Count > 0)
             {
-
-                objRcopSettings = (from g in ilstRcopSett where g.Command == sXMLName && g.Legal_Org == sLegalOrg select g).ToList<Rcopia_Settings>()[0];
+                
+                objRcopSettings = (from g in ilstRcopSett where g.Command == sXMLName && g.Legal_Org.ToUpper() == sLegalOrg.ToUpper() select g).ToList<Rcopia_Settings>()[0];
                 if (sXMLName == "get_review_status" || sXMLName == "update_patient_office_visits")
                 {
                     xmlWriter.WriteStartElement("RCExtRequest");

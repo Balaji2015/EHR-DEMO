@@ -2026,7 +2026,12 @@ function Reasoncode() {
 function PrintPDF(sFaxSubject) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     $(top.window.document).find("#PrintPDFModal").modal({ backdrop: "static", keyboard: false }, 'show');
-    $(top.window.document).find("#PrintPDFModalTitle")[0].textContent = "Print FaceSheet";
+
+    //CAP-3689
+    if ($(top.window.document).find("#PrintPDFModalTitle")[0] != undefined && $(top.window.document).find("#PrintPDFModalTitle")[0] != null) {
+        $(top.window.document).find("#PrintPDFModalTitle")[0].textContent = "Print FaceSheet";
+    }
+
     //CAP-1578
     $(top.window.document).find("#PrintPDFModal")[0].style.overflow = "scroll";
     $(top.window.document).find("#PrintPDFmdldlg")[0].style.width = "900px";

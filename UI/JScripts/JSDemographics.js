@@ -4113,7 +4113,7 @@ function ClearEthnicityChange() {
 
 function OpenAddrHistory() {
     if (document.getElementById("ctl00_C5POBody_txtAccountNo")?.value == "") {
-        alert("Please add the patient.");
+        DisplayErrorMessage("10113701");
         return false;
     }
     $(top.window.document).find("#TabAdressHistory").modal({ backdrop: "static", keyboard: false }, 'show');

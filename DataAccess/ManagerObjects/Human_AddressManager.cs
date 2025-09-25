@@ -19,7 +19,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Human_Address> GetHumanAddressByHuman(string ulHumanID);
         IList<Human_Address> GetHumanAddressByHumanAddressID(string sHumanAddressID);
 
-        void SaveHuman_AddressWithTransaction(IList<Human_Address> ListToUpdateHuman_Address, string MACAddress);
+        void SaveHuman_AddressWithTransaction(IList<Human_Address> ilstHuman_Address, IList<Human_Address> ListToUpdateHuman_Address, string MACAddress);
         IList<Human_Address> DeleteHumanAddress(string sHumanAddressID);
     }
 
@@ -77,9 +77,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             
         }
 
-        public void SaveHuman_AddressWithTransaction(IList<Human_Address> ListToUpdateHuman_Address, string MACAddress)
+        public void SaveHuman_AddressWithTransaction(IList<Human_Address> ilstHuman_Address , IList<Human_Address> ListToUpdateHuman_Address, string MACAddress)
         {
-            IList<Human_Address> ilstHuman_Address = null;
             SaveUpdateDeleteWithTransaction(ref ilstHuman_Address, ListToUpdateHuman_Address, null, MACAddress);
         }
         #endregion

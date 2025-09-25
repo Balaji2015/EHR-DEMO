@@ -3052,6 +3052,23 @@
 	<Message number="10113609" Type="OKCANCEL" Text="There are {0} Allergy(s) selected for delete. Do you want to remove duplicates?"></Message>
 	<Message number="10113610" Type="ToolStrip" Text="Deleted successfully."></Message>
 	<Message number="10113611" Type="OKCANCEL" Text="Do you want to delete Inactive medication?"></Message>
-
+	
 	<Message number="010027" Type="OKCANCEL" Text="You have another Capella window open. Loading this page may result in loss of any unsaved data in the previous window.  Please save before proceeding.  Press Cancel or OK to proceed."></Message>
+	
+	<Message number="10113701" Type="OK" Text="Please add the patient."></Message>
+	<Message number="10113702" Type="OK" Text="Please fill the Address Line 1."></Message>
+	<Message number="10113703" Type="OK" Text="Please fill the City."></Message>
+	<Message number="10113704" Type="OK" Text="Please fill the State."></Message>
+	<Message number="10113705" Type="OK" Text="Please fill the Zip Code."></Message>
+	<Message number="10113706" Type="OK" Text="Invalid Zip Code." />
+	<Message number="10113707" Type="OK" Text="Start Date can not be less than Patient DOB." />
+	<Message number="10113708" Type="OK" Text="End Date can not be less than Patient DOB." />
+	<Message number="10113709" Type="OK" Text="Please fill valid start date." />
+	<Message number="10113710" Type="OK" Text="Please fill valid end date." />
+	<Message number="10113711" Type="OK" Text="End date should not be less than start date." />
+	<Message number="10113712" Type="OK" Text="Start Date can not be future date." />
+	<Message number="10113713" Type="OK" Text="End Date can not be future date." />
+	<Message number="10113714" Type="OKCANCEL" Text="Are you sure you want to clear all the Changes?" />
+	<Message number="10113715" Type="ToolStrip" Text="Saved successfully." ></Message>
+	<Message number="10113716" Type="OKCANCEL" Text="Are you sure you want to delete?" />
 </ErrorMessage>
