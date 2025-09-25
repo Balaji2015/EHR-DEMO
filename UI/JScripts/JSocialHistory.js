@@ -382,6 +382,7 @@ function enable(testId, chkName) {
         document.getElementById(ctrlimg).setAttribute("onclick", "");
         document.getElementById(ctrlimg).src = "Resources/Delete-Grey.png";
         txtbox.value = "";
+        $("#" + ctrltxt).attr("OccupationVal", "");
     }
     else {
         if (combo.id == 'cboTobaccoUseandExposure' && combo.item(0).text != "") {
