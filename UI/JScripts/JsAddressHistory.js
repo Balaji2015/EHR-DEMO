@@ -10,7 +10,8 @@ $(document).ready(function () {
     loadPatientStrip();
     $("input.DateInput").inputmask({
         //mask: ["99-aaa-9999", "99-aaa-____", "__-aaa-9999", "99-___-9999", "99-___-____", "__-aaa-____", "__-__-9999"]
-        mask: ["9999-aaa-99", "9999-___-99", "9999-aaa-__", "9999-___-__", "____-aaa-99", "____-___-99"],
+        //mask: ["9999-aaa-99", "9999-___-99", "9999-aaa-__", "9999-___-__", "____-aaa-99", "____-___-99"],
+        mask: ["9999-aaa-99"],
         placeholder: "____-___-__",
         casing: "lower",
         clearMaskOnLostFocus: false
@@ -292,7 +293,7 @@ function Validation() {
         startmon != undefined && endmon != undefined && startmon != "" && endmon != "" &&
         startyear != undefined && startyear != "" && endyear != undefined && endyear != "") {
 
-        if (new Date(startday + "-" + startmon + "-" + startyear) > new Date(endday + "-" + endmon + "-" + endyear)) {
+        if (new Date(startyear + "-" + startmon + "-" + startday) > new Date(endyear + "-" + endmon + "-" + endday)) {
             DisplayErrorMessage("10113711");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
@@ -300,23 +301,23 @@ function Validation() {
     }
 
 
-    if (startday != undefined && endday != undefined && startday != "" && endday != "" &&
-        startmon != undefined && endmon != undefined && startmon != "" && endmon != "" &&
-        startyear != undefined && startyear == "" && endyear != undefined && endyear == "") {
-        var startdaystartmon = parseInt(startday + months[startmon]);
-        var enddayendmon = parseInt(endday.toString() + months[endmon].toString());
-        if (startdaystartmon > enddayendmon) {
-            DisplayErrorMessage("10113711");
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
-    }
+    //if (startday != undefined && endday != undefined && startday != "" && endday != "" &&
+    //    startmon != undefined && endmon != undefined && startmon != "" && endmon != "" &&
+    //    startyear != undefined && startyear == "" && endyear != undefined && endyear == "") {
+    //    var startdaystartmon = parseInt(months[startmon] + startday);
+    //    var enddayendmon = parseInt(months[endmon].toString() + endday.toString());
+    //    if (startdaystartmon > enddayendmon) {
+    //        DisplayErrorMessage("10113711");
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        return false;
+    //    }
+    //}
 
     if (startyear != undefined && endyear != undefined && startyear != "" && endyear != "" &&
         startmon != undefined && endmon != undefined && startmon != "" && endmon != "" &&
         startday != undefined && endday != undefined && startday == "" && endday == "") {
-        var startmonstartyear = parseInt(months[startmon] + startyear);
-        var endmonendyear = parseInt(months[endmon].toString() + endyear.toString());
+        var startmonstartyear = parseInt(startyear + months[startmon]);
+        var endmonendyear = parseInt(endyear.toString() + months[endmon].toString());
         if (startmonstartyear > endmonendyear) {
             DisplayErrorMessage("10113711");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
