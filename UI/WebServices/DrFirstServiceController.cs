@@ -41,6 +41,43 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             return Json(new { HumanID = sHumanID, status = "Acknowledged" });
         }
+        //CAP-3700
+        [HttpGet]
+        public IHttpActionResult UploadPatientDatatoDrFirst(string sHumanID, string sUploadType, string sLegalOrg)
+        {
+            try
+            {
+                if (!VerifyToken())
+                {
+                    return Json(new { status = "Unauthorized", ErrorDescription = "The remote server returned an error: (403) Forbidden." });
+                }
+                if (string.IsNullOrEmpty(sLegalOrg))
+                {
+                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "LegalOrg is not valid. Cannot download DrFirst data." });
+                }
+                if (string.IsNullOrEmpty(sHumanID) || sHumanID == "0")
+                {
+                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "HumanID is not valid. Cannot download DrFirst data." });
+                }
+                if (string.IsNullOrEmpty(sUploadType))
+                {
+                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "UploadType is not valid. Cannot download DrFirst data." });
+                }
+
+                switch (sUploadType)
+                {
+                    case "send_patient":
+                        RCopiaTransactionManager objRcopiaMngr = new RCopiaTransactionManager();
+                        objRcopiaMngr.SendPatientToRCopia(Convert.ToUInt64(sHumanID), string.Empty, sLegalOrg);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { HumanID = sHumanID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
+            }
+            return Json(new { HumanID = sHumanID, status = "Acknowledged" });
+        }
 
         private bool VerifyToken()
         {
