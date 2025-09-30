@@ -968,7 +968,7 @@ namespace Acurus.Capella.DataAccess
             ilstRcopSett = rcopiaMngr.GetRcopia_Settings(sLegalOrg);
             if (ilstRcopSett.Count > 0)
             {
-                objRcopSettings = (from g in ilstRcopSett where g.Command == sXMLName && g.Legal_Org == sLegalOrg select g).ToList<Rcopia_Settings>()[0];
+                objRcopSettings = (from g in ilstRcopSett where g.Command == sXMLName && g.Legal_Org.ToUpper() == sLegalOrg.ToUpper() select g).ToList<Rcopia_Settings>()[0];
                 if (objRcopSettings == null)
                 {
                     return;
