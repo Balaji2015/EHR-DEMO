@@ -3334,8 +3334,17 @@ namespace Acurus.Capella.UI
             //    }
             #endregion
 
-            //CAP-2787
-            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            //CAP-3702
+            StaticLookupList staticLookupList = new StaticLookupList();
+            if (sReasonOrFollowup != "FollowupList")
+            {
+                //CAP-2787
+                staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            }
+            else
+            {
+                staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("StaticLookupPlan.json");
+            }
             if (staticLookupList != null)
             {
                 try
