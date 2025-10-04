@@ -22,6 +22,8 @@ namespace Acurus.Capella.Core.DomainObjects
         private DateTime _createddateandtime=DateTime.MinValue;
         private string _modifiedby = string.Empty;
         private DateTime _modifieddateandtime=DateTime.MinValue;
+        private string _Question_Loinc_Code = string.Empty;
+        private string _Selected_Option_Loinc_Code = string.Empty;
         private int _version = 0;
 
         #endregion
@@ -52,6 +54,8 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_createddateandtime);
             sb.Append(_modifieddateandtime);
             sb.Append(_version);
+            sb.Append(_Question_Loinc_Code);
+            sb.Append(_Selected_Option_Loinc_Code);
             return sb.ToString().GetHashCode();
         }
 
@@ -198,7 +202,30 @@ namespace Acurus.Capella.Core.DomainObjects
                 _version = value;
             }
         }
-
+        [DataMember]
+        public virtual string Question_Loinc_Code
+        {
+            get
+            {
+                return _Question_Loinc_Code;
+            }
+            set
+            {
+                _Question_Loinc_Code = value;
+            }
+        }
+        [DataMember]
+        public virtual string Selected_Option_Loinc_Code
+        {
+            get
+            {
+                return _Selected_Option_Loinc_Code;
+            }
+            set
+            {
+                _Selected_Option_Loinc_Code = value;
+            }
+        }
         #endregion
     }
 }

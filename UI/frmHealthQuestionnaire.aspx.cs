@@ -846,7 +846,8 @@ namespace Acurus.Capella.UI
                     questionTemp.Questionnaire_Lookup_ID = healthQuestionScreenList[i].Questionnaire_Lookup_ID;
 
                     questionTemp.Questionnaire_Category = healthQuestionScreenList[i].Questionnaire_Category;
-
+                    //CAP-3720
+                    questionTemp.Question_Loinc_Code = healthQuestionScreenList[i].Question_Loinc_Code;
                     try
                     {
                         string controlId = healthQuestionScreenList[i].Question.Replace(":", "").Trim().ToString() + "-" + healthQuestionScreenList[i].Questionnaire_Type.Trim().ToString() + "-" + i.ToString();
@@ -875,6 +876,13 @@ namespace Acurus.Capella.UI
                                 if (!string.IsNullOrEmpty(((HtmlSelect)divHealthQuestionnaire.FindControl("cbo_" + controlId)).Value))
                                 {
                                     questionTemp.Selected_Option = ((HtmlSelect)divHealthQuestionnaire.FindControl("cbo_" + controlId)).Value;
+                                    //CAP-3720
+                                    var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
+                                    int selectedIndex = Array.IndexOf(possible_Options, questionTemp.Selected_Option);
+                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                    {
+                                        questionTemp.Selected_Option_Loinc_Code = healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
+                                    }
                                 }
                                 else
                                 {
@@ -887,6 +895,13 @@ namespace Acurus.Capella.UI
                                 if (!string.IsNullOrEmpty(((TextBox)divHealthQuestionnaire.FindControl("txt_" + controlId)).Text))
                                 {
                                     questionTemp.Selected_Option = ((TextBox)divHealthQuestionnaire.FindControl("txt_" + controlId)).Text;
+                                    //CAP-3720
+                                    var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
+                                    int selectedIndex = Array.IndexOf(possible_Options, questionTemp.Selected_Option);
+                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                    {
+                                        questionTemp.Selected_Option_Loinc_Code = healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
+                                    }
                                 }
                                 else
                                 {
@@ -899,6 +914,21 @@ namespace Acurus.Capella.UI
                                 if (!string.IsNullOrEmpty(((HtmlTextArea)divHealthQuestionnaire.FindControl("txtArea_" + controlId)).Value))
                                 {
                                     questionTemp.Selected_Option = ((HtmlTextArea)divHealthQuestionnaire.FindControl("txtArea_" + controlId)).Value;
+                                    //CAP-3720
+                                    foreach (var item in questionTemp.Selected_Option.Split(','))
+                                    {
+                                        var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
+                                        int selectedIndex = Array.IndexOf(possible_Options, item);
+                                        if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                        {
+                                            questionTemp.Selected_Option_Loinc_Code += healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
+                                            questionTemp.Selected_Option_Loinc_Code += ",";
+                                        }
+                                    }
+                                    if (!string.IsNullOrEmpty(questionTemp.Selected_Option_Loinc_Code))
+                                    {
+                                        questionTemp.Selected_Option_Loinc_Code = questionTemp.Selected_Option_Loinc_Code.TrimEnd(',');
+                                    }
                                 }
                                 else
                                 {
@@ -957,6 +987,8 @@ namespace Acurus.Capella.UI
                     questionTemp.Questionnaire_Lookup_ID = healthQuestionScreenList[i].Questionnaire_Lookup_ID;
 
                     questionTemp.Questionnaire_Category = healthQuestionScreenList[i].Questionnaire_Category;
+                    //CAP-3720
+                    questionTemp.Question_Loinc_Code = healthQuestionScreenList[i].Question_Loinc_Code;
                     //questionTemp.Created_By = healthQuestionScreenList[i].Created_By;
                     //questionTemp.Created_Date_And_Time = healthQuestionScreenList[i].Created_Date_And_Time;
 
@@ -990,6 +1022,13 @@ namespace Acurus.Capella.UI
                                 if (!string.IsNullOrEmpty(((HtmlSelect)divHealthQuestionnaire.FindControl("cbo_" + controlId)).Value))
                                 {
                                     questionTemp.Selected_Option = ((HtmlSelect)divHealthQuestionnaire.FindControl("cbo_" + controlId)).Value;
+                                    //CAP-3720
+                                    var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
+                                    int selectedIndex = Array.IndexOf(possible_Options, questionTemp.Selected_Option);
+                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                    {
+                                        questionTemp.Selected_Option_Loinc_Code = healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
+                                    }
                                 }
                                 else
                                 {
@@ -1002,6 +1041,13 @@ namespace Acurus.Capella.UI
                                 if (!string.IsNullOrEmpty(((TextBox)divHealthQuestionnaire.FindControl("txt_" + controlId)).Text))
                                 {
                                     questionTemp.Selected_Option = ((TextBox)divHealthQuestionnaire.FindControl("txt_" + controlId)).Text;
+                                    //CAP-3720
+                                    var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
+                                    int selectedIndex = Array.IndexOf(possible_Options, questionTemp.Selected_Option);
+                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                    {
+                                        questionTemp.Selected_Option_Loinc_Code = healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
+                                    }
                                 }
                                 else
                                 {
@@ -1014,6 +1060,21 @@ namespace Acurus.Capella.UI
                                 if (!string.IsNullOrEmpty(((HtmlTextArea)divHealthQuestionnaire.FindControl("txtArea_" + controlId)).Value))
                                 {
                                     questionTemp.Selected_Option = ((HtmlTextArea)divHealthQuestionnaire.FindControl("txtArea_" + controlId)).Value;
+                                    //CAP-3720
+                                    foreach (var item in questionTemp.Selected_Option.Split(','))
+                                    {
+                                        var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
+                                        int selectedIndex = Array.IndexOf(possible_Options, item);
+                                        if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                        {
+                                            questionTemp.Selected_Option_Loinc_Code += healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
+                                            questionTemp.Selected_Option_Loinc_Code += ",";
+                                        }
+                                    }
+                                    if (!string.IsNullOrEmpty(questionTemp.Selected_Option_Loinc_Code))
+                                    {
+                                        questionTemp.Selected_Option_Loinc_Code = questionTemp.Selected_Option_Loinc_Code.TrimEnd(',');
+                                    }
                                 }
                                 else
                                 {

@@ -1,24 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
-  <class name="Acurus.Capella.Core.DomainObjects.Healthcare_Questionnaire, Acurus.Capella.Core" table="healthcare_questionnaire" lazy="true">
-    <id name="Id" column="HealthCare_Questionnaire_ID">
-      <generator class="identity" />
-    </id>
-    <version name="Version"/>
+	<class name="Acurus.Capella.Core.DomainObjects.Healthcare_Questionnaire, Acurus.Capella.Core" table="healthcare_questionnaire" lazy="true">
+		<id name="Id" column="HealthCare_Questionnaire_ID">
+			<generator class="identity" />
+		</id>
+		<version name="Version"/>
 
-    <property name="Encounter_ID" column="Encounter_ID" />
-    <property name="Physician_ID" column="Physician_ID" />
-    <property name="Human_ID" column="Human_ID" />
-    <property name="Questionnaire_Lookup_ID" column="Questionnaire_Lookup_ID" />
-    <property name="Questionnaire_Category" column="Questionnaire_Category" />
-    <property name="Questionnaire_Type" column="Questionnaire_Type" />
-    <property name="Question" column="Question" />
-    <property name="Selected_Option" column="Selected_Option" />    
-    <property name="Notes" column="Notes" />
-  <property name="Created_By" column="Created_By" />
-    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
-    <property name="Modified_By" column="Modified_By" />
-    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
-  </class>
+		<property name="Encounter_ID" column="Encounter_ID" />
+		<property name="Physician_ID" column="Physician_ID" />
+		<property name="Human_ID" column="Human_ID" />
+		<property name="Questionnaire_Lookup_ID" column="Questionnaire_Lookup_ID" />
+		<property name="Questionnaire_Category" column="Questionnaire_Category" />
+		<property name="Questionnaire_Type" column="Questionnaire_Type" />
+		<property name="Question" column="Question" />
+		<property name="Selected_Option" column="Selected_Option" />
+		<property name="Notes" column="Notes" />
+		<property name="Created_By" column="Created_By" />
+		<property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+		<property name="Modified_By" column="Modified_By" />
+		<property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+		<property name="Question_Loinc_Code" column="Question_Loinc_Code" />
+		<property name="Selected_Option_Loinc_Code" column="Selected_Option_Loinc_Code" />
+	</class>
 </hibernate-mapping>
 
