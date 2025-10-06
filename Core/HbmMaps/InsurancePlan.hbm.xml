@@ -38,6 +38,8 @@
     <property name="Claim_ZipCode" column="Claim_ZipCode" />
 	<property name="Health_Insurance_Type" column="Health_Insurance_Type" />
 	<property name="Health_Insurance_Description" column="Health_Insurance_Description" />
+    <property name="Coverage_Type_Code" column="Coverage_Type_Code" />
+	<property name="Coverage_Type_Description" column="Coverage_Type_Description" />
 	  
     <bag name="CarrierBag" cascade="all" lazy="false" inverse="true">
       <key column="Carrier_ID" />

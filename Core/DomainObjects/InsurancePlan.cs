@@ -45,6 +45,8 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Claim_ZipCode = string.Empty;
         private string _Health_Insurance_Type = string.Empty;
         private string _Health_Insurance_Description = string.Empty;
+        private string _Coverage_Type_Code = string.Empty;
+        private string _Coverage_Type_Description = string.Empty;
 
         #endregion
 
@@ -94,6 +96,8 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Claim_ZipCode);
             sb.Append(_Health_Insurance_Type);
             sb.Append(_Health_Insurance_Description);
+            sb.Append(_Coverage_Type_Code);
+            sb.Append(_Coverage_Type_Description);
            
             return sb.ToString().GetHashCode();
         }
@@ -387,6 +391,18 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Health_Insurance_Description; }
             set { _Health_Insurance_Description = value; }
+        }
+        [DataMember]
+        public virtual string Coverage_Type_Code
+        {
+            get { return _Coverage_Type_Code; }
+            set { _Coverage_Type_Code = value; }
+        }
+        [DataMember]
+        public virtual string Coverage_Type_Description
+        {
+            get { return _Coverage_Type_Description; }
+            set { _Coverage_Type_Description = value; }
         }
         #endregion
 
