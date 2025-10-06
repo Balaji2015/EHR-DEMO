@@ -152,7 +152,7 @@
                             
                              <td>
                                 <asp:CheckBox ID="chkHealthConcern" runat="server" Text="Health Concern" CssClass="Editabletxtbox"/>
-                            </td>
+                            </td>                            
                         </tr>
                           <tr>
                             <td class="style3">
@@ -171,6 +171,9 @@
                             </td>
                             <td>
                                 <asp:CheckBox ID="chkPatientAids" runat="server" Text="Patient Decision Aids" CssClass="Editabletxtbox" />
+                            </td>
+                            <td>
+                                <asp:CheckBox ID="chkPayer" runat="server" Text="Payer" CssClass="Editabletxtbox"/>
                             </td>
                         </tr>
                     </table>
