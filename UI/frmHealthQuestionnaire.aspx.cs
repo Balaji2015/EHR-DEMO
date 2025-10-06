@@ -879,7 +879,7 @@ namespace Acurus.Capella.UI
                                     //CAP-3720
                                     var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
                                     int selectedIndex = Array.IndexOf(possible_Options, questionTemp.Selected_Option);
-                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex && selectedIndex != -1)
                                     {
                                         questionTemp.Selected_Option_Loinc_Code = healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
                                     }
@@ -898,7 +898,7 @@ namespace Acurus.Capella.UI
                                     //CAP-3720
                                     var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
                                     int selectedIndex = Array.IndexOf(possible_Options, questionTemp.Selected_Option);
-                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex && selectedIndex != -1)
                                     {
                                         questionTemp.Selected_Option_Loinc_Code = healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
                                     }
@@ -919,7 +919,7 @@ namespace Acurus.Capella.UI
                                     {
                                         var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
                                         int selectedIndex = Array.IndexOf(possible_Options, item);
-                                        if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                        if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex && selectedIndex != -1)
                                         {
                                             questionTemp.Selected_Option_Loinc_Code += healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
                                             questionTemp.Selected_Option_Loinc_Code += ",";
@@ -1025,7 +1025,7 @@ namespace Acurus.Capella.UI
                                     //CAP-3720
                                     var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
                                     int selectedIndex = Array.IndexOf(possible_Options, questionTemp.Selected_Option);
-                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex && selectedIndex != -1)
                                     {
                                         questionTemp.Selected_Option_Loinc_Code = healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
                                     }
@@ -1044,7 +1044,7 @@ namespace Acurus.Capella.UI
                                     //CAP-3720
                                     var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
                                     int selectedIndex = Array.IndexOf(possible_Options, questionTemp.Selected_Option);
-                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                    if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex && selectedIndex != -1)
                                     {
                                         questionTemp.Selected_Option_Loinc_Code = healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
                                     }
@@ -1065,7 +1065,7 @@ namespace Acurus.Capella.UI
                                     {
                                         var possible_Options = healthQuestionScreenList[i].Possible_Options.Split('|');
                                         int selectedIndex = Array.IndexOf(possible_Options, item);
-                                        if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex)
+                                        if (healthQuestionScreenList[i].Options_Loinc_Code?.Split('|')?.Length >= selectedIndex && selectedIndex != -1)
                                         {
                                             questionTemp.Selected_Option_Loinc_Code += healthQuestionScreenList[i].Options_Loinc_Code.Split('|')[selectedIndex];
                                             questionTemp.Selected_Option_Loinc_Code += ",";
