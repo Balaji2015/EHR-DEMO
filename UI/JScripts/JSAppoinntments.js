@@ -157,7 +157,9 @@ function schAppointmentScheduler_AppointmentContextMenuItemClicked(sender, args)
         document.getElementById(GetClientId("hdnFindApptHumanID")).value = Appointment._toolTip.split('-')[0];
         var physician = document.getElementById(GetClientId("cboFacilityName"))
         var ApptPhyID = document.getElementById(GetClientId("hdnApptPhyId")).value
-        var ApptFacName = document.getElementById(GetClientId("hdnApptFacName")).value;
+        //CAP-3695
+        //var ApptFacName = document.getElementById(GetClientId("hdnApptFacName")).value;
+        var ApptFacName = Appointment.get_resources()._array[0]._key;
         if (ApptFacName.indexOf("#") != -1) {
             ApptFacName = ApptFacName.replace("#", "_")
         }
