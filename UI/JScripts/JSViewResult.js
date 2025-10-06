@@ -47,7 +47,7 @@ function ClickPrescription() {
     obj.push("LocalTime=" + document.getElementById(GetClientId('hdnLocalTime')).value);
     //Jira CAP-1567
     sessionStorage.setItem("eRxHumanID", window.location.search.toString().split('?')[1].split("&")[0].split('=')[1]);
-    var result = openModal("frmRCopiaWebBrowser.aspx", 635, 1060, obj, 'ctl00_ModalWindow');
+    var result = openModal("frmRCopiaWebBrowser.aspx", 635, 1350, obj, 'ctl00_ModalWindow');
     var WindowName = $find('ctl00_ModalWindow');
     WindowName.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close);
     WindowName.add_close(TriggerDownloadRcopia);

@@ -122,7 +122,8 @@ namespace Acurus.Capella.UI
                             //ModalWindow.Height = Unit.Pixel(650);
                             //ModalWindow.Width = Unit.Pixel(960);
                             ModalWindow.Height = Unit.Pixel(635);
-                            ModalWindow.Width = Unit.Pixel(1060);
+                            //ModalWindow.Width = Unit.Pixel(1060);
+                            ModalWindow.Width = Unit.Pixel(1350);
                             ModalWindow.Behaviors = WindowBehaviors.Close;
                             ModalWindow.NavigateUrl = "frmRCopiaWebBrowser.aspx?MyType=GENERAL" + "&HumanID=" + Request["HumanID"].ToString()
                                 + "&EncID=0" + "&PrescriptionID=0" + "&IsMoveButton=false" + "&IsMoveCheckbox=false"

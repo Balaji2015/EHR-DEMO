@@ -110,7 +110,7 @@ function btnePrescribe_Click() {
     obj.push("IsSentToRCopia=" + "Y");
     obj.push("LocalTime=" + document.getElementById(GetClientId('hdnLocalTime')).value);
     //Jira #CAP-903
-    Result = openNonModal("frmRCopiaWebBrowser.aspx", 535, 860, obj, 'ctl00_ModalWindow');
+    Result = openNonModal("frmRCopiaWebBrowser.aspx", 635, 1350, obj, 'ctl00_ModalWindow');
     $('#resultLoading').css("display", "none");
     if (Result == null)
         return false;

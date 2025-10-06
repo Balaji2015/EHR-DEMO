@@ -841,7 +841,7 @@ function MyQclick() {
             //Jira CAP-1567
             sessionStorage.setItem("eRxHumanID", human_id);
             var Result = openRadWindow("frmRCopiaWebBrowser.aspx?MyType=GENERAL&HumanID=" + human_id + "&EncID=" + encounter_id + "&PrescriptionID=" + prescriptionId +
-                "&IsMoveButton=true&IsMoveCheckbox=false&IsPrescriptiontobePushed=N&openingFrom=Queue&IsSentToRCopia=Y", 630, 1200, obj, 'MessageWindow');
+                "&IsMoveButton=true&IsMoveCheckbox=false&IsPrescriptiontobePushed=N&openingFrom=Queue&IsSentToRCopia=Y", 630, 1350, obj, 'MessageWindow');
             var windowName = $find('MessageWindow');
             windowName.add_close(OnClientCloseWindow);
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
