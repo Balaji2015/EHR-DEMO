@@ -44,7 +44,7 @@
 
         #grdPatientReminder {
             overflow: hidden;
-        }
+        }       
     </style>
     <link href="~/CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
 </head>
@@ -134,7 +134,135 @@
                     <td colspan="5">
                         <asp:Panel ID="pnlGrid" runat="server" GroupingText="Patient Reminder List" Font-Size="Small"
                             Font-Names="Times New Roman" CssClass="Panel LabelStyleBold">
-                            <telerik:RadGrid ID="grdPatientReminder" runat="server" AutoGenerateColumns="False"
+                            <telerik:RadGrid ID="grdPatientReminder" GridLines="Both" runat="server" class="Editabletxtbox" AutoGenerateColumns="False"
+                                CellSpacing="0" CssClass="Gridbodystyle"
+                                Height="335px" Width="1150px">
+                                <FilterMenu EnableImageSprites="False">
+                                </FilterMenu>
+                                <HeaderStyle Font-Bold="true" CssClass="Gridheaderstyle" />
+                                <SelectedItemStyle Font-Bold="true" BorderWidth="1px" BorderStyle="Dashed" />
+                                <ClientSettings>
+                                    <%--<Scrolling AllowScroll="True" UseStaticHeaders="True" SaveScrollPosition="true" FrozenColumnsCount="2" />--%>
+                                    <Scrolling AllowScroll="True" UseStaticHeaders="true" />
+                                    <Selecting AllowRowSelect="true" />
+                                    <Resizing AllowColumnResize="true" ClipCellContentOnResize="true" ResizeGridOnColumnResize="true" />
+                                </ClientSettings>
+
+                                <MasterTableView>
+                                    <CommandItemSettings ExportToPdfText="Export to PDF" />
+                                    <RowIndicatorColumn FilterControlAltText="Filter RowIndicator column" Visible="True">
+                                    </RowIndicatorColumn>
+                                    <ExpandCollapseColumn FilterControlAltText="Filter ExpandColumn column" Visible="True">
+                                    </ExpandCollapseColumn>
+                                    <Columns>
+                                        <telerik:GridTemplateColumn AllowFiltering="False" DataField="Primary" FilterControlAltText="Filter Primary column"
+                                            Groupable="False" HeaderText="Select Patient" Resizable="False" UniqueName="Primary">
+                                            <ItemTemplate >
+                                                <asp:CheckBox ID="Primary" runat="server" />
+                                            </ItemTemplate>
+                                            <HeaderStyle Wrap="true" Width="70px" CssClass="Gridheaderstyle" />
+                                        </telerik:GridTemplateColumn>
+
+                                        <telerik:GridBoundColumn DataField="Acc#" ItemStyle-CssClass="Gridbodystyle" FilterControlAltText="Filter Acc column"
+                                            HeaderText="Acc#" UniqueName="Acc">                                          
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="70px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="70px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="PatientName" FilterControlAltText="Filter PatientName column" ItemStyle-CssClass="Gridbodystyle"
+                                            HeaderText="Patient Name" UniqueName="PatientName">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="150px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="150px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="DOB" FilterControlAltText="Filter DOB column" ItemStyle-CssClass="Gridbodystyle"
+                                            HeaderText="DOB" UniqueName="DOB">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="100px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="100px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="CommMode" HeaderText="CommMode" UniqueName="CommMode">
+                                           <HeaderStyle CssClass="Gridbodystyle"  Width="100px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="100px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="Pref Lang" HeaderText="Pref Lang Name" UniqueName="PrefLang">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="150px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="150px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="HomePh#" HeaderText="Home Phone" UniqueName="HomePh">
+                                           <HeaderStyle CssClass="Gridbodystyle"  Width="120px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="120px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="CellPh#" HeaderText="Cell Phone" UniqueName="CellPh">
+                                          <HeaderStyle CssClass="Gridbodystyle"  Width="120px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="120px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="WorkPh#" HeaderText="Work Phone" UniqueName="WorkPh">
+                                           <HeaderStyle CssClass="Gridbodystyle"  Width="120px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="120px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="CreatedDateTime#" HeaderText="Created Date" UniqueName="CreatedDateTime">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="160px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="160px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="Email" HeaderText="Email" UniqueName="Email">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="100px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="100px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="Gender" HeaderText="Gender" UniqueName="Gender">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="80px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="80px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="Ethnicity" HeaderText="Ethnicity" UniqueName="Ethnicity">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="100px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="100px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="Race" HeaderText="Race" UniqueName="Race">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="120px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="120px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="PreferredLang" HeaderText="Preferred Lang" UniqueName="PreferredLang">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="120px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="120px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="Problem" HeaderText="Problem" UniqueName="Problem">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="150px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="150px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="ProblemDateTime" HeaderText="Problem Date" UniqueName="ProblemDateTime">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="150px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="150px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="Medication" HeaderText="Medication" UniqueName="Medication">
+                                           <HeaderStyle CssClass="Gridbodystyle"  Width="120px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="120px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="MedicationDateTime#" HeaderText="Medication Date" UniqueName="MedicationDateTime" DataFormatString="{0:dd-MM-yyyy}">
+                                           <HeaderStyle CssClass="Gridbodystyle"  Width="150px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="150px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="MedAlergy" HeaderText="Med Allergy" UniqueName="MedAlergy">
+                                            <HeaderStyle CssClass="Gridbodystyle"  Width="100px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="100px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="MedAlergyDateTime#" HeaderText="Med Allergy Date" UniqueName="MedAlergyDateTime" DataFormatString="{0:dd-MM-yyyy}">
+                                          <HeaderStyle CssClass="Gridbodystyle"  Width="150px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="150px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="LabResult" HeaderText="Lab Result" UniqueName="LabResult">
+                                           <HeaderStyle CssClass="Gridbodystyle"  Width="100px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="100px" />
+                                        </telerik:GridBoundColumn>
+                                        <telerik:GridBoundColumn DataField="LabResultDateTime#" HeaderText="Lab Result Date" UniqueName="LabResultDateTime" DataFormatString="{0:dd-MM-yyyy}">
+                                           <HeaderStyle CssClass="Gridbodystyle"  Width="150px" />
+                                            <ItemStyle CssClass="Gridbodystyle"  Width="150px" />
+                                        </telerik:GridBoundColumn>
+                                    </Columns>
+                                    <EditFormSettings>
+                                        <EditColumn FilterControlAltText="Filter EditCommandColumn column">
+                                        </EditColumn>
+                                    </EditFormSettings>
+                                </MasterTableView><AlternatingItemStyle BorderStyle="None" />
+                            </telerik:RadGrid>
+
+                            <%--<telerik:RadGrid ID="grdPatientReminder" runat="server" AutoGenerateColumns="False"
                                 Height="335px" Width="1130px" CellSpacing="0" GridLines="Both"    AllowSorting="true" CssClass="Gridbodystyle">
                                 <FilterMenu EnableImageSprites="False">
                                 </FilterMenu>
@@ -340,7 +468,7 @@
                                         </EditColumn>
                                     </EditFormSettings>
                                 </MasterTableView>
-                            </telerik:RadGrid>
+                            </telerik:RadGrid>--%>
                         </asp:Panel>
                     </td>
                 </tr>

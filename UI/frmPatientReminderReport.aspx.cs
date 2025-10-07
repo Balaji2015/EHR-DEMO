@@ -101,6 +101,12 @@ namespace Acurus.Capella.UI
                 {
                     objFacility = null;
                 }
+                //CAP-3698
+                if (grdPatientReminder.DataSource == null)
+                {
+                    grdPatientReminder.DataSource = new string[] { };
+                    grdPatientReminder.DataBind();
+                }
             }
         }
 
@@ -130,7 +136,20 @@ namespace Acurus.Capella.UI
                 // dsRule = new DataSet();
                 dsRule.Tables.Add(temptable);
 
-                grdPatientReminder.DataSource = dsRule.Tables[1];
+                //CAP-3698
+                //grdPatientReminder.DataSource = dsRule.Tables[1];
+
+                if (dsRule.Tables.Count > 1)
+                {
+                    if (dsRule.Tables[1].Rows.Count != 0)
+                    {
+                        grdPatientReminder.DataSource = dsRule.Tables[1];
+                    }
+                    else
+                        grdPatientReminder.DataSource = new string[] { };
+                }
+                else
+                    grdPatientReminder.DataSource = new string[] { };
                 mpnHospitalizationHistory.TotalNoofDBRecords = dsRule.Tables[0].Rows.Count;
                 grdPatientReminder.DataBind();
                 lblCount.Visible = true;
