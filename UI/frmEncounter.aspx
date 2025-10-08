@@ -899,6 +899,12 @@
                         }
 
                     }
+                    //CAP-3736
+                    else if (subtab == "SDOH Assessment") {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('SDOHAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('SDOHAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
+                            $('.clsIframe').contents()[1].all.namedItem('SDOHAssessment').children[0].contentDocument.all.namedItem('btnSave').click();
+                        }
+                    }
                     //if (localStorage.getItem("bSave") == "true") {
                     //    paneID = $(event.target).attr('href');
                     //    src = $(paneID).attr('data-src');
