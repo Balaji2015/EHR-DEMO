@@ -126,8 +126,9 @@ namespace Acurus.Capella.PatientPortal
                 //  btnDownload.Enabled = true;
                 //imgmessage.Disabled = false;
             }
-
-            return "Success$"+PDFPath;
+            //Cap - 3616
+            //return "Success$" + PDFPath;
+            return PDFPath;
         }
 
         protected void btnShowReport_Click(object sender, EventArgs e)
