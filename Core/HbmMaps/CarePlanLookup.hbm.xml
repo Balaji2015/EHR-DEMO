@@ -17,5 +17,7 @@
     <property name="Gender" column="Gender" not-null="true" />
     <property name="From_Age" column="From_Age" not-null="true" />
     <property name="To_Age" column="To_Age" not-null="true" />
+    <property name="Care_Plan_Loinc_Code" column="Care_Plan_Loinc_Code" not-null="true" />
+    <property name="Options_Loinc_Code" column="Options_Loinc_Code" not-null="true" />
   </class>
 </hibernate-mapping>

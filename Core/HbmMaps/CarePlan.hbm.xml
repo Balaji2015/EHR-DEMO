@@ -23,6 +23,8 @@
     <!--<property name="Captured_Date_Time" column="Captured_Date_Time" not-null="true" />-->
     <!--<property name="Followup_Plan" column="Followup_Plan" not-null="true" />-->
     <property name="Snomed_Code" column="Snomed_Code" not-null="true" />
+    <property name="Care_Plan_Loinc_Code" column="Care_Plan_Loinc_Code" not-null="true" />
+    <property name="Selected_Option_Loinc_Code" column="Selected_Option_Loinc_Code" not-null="true" />
     
   </class>
 </hibernate-mapping>

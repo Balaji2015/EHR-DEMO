@@ -23,6 +23,8 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Gender = string.Empty;
         private string _From_Age = string.Empty;
         private string _To_Age = string.Empty;
+        private string _Care_Plan_Loinc_Code = string.Empty;
+        private string _Options_Loinc_Code = string.Empty;
 
         #endregion
 
@@ -50,6 +52,8 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Gender);
             sb.Append(_From_Age);
             sb.Append(_To_Age);
+            sb.Append(_Care_Plan_Loinc_Code);
+            sb.Append(_Options_Loinc_Code);
             return sb.ToString().GetHashCode();
         }
 
@@ -129,6 +133,18 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _To_Age; }
             set { _To_Age = value; }
+        }
+        [DataMember]
+        public virtual string Care_Plan_Loinc_Code
+        {
+            get { return _Care_Plan_Loinc_Code; }
+            set { _Care_Plan_Loinc_Code = value; }
+        }
+        [DataMember]
+        public virtual string Options_Loinc_Code
+        {
+            get { return _Options_Loinc_Code; }
+            set { _Options_Loinc_Code = value; }
         }
         #endregion
     }

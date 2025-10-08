@@ -132,6 +132,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //PlanDto.Followup_Plan = Convert.ToString(ob[20]);
                     //PlanDto.Reason_Not_Performed = Convert.ToString(ob[21]);
                     PlanDto.Snomed_Code = Convert.ToString(ob[20]);
+                    //CAP-3755
+                    PlanDto.Care_Plan_Loinc_Code = Convert.ToString(ob[21]);
+                    PlanDto.Options_Loinc_Code = Convert.ToString(ob[22]);
 
                     if (ob[14] != null)// && PlanDto.Care_Name_Value.ToUpper() != "BMI")// && PlanDto.Care_Name_Value.ToUpper() != "BP SYS/DIA")
                     {

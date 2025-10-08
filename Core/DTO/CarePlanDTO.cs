@@ -57,6 +57,8 @@ namespace Acurus.Capella.Core.DTO
         //private string _Followup_Plan = string.Empty;
         //private string _Reason_Not_Performed = string.Empty;
         private string _Snomed_Code = string.Empty;
+        private string _Care_Plan_Loinc_Code = string.Empty;
+        private string _Options_Loinc_Code = string.Empty;
 
         public CarePlanDTO() 
         {
@@ -478,7 +480,24 @@ namespace Acurus.Capella.Core.DTO
                 _Modified_Date_And_Time = value;
             }
         }
-            
+        [DataMember]
+        public virtual string Care_Plan_Loinc_Code
+        {
+            get { return _Care_Plan_Loinc_Code; }
+            set
+            {
+                _Care_Plan_Loinc_Code = value;
+            }
+        }
+        [DataMember]
+        public virtual string Options_Loinc_Code
+        {
+            get { return _Options_Loinc_Code; }
+            set
+            {
+                _Options_Loinc_Code = value;
+            }
+        }
     }
 
      

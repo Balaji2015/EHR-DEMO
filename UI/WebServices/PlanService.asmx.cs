@@ -1568,7 +1568,8 @@ namespace Acurus.Capella.UI.WebServices
                         Careplan_master_id.Add(objCarePlanDTOList[i].Care_Plan_Lookup_ID, objCarePlanDTOList[i].Master_ID);
                     }
                 }
-
+                //CAP-3755
+                HttpContext.Current.Session["CarePlanLookupLst"] = objCarePlanDTOList;
             }
             if (objCarePlanList.Count > 0)
             {
@@ -1612,7 +1613,11 @@ namespace Acurus.Capella.UI.WebServices
             {
                 CarePlanLst = ((IList<CarePlan>)HttpContext.Current.Session["CarePlanLst"]);
             }
-
+            IList<CarePlanDTO> CarePlanDTOLst = new List<CarePlanDTO>();
+            if (HttpContext.Current.Session["CarePlanLookupLst"] != null)
+            {
+                CarePlanDTOLst = ((IList<CarePlanDTO>)HttpContext.Current.Session["CarePlanLookupLst"]);
+            }
             IList<CarePlan> lsttempcareplan = new List<CarePlan>();
             IList<CarePlan> SaveCarePlanLst = new List<CarePlan>();
             IList<CarePlan> UpdateCarePlanLst = new List<CarePlan>();
@@ -1700,6 +1705,18 @@ namespace Acurus.Capella.UI.WebServices
                 if (objCarePlan.Status.ToUpper() != "NO" && objCarePlan.Status.ToUpper() != "")
                 {
                     objCarePlan.Internal_Property_bInsert = true;
+                }
+                //CAP-3755
+                if (CarePlanDTOLst != null)
+                {
+                    var carePlanLookup = CarePlanDTOLst.FirstOrDefault(a => a.Care_Plan_Lookup_ID == objCarePlan.Care_Plan_Lookup_ID);
+                    objCarePlan.Care_Plan_Loinc_Code = carePlanLookup.Care_Plan_Loinc_Code;
+                    var possible_Options = carePlanLookup.Options.Split('|');
+                    int selectedIndex = Array.IndexOf(possible_Options, objCarePlan.Status);
+                    if (carePlanLookup.Options_Loinc_Code?.Split('|')?.Length > selectedIndex && selectedIndex != -1)
+                    {
+                        objCarePlan.Selected_Option_Loinc_Code = carePlanLookup.Options_Loinc_Code.Split('|')[selectedIndex];
+                    }
                 }
 
                 var countlist = (from m in lsttempcareplan where m.Care_Name_Value == dicValues["Care_Name_Value"].ToString() select m).ToList();

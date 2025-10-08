@@ -3909,7 +3909,7 @@ p.Care_plan_notes as Care_plan_notes,p.Created_by as Created_by,cast(p.Created_d
 p.Version as Version,c.Controls,p.Plan_Date as Plan_Date,p.Status_Value as Status_Value,c.Measure_Rule_Master_ID as Measure_ID
 ,m.rule_description as Rule_Description,
 c.control_name  as Control_Name,m.Additional_Rule as Additional_Rule, m.Parent_Rule_ID as Parent_Rule_ID,p.Modified_By as Modified_By,
-cast(p.Modified_Date_And_Time as char(100))as Modified_Date_And_Time,p.Snomed_Code
+cast(p.Modified_Date_And_Time as char(100))as Modified_Date_And_Time,p.Snomed_Code,c.Care_Plan_Loinc_Code, c.Options_Loinc_Code
 FROM care_plan_lookup c left join measures_rule_master m on (m.Measures_Rule_ID=c.Measure_Rule_Master_ID)
  left join care_plan p on c.care_plan_lookup_id=p.care_plan_lookup_id and p.Encounter_ID= ?
 where c.field_name=? and ? between c.From_Age and c.To_Age and c.Gender in (:gender) and c.status='Active' order by Parent_Care_Plan_ID,sort_order,Rule_Description desc;]]>

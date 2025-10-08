@@ -31,6 +31,8 @@ namespace Acurus.Capella.Core.DomainObjects
         //private string _Reason_Not_Performed = string.Empty;
         //private string _Followup_Plan = string.Empty;
         private string _Snomed_Code = string.Empty;
+        private string _Care_Plan_Loinc_Code = string.Empty;
+        private string _Selected_Option_Loinc_Code = string.Empty;
       //  private DateTime _Captured_Date_Time = DateTime.MinValue;
         #endregion
 
@@ -65,6 +67,8 @@ namespace Acurus.Capella.Core.DomainObjects
             //sb.Append(_Reason_Not_Performed);
             //sb.Append(_Followup_Plan);
             sb.Append(_Snomed_Code);
+            sb.Append(_Care_Plan_Loinc_Code);
+            sb.Append(_Selected_Option_Loinc_Code);
           //  sb.Append(_Captured_Date_Time);
             return sb.ToString().GetHashCode();
         }
@@ -273,6 +277,30 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _Internal_Property_bInsert = value;
+            }
+        }
+        [DataMember]
+        public virtual string Care_Plan_Loinc_Code
+        {
+            get
+            {
+                return _Care_Plan_Loinc_Code;
+            }
+            set
+            {
+                _Care_Plan_Loinc_Code = value;
+            }
+        }
+        [DataMember]
+        public virtual string Selected_Option_Loinc_Code
+        {
+            get
+            {
+                return _Selected_Option_Loinc_Code;
+            }
+            set
+            {
+                _Selected_Option_Loinc_Code = value;
             }
         }
         #endregion
