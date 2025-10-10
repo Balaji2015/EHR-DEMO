@@ -1869,9 +1869,20 @@ namespace Acurus.Capella.UI
                                     for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
                                     {
                                         Encounter objencounter = new Encounter();
-                                        objencounter.Facility_Name = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Location")); ;
+                                        objencounter.Facility_Name = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Location")); 
                                         string pat_DOV = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Date"));
-                                        string pat_ROV = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Encounter"));
+                                        // cap - 3763
+                                        //string pat_ROV = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Encounter"));
+                                        string pat_ROV = string.Empty;
+                                        if (dsSection.Tables[0].Columns.Contains("Encounter Diagnosis"))
+                                        {
+                                            pat_ROV = dsSection.Tables[0].Rows[i].Field<string>("Encounter Diagnosis").ToString();
+                                        }
+                                        else
+                                        {
+                                            pat_ROV = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Encounter"));
+                                        }
+                                        
                                         string year = pat_DOV.Substring(0, 4);
                                         string month = pat_DOV.Substring(4, 2);
                                         string date = pat_DOV.Substring(6, 2);
