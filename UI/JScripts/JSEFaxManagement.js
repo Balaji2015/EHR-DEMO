@@ -296,7 +296,9 @@ function ConvertDate(utcDate) {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     //CAP-3378
     //var now = new Date(utcDate + ' UTC');
-    var now = new Date(utcDate.toString().replace(' ', 'T') + 'Z');
+    //var now = new Date(utcDate.toString().replace(' ', 'T') + 'Z');
+    //CAP-3728
+    var now = parseUSDate(utcDate);
     var then = '';
     if (utcDate == '0001-01-01 00:00:00')
         then = '01-01-0001';
@@ -312,6 +314,36 @@ function ConvertDate(utcDate) {
     if (utcDate != '0001-01-01 00:00:00')
         then += ' ' + strTime;
     return then;
+}
+function parseUSDate(utcDate) {
+    // Example input: "10/1/2025 7:19:38 AM"
+    var parts = utcDate.trim().split(' ');
+    if (parts.length < 3) return new Date(NaN); // invalid safeguard
+
+    var datePart = parts[0]; // 10/1/2025
+    var timePart = parts[1]; // 7:19:38
+    var ampm = parts[2];     // AM
+
+    var dateSplit = datePart.split('/');
+    var month = parseInt(dateSplit[0], 10);
+    var day = parseInt(dateSplit[1], 10);
+    var year = parseInt(dateSplit[2], 10);
+
+    var timeSplit = timePart.split(':');
+    var hours = parseInt(timeSplit[0], 10);
+    var minutes = parseInt(timeSplit[1], 10);
+    var seconds = parseInt(timeSplit[2], 10);
+
+    // Convert 12-hour to 24-hour
+    if (ampm.toUpperCase() === 'PM' && hours < 12) hours += 12;
+    if (ampm.toUpperCase() === 'AM' && hours === 12) hours = 0;
+
+    // Build ISO string ("YYYY-MM-DDTHH:mm:ss")
+    var isoString =
+        `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T` +
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    return new Date(isoString);
 }
 function funRetryForEfaxManagement(e) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
