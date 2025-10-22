@@ -991,8 +991,9 @@ namespace Acurus.Capella.UI
                         
 
                             XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
-                       
-                        xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.PhyId.ToString()).Replace("{DateDiagnosed}", digDate.ToString("yyyyMMdd")).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{SnomedCode}",ClinicalSummary.ProblemListing[i].Snomed_Code).Trim().Replace("{SnomedDescription}", ClinicalSummary.ProblemListing[i].Snomed_Code_Description).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
+                        //Cap - 3648
+                        //xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.PhyId.ToString()).Replace("{DateDiagnosed}", digDate.ToString("yyyyMMdd")).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{SnomedCode}", ClinicalSummary.ProblemListing[i].Snomed_Code).Trim().Replace("{SnomedDescription}", ClinicalSummary.ProblemListing[i].Snomed_Code_Description).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
+                        xfragAllergy.InnerText = docAllergyEntry.DocumentElement.InnerXml.Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.PhyId.ToString()).Replace("{DateDiagnosed}", digDate.ToString("yyyyMMdd")).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{SnomedCode}",ClinicalSummary.ProblemListing[i].Snomed_Code).Trim().Replace("{SnomedDescription}", ClinicalSummary.ProblemListing[i].Snomed_Code_Description).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
 
                       
                         elemOldEntry.LastChild.AppendChild(xfragAllergy);
