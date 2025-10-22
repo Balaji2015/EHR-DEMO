@@ -1354,8 +1354,8 @@ namespace Acurus.Capella.UI
             catch (Exception ex)
             {
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Request["Human_id"].ToString() + "','Human','Appointment');", true);
-
-                goto ln;
+                return;
+                
             }
 
             if (!issuccess)
