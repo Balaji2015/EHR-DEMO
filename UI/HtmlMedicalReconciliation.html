@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
     <link href='CSS/bootstrap.min.css' rel='Stylesheet' />
     <link href='CSS/jquery-ui.css' rel='Stylesheet' />
@@ -9,7 +10,7 @@
     <link href='CSS/style.css' rel='stylesheet' type='text/css' />
     <style>
         body {
-            font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
             font-size: 13px !important;
         }
 
@@ -28,7 +29,7 @@
         td, th {
             text-align: center !important;
             vertical-align: middle !important;
-            padding:2.5px 2.5px 2.5px 2.5px;
+            padding: 2.5px 2.5px 2.5px 2.5px;
         }
 
         tbody {
@@ -59,6 +60,7 @@
             border: 1px solid #7ba9e4 !important;
             border-collapse: collapse;
         }
+
         .ui-dialog-titlebar-close {
             display: none;
         }
@@ -70,7 +72,7 @@
         .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
             float: none !important;
             margin-left: 45px !important;
-              font-size: 12px !important;
+            font-size: 12px !important;
         }
 
         .ui-dialog .ui-dialog-buttonpane button {
@@ -99,32 +101,40 @@
         }
 
         .ui-dialog .ui-dialog-buttonpane {
-          margin-top:-16px!important;
-         border-width:0px!important;
+            margin-top: -16px !important;
+            border-width: 0px !important;
         }
-        
-           .ui-widget-header, .ui-state-default, ui-button {
+
+        .ui-widget-header, .ui-state-default, ui-button {
             font-weight: bold !important;
             font-size: 12px !important;
             font-family: sans-serif;
         }
-         .ui-widget-overlay{
-            opacity:0!important;
+
+        .ui-widget-overlay {
+            opacity: 0 !important;
         }
-         .ui-dialog .ui-dialog-title {
-    float: left!important;
-    margin: .1em 0!important;
-    white-space: nowrap!important;
-    width: 90%!important;
-    overflow: hidden!important;
-    text-overflow: ellipsis!important;
-}
-          .txtarea{ width:38%; position:relative !important;}
-          .datecontrol{
-              width:98%;
-              padding:6px 6px 6px 6px !important;
-          }
-            li:hover {
+
+        .ui-dialog .ui-dialog-title {
+            float: left !important;
+            margin: .1em 0 !important;
+            white-space: nowrap !important;
+            width: 90% !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        .txtarea {
+            width: 38%;
+            position: relative !important;
+        }
+
+        .datecontrol {
+            width: 98%;
+            padding: 6px 6px 6px 6px !important;
+        }
+
+        li:hover {
             background-color: #DEF;
         }
     </style>

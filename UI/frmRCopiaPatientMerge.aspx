@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <title></title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="CSS/bootstrap.min.css" rel="stylesheet" />
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
@@ -64,7 +66,7 @@
             display: none;
         }
     </style>
-    <title></title>
+    
 </head>
 <body>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 20px;" onclick="patientMergeClose();">

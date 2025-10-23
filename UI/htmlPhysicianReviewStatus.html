@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
     <script src="JScripts/jquery-1.11.3.min.js"></script>
     <script src="JScripts/bootstrap.min.js"></script>
@@ -22,14 +23,16 @@
             border-style: inset;
             border-color: initial;
         }
+
         .nav-tabs {
             border-bottom: 0px !important;
-            /*border-bottom: 1px solid #dedede !important;*/  
+            /*border-bottom: 1px solid #dedede !important;*/
         }
-         .nav-tabs > li > a {
-            border-radius: 4px !important;
-            margin-right: 0px !important;
-        }
+
+            .nav-tabs > li > a {
+                border-radius: 4px !important;
+                margin-right: 0px !important;
+            }
         /*.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
             background-color: rgba(193, 194, 208, 0.98) !important;
         }
@@ -42,7 +45,7 @@
             background-color: #f5f4f4 !important;
         }*/
     </style>
-      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body onload="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); LoadReport(); GetProtocolList(); }">
     <div>

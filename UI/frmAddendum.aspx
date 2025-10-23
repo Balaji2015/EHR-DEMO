@@ -7,6 +7,7 @@
 <head runat="server">
     
     <title>Amendment</title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
    <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
 <link href="~/CSS/font-awesome.css" rel="stylesheet" type="text/css" />

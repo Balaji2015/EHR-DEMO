@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
     <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
     <script>document.write("<script src='JScripts/jquery-ui.min1.10.2.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
@@ -9,12 +10,12 @@
     <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
     <link href="CSS/jquery-ui.css" rel="Stylesheet" />
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
-      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
     <!--<script src="JScripts/JSErrorMessage.js" type="text/javascript"></script>
     <script src="JScripts/JSStopMedication.js"></script>
     <script src="JScripts/JSMaskedinput.js" type="text/javascript"></script>
     <script src="JScripts/JSModalWindow.js" type="text/javascript"></script>
-   
+
     <script src="JScripts/JSCustomDLC.js" type="text/javascript"></script>
     <script src="JScripts/JSAvoidRightClick.js" type="text/javascript"></script>
     <script src="JScripts/jsCustomAutoCompleteCombobox.js" type="text/javascript"></script>-->
@@ -29,7 +30,7 @@
         }
     </script>
     <script type="text/javascript">
-       function StopMedi() {
+        function StopMedi() {
             $("span[mand=Yes]").addClass('MandLabelstyle');
 
             $("span[mand=Yes]").each(function () {

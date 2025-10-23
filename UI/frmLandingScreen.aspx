@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <link href="CSS/font-awesome.4.4.0.css" rel="stylesheet" />
     <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
      <style>

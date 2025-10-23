@@ -9,7 +9,7 @@
   
 <head>
     <title></title>
-
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <style>
         #falogout:hover {
             color: #FC0303 !important;

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <title></title>
     <!--CAP-897 Dynamically add Javscript reference to the HTML files-->
-
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <script>document.write("<script src='JScripts/jQueryAngular.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <script>document.write("<script src='JScripts/jquery-ui.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
@@ -16,52 +17,52 @@
     </script>
     <style>
         .modal-backdrop.in {
-            opacity: 0;
+        opacity: 0;
         }
 
         .table-bordered {
-            padding: 5px 5px;
-            border-color: black !important;
-            border: 1px solid !important;
+        padding: 5px 5px;
+        border-color: black !important;
+        border: 1px solid !important;
         }
 
         tr {
-            border: .2pt;
+        border: .2pt;
         }
 
         .chkbx {
-            width: 10%;
-            height: 34px;
-            text-align: center;
+        width: 10%;
+        height: 34px;
+        text-align: center;
         }
 
         .ValueICD {
-            width: 25%;
-            height: 34px;
+        width: 25%;
+        height: 34px;
         }
 
         .DescpICD {
-            width: 64.99%;
-            height: 34px;
+        width: 64.99%;
+        height: 34px;
         }
 
         summary {
-            background-color: #F7E9BF;
-            margin-left: 2px;
-            padding: 5px 10px;
-            font-weight: 600;
-            color: #555;
+        background-color: #F7E9BF;
+        margin-left: 2px;
+        padding: 5px 10px;
+        font-weight: 600;
+        color: #555;
         }
 
         .ICDValue {
-            display: none;
+        display: none;
         }
 
         th {
-            /*background-color: #bfdbff !important;*/
-            color: black !important;
-            border-bottom: 1px solid !important;
-            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*background-color: #bfdbff !important;*/
+        color: black !important;
+        border-bottom: 1px solid !important;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
         }
 
         /*td {
@@ -71,132 +72,132 @@
         }*/
 
         .table > tbody > tr > td {
-            border-bottom: 1px solid #ddd !important;
-            border-top: 0px !important;
+        border-bottom: 1px solid #ddd !important;
+        border-top: 0px !important;
         }
 
         .table {
-            margin-top: 1px;
-            margin-bottom: 5px;
-            border: 1px solid !important;
-            margin-left: 2px;
-            margin-right: 2px;
+        margin-top: 1px;
+        margin-bottom: 5px;
+        border: 1px solid !important;
+        margin-left: 2px;
+        margin-right: 2px;
         }
 
         .ui-autocomplete {
-            max-height: 300px;
-            overflow-y: auto;
-            overflow-x: hidden;
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
         }
 
         label {
-            font-weight: normal !important;
+        font-weight: normal !important;
         }
 
         #ProblemListHead, #ProblemListBody {
-            display: block;
+        display: block;
         }
 
         @media (min-height: 640px) {
-            #ProblemListBody {
-                height: 454px;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
+        #ProblemListBody {
+        height: 454px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        }
 
-            .ProbTable {
-                height: 457px;
-            }
+        .ProbTable {
+        height: 457px;
+        }
         }
 
         @media (min-height: 540px) and (max-height: 639px) {
-            #ProblemListBody {
-                height: 355px;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
+        #ProblemListBody {
+        height: 355px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        }
 
-            .ProbTable {
-                height: 358px;
-            }
+        .ProbTable {
+        height: 358px;
+        }
         }
 
         @media (max-height: 539px) {
-            #ProblemListBody {
-                height: 256px;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
+        #ProblemListBody {
+        height: 256px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        }
 
-            .ProbTable {
-                height: 259px;
-            }
+        .ProbTable {
+        height: 259px;
+        }
         }
 
         .ui-dialog-titlebar-close {
-            display: none;
+        display: none;
         }
 
         .ui-widget {
-            font-family: Verdana,Arial,sans-serif !important;
+        font-family: Verdana,Arial,sans-serif !important;
         }
 
         .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
-            float: none !important;
-            margin-left: 45px !important;
-            font-size: 12px !important;
+        float: none !important;
+        margin-left: 45px !important;
+        font-size: 12px !important;
         }
 
         .ui-dialog .ui-dialog-buttonpane button {
-            width: 60px !important;
+        width: 60px !important;
         }
 
         .ui-dialog .ui-dialog-titlebar {
-            padding: 0px !important;
+        padding: 0px !important;
         }
 
         .ui-dialog .ui-dialog-title {
-            font-size: 12px !important;
-            font-family: Verdana,Arial,sans-serif !important;
+        font-size: 12px !important;
+        font-family: Verdana,Arial,sans-serif !important;
         }
 
         .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
-            height: 155px;
-            border: 2px solid;
-            border-radius: 13px;
-            top: 504px !important;
-            left: 568px !important;
+        height: 155px;
+        border: 2px solid;
+        border-radius: 13px;
+        top: 504px !important;
+        left: 568px !important;
         }
 
         .ui-dialog .ui-dialog-content {
-            min-height: 0px !important;
+        min-height: 0px !important;
         }
 
         .ui-dialog .ui-dialog-buttonpane {
-            margin-top: -16px !important;
-            border-width: 0px !important;
+        margin-top: -16px !important;
+        border-width: 0px !important;
         }
 
         .ui-widget-header, .ui-state-default, ui-button {
-            font-weight: bold !important;
-            font-size: 12px !important;
-            font-family: sans-serif;
+        font-weight: bold !important;
+        font-size: 12px !important;
+        font-family: sans-serif;
         }
 
         .ui-widget-overlay {
-            opacity: 0 !important;
+        opacity: 0 !important;
         }
 
         .ui-dialog .ui-dialog-title {
-            float: left !important;
-            margin: .1em 0 !important;
-            white-space: nowrap !important;
-            width: 90% !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
+        float: left !important;
+        margin: .1em 0 !important;
+        white-space: nowrap !important;
+        width: 90% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
         }
     </style>
-    <title></title>
+
     <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
 </head>
 <body>

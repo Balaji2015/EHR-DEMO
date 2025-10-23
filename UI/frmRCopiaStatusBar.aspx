@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
     <link href="CSS/bootstrap.min.css" rel="stylesheet" />

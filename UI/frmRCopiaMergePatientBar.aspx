@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height:100%">
 <head runat="server">
     <title>RCopiaMergePatientBar</title>
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
      <link href="CSS/CommonStyle.css?version=1.2" rel="stylesheet" type="text/css" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />
     <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
