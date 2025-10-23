@@ -2200,6 +2200,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
                 if (test.ListofCPTs.length > 0) {
                     for (var i = 0; i < test.ListofCPTs.length; i++) {
+                        //Cap - 3653
+                        flag = 0;
                         for (iMax = 0; iMax < $scope.EandMCodingCPTTable.length; iMax++) {
                             iOrder = parseFloat($scope.EandMCodingCPTTable[iMax].Order);
                             if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) > parseFloat(test.ListofCPTs[i].Order)) {
