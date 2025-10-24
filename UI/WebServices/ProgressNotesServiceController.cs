@@ -879,7 +879,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     strSignedAt = Convert.ToDateTime(strSignedAt).ToString("o");
                 }
                 string sEncounter_Reviewed_signedDate = string.Empty;
-                if (Encounter_Reviewed_signedDate != "")
+               if (Encounter_Reviewed_signedDate != "")
                 {
                     sEncounter_Reviewed_signedDate = Convert.ToDateTime(Encounter_Reviewed_signedDate).ToString("O");
                 }
@@ -951,7 +951,9 @@ namespace Acurus.Capella.UI.WebServices.API
                     byte[] bytesKeep = null;
                     try
                     {
-                        bytesKeep = System.Text.Encoding.Default.GetBytes(sFinalOutPut);
+                        //Jira CAP-3796
+                        //bytesKeep = System.Text.Encoding.Default.GetBytes(sFinalOutPut);
+                        bytesKeep = System.Text.Encoding.UTF8.GetBytes(sFinalOutPut);
                     }
                     catch (Exception ex)
                     {

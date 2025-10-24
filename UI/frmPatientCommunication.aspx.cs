@@ -323,7 +323,7 @@ namespace Acurus.Capella.UI
                 //FillMessageGrid();
                 RowForHide.Style.Add("display", "none");
                 //CAP-3750
-                hdnPatientTaskCreateDisabled.Value = ConfigurationSettings.AppSettings["IsPatientTaskCreateDisabled"]?.ToString() ?? "";
+                hdnPatientTaskCreateDisabled.Value = ConfigurationSettings.AppSettings["IsPatientTaskCreateDisabled_" + ClientSession.LegalOrg ]?.ToString() ?? "";
             }
             if (txtAccount.Text == "0")
             {
