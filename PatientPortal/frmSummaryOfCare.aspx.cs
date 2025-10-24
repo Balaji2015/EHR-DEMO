@@ -2918,7 +2918,7 @@ namespace Acurus.Capella.PatientPortal
                                 //if (test == true)
                                 //    pat_Sex = elemParent.ChildNodes[i].ChildNodes[j].Attributes[1].Value;
                                //Cap - 3616
-                                if(elemParent.ChildNodes[i].ChildNodes[j].Attributes.GetNamedItem("code").Value != null)
+                                if(elemParent.ChildNodes[i].ChildNodes[j].Attributes.GetNamedItem("code") != null)
                                 {
                                     pat_Sex = elemParent.ChildNodes[i].ChildNodes[j].Attributes.GetNamedItem("code").Value;
                                 }                               
