@@ -50,7 +50,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         public void SaveHumanPhiDisclosureWithTransaction(IList<Human_Phi_Disclosure> ilstHuman_Phi_Disclosure, IList<Human_Phi_Disclosure> ListToUpdateHuman_Phi_Disclosure, string MACAddress)
         {
-            SaveUpdateDeleteWithTransaction(ref ilstHuman_Phi_Disclosure, ListToUpdateHuman_Phi_Disclosure, null, MACAddress);
+            //Jira CAP-3817
+            //SaveUpdateDeleteWithTransaction(ref ilstHuman_Phi_Disclosure, ListToUpdateHuman_Phi_Disclosure, null, MACAddress);
+            SaveUpdateDelete_DBAndXML_WithTransaction(ref ilstHuman_Phi_Disclosure, ref ListToUpdateHuman_Phi_Disclosure, null, MACAddress, false, true, 0, string.Empty);
         }
         #endregion
     }
