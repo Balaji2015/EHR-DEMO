@@ -1,6 +1,14 @@
-﻿top.window.$("#RadWindowWrapper_RadWindowPhiDisclosure").find(".rwCloseButton")[0].style.display = "none"
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
+    //Applay click event for Telrick close button
+    {
+        var Closebutton = top?.window?.$("#RadWindowWrapper_RadWindowPhiDisclosure")?.find(".rwCloseButton")[0];
+        const clone = Closebutton.cloneNode(true);
+        clone.addEventListener('click', (e) => {
+            CloseClick();
+            return false;
+        }, true);
+        Closebutton.parentNode.replaceChild(clone, Closebutton);
+    }
     document.getElementById("btnSave").disabled = true;
     $('#btnSave').attr("Autosave", "");
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -128,12 +136,14 @@ function CloseClick() {
 function btnSaveClick() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     if ($("input[name='RadioGroups']:checked").length == 0) {
+        $('#btnSave').attr("Autosave", "");
         alert("Please select atleast one Disclosure option.");
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     var selectedList = $("#tblEncounterDetails input[type='checkbox']:checked")?.length;
     if (selectedList == 0) {
+        $('#btnSave').attr("Autosave", "");
         alert("Please select atleast one Encounter details.");
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
@@ -141,6 +151,7 @@ function btnSaveClick() {
 
     var PatientSign = document.getElementById("chkSign")?.checked;
     if (!PatientSign) {
+        $('#btnSave').attr("Autosave", "");
         alert("Please sign the PHI Use and Disclosure.");
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
