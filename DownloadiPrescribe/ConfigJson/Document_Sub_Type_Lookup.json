@@ -35,6 +35,10 @@
     {
       "File_Report_Type": "Stress Echo",
       "Document_Sub_Type": "Stress Test"
+    },
+    {
+      "File_Report_Type": "Abdominal Aorta Ultrasound",
+      "Document_Sub_Type": "Vascular Studies"
     }
   ]
 }

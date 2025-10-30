@@ -91,6 +91,7 @@
     <None Include="App.config" />
     <None Include="bin\Debug\Acurus.Capella.DataAccess.dll.config" />
     <None Include="bin\Debug\CapellaAgent.exe.config" />
+    <None Include="bin\Debug\ConfigJson\Document_Sub_Type_Lookup.json" />
     <None Include="bin\Debug\DownloadiPrescribe.exe.config" />
     <None Include="ConfigJson\Document_Sub_Type_Lookup.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
