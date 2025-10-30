@@ -1337,7 +1337,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                                     //Jira CAP-3421
                                                     if (iSectionValuesplit[iSectionValueCount].Contains("<table"))
                                                     {
-                                                        iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("<b>", "").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "").Replace("\r\n", "").Replace("\n", "").Replace("\t", "").Replace('"', '\"').Replace("\"", "\\\"");
+                                                        iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("<b>", "").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "").Replace("\r\n", "").Replace("\n", "").Replace("\t", "").Replace('"', '\"');
                                                         XmlDocument xmlDocumentForTable = new XmlDocument();
                                                         xmlDocumentForTable.LoadXml("<?xml version=\"1.0\" encoding=\"utf-8\"?> <content>" + iSectionValuesplit[iSectionValueCount] + "</content>");
                                                         string sRowContent = string.Empty;
@@ -1360,9 +1360,9 @@ namespace Acurus.Capella.UI.WebServices.API
                                                             }
                                                             else
                                                             {
-                                                                sRowContent = "{\"MinLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[0].InnerText +
+                                                                sRowContent = "{\"MinLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[0].InnerText.Replace("\"", "\\\"") +
                                                                 "\",\"Range\":\"" + sInnerContent.TrimEnd() +
-                                                                "\",\"MaxLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 2].InnerText +
+                                                                "\",\"MaxLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 2].InnerText.Replace("\"", "\\\"") +
                                                                 "\",\"Score\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 1].InnerText + "\"}";
                                                             }
                                                             sTableContent = sTableContent + ((sTableContent != string.Empty) ? "," + sRowContent : sRowContent);
