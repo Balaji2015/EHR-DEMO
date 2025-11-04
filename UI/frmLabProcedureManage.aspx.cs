@@ -351,6 +351,16 @@ namespace Acurus.Capella.UI
             {
                 if (listLabNames.Count > 0)
                 {
+                    //Cap - 3794
+                    IList <PhysicianProcedure> ilstGetGroupName = new List<PhysicianProcedure>();
+                    PhysicianProcedureManager PhysicianProcedureMngr = new PhysicianProcedureManager();
+                    String IsSelectionEnabled = string.Empty;
+                    ilstGetGroupName = PhysicianProcedureMngr.GetProceduresUsingPhysicianIDAndGroupname(ClientSession.PhysicianId,cboPanelName.Text.Trim(),Convert.ToUInt32(SelectedLabID),ClientSession.LegalOrg);
+                    if(ilstGetGroupName.Count>0)
+                    {
+                        IsSelectionEnabled = ilstGetGroupName[0].Is_Selection_Enabled;
+                    }
+                     
 
                     for (int i = 0; i < listLabNames.Count; i++)
                     {
@@ -382,6 +392,15 @@ namespace Acurus.Capella.UI
                         objProcedure.Physician_ID = ClientSession.PhysicianId;
                         objProcedure.Lab_ID = Convert.ToUInt32(SelectedLabID);
                         objProcedure.Legal_Org = ClientSession.LegalOrg;
+                        //Cap - 3794
+                        if (IsSelectionEnabled =="N")
+                        {
+                            objProcedure.Is_Selection_Enabled = "N";
+                        }
+                        else
+                        {
+                            objProcedure.Is_Selection_Enabled = "Y";
+                        }                       
 
                         saveList.Add(objProcedure);
                         if ((procedureType.StartsWith("LAB") || procedureType.StartsWith("IMAGING")) || procedureType.StartsWith("DME") && !panelName.Contains(objProcedure.Order_Group_Name))
