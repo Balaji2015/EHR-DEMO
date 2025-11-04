@@ -1518,7 +1518,8 @@ function Encounter_AfterAutoSave() {
             window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
             sessionStorage.setItem("EncCancel", "true");
             sessionStorage.setItem("Encounter_PrevTabRevert", "true");
-            $($(top.window.document).find('#jqxSplitter').find('iframe')[0].contentDocument).find('#btnHiddenTab')[0].click();
+            //CAP-3823
+            $($(top.window.document)?.find('#jqxSplitter')?.find('iframe')[0]?.contentDocument)?.find('#btnHiddenTab')[0]?.click();
             return;
         }
     }
@@ -2609,13 +2610,19 @@ function RegenerateXML(Humanid, xmlType, page) {
             if (xhr.status == 999)
                 window.location = "/frmSessionExpired.aspx";
             else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
+                //CAP-3820
+                var msg = "";
 
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+                if (isValidJSON(xhr.responseText)) {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    msg = log?.Message ?? (typeof (log) === 'string') ? log : "Something went wrong!";
+                }
+                else {
+                    msg = xhr.responseText;
+                }
 
+                alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${msg}`);
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
