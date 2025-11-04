@@ -19,6 +19,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //IList<PhysicianProcedure> GetProceduresUsingPhysicianIDForResultEntry(ulong PhysicianID, string procedureType);
         //IList<PhysicianProcedure> GetPhyCPTs(ulong phyID);
         void SaveUpdateDeleteLabProcedure(IList<PhysicianProcedure> ilstSaveList, IList<PhysicianProcedure> ilstDeleteList);
+        IList<PhysicianProcedure> GetProceduresUsingPhysicianIDAndGroupname(ulong PhysicianID, string Groupname, ulong LabID, string sLegalOrg);
         //IList<PhysicianProcedure> GetProceduresUsingPhysicianIdAndTypeOfVisit(ulong PhysicianID, string type_of_visit);
 
     }
@@ -122,6 +123,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 else
                     criteria = iMySession.CreateCriteria(typeof(PhysicianProcedure)).Add(Expression.Eq("Physician_ID", PhysicianID)).Add(Expression.Eq("Procedure_Type", procedureType)).Add(Expression.Eq("Lab_ID", LabID)).Add(Expression.Eq("Legal_Org", sLegalOrg)).AddOrder(Order.Asc("Sort_Order"));
+                ilstPhysicianProcedure = criteria.List<PhysicianProcedure>();
+                iMySession.Close();
+
+            }
+            return ilstPhysicianProcedure;
+        }
+
+        public IList<PhysicianProcedure> GetProceduresUsingPhysicianIDAndGroupname(ulong PhysicianID, string Groupname, ulong LabID, string sLegalOrg)
+        {
+
+            IList<PhysicianProcedure> ilstPhysicianProcedure = new List<PhysicianProcedure>();
+            ICriteria criteria;
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {                
+                criteria = iMySession.CreateCriteria(typeof(PhysicianProcedure)).Add(Expression.Eq("Physician_ID", PhysicianID)).Add(Expression.Eq("Order_Group_Name", Groupname)).Add(Expression.Eq("Lab_ID", LabID)).Add(Expression.Eq("Legal_Org", sLegalOrg)).AddOrder(Order.Asc("Sort_Order"));
                 ilstPhysicianProcedure = criteria.List<PhysicianProcedure>();
                 iMySession.Close();
 
