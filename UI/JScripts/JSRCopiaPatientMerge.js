@@ -482,10 +482,13 @@ function patientMergeClose() {
         //Cap - 2486
         //parent.location.reload();
 
-        var url = window.top.location.href.toLocaleLowerCase().split("?")[1];
-        var ID = url.split("=")[1].split("&")[0];
+        //CAP-3818
+        var url = window?.top?.location?.href?.toLocaleLowerCase()?.split("?")[1];
+        var ID = url?.split("=")[1]?.split("&")[0];
 
-        window.parent.location.href = "frmPatientChart.aspx?HumanID=" + ID + "&ScreenMode=Menu&openingfrom=Menu";
+        if (ID != undefined && ID != null) {
+            window.parent.location.href = "frmPatientChart.aspx?HumanID=" + ID + "&ScreenMode=Menu&openingfrom=Menu";
+        }
     }
     else {
 
