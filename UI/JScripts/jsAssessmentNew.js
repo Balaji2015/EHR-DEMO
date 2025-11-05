@@ -225,11 +225,19 @@ function callweb(icon, List, id) {
                 if (xhr.status == 999)
                     window.location = "/frmSessionExpired.aspx";
                 else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //CAP-3827
+                    var msg = "";
+
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        msg = log?.Message ?? (typeof (log) === 'string') ? log : "Something went wrong!";
+                    }
+                    else {
+                        msg = xhr.responseText;
+                    }
+
+                    alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${msg}`);
                 }
             }
         });
