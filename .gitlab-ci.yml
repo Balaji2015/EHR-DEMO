@@ -14,10 +14,12 @@ stages:
  - Solution build 11
  - Solution build production 6
  - Solution build Production 10
+ - Solution build Production 11
  - Deploy TESTING 10.0.0.4
  - Deploy TESTING 10.0.0.11
  - Deploy PRODUCTION 10.1.0.6 
  - Deploy PRODUCTION 10.1.0.10
+ - Deploy PRODUCTION 10.1.0.11
 
 before_script:
    - echo "Nuget script..start"
@@ -124,6 +126,31 @@ build Production Job 10:
     expire_in: 365 days
     paths:
     - EHR-Capella5.0\   
+
+build Production Job 11:
+  tags:
+    - Azure_Prod_11
+  rules:
+    - if: '$SERVER_PRODUCTION_11 =="10.1.0.11"'
+  stage: Solution build Production 11
+  script:
+  - echo "UI Building..start"
+  - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln 
+    /p:DeployOnBuild=true 
+    /p:Configuration=Release
+    /p:DeleteExistingFiles=True 
+    /p:Platform="Any CPU"     
+    /p:PublishProfile=FolderProfile.pubxml
+    #/p:publishUrl=E:\Deployee\builds\Capella_publish\ 
+    #/p:ExcludeFoldersFromDeployment=.\ehr-capella5.0\PatientPortal
+    #/p:IgnoreDeployManagedRuntimeVersion=True 
+    #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
+   
+  - echo "Building..Completed"
+  artifacts:
+    expire_in: 365 days
+    paths:
+    - EHR-Capella5.0\
 
 Deploy Test Job 10.0.0.4 :
   tags:
@@ -271,6 +298,24 @@ Deploy PRODUCTION Job 10.1.0.10 :
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\"
   #- echo "Deployee Wish..Completed.."
 
+Deploy PRODUCTION Job 10.1.0.11 :
+  tags:
+    - Azure_Prod_11
+  rules:
+    - if: '$SERVER_PRODUCTION_11 =="10.1.0.11"'
+  environment:
+    name: Capella_Test
+    url: https://cmg.capellaehr.com/frmlogin.aspx
+  stage: Deploy PRODUCTION 10.1.0.11
+  script:
+  
+  - echo "Backup CMG..Start.."
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+  - echo "Backup CMG..Completed.."
+  
+  - echo "Deployee CMG..Start.."  
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\CMG\"
+  - echo "Deployee CMG..Completed.."
 
 
 

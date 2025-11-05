@@ -1078,8 +1078,10 @@ function tblSelectProcedure_Clicked(sender, args) {
 function OnClientCloseLabProcedureManager(sender, eventArgs) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
     var hdnvariable = document.getElementById("hdnManageFreqUsed");
-    hdnvariable.value = "true";
+    hdnvariable.value = "true";    
     document.getElementById('InvisibleButton').click();
+    //Cap - 3795
+    CloseAllProcedures();
 }
 function btnSelectLocation_Clicked(sender, args) {
     var cboLab = document.getElementById("cboLab");// $find("cboLab");

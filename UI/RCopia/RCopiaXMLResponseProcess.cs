@@ -769,7 +769,9 @@ namespace Acurus.Capella.UI.RCopia
                                     {
                                         SubElement = (XmlElement)xmlnode.ChildNodes[m];
                                         InsertintoProperties(SubElement, SubElement.Name);
-                                        if (SubElement.Name == "Sig" || SubElement.Name == "Patient" || SubElement.Name == "Status" || SubElement.Name == "Allergen" || SubElement.Name == "ProblemList" || SubElement.Name == "Pharmacy")
+                                        //Jira CAP-3785
+                                        //if (SubElement.Name == "Sig" || SubElement.Name == "Patient" || SubElement.Name == "Status" || SubElement.Name == "Allergen" || SubElement.Name == "ProblemList" || SubElement.Name == "Pharmacy")
+                                        if (SubElement.Name == "Sig" || SubElement.Name == "Patient" || SubElement.Name == "Status" || SubElement.Name == "Allergen" || SubElement.Name == "ProblemList" || SubElement.Name == "Pharmacy" || SubElement.Name == "Provider" || SubElement.Name == "Preparer")
                                         {
                                             for (int c = 0; c < SubElement.ChildNodes.Count; c++)
                                             {
@@ -887,7 +889,9 @@ namespace Acurus.Capella.UI.RCopia
                                     {
                                         SubElement = (XmlElement)xmlnode.ChildNodes[m];
                                         InsertintoProperties(SubElement, SubElement.Name);
-                                        if (SubElement.Name == "Sig" || SubElement.Name == "Patient" || SubElement.Name == "Status" || SubElement.Name == "Allergen" || SubElement.Name == "ProblemList" || SubElement.Name == "Pharmacy")
+                                        //Jira CAP-3785
+                                        //if (SubElement.Name == "Sig" || SubElement.Name == "Patient" || SubElement.Name == "Status" || SubElement.Name == "Allergen" || SubElement.Name == "ProblemList" || SubElement.Name == "Pharmacy")
+                                        if (SubElement.Name == "Sig" || SubElement.Name == "Patient" || SubElement.Name == "Status" || SubElement.Name == "Allergen" || SubElement.Name == "ProblemList" || SubElement.Name == "Pharmacy" || SubElement.Name == "Provider" || SubElement.Name == "Preparer")
                                         {
                                             for (int c = 0; c < SubElement.ChildNodes.Count; c++)
                                             {
@@ -1549,9 +1553,18 @@ namespace Acurus.Capella.UI.RCopia
                     if (CmdElementText.ToUpper() == "UPDATE_ALLERGY" && Element.ParentNode.Name == "Drug" && Element.InnerText != string.Empty)
                         objAllergy.Rxnorm_ID_Type = Convert.ToString(Element.InnerText).ToUpper();
                     break;
+                case "Username":
+                    if (CmdElementText.ToUpper() == "UPDATE_MEDICATION" && Element.ParentNode.Name == "Provider" && Element.InnerText != string.Empty)
+                        ObjMedication.Provider_Rcopia_User_Name = Convert.ToString(Element.InnerText);
+                    if (CmdElementText.ToUpper() == "UPDATE_MEDICATION" && Element.ParentNode.Name == "Preparer" && Element.InnerText != string.Empty)
+                        ObjMedication.Preparer_Rcopia_User_Name = Convert.ToString(Element.InnerText);
+                    if (CmdElementText.ToUpper() == "UPDATE_PRESCRIPTION" && Element.ParentNode.Name == "Provider" && Element.InnerText != string.Empty)
+                        objPrescription.Provider_Rcopia_User_Name = Convert.ToString(Element.InnerText);
+                    if (CmdElementText.ToUpper() == "UPDATE_PRESCRIPTION" && Element.ParentNode.Name == "Preparer" && Element.InnerText != string.Empty)
+                        objPrescription.Preparer_Rcopia_User_Name = Convert.ToString(Element.InnerText);
+                    break;
 
-
-                #endregion
+                    #endregion
             }
         }
 
