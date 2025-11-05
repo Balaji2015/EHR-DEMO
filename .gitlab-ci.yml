@@ -14,10 +14,12 @@ stages:
  - Solution build 11
  - Solution build production 6
  - Solution build Production 10
+ - Solution build Production 11
  - Deploy TESTING 10.0.0.4
  - Deploy TESTING 10.0.0.11
  - Deploy PRODUCTION 10.1.0.6 
  - Deploy PRODUCTION 10.1.0.10
+ - Deploy PRODUCTION 10.1.0.11
 
 before_script:
    - echo "Nuget script..start"
