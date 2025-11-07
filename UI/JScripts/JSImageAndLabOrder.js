@@ -1080,8 +1080,6 @@ function OnClientCloseLabProcedureManager(sender, eventArgs) {
     var hdnvariable = document.getElementById("hdnManageFreqUsed");
     hdnvariable.value = "true";    
     document.getElementById('InvisibleButton').click();
-    //Cap - 3795
-    CloseAllProcedures();
 }
 function btnSelectLocation_Clicked(sender, args) {
     var cboLab = document.getElementById("cboLab");// $find("cboLab");
