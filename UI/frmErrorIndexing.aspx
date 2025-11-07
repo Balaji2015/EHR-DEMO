@@ -130,10 +130,18 @@
         .hide_column {
             display: none;
         }
+        #tblErrorIndexing_info,#tblErrorIndexing_paginate {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-size: 13px !important;
+}
+        .searchicon::placeholder {
+            font-size: 12px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
-<body style="margin-top: -25px; font-size: 14px!important;" onloadstart="pageLoad();">
+<body style="margin-top: -25px; font-size: 14px!important;">
     <form id="frmIndexing" runat="server">
         <telerik:RadStyleSheetManager ID="SSTMngr" runat="server" EnableStyleSheetCombine="true" OutputCompression="Forced"></telerik:RadStyleSheetManager>
         <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableScriptCombine="true">
@@ -162,23 +170,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <%--<div class="row">
                     <div class="col-md-12">
                         <hr style="margin-top: 12px !important; margin-bottom: 12px !important; border-top: 2px solid #afafaf !important;" />
                     </div>
-                </div>
+                </div>--%>
                 <div class="row">
-                    <div class="col-md-12">
-                        <table id="tblErrorIndexing" class="table table-bordered Gridbodystyle" style="table-layout: fixed;width:99%;">
-                            <thead class="header" style="border: 0px;">
-                                <tr class="header">
-                                    <th style="border: 1px solid #909090; text-align: center;">File Name</th>
-                                    <th style="border: 1px solid #909090; text-align: center;">No. of Pages</th>
-                                    <th style="border: 1px solid #909090; text-align: center;">Exception</th>
-                                    <th style="display:none;">Id</th>
-                                </tr>
-                            </thead>
-                        </table>
+                    <div class="col-md-12" >
+                        <div id="divErrorIndexing">
+                        </div>
                     </div>
                 </div>
             </div>

@@ -55,7 +55,6 @@ namespace Acurus.Capella.UI
         IList<Scan> lstScanList = new List<Scan>();
         DateTime selectedDate = DateTime.MinValue;
         ulong scan_ID = 0;
-        ulong IndexingExceptionLogId = 0;
         ulong human_id = 0;
 
         StringBuilder file_name = new StringBuilder();
@@ -117,7 +116,7 @@ namespace Acurus.Capella.UI
                 }
                 if (Request.QueryString["IndexingExceptionLogId"] != null && Request.QueryString["IndexingExceptionLogId"].Trim() != "")
                 {
-                    IndexingExceptionLogId = Convert.ToUInt32(Request.QueryString["IndexingExceptionLogId"]);
+                    hdnIndexingExceptionLogId.Value = Request.QueryString["IndexingExceptionLogId"].ToString();
                 }
                 if (Request.QueryString["UserRole"] != null && Request.QueryString["UserRole"].Trim() != "")
                 {
@@ -296,14 +295,14 @@ namespace Acurus.Capella.UI
                     }
                 }
                 //Errored Indexing
-                else if (IndexingExceptionLogId != 0)
+                else if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)))
                 {
                     hdnIsMyScan.Value = "true";
                     btnSave.Enabled = false;
                     SelectDir.Attributes.Add("disabled", "disabled");
 
                     IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
-                    IList<IndexingExceptionLog> ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(IndexingExceptionLogId);
+                    IList<IndexingExceptionLog> ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(Convert.ToUInt64(hdnIndexingExceptionLogId.Value));
                     LoadDocType();
 
                     Session["FileName"] = ilstIndexingExceptionLog.FirstOrDefault().File_Name;
@@ -3110,10 +3109,10 @@ namespace Acurus.Capella.UI
 
             // fileManagementIndexmanager.SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(fileManagementIndexList.ToArray(), scan_ID, string.Empty, UtilityManager.ConvertToUniversal());
             IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
-            if (IndexingExceptionLogId > 0)
+            if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)))
             {
                 IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
-                ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(IndexingExceptionLogId);
+                ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(Convert.ToUInt64(hdnIndexingExceptionLogId.Value));
                 if (ilstIndexingExceptionLog.Count > 0) {
                     ilstIndexingExceptionLog[0].Is_Active = "N";
                     ilstIndexingExceptionLog[0].Modified_By = ClientSession.UserName;
@@ -3276,7 +3275,7 @@ namespace Acurus.Capella.UI
 
                     }
                 }
-                if (IndexingExceptionLogId > 0)
+                if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)))
                 {
                     MoveAndReplace(ilstIndexingExceptionLog.FirstOrDefault().File_Name, ilstIndexingExceptionLog.FirstOrDefault().File_Name.Replace(ConfigurationManager.AppSettings["ExceptionIndexingFilePath"], ConfigurationManager.AppSettings["ImportIndexingFilePath"]));
                 }

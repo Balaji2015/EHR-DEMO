@@ -620,6 +620,7 @@
         <asp:HiddenField ID="hdnPDFurl" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnIsEditgrid" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnIsAncillary" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnIndexingExceptionLogId" runat="server" EnableViewState="false" />
         <%--<asp:HiddenField ID="hdnPageBox" runat="server" EnableViewState="false" />--%>
         <%--<asp:HiddenField ID="hdnPageState" runat="server" EnableViewState="false" Value="default" />--%>
         <%--<asp:HiddenField ID="hdnScanIndexId" runat="server" />--%>

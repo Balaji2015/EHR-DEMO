@@ -632,7 +632,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         if (ilstIndexingExceptionLog != null && ilstIndexingExceptionLog.Count > 0)
                         {
-                            indexingExceptionLogManager.UpdateIndexingExceptionLog(ilstIndexingExceptionLog);
+                            indexingExceptionLogManager.UpdateIndexingExceptionLog(ilstIndexingExceptionLog ,MySession);
                         }
                     }
                     if (iResult == 2)

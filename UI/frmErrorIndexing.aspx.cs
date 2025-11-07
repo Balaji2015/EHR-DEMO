@@ -46,8 +46,8 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
-
-            IList<IndexingExceptionLog> indexingExceptionLogList = new IndexingExceptionLogManager().GetAll();
+            IndexingExceptionLogManager IndexingExceptionLogMngr = new IndexingExceptionLogManager();
+            IList<IndexingExceptionLog> indexingExceptionLogList = IndexingExceptionLogMngr.GetAllActiveIndexingExceptionLog();
 
             foreach (var indexingExceptionLog in indexingExceptionLogList)
             {

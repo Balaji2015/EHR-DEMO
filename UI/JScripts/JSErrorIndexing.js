@@ -5,14 +5,32 @@ $(document).ready(function () {
 });
 
 $('#btnRefreshMyScan').click(function () {
-    dataTable.ajax.reload();
+    OnLoadGrid();
 });
 
 $('#btnProcessScan').click(function () {
+    if ($('#divErrorIndexing').children().find('.highlight').length == 0) {
+        alert("Please select one file to process");
+        return false;
+    }
     OpenIndexing();
 });
 
 function OnLoadGrid() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+    $('#divErrorIndexing').empty();
+    $("#divErrorIndexing").append(`<table id="tblErrorIndexing" class="table table-bordered Gridbodystyle" style="table-layout: fixed;width:99%;">
+                            <thead class="header" style="border: 0px;">
+                                <tr class="header">
+                                    <th style="border: 1px solid #909090; text-align: center;">File Name</th>
+                                    <th style="border: 1px solid #909090; text-align: center;">No. of Pages</th>
+                                    <th style="border: 1px solid #909090; text-align: center;">Exception</th>
+                                    <th style="display:none;">Id</th>
+                                </tr>
+                            </thead>
+                        </table>`);
+
     dataTable = new DataTable('#tblErrorIndexing', {
         serverSide: false,
         lengthChange: false,
@@ -26,7 +44,7 @@ function OnLoadGrid() {
         pageLength: 15,
         language: {
             search: "",
-            searchPlaceholder: "Search by File Name",
+            searchPlaceholder: "Search by File Name or Exception",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">',
@@ -58,14 +76,13 @@ function OnLoadGrid() {
         },
         columns: [
             { data: 'File_Name', sWidth: '40%' },
-            { data: 'No_of_Pages', sWidth: '10%' },
+            { data: 'No_of_Pages', sWidth: '10%', searchable: false },
             { data: 'Reason_Description', sWidth: '50%' },
-            { data: 'Id', sWidth: '0%', sClass: "hide_column" },
+            { data: 'Id', sWidth: '0%', sClass: "hide_column", searchable: false },
         ],
-        //initComplete: function (settings, json) {
-        //    $("#tblErrorIndexing_filter input")[0].classList.add('searchicon');
-        //    SetHeightForTabelBasedOnScreenSize();
-        //}
+        initComplete: function (settings, json) {
+            $("#tblErrorIndexing_filter input")[0].classList.add('searchicon');
+        }
     });
 
     $('#tblErrorIndexing_filter').css({
@@ -90,9 +107,9 @@ function OnLoadGrid() {
         Id = rowData[3];
     });
 
-    //$('#tblErrorIndexing tbody').on('dblclick', 'tr', function () {
-
-    //});
+    $('#tblErrorIndexing tbody').on('dblclick', 'tr', function () {
+        OpenIndexing();
+    });
 }
 
 function OpenIndexing() {
@@ -114,7 +131,7 @@ function OpenIndexing() {
     }
 
     var oWnd = GetRadWindow();
-    var childWindow = oWnd.BrowserWindow.radopen(PageName + Argument, "RadWindow1");
+    var childWindow = oWnd.BrowserWindow.radopen(PageName + Argument, "IndexWindow");
     childWindow.SetModal(true);
     childWindow.set_visibleStatusbar(false);
     childWindow.setSize(1200, 710);
@@ -125,6 +142,7 @@ function OpenIndexing() {
     childWindow.center();
 
     childWindow.add_close(function (oWindow, args) {
-        { sessionStorage.setItem('StartLoading', 'false'); StartLoadingImage(); }
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        OnLoadGrid();
     });
 }

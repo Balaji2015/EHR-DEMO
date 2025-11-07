@@ -10,8 +10,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     public partial interface IIndexingExceptionLogManager : IManagerBase<IndexingExceptionLog,int>
     {
         void DeleteErrorLogByResultMasterID(int ResultMasterId, string MacAddress);
-        void UpdateIndexingExceptionLog(IList<IndexingExceptionLog> UpdateList);
+        void UpdateIndexingExceptionLog(IList<IndexingExceptionLog> UpdateList, ISession MySession);
         IList<IndexingExceptionLog> GetIndexingExceptionLogById(ulong ulIndexingExceptionLogId);
+        IList<IndexingExceptionLog> GetAllActiveIndexingExceptionLog();
     }
 
     public partial class IndexingExceptionLogManager : ManagerBase<IndexingExceptionLog, int>, IIndexingExceptionLogManager
@@ -60,10 +61,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
         }
 
-        public void UpdateIndexingExceptionLog(IList<IndexingExceptionLog> UpdateList)
+        public void UpdateIndexingExceptionLog(IList<IndexingExceptionLog> UpdateList, ISession MySession)
         {
             IList<IndexingExceptionLog> SaveList = new List<IndexingExceptionLog>();
-            SaveUpdateDelete_DBAndXML_WithTransaction(ref SaveList, ref UpdateList, null, string.Empty, false, false, 0, "");
+            SaveUpdateDeleteWithoutTransaction(ref SaveList, UpdateList, null, MySession, string.Empty);
         }
 
         public IList<IndexingExceptionLog> GetIndexingExceptionLogById(ulong ulIndexingExceptionLogId)
@@ -71,6 +72,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
             session.GetISession().Close();
             ICriteria crit = session.GetISession().CreateCriteria(typeof(IndexingExceptionLog)).Add(Expression.Eq("Id", ulIndexingExceptionLogId));
+            ilstIndexingExceptionLog = crit.List<IndexingExceptionLog>();
+
+            return ilstIndexingExceptionLog;
+        }
+        public IList<IndexingExceptionLog> GetAllActiveIndexingExceptionLog()
+        {
+            IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
+            session.GetISession().Close();
+            ICriteria crit = session.GetISession().CreateCriteria(typeof(IndexingExceptionLog)).Add(Expression.Eq("Is_Active","Y" ));
             ilstIndexingExceptionLog = crit.List<IndexingExceptionLog>();
 
             return ilstIndexingExceptionLog;
