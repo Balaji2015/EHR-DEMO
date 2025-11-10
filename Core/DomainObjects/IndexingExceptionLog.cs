@@ -7,7 +7,7 @@ namespace Acurus.Capella.Core.DomainObjects
     public partial class IndexingExceptionLog : BusinessBase<ulong>
     {
         private string _File_Name = string.Empty;
-        private int _Scan_ID = 0;
+        private ulong _Scan_ID = 0;
         private string _Reason_Code = string.Empty;
         private string _Reason_Description = string.Empty;
         private string _Created_By = string.Empty;
@@ -71,7 +71,7 @@ namespace Acurus.Capella.Core.DomainObjects
             }
         }
         [DataMember]
-        public virtual int Scan_ID
+        public virtual ulong Scan_ID
         {
             get { return _Scan_ID; }
             set

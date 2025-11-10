@@ -13,6 +13,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void UpdateIndexingExceptionLog(IList<IndexingExceptionLog> UpdateList, ISession MySession);
         IList<IndexingExceptionLog> GetIndexingExceptionLogById(ulong ulIndexingExceptionLogId);
         IList<IndexingExceptionLog> GetAllActiveIndexingExceptionLog();
+        IList<IndexingExceptionLog> GetIndexingExceptionLogByScanId(ulong ulIndexingExceptionLogScanId);
     }
 
     public partial class IndexingExceptionLogManager : ManagerBase<IndexingExceptionLog, int>, IIndexingExceptionLogManager
@@ -72,6 +73,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
             session.GetISession().Close();
             ICriteria crit = session.GetISession().CreateCriteria(typeof(IndexingExceptionLog)).Add(Expression.Eq("Id", ulIndexingExceptionLogId));
+            ilstIndexingExceptionLog = crit.List<IndexingExceptionLog>();
+
+            return ilstIndexingExceptionLog;
+        }
+        public IList<IndexingExceptionLog> GetIndexingExceptionLogByScanId(ulong ulIndexingExceptionLogScanId)
+        {
+            IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
+            session.GetISession().Close();
+            ICriteria crit = session.GetISession().CreateCriteria(typeof(IndexingExceptionLog)).Add(Expression.Eq("Scan_ID", ulIndexingExceptionLogScanId));
             ilstIndexingExceptionLog = crit.List<IndexingExceptionLog>();
 
             return ilstIndexingExceptionLog;

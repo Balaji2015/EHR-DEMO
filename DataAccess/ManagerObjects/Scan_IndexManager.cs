@@ -415,7 +415,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (ilstIndexingExceptionLog.Count > 0 && ilstIndexingExceptionLog[0].Is_Active == "Y")
                         {
                             ilstIndexingExceptionLog[0].Is_Active = "N";
-                            ilstIndexingExceptionLog[0].Scan_ID = lstscan[0].Id;
+                            ilstIndexingExceptionLog[0].Scan_ID = Convert.ToUInt64(lstscan[0].Id);
                             ilstIndexingExceptionLog[0].Modified_By = Owner;
                             ilstIndexingExceptionLog[0].Modified_Date_And_Time = InsertList[0].Created_Date_And_Time;
                             indexingExceptionLogManager.UpdateIndexingExceptionLog(ilstIndexingExceptionLog, MySession);

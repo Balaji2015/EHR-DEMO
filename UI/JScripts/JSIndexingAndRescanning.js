@@ -842,6 +842,21 @@ function Close() {
 
 $(document).ready(function () {
 
+    //Applay click event for Telrick close button
+    {
+        //var Closebutton = top?.window?.$("#RadWindowWrapper_IndexWindow")?.find(".rwCloseButton")[0];
+        //const clone = Closebutton.cloneNode(true);
+        //clone.addEventListener('click', (e) => {
+        //    btnClose_Clicked();
+        //    return false;
+        //}, true);
+        //Closebutton.parentNode.replaceChild(clone, Closebutton);
+        if (top?.window?.$("#RadWindowWrapper_IndexWindow")?.find(".rwCloseButton") != undefined) {
+            top?.window?.$("#RadWindowWrapper_IndexWindow")?.find(".rwCloseButton").attr('style', 'display:none !important;');
+        }
+
+    }
+
     $("#hdnScreenMode")[0].value = "Bulk Scanning and Fax";
     if ($("#hdnScreenMode")[0].value == "Transactional Scanning") {
         ToggleButton("Transactional Scanning", "false");

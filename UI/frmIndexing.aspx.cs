@@ -3113,8 +3113,17 @@ namespace Acurus.Capella.UI
             if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)) || hdnfilepath.Value.Replace(@"\", "") == ConfigurationManager.AppSettings["ExceptionIndexingFilePath"].ToString().Replace(@"\",""))
             {
                 IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
-                ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(Convert.ToUInt64(hdnIndexingExceptionLogId.Value));
-                if (ilstIndexingExceptionLog.Count > 0) {
+
+                if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)))
+                {
+                    ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(Convert.ToUInt64(hdnIndexingExceptionLogId.Value));
+                }
+                else
+                {
+                    ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogByScanId(Convert.ToUInt64(scanIndexList.FirstOrDefault().Scan_ID));
+                }
+
+            if (ilstIndexingExceptionLog.Count > 0) {
                     ilstIndexingExceptionLog[0].Is_Active = "N";
                     ilstIndexingExceptionLog[0].Modified_By = ClientSession.UserName;
                     ilstIndexingExceptionLog[0].Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
