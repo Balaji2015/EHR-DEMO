@@ -7,7 +7,6 @@ using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using Acurus.Capella.DataAccess;
 using System.Globalization;
-using System.Threading.Tasks;
 using static Acurus.Capella.DataAccess.RCopiaXMLResponseProcess;
 using System.Configuration;
 using Acurus.Capella.Core.DTO;
@@ -63,8 +62,6 @@ namespace DownloadiPrescribe
                     Console.WriteLine("ImportIndexedDocuments Started.");
                     ImportIndexedDocumentsJob();
                     Console.WriteLine("ImportIndexedDocuments Method Invoked.");
-                    break;
-                case "ImportIndexingExceptionLog":
                     Console.WriteLine("ImportIndexingExceptionLog Started.");
                     ImportIndexingExceptionLogJob();
                     Console.WriteLine("ImportIndexingExceptionLog Method Invoked.");
@@ -986,6 +983,7 @@ namespace DownloadiPrescribe
             string sIncoming_IndexingFilePath = ConfigurationManager.AppSettings["IncomingIndexingFilePath"];
             string sImportIndexingFilePath = ConfigurationManager.AppSettings["ImportIndexingFilePath"];
             string sExceptionIndexingFilePath = ConfigurationManager.AppSettings["ExceptionIndexingFilePath"];
+            string sCompletedTextFilePath = ConfigurationManager.AppSettings["CompletedTextFilePath"];
             IList<IndexingFileLookup> indexingFileLookupList = new IndexingFileLookupManager().GetIndexingFileLookup();
             IList<scan_index> ilstScanForFileNumber = new List<scan_index>();
             Scan_IndexManager scanindexmanager = new Scan_IndexManager();
@@ -1045,7 +1043,7 @@ namespace DownloadiPrescribe
                         {
                             string lineData = myResults[k].ToString().Replace("\r", "");
                             string[] line = { lineData };
-                            if (line.Length > 0)
+                            if (line.Length > 0 && line.FirstOrDefault().Trim() != "")
                             {
                                 for (int l = 0; l < line.Length; l++)
                                 {
@@ -1108,11 +1106,25 @@ namespace DownloadiPrescribe
                                                     object value = segments[i];
                                                     if (propInfo.PropertyType == typeof(DateTime))
                                                     {
-                                                        value = DateTime.ParseExact(Convert.ToDateTime(segments[i]).ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                                                        if (!string.IsNullOrEmpty(value.ToString()))
+                                                        {
+                                                            value = DateTime.ParseExact(Convert.ToDateTime(segments[i]).ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                                                        }
+                                                        else
+                                                        {
+                                                            value = DateTime.MinValue;
+                                                        }
                                                     }
                                                     else if (propInfo.PropertyType != typeof(string))
                                                     {
-                                                        value = Convert.ChangeType(value, propInfo.PropertyType);
+                                                        if (propInfo.PropertyType.Name.ToLower().Contains("int") && string.IsNullOrEmpty(value.ToString()))
+                                                        {
+                                                            value = Convert.ChangeType("0", propInfo.PropertyType);
+                                                        }
+                                                        else
+                                                        {
+                                                            value = Convert.ChangeType(value, propInfo.PropertyType);
+                                                        }
                                                     }
                                                     propInfo.SetValue(humanInstance, value, null);
                                                 }
@@ -1125,8 +1137,8 @@ namespace DownloadiPrescribe
                                                 humanData = humanManager.GetHumanIdbyname(human.Id, human.First_Name, human.Last_Name, human.Birth_Date.ToString("yyyy-MM-dd"));
                                             }
                                         }
-
-                                        if (instance != null && humanData != null)
+                                        
+                                        if (instance != null)
                                         {
                                             for (int i = 0; i < segments.Length; i++)
                                             {
@@ -1148,7 +1160,14 @@ namespace DownloadiPrescribe
                                                     object value = segments[i];
                                                     if (propInfo.PropertyType == typeof(DateTime))
                                                     {
-                                                        value = DateTime.ParseExact(Convert.ToDateTime(segments[i]).ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                                                        if (!string.IsNullOrEmpty(value.ToString()))
+                                                        {
+                                                            value = DateTime.ParseExact(Convert.ToDateTime(segments[i]).ToString("dd-MM-yyyy"), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                                                        }
+                                                        else
+                                                        {
+                                                            value = DateTime.MinValue;
+                                                        }
                                                     }
                                                     else if (propInfo.PropertyType != typeof(string))
                                                     {
@@ -1168,9 +1187,27 @@ namespace DownloadiPrescribe
                                             {
                                                 FileManagementIndex fileManagementIndex = (FileManagementIndex)instance;
                                                 sFile = fileManagementIndex.File_Path;
+                                                if (humanData == null || (humanData != null && humanData.Id == 0))
+                                                {
+                                                    SaveExceptionIntoIndexingExceptionLog(line[l], "Incorrect Patient Match");
+                                                    MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
+                                                    continue;
+                                                }
+                                                if (fileManagementIndex.File_Path == string.Empty)
+                                                {
+                                                    SaveExceptionIntoIndexingExceptionLog(line[l], "Missing File Name from "+ fi.Name);
+                                                    continue;
+                                                }
+                                                if (!File.Exists(sIncoming_IndexingFilePath + "//" + sFile))
+                                                {
+                                                    SaveExceptionIntoIndexingExceptionLog(line[l], "File not found");
+                                                    continue;
+                                                }
+
                                                 if (string.IsNullOrEmpty(fileManagementIndex.Document_Type))
                                                 {
-                                                    Console.WriteLine("Document_Type is required.");
+                                                    SaveExceptionIntoIndexingExceptionLog(line[l], "Missing Document Type");
+                                                    MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
                                                     continue;
                                                 }
                                                 else
@@ -1180,13 +1217,15 @@ namespace DownloadiPrescribe
                                                     var docType = staticLookupManager.getStaticLookupByFieldName("document type");
                                                     if (docType == null || !docType.Any(a => a.Value.ToLower() == fileManagementIndex.Document_Type.ToLower()))
                                                     {
-                                                        Console.WriteLine("Document_Type does not exist in the lookup.");
+                                                        SaveExceptionIntoIndexingExceptionLog(line[l], "Incorrect Document Type");
+                                                        MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
                                                         continue;
                                                     }
                                                 }
                                                 if (string.IsNullOrEmpty(fileManagementIndex.Document_Sub_Type))
                                                 {
-                                                    Console.WriteLine("Document_Sub_Type is required.");
+                                                    SaveExceptionIntoIndexingExceptionLog(line[l], "Missing Document Sub Type");
+                                                    MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
                                                     continue;
                                                 }
                                                 else
@@ -1196,28 +1235,56 @@ namespace DownloadiPrescribe
                                                     var subDoc = staticLookupManager.getStaticLookupByFieldName(fileManagementIndex.Document_Type);
                                                     if (subDoc == null || !subDoc.Any(a => a.Value.ToLower() == fileManagementIndex.Document_Sub_Type.ToLower()))
                                                     {
-                                                        Console.WriteLine("Document_Sub_Type does not exist in the lookup.");
+                                                        SaveExceptionIntoIndexingExceptionLog(line[l], "Incorrect Document Sub Type");
+                                                        MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
                                                         continue;
                                                     }
                                                 }
+
+                                                if (fileManagementIndex.Document_Type.ToUpper() == "ENCOUNTERS")
+                                                {
+                                                    if (fileManagementIndex.Encounter_ID == 0)
+                                                    {
+                                                        SaveExceptionIntoIndexingExceptionLog(line[l], "Encounter details not found");
+                                                        MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
+                                                        continue;
+                                                    }
+                                                    else
+                                                    {
+                                                        EncounterManager encounterManager = new EncounterManager();
+                                                        IList<Encounter> ilstEncounter = new List<Encounter>();
+                                                        ilstEncounter = encounterManager.GetEncounterByEncounterIDIncludeArchive(fileManagementIndex.Encounter_ID);
+                                                        if (ilstEncounter.Count == 0 || ilstEncounter.FirstOrDefault().Human_ID != fileManagementIndex.Human_ID)
+                                                        {
+                                                            SaveExceptionIntoIndexingExceptionLog(line[l], "Encounter details not match with the Patient");
+                                                            MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
+                                                            continue;
+                                                        }
+                                                    }
+                                                }
+                                                
                                                 if (fileManagementIndex.Document_Date == DateTime.MinValue)
                                                 {
-                                                    Console.WriteLine("Document_Date is required.");
+                                                    SaveExceptionIntoIndexingExceptionLog(line[l], "Missing Document Date");
+                                                    MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
                                                     continue;
                                                 }
                                                 if (fileManagementIndex.Document_Date < humanData.Birth_Date)
                                                 {
-                                                    Console.WriteLine("Document_Date cannot be less than the Patient DOB.");
+                                                    SaveExceptionIntoIndexingExceptionLog(line[l], "Invalid Document Date");
+                                                    MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
                                                     continue;
                                                 }
                                                 if (fileManagementIndex.Document_Date > TimeZoneInfo.ConvertTimeToUtc(DateTime.Now))
                                                 {
-                                                    Console.WriteLine("Document_Date cannot be the future date to the current date.");
+                                                    SaveExceptionIntoIndexingExceptionLog(line[l], "Document_Date cannot be the future date");
+                                                    MoveAndReplace(sIncoming_IndexingFilePath + "//" + sFile, sExceptionIndexingFilePath + "//" + sFile);
                                                     continue;
                                                 }
 
                                                 Console.WriteLine("FTP started");
                                                 #region FTP Transfer
+                                                fileManagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(fileManagementIndex.Document_Date.ToString("yyyyMMdd"), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                                 string ftpServerIP = ConfigurationManager.AppSettings["ftpServerIP"];
                                                 bool bCreateDirectory = CreateDirectory(fileManagementIndex.Human_ID.ToString(), ftpServerIP, string.Empty, string.Empty, out string sCheckFileNotFoundException);
                                                 if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
@@ -1291,7 +1358,7 @@ namespace DownloadiPrescribe
                                                         scan_Index.Human_ID = fileManagementIndex.Human_ID;
                                                         scan_Index.Scan_ID = Convert.ToUInt64(ilstScan.FirstOrDefault().Id);
                                                         //scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
-                                                        scan_Index.Document_Date = Convert.ToDateTime(fileManagementIndex.Document_Date + " 15:30:00");
+                                                        scan_Index.Document_Date = fileManagementIndex.Document_Date;
                                                         scan_Index.Document_Type = fileManagementIndex.Document_Type;
                                                         //Jira CAP-2977
                                                         //scan_Index.Document_Sub_Type = dir.Name.ToUpper();
@@ -1318,7 +1385,7 @@ namespace DownloadiPrescribe
                                                         fileManagementIndex.Created_By = "IndexingFileAgent";
                                                         fileManagementIndex.Created_Date_And_Time = DateTime.UtcNow;
                                                         //filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
-                                                        fileManagementIndex.Document_Date = Convert.ToDateTime(fileManagementIndex.Document_Date + " 15:30:00");
+                                                        //fileManagementIndex.Document_Date = fileManagementIndex.Document_Date;
                                                         //Jira CAP-2977
                                                         //filemanagementIndex.Document_Sub_Type = dir.Name.ToUpper();
                                                         //Jira CAP-3038
@@ -1356,27 +1423,139 @@ namespace DownloadiPrescribe
                     }
                     catch (Exception e)
                     {
-
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
                     }
+
+                    MoveAndReplace(sIncoming_IndexingFilePath + "//" + fi.Name, sCompletedTextFilePath + "//" + fi.Name);
+                }
+            }
+        }
+
+        public static void SaveExceptionIntoIndexingExceptionLog(string sExceptionLine, string sExceptionDiscription)
+        {
+            IList<IndexingFileLookup> indexingFileLookupList = new IndexingFileLookupManager().GetIndexingFileLookup();
+            string sIncoming_IndexingFilePath = ConfigurationManager.AppSettings["IncomingIndexingFilePath"];
+            string sExceptionIndexingFilePath = ConfigurationManager.AppSettings["ExceptionIndexingFilePath"];
+            string sCompletedTextFilePath = ConfigurationManager.AppSettings["CompletedTextFilePath"];
+            string segmentField = string.Empty;
+            string segmentSubField = string.Empty;
+            string propName = string.Empty;
+
+            string lineData = sExceptionLine.Replace("\r", "");
+            string[] line = { lineData };
+            if (line.Length > 0 && line.FirstOrDefault().Trim() != "")
+            {
+                for (int l = 0; l < line.Length; l++)
+                {
+                    string[] segments = line[l].Split('|');
+                    if (segments.Length > 0)
+                    {
+                        object instance = null;
+                        var fileResultLookupList = indexingFileLookupList.Where(a => a.Segment_Name == "IEL").ToList();
+                        if (fileResultLookupList.Any())
+                        {
+                            string domain = fileResultLookupList[0].Domain_Object;
+                            var currentAssembly = Assembly.Load("Acurus.Capella.Core");
+                            var myType = currentAssembly.GetType(domain);
+                            instance = Activator.CreateInstance(myType);
+                        }
+                        else if (fileResultLookupList.Count == 0)
+                        {
+                            instance = null;
+                        }
+
+                        if (instance != null)
+                        {
+                            for (int i = 0; i < segments.Length; i++)
+                            {
+                                IndexingFileLookup re = null;
+                                string segmentName = fileResultLookupList[0].Segment_Name;
+                                segmentField = segmentName + "-" + (i + 1).ToString();
+
+                                IList<IndexingFileLookup> reList = fileResultLookupList.Where(res => res.Segment_Name == segmentName
+                                                                                    && res.Segment_Field == segmentField
+                                                                                    && res.Segment_Sub_Field.Trim() == string.Empty).ToList();
+                                if (reList.Count != 0)
+                                {
+                                    re = reList[0];
+                                }
+                                if (re != null)
+                                {
+                                    /*With the column name the property can be found and value can be assigned.*/
+                                    PropertyInfo propInfo = instance.GetType().GetProperty(re.Column_Name);
+                                    object value = segments[i];
+                                    if (propInfo.PropertyType == typeof(DateTime))
+                                    {
+                                        value = DateTime.ParseExact(segments[i], "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                                    }
+                                    else if (propInfo.PropertyType != typeof(string))
+                                    {
+                                        if (propInfo.PropertyType.Name.ToLower().Contains("int") && string.IsNullOrEmpty(value.ToString()))
+                                        {
+                                            value = Convert.ChangeType("0", propInfo.PropertyType);
+                                        }
+                                        else
+                                        {
+                                            value = Convert.ChangeType(value, propInfo.PropertyType);
+                                        }
+                                    }
+                                    propInfo.SetValue(instance, value, null);
+                                }
+                            }
+                            if (instance != null)
+                            {
+                                IndexingExceptionLog indexingExceptionLog = (IndexingExceptionLog)instance;
+                                IList<IndexingExceptionLog> indexingExceptionLogList = new List<IndexingExceptionLog>();
+                                
+                                if (Path.GetExtension(sIncoming_IndexingFilePath + @"\" + indexingExceptionLog.File_Name).ToUpper() == ".PDF")
+                                {
+                                    if (File.Exists(sIncoming_IndexingFilePath + @"\" + indexingExceptionLog.File_Name))
+                                    {
+                                        var pdfReader = new PdfReader(sIncoming_IndexingFilePath + @"\" + indexingExceptionLog.File_Name);
+                                        indexingExceptionLog.No_of_Pages = pdfReader.NumberOfPages;
+                                    }
+                                }
+                                indexingExceptionLog.Order_Number = "Paper Order";
+                                indexingExceptionLog.Created_By = "IndexingFileAgent";
+                                indexingExceptionLog.Created_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                indexingExceptionLog.Is_Active = "Y";
+                                indexingExceptionLog.Reason_Description = sExceptionDiscription;
+                                indexingExceptionLog.File_Name = sExceptionIndexingFilePath + @"\" + indexingExceptionLog.File_Name;
+                                indexingExceptionLog.File_Name = indexingExceptionLog.File_Name.Replace(@"\", @"\\");
+                                indexingExceptionLogList.Add(indexingExceptionLog);
+                                IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
+                                indexingExceptionLogManager.SaveUpdateDeleteWithTransaction(ref indexingExceptionLogList, new List<IndexingExceptionLog>(), new List<IndexingExceptionLog>(), "");
+
+
+                            }
+                        }
+                    }
+
                 }
             }
         }
         public static int GetPageCountFromPDF(string sFullPath)
         {
             int PageCount = 1;
-            using (System.Drawing.Image imgbg = System.Drawing.Image.FromFile(sFullPath.ToString()))
+            try
             {
-                PageCount = imgbg.GetFrameCount(System.Drawing.Imaging.FrameDimension.Page);
-                imgbg.Dispose();
+                PdfReader reader = new PdfReader(sFullPath);
+                PageCount = reader.NumberOfPages;
+            }
+            catch (Exception ex)
+            {
+                
             }
             return PageCount;
         }
         public static void ImportIndexingExceptionLogJob()
         {
             IList<IndexingFileLookup> indexingFileLookupList = new IndexingFileLookupManager().GetIndexingFileLookup();
-            string sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["ExceptionIndexingFilePath"];
+            string sExceptionIndexingFilePath = ConfigurationManager.AppSettings["ExceptionIndexingFilePath"];
+            string sCompletedTextFilePath = ConfigurationManager.AppSettings["CompletedTextFilePath"];
 
-            FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.txt");
+            FileInfo[] sFiles = new DirectoryInfo(sExceptionIndexingFilePath).GetFiles("*.txt");
             if (sFiles.Length > 0)
             {
                 FileInfo[] rgFiles = sFiles;
@@ -1417,7 +1596,7 @@ namespace DownloadiPrescribe
                         {
                             string lineData = myResults[k].ToString().Replace("\r", "");
                             string[] line = { lineData };
-                            if (line.Length > 0)
+                            if (line.Length > 0 && line.FirstOrDefault().Trim() != "")
                             {
                                 for (int l = 0; l < line.Length; l++)
                                 {
@@ -1480,127 +1659,40 @@ namespace DownloadiPrescribe
                                             {
                                                 IndexingExceptionLog indexingExceptionLog = (IndexingExceptionLog)instance;
                                                 IList<IndexingExceptionLog> indexingExceptionLogList = new List<IndexingExceptionLog>();
-
-                                                string indexingLocalFilePath = ConfigurationManager.AppSettings["IndexingLocalFilePath"];
-                                                indexingExceptionLog.File_Name = indexingLocalFilePath + indexingExceptionLog.File_Name;
-
-                                                indexingExceptionLog.No_of_Pages = 1;
-                                                if (Path.GetExtension(indexingExceptionLog.File_Name).ToUpper() == "PDF")
+                                                indexingExceptionLog.File_Name = sExceptionIndexingFilePath + @"\" + indexingExceptionLog.File_Name;
+                                                if (Path.GetExtension(indexingExceptionLog.File_Name).ToUpper() == ".PDF")
                                                 {
                                                     var pdfReader = new PdfReader(indexingExceptionLog.File_Name);
                                                     indexingExceptionLog.No_of_Pages = pdfReader.NumberOfPages;
                                                 }
                                                 indexingExceptionLog.Order_Number = "Paper Order";
-                                                indexingExceptionLog.Created_By = "IndexAgent";
+                                                indexingExceptionLog.Created_By = "IndexingFileAgent";
                                                 indexingExceptionLog.Created_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
                                                 indexingExceptionLog.Is_Active = "Y";
-
+                                                
+                                                indexingExceptionLog.File_Name = indexingExceptionLog.File_Name.Replace(@"\", @"\\");
                                                 indexingExceptionLogList.Add(indexingExceptionLog);
                                                 IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
                                                 indexingExceptionLogManager.SaveUpdateDeleteWithTransaction(ref indexingExceptionLogList, new List<IndexingExceptionLog>(), new List<IndexingExceptionLog>(), "");
+                                                
+                                                
                                             }
                                         }
                                     }
+                                    
                                 }
                             }
                         }
-                        if (!Directory.Exists(fi.DirectoryName + "\\Imported\\"))
-                            Directory.CreateDirectory(fi.DirectoryName + "\\Imported\\");
-
-                        if (bUnimportedFile == true)
-                        {
-                            if (!Directory.Exists(fi.DirectoryName + "\\UnImported\\"))
-                                Directory.CreateDirectory(fi.DirectoryName + "\\UnImported\\");
-                        }
-                        try
-                        {
-                            if (bUnimportedFile != true)
-                            {
-                                System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\Imported\\" + fi.Name);
-                            }
-                            else
-                            {
-                                System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
-                                StringBuilder logmsg = new StringBuilder();
-                                logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
-                                using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
-                                {
-                                    tx.WriteLine(logmsg);
-                                }
-                            }
-                        }
-                        catch
-                        {
-                            if (bUnimportedFile != true)
-                            {
-                                System.IO.File.Move(fi.FullName, fi.DirectoryName + @"\Imported\" + fi.Name.Replace(fi.Extension, "") + DateTime.Now.ToString("_dd-MM-yyyy_HHmmss") + fi.Extension);
-                            }
-                            else
-                            {
-                                System.IO.File.Move(fi.FullName, fi.DirectoryName + @"\UnImported\" + fi.Name.Replace(fi.Extension, "") + DateTime.Now.ToString("_dd-MM-yyyy_HHmmss") + fi.Extension);
-                                StringBuilder logmsg = new StringBuilder();
-                                logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
-                                using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
-                                {
-                                    tx.WriteLine(logmsg);
-                                }
-                            }
-
-                        }
+                        
 
                     }
                     catch (Exception e)
                     {
 
-                        if (!Directory.Exists(fi.DirectoryName + "\\UnImported\\"))
-                            Directory.CreateDirectory(fi.DirectoryName + "\\UnImported\\");
-
-                        try
-                        {
-
-                            System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
-                            StringBuilder logmsg = new StringBuilder();
-                            logmsg.Append("Unidentified Exception " + Environment.NewLine);
-
-                            logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
-
-                            logmsg.Append("Error Date and Time : " + DateTime.Now.ToString() + " - ");
-                            logmsg.Append("Error Message : " + e.Message.ToString() + " - ");
-                            if (e.InnerException != null)
-                                logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + " - " : "");
-                            else
-                                logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
-
-                            logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
-                            using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
-                            {
-                                tx.WriteLine(logmsg);
-                            }
-
-                        }
-                        catch
-                        {
-                            System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
-                            StringBuilder logmsg = new StringBuilder();
-                            logmsg.Append("Unidentified Exception " + Environment.NewLine);
-
-                            logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
-
-                            logmsg.Append("Error Date and Time : " + DateTime.Now.ToString() + " - ");
-                            logmsg.Append("Error Message : " + e.Message.ToString() + " - ");
-                            if (e.InnerException != null)
-                                logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + " - " : "");
-                            else
-                                logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
-
-                            logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
-                            using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
-                            {
-                                tx.WriteLine(logmsg);
-                            }
-                        }
+                        
 
                     }
+                    MoveAndReplace(sExceptionIndexingFilePath + "//" + fi.Name, sCompletedTextFilePath + "//" + fi.Name);
                 }
             }
         }
