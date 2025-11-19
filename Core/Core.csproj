@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessBase.cs" />
+    <Compile Include="DomainObjects\CDCDuplicateHumanTracker.cs" />
     <Compile Include="DomainObjects\ABI_Results.cs" />
     <Compile Include="DomainObjects\AccountTransaction.cs" />
     <Compile Include="DomainObjects\AccountTransactionArc.cs" />
@@ -779,6 +780,7 @@
     <EmbeddedResource Include="HbmMaps\CDC_Audit_Log.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Address.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\IndexingExceptionLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CDCDuplicateHumanTracker.hbm.xml" />
     <Content Include="HbmMaps\ErrorLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Token.hbm.xml" />

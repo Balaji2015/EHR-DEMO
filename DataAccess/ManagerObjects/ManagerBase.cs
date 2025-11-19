@@ -2097,6 +2097,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                        // string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
                         string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+                        //CAP-3933
+                        if (sDirectoryPath.Contains(@"api\PatientService\"))
+                        {
+                            sDirectoryPath = sDirectoryPath.Replace(@"api\PatientService\", "");
+                        }
                         string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
                         XmlDocument itemDoc = new XmlDocument();
                         XmlTextReader XmlText = new XmlTextReader(sXmlPath);

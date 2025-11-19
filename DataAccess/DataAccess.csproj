@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuditInterceptor.cs" />
+    <Compile Include="ManagerObjects\CDCDuplicateHumanTrackerManager.cs" />
     <Compile Include="ManagerObjects\ABI_ResultsManager.cs" />
     <Compile Include="ManagerObjects\AccountTransactionArcManager.cs" />
     <Compile Include="ManagerObjects\AccountTransactionManager.cs" />

@@ -577,6 +577,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         IIndexingExceptionLogManager GetIndexingExceptionLogManager();
         IIndexingExceptionLogManager GetIndexingExceptionLogManager(INHibernateSession session);
+
+        ICDCDuplicateHumanTrackerManager GetCDCDuplicateHumanTrackerManager();
+        ICDCDuplicateHumanTrackerManager GetCDCDuplicateHumanTrackerManager(INHibernateSession session);
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2352,6 +2355,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IIndexingExceptionLogManager GetIndexingExceptionLogManager(INHibernateSession session)
         {
             return new IndexingExceptionLogManager(session);
+        }
+        public ICDCDuplicateHumanTrackerManager GetCDCDuplicateHumanTrackerManager()
+        {
+            return new CDCDuplicateHumanTrackerManager();
+        }
+        public ICDCDuplicateHumanTrackerManager GetCDCDuplicateHumanTrackerManager(INHibernateSession session)
+        {
+            return new CDCDuplicateHumanTrackerManager(session);
         }
         #endregion
     }

@@ -1960,6 +1960,7 @@
       <DependentUpon>AddressHistoryService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WebServices\PatientServiceController.cs" />
     <Compile Include="WebServices\DrugAllergyService.asmx.cs">
       <DependentUpon>DrugAllergyService.asmx</DependentUpon>
       <SubType>Component</SubType>
