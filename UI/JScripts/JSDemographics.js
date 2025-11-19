@@ -2036,9 +2036,34 @@ function loadgrid() {
 
                          DisplayActiveInsurance();
                          sortTable();
-
-
                     }
+                    debugger;
+                    var count = $('#tbodupolicyinfo tr').length;
+                    if (count === 0) {
+                        /*$("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").prop("disabled", true);*/
+                        $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").hide();
+                    }
+                    $('#tbodupolicyinfo tr').each(function () {
+                        let status = $(this).find('td').eq(10).text().trim();
+
+                        if (status === "Active") {
+                            $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").show();
+                            $("#ctl00_C5POBody_ddlPatientInsurance").prop("disabled", true);                            
+                            $("#ctl00_C5POBody_ddlPatientInsurance option").filter(function () {
+                                return $(this).text() === "Insured";
+                            }).prop("selected", true);
+                            return false;
+                        }
+                        else {
+                            //$("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").prop("disabled", true);
+                            $("#ctl00_C5POBody_ddlPatientInsurance").prop("disabled", false);
+                            $("#ctl00_C5POBody_ddlPatientInsurance option").filter(function () {
+                                return $(this).text().trim() === "Uninsured";
+                            }).prop("selected", true);
+                            /*$("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").prop("disabled", true);*/
+                            $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").hide();
+                        }
+                    });
                 }
                 else
                 {
@@ -2586,7 +2611,33 @@ function btnaddinsured(e) {
                     //}
                     DisplayActiveInsurance();
                     sortTable();
-                    AutoSave()
+                    AutoSave();
+                    var count = $('#tbodupolicyinfo tr').length;
+                    if (count === 0) {
+                        /*$("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").prop("disabled", true);*/
+                        $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").hide();
+                    }
+                   
+                    $('#tbodupolicyinfo tr').each(function () {
+                        let status = $(this).find('td').eq(10).text().trim();
+
+                        if (status === "Active") {
+                            $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").show();
+                            $("#ctl00_C5POBody_ddlPatientInsurance").prop("disabled", true);
+                            $("#ctl00_C5POBody_ddlPatientInsurance option").filter(function () {
+                                return $(this).text() === "Insured";
+                            }).prop("selected", true);
+                            return false;
+                        }
+                        else {
+                            $("#ctl00_C5POBody_ddlPatientInsurance").prop("disabled", false);
+                            $("#ctl00_C5POBody_ddlPatientInsurance option").filter(function () {
+                                return $(this).text().trim() === "Uninsured";
+                            }).prop("selected", true);
+                            /*$("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").prop("disabled", true);*/
+                            $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").hide();
+                        }
+                    });
                 }
                 else {
 
@@ -2640,7 +2691,32 @@ function btnaddinsured(e) {
                     }
                     DisplayActiveInsurance();
                     sortTable();
-                    AutoSave()
+                    AutoSave();
+                    var count = $('#tbodupolicyinfo tr').length;
+                    if (count === 0) {
+                        /*$("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").prop("disabled", true);*/
+                        $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").hide();
+                    }
+                    $('#tbodupolicyinfo tr').each(function () {
+                        let status = $(this).find('td').eq(10).text().trim();
+
+                        if (status === "Active") {
+                            $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").show();
+                            $("#ctl00_C5POBody_ddlPatientInsurance").prop("disabled", true);
+                            $("#ctl00_C5POBody_ddlPatientInsurance option").filter(function () {
+                                return $(this).text() === "Insured";
+                            }).prop("selected", true);
+                            return false;
+                        }
+                        else {
+                            $("#ctl00_C5POBody_ddlPatientInsurance").prop("disabled", false);
+                            $("#ctl00_C5POBody_ddlPatientInsurance option").filter(function () {
+                                return $(this).text().trim() === "Uninsured";
+                            }).prop("selected", true);
+                            /*$("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").prop("disabled", true);*/
+                            $("#ctl00_C5POBody_ddlPatientInsurance option[value='Insured']").hide();
+                        }
+                    });
                 }
             }
 

@@ -172,6 +172,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Dynamics_Number = string.Empty;
         private string _Tribal_Affiliation = string.Empty;
         private string _Specific_Ethnicity = string.Empty;
+        private string _Insurance_Status = string.Empty;
         #endregion
 
         #region HashCode Value
@@ -336,6 +337,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_sIsTranslatorRequired);
             sb.Append(_Tribal_Affiliation);
             sb.Append(_Specific_Ethnicity);
+            sb.Append(_Insurance_Status);
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -1331,6 +1333,12 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Specific_Ethnicity; }
             set { _Specific_Ethnicity = value; }
+        }
+        [DataMember]
+        public virtual string Insurance_Status
+        {
+            get { return _Insurance_Status; }
+            set { _Insurance_Status = value; }
         }
         #endregion
 

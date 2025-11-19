@@ -2324,6 +2324,23 @@ namespace Acurus.Capella.UI
                         ddlCGRelation.SelectedValue = i.Value;
                 }
             }
+
+            //CAP-3761
+            ddlPatientInsurance.Items.Clear();
+            ilstStatiLookUpList = objStaticLookUpMngr.getStaticLookupByFieldName("INSURANCE STATUS", "Sort_Order");
+            if (ilstStatiLookUpList != null && ilstStatiLookUpList.Count > 0)
+            {
+                for (int i = 0; i < ilstStatiLookUpList.Count; i++)
+                {
+                    ListItem item = new ListItem();
+                    item.Value = ilstStatiLookUpList[i].Value;
+                    item.Text = ilstStatiLookUpList[i].Value;
+                    ddlPatientInsurance.Items.Add(item);
+
+                    ddlPatientInsurance.SelectedValue = ilstStatiLookUpList[i].Default_Value;
+                }               
+            }
+
             ddlDataSharingPreference.Items.Add("");
             ddlDataSharingPreference.Items.Add("Yes");
             ddlDataSharingPreference.Items.Add("No");
@@ -3558,6 +3575,8 @@ namespace Acurus.Capella.UI
             //Cerner
             objHuman.Is_Cerner_Registered = "N";
             objHuman.Cerner_Universal_Patient_ID = "";
+            //CAP-3761
+            objHuman.Insurance_Status = ddlPatientInsurance.SelectedItem.Text;
 
         }
 

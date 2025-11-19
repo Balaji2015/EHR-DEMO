@@ -454,71 +454,71 @@
                 color: #000000 !important;
                 background-color: #cccccc !important;
                 border: 1px solid #939393 !important;
-                border-radius:2px !important;
+                border-radius: 2px !important;
             }
             #tbodupolicyinfo tr td {
                 word-break: break-word;
             }
 
             .ui-dialog-titlebar-close {
-    display: none !important;
-}
+                display: none !important;
+            }
 
-.ui-widget {
-    font-family: Verdana,Arial,sans-serif !important;
-}
+            .ui-widget {
+                font-family: Verdana,Arial,sans-serif !important;
+            }
 
-.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
-    float: none !important;
-    margin-left: 45px !important;
-}
+            .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+                float: none !important;
+                margin-left: 45px !important;
+            }
 
-.ui-dialog .ui-dialog-buttonpane button {
-    width: 60px !important;
-}
+            .ui-dialog .ui-dialog-buttonpane button {
+                width: 60px !important;
+            }
 
-.ui-dialog .ui-dialog-titlebar {
-    padding: 0px !important;
-}
+            .ui-dialog .ui-dialog-titlebar {
+                padding: 0px !important;
+            }
 
-.ui-dialog .ui-dialog-title {
-    font-size: 12px !important;
-    font-family: Verdana,Arial,sans-serif !important;
-}
+            .ui-dialog .ui-dialog-title {
+                font-size: 12px !important;
+                font-family: Verdana,Arial,sans-serif !important;
+            }
 
-.ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
-    height: 155px !important;
-    border: 2px solid !important;
-    border-radius: 13px !important;
-    top: 504px !important;
-    left: 568px !important;
-}
+            .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+                height: 155px !important;
+                border: 2px solid !important;
+                border-radius: 13px !important;
+                top: 504px !important;
+                left: 568px !important;
+            }
 
-.ui-dialog .ui-dialog-content {
-    min-height: 0px !important;
-}
+            .ui-dialog .ui-dialog-content {
+                min-height: 0px !important;
+            }
 
-.ui-dialog .ui-dialog-buttonpane {
-    margin-top: -10px !important;
-    font-size: 14px !important;
-    /*padding: 0px !important ;*/
-}
+            .ui-dialog .ui-dialog-buttonpane {
+                margin-top: -10px !important;
+                font-size: 14px !important;
+                /*padding: 0px !important ;*/
+            }
 
-.ui-widget-content {
-    border: 0px !important;
-}
+            .ui-widget-content {
+                border: 0px !important;
+            }
 
-.ui-widget-header, .ui-state-default, ui-button {
-    font-weight: bold !important;
-    font-size: 12px !important;
-    font-family: sans-serif !important;
-}
+            .ui-widget-header, .ui-state-default, ui-button {
+                font-weight: bold !important;
+                font-size: 12px !important;
+                font-family: sans-serif !important;
+            }
 
 
-.ui-widget {
-    border: 1px solid #adadad !important;
-    background-color: #F7F7F7 !important;
-}
+            .ui-widget {
+                border: 1px solid #adadad !important;
+                background-color: #F7F7F7 !important;
+            }
         </style>
     </head>
     <body>
@@ -1697,7 +1697,16 @@
                                     </asp:DropDownList>
                                 </td>
                             </tr>
-                          
+                          <tr>
+                             <td>
+                                 <span  class="spanstyle">Insurance Status</span>
+                             </td>
+                               <td>
+                                   <asp:DropDownList ID="ddlPatientInsurance" runat="server" onchange="AutoSave();" Width="150px"  CssClass="Editabletxtbox">
+                                   </asp:DropDownList>                                                        
+                               </td>
+                              <%--<td colspan="8"></td>--%>
+                          </tr>
                             <tr>
                         <td class="style4" colspan="7" valign="bottom" style="margin: 0px; padding: 0px">
                             <asp:Panel ID="pnlPatientInsuranceList" runat="server" GroupingText="Patient Insurance List" Height="320px"
