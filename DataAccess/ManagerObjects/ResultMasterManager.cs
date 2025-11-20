@@ -4482,21 +4482,34 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //$Muthusamy 
 
 
-        public void UpdateResultMasterListForLab(ulong ResultMasterID, ulong Human_ID, ulong Order_ID, ulong Matching_Patient_ID, string PhysicianNPI, bool bCheck, string MacAddress, ulong ulAutoPhyID, string sModifiedBy)
+        public void UpdateResultMasterListForLab(ulong ResultMasterID, ulong Human_ID, ulong Order_ID, ulong Matching_Patient_ID, string PhysicianNPI, bool bCheck, string MacAddress, ulong ulAutoPhyID, string sModifiedBy, string sLegalOrg)
         {
 
             PhysicianManager phyMngr = new PhysicianManager();
             IList<PhysicianLibrary> Phylst = phyMngr.GetPhysicianByNPI(PhysicianNPI);
             UserManager userMngr = new UserManager();
             IList<User> userList = new List<User>();
+            IList<User> tempuserList = new List<User>();
             //Jira CAP-3251
             ulong ulMatchingPhysicianId = 0;
             if (Phylst.Count > 0)
-                userList = userMngr.GetUserbyPhysicianLibraryID(Phylst[0].Id);
+            {
+                foreach (PhysicianLibrary phy in Phylst)
+                {
+                    tempuserList = new List<User>();
+                    tempuserList = userMngr.GetUserbyPhysicianLibraryID(phy.Id);
+                    if (tempuserList.FirstOrDefault().Legal_Org == sLegalOrg)
+                    {
+                        userList = tempuserList;
+                    }
+                }
+                
+            }
             string Current_Owner = "";
             if (Phylst.Count > 0)
             {
-                IList<User> ResultList = userList.Where(a => a.Physician_Library_ID == Phylst[0].Id).ToList<User>();
+                //IList<User> ResultList = userList.Where(a => a.Physician_Library_ID == Phylst[0].Id).ToList<User>();
+                IList<User> ResultList = userList;
                 if (ResultList.Count > 0)
                 {
                     Current_Owner = ResultList[0].user_name;
@@ -4506,6 +4519,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 else
                 {
                     userList = userMngr.GetUserbyPhysicianLibraryID(ulAutoPhyID);
+                    userList = userList.Where(x => x.Legal_Org == sLegalOrg).ToList();
                     Current_Owner = userList[0].user_name;
                     //Jira CAP-3251
                     ulMatchingPhysicianId = ulAutoPhyID;
@@ -4618,7 +4632,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         }
 
-        public void UpdateResultMasterAndWf_Object(ulong ResultMasterID, ulong order_Submit_ID, ulong Human_ID, string NPINumber, string MacAddress,string sModifiedBy)
+        public void UpdateResultMasterAndWf_Object(ulong ResultMasterID, ulong order_Submit_ID, ulong Human_ID, string NPINumber, string MacAddress,string sModifiedBy,string sLegalOrg)
         {
             //CAP-3187
             //PhysicianManager phyMngr = new PhysicianManager();
@@ -4631,8 +4645,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //{
             //IList<User> ResultList = userMngr.GetUserbyPhysicianLibraryID(Phylst[0].Id).ToList<User>();
             IList<User> ResultList = userMngr.GetUserbyPhysicianNPI(NPINumber);
-                if (ResultList !=null) { 
-                Current_Owner = ResultList[0].user_name;
+            if (ResultList != null)
+            {
+                //Current_Owner = ResultList[0].user_name;
+                Current_Owner = ResultList.Where(x => x.Legal_Org == sLegalOrg).ToList()[0].user_name;
             }
 
             // }

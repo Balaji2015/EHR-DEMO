@@ -1210,12 +1210,12 @@ namespace Acurus.Capella.UI
             string Val = string.Empty;
             if (!chkNoOrders)
             {
-                resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt64(HumanID), NPINumbers, string.Empty, ClientSession.UserName);
+                resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt64(HumanID), NPINumbers, string.Empty, ClientSession.UserName, ClientSession.LegalOrg);
                 Val = "7100010";
             }
             else if (chkNoOrders)
             {
-                resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(HumanID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt32(Matching_Patient_ID), NPINumbers, bCheck, string.Empty, ulAutoPhysID, ClientSession.UserName);
+                resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(HumanID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt32(Matching_Patient_ID), NPINumbers, bCheck, string.Empty, ulAutoPhysID, ClientSession.UserName, ClientSession.LegalOrg);
                 Val = "7100010";
             }
             return JsonConvert.SerializeObject(Val);
