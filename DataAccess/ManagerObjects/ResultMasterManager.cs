@@ -4648,7 +4648,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (ResultList != null)
             {
                 //Current_Owner = ResultList[0].user_name;
-                Current_Owner = ResultList.Where(x => x.Legal_Org == sLegalOrg).ToList()[0].user_name;
+                ResultList = ResultList.Where(x => x.Legal_Org == sLegalOrg).ToList();
+                Current_Owner = ResultList[0].user_name;
             }
 
             // }
