@@ -314,7 +314,7 @@ Deploy PRODUCTION Job 10.1.0.11 :
   - echo "Backup CMG..Completed.."
   
   - echo "Deployee CMG..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\CMG\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
   - echo "Deployee CMG..Completed.."
 
 
