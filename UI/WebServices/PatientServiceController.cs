@@ -375,6 +375,10 @@ namespace Acurus.Capella.UI.WebServices.API
             {
                 return "Birth_Date is not present in the request.";
             }
+            else if (ValidateDateFormate(objHuman.Birth_Date.ToString()))
+            {
+                return "Birth_Date is invalid in the request.";
+            }
             else if (objHuman.Birth_Date > localTime)
             {
                 return "Birth_Date can not be a future date.";
@@ -528,6 +532,10 @@ namespace Acurus.Capella.UI.WebServices.API
                 if (objHuman.Guarantor_Birth_Date == null || objHuman.Guarantor_Birth_Date == DateTime.MinValue)
                 {
                     return "Guarantor_Birth_Date is not present in the request.";
+                }
+                else if (ValidateDateFormate(objHuman.Guarantor_Birth_Date.ToString()))
+                {
+                    return "Guarantor_Birth_Date is invalid in the request.";
                 }
                 else if (objHuman.Guarantor_Birth_Date > localTime)
                 {
@@ -745,6 +753,8 @@ namespace Acurus.Capella.UI.WebServices.API
             {
                 if (objHuman.Birth_Date == DateTime.MinValue)
                     return "Birth_Date is not present in the request.";
+                if (ValidateDateFormate(objHuman.Birth_Date.ToString()))
+                    return "Birth_Date is invalid in the request.";
                 if (objHuman.Birth_Date > localTime)
                     return "Birth_Date can not be future date.";
             }
@@ -890,6 +900,10 @@ namespace Acurus.Capella.UI.WebServices.API
                 if (objHuman.Guarantor_Birth_Date == null || objHuman.Guarantor_Birth_Date == DateTime.MinValue)
                 {
                     return "Guarantor_Birth_Date is not present in the request.";
+                }
+                else if (ValidateDateFormate(objHuman.Guarantor_Birth_Date.ToString()))
+                {
+                    return "Guarantor_Birth_Date is invalid in the request.";
                 }
                 else if (objHuman.Guarantor_Birth_Date > localTime)
                 {
@@ -1046,6 +1060,11 @@ namespace Acurus.Capella.UI.WebServices.API
             #endregion
 
             return "";
+        }
+
+        public bool ValidateDateFormate(string stringDate)
+        {
+            return DateTime.TryParseExact(stringDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out _);
         }
 
         private bool VerifyToken()
