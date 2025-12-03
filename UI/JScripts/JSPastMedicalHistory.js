@@ -1580,16 +1580,15 @@ function SaveProblemHistory() {
             if (xhr.status == 999)
                 window.location = "/frmSessionExpired.aspx";
             else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                //alert("USER MESSAGE:\n" +
-                //                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                //                   "Message: " + log.Message);
-
-                window.location = "ErrorPage.aspx?Message=" + log.Message + "|$|" + log.StackTrace;;
-
-
-
+                //CAP-3828
+                if (isValidJSON(xhr.responseText)) {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    window.location = "ErrorPage.aspx?Message=" + log.Message + "|$|" + log.StackTrace;
+                }
+                else {
+                    alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${xhr.responseText}`);
+                }
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }

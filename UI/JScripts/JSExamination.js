@@ -1550,20 +1550,22 @@ function LoadControl(LoadType, type) {
                         }
                     }
                     else { j = 0; }
+                    //CAP-3542
                     if (objdata[i].Condition_Name != "") {
-                        if ($("#tblExam tr").find("label:contains('" + objdata[i].Condition_Name + "')")[j].parentNode.nextElementSibling.children[0] != undefined) {
-                            $("#tblExam tr").find("label:contains('" + objdata[i].Condition_Name + "')")[j].parentNode.nextElementSibling.children[0].value = objdata[i].Status;
+                        var element = $("#tblExam tr").find("label:contains('" + objdata[i].Condition_Name + "')")[j]?.parentNode?.nextElementSibling?.children;
+                        if (element?.length > 0 && element[0] != undefined) {
+                            element[0].value = objdata[i].Status;
                             if (objdata[i].Status == "Not Examined") {
-                                $("#tblExam tr").find("label:contains('" + objdata[i].Condition_Name + "')")[j].parentNode.nextElementSibling.children[0].selectedIndex = 0;
+                                element[0].selectedIndex = 0;
                             }
                             else if (objdata[i].Status == "Examined") {
-                                $("#tblExam tr").find("label:contains('" + objdata[i].Condition_Name + "')")[j].parentNode.nextElementSibling.children[0].selectedIndex = 1;
+                                element[0].selectedIndex = 1;
                             }
                             else if (objdata[i].Status == "No Abnormality Detected(NAD)") {
-                                $("#tblExam tr").find("label:contains('" + objdata[i].Condition_Name + "')")[j].parentNode.nextElementSibling.children[0].selectedIndex = 2;
+                                element[0].selectedIndex = 2;
                             }
                             else if (objdata[i].Status == "Abnormal") {
-                                $("#tblExam tr").find("label:contains('" + objdata[i].Condition_Name + "')")[j].parentNode.nextElementSibling.children[0].selectedIndex = 3;
+                                element[0].selectedIndex = 3;
 
                                 document.getElementById(lbl[j].id).classList.remove('spanstyle');
                                 document.getElementById(lbl[j].id).classList.add('manredforstar');

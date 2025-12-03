@@ -3288,7 +3288,12 @@ namespace Acurus.Capella.UI
                 if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)) || hdnfilepath.Value.Replace(@"\", "") == ConfigurationManager.AppSettings["ExceptionIndexingFilePath"].ToString().Replace(@"\", ""))
                 {
                     string filepath = ilstIndexingExceptionLog.FirstOrDefault().File_Name.Replace("\\\\", "\\");
-                    MoveAndReplace(filepath, filepath.Replace(ConfigurationManager.AppSettings["ExceptionIndexingFilePath"], ConfigurationManager.AppSettings["ImportIndexingFilePath"]));
+
+                    //Jira CAP-3906
+                    if (filepath != "" && File.Exists(filepath))
+                    {
+                        MoveAndReplace(filepath, filepath.Replace(ConfigurationManager.AppSettings["ExceptionIndexingFilePath"], ConfigurationManager.AppSettings["ImportIndexingFilePath"]));
+                    }
                 }
             }
             catch (Exception ex)

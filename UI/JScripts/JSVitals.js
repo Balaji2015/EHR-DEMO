@@ -2360,8 +2360,11 @@ function OnVitalsLoad() {
     showhidBP();
     enabledisableBMI();
     $("#txtNotesHeight_txtDLC,#txtNotesWeight_txtDLC").on('keyup', function (e) {
-        document.getElementById('txtNotesBMI_txtDLC').value = "";
-        var notes = document.getElementById('txtNotesBMI_txtDLC').value
+        var notes = "";
+        //CAP-3972
+        if (document?.getElementById('txtNotesBMI_txtDLC') != undefined && document?.getElementById('txtNotesBMI_txtDLC') != null) {
+            document.getElementById('txtNotesBMI_txtDLC').value = "";
+        }
         if (document.getElementById('Weight').value == "") {
             var heightnotes = document.getElementById('txtNotesWeight_txtDLC').value.split(',');
             var resason = document.getElementById('hdnreason').value.split('~');

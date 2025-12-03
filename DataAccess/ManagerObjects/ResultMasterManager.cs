@@ -4498,7 +4498,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     tempuserList = new List<User>();
                     tempuserList = userMngr.GetUserbyPhysicianLibraryID(phy.Id);
-                    if (tempuserList.FirstOrDefault().Legal_Org == sLegalOrg)
+                    if (tempuserList != null && tempuserList.Count > 0 && tempuserList.FirstOrDefault().Legal_Org == sLegalOrg)
                     {
                         userList = tempuserList;
                     }
@@ -4520,7 +4520,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     userList = userMngr.GetUserbyPhysicianLibraryID(ulAutoPhyID);
                     userList = userList.Where(x => x.Legal_Org == sLegalOrg).ToList();
-                    Current_Owner = userList[0].user_name;
+                    Current_Owner = (userList != null && userList.Count > 0) ? userList[0].user_name : "";
                     //Jira CAP-3251
                     ulMatchingPhysicianId = ulAutoPhyID;
                 }
@@ -4649,7 +4649,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 //Current_Owner = ResultList[0].user_name;
                 ResultList = ResultList.Where(x => x.Legal_Org == sLegalOrg).ToList();
-                Current_Owner = ResultList[0].user_name;
+                Current_Owner = (ResultList.Count > 0 && ResultList?.FirstOrDefault()?.user_name != null) ? ResultList?.FirstOrDefault()?.user_name : "";
             }
 
             // }
@@ -4666,7 +4666,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //Jira CAP-3251
                 if (objResultMaster.Matching_Physician_Id == 0)
                 {
-                    objResultMaster.Matching_Physician_Id = ResultList.FirstOrDefault().Physician_Library_ID;
+                    objResultMaster.Matching_Physician_Id = (ResultList.Count > 0 && ResultList?.FirstOrDefault()?.Physician_Library_ID != null) ? ResultList.FirstOrDefault().Physician_Library_ID : 0;
                 }
             }
             IList<ResultMaster> ilstSaveList = new List<ResultMaster>();

@@ -155,7 +155,10 @@ function btnSearch_Clicked(sender, args) {
 
     if ($telerik.findDatePicker("frmDate")._element.value != "" && $telerik.findDatePicker("toDate")._element.value == "") {//BugID:46054
         DisplayErrorMessage('7100015');
-        sender.set_autoPostBack(false);
+        //CAP-3978
+        if (sender != undefined && sender != null) {
+            sender.set_autoPostBack(false);
+        }
     }
     else {
         //Jira Cap - 3206
