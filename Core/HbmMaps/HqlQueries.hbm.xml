@@ -12457,7 +12457,22 @@ order by H.Human_ID,H.Birth_Date,A.Authorization_id]]>
 
 
 	<sql-query name="Get.GetProcedureOrderSearch">
-		<![CDATA[SELECT '' AS Facility_Name,cast(O.Created_Date_And_Time as char(100))as Arrivaldate,O.Human_ID,
+		<!--<![CDATA[SELECT '' AS Facility_Name,cast(O.Created_Date_And_Time as char(100))as Arrivaldate,O.Human_ID,
+    concat(h.Last_Name,",",h.First_Name," ",h.MI),cast(h.Birth_Date as CHAR(100)) as BirthDate,O.Physician_ID,
+    group_concat(concat(O.Procedure_Code,'-',O.Procedure_Code_Description) separator ';'),concat(p.Physician_Prefix,
+    "",p.Physician_First_Name,"",p.Physician_Middle_Name,"",p.Physician_Last_Name,"",p.Physician_Suffix),O.in_house_procedure_ID FROM `in_house_procedure` O,Physician_Library p,
+    Human h where O.human_id=h.human_id and O.Encounter_ID = 0 AND
+    O.physician_id=p.Physician_Library_ID and o.human_id LIKE ? and O.Physician_ID LIKE ? and O.Created_Date_And_Time between ? and ?
+    group by O.In_House_Procedure_Group_ID
+    UNION ALL
+    SELECT e.Facility_Name,cast(O.Created_Date_And_Time as char(100))as Arrivaldate,O.Human_ID,
+    concat(h.Last_Name,",",h.First_Name," ",h.MI),cast(h.Birth_Date as CHAR(100)) as BirthDate,O.Physician_ID,
+    group_concat(concat(O.Procedure_Code,'-',O.Procedure_Code_Description) separator ';'),concat(p.Physician_Prefix,
+    "",p.Physician_First_Name,"",p.Physician_Middle_Name,"",p.Physician_Last_Name,"",p.Physician_Suffix),O.in_house_procedure_ID FROM `in_house_procedure` O,Physician_Library p,
+    Human h,encounter e where O.human_id=h.human_id and e.encounter_id=O.encounter_id and O.physician_id=p.Physician_Library_ID and o.human_id LIKE ? AND O.Physician_ID LIKE ? and O.Physician_ID LIKE ? and O.Created_Date_And_Time between ? and ?
+    group by O.In_House_Procedure_Group_ID;]]>-->
+
+		<![CDATA[SELECT o.Facility_Name AS Facility_Name,cast(O.Created_Date_And_Time as char(100))as Arrivaldate,O.Human_ID,
     concat(h.Last_Name,",",h.First_Name," ",h.MI),cast(h.Birth_Date as CHAR(100)) as BirthDate,O.Physician_ID,
     group_concat(concat(O.Procedure_Code,'-',O.Procedure_Code_Description) separator ';'),concat(p.Physician_Prefix,
     "",p.Physician_First_Name,"",p.Physician_Middle_Name,"",p.Physician_Last_Name,"",p.Physician_Suffix),O.in_house_procedure_ID FROM `in_house_procedure` O,Physician_Library p,
