@@ -5821,11 +5821,15 @@ namespace Acurus.Capella.UI
 
             if (checkActivityLogList.Count > 0)
             {
+                //Cap - 3950
+                hdnSummaryCareAlreadyImported.Value = "true";
                 Session["SummaryCareAlreadyImported"] = true;
                 return;
             }
             else
             {
+                //Cap - 3950
+                hdnSummaryCareAlreadyImported.Value = "false";
                 Session["SummaryCareAlreadyImported"] = false;
             }
 
@@ -5875,6 +5879,12 @@ namespace Acurus.Capella.UI
 
         protected void btnOK_Click(object sender, EventArgs e)
         {
+            //Cap - 3950
+            if (Session["SummaryCareAlreadyImported"] != null && (bool)Session["SummaryCareAlreadyImported"])
+            {
+                return;
+            }
+
             sReturn = Session["sReturn"].ToString();
             string[] shumEncSplit = sReturn.Split('_');
             IList<ActivityLog> ActivityLogList = new List<ActivityLog>();

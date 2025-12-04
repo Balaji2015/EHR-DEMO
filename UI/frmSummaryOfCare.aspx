@@ -106,11 +106,19 @@
         }
 
         function btnOK_ClientClick(sender, args) {
-            DisplayErrorMessage('115018');
-            var win = GetRadWindow();
-            win.SetUrl('frmClinicalInformation.aspx?XMLPath=' + document.getElementById('hdnXMLPath').value + "&HumanID=" + document.getElementById('hdnHumanID').value + "&DateofService=" + document.getElementById('hdnDateOfService').value);
-            win.SetSize(1240, 900);
-            win.center();
+            //Cap - 3950
+            if (document.getElementById("hdnSummaryCareAlreadyImported").value == "true") {
+                DisplayErrorMessage('115071');
+                return false;
+            }
+            else {
+                DisplayErrorMessage('115018');
+                var win = GetRadWindow();
+                win.SetUrl('frmClinicalInformation.aspx?XMLPath=' + document.getElementById('hdnXMLPath').value + "&HumanID=" + document.getElementById('hdnHumanID').value + "&DateofService=" + document.getElementById('hdnDateOfService').value);
+                win.SetSize(1240, 900);
+                win.center();
+                return true;
+            }
           
         }
 
@@ -179,7 +187,7 @@
                                 <table>
                                     <tr>
                                         <td align="right">
-                                            <telerik:RadButton ID="btnOK" Text="Reconcile" AutoPostBack="true" runat="server" Visible="false"
+                                            <telerik:RadButton ID="btnOK" Text="Reconcile" runat="server" Visible="false"
                                                 OnClientClicked="btnOK_ClientClick" OnClick="btnOK_Click" ButtonType="LinkButton" CssClass="greenbutton">
                                             </telerik:RadButton>
                                         </td>
@@ -276,6 +284,7 @@
                     <asp:HiddenField ID="hdnHumanID" runat="server" />
                     <asp:HiddenField ID="hdnXMLPath" runat="server" />
                     <asp:HiddenField ID="hdnDateOfService" runat="server" />
+                    <asp:HiddenField ID="hdnSummaryCareAlreadyImported" runat="server" />
                     <%--<asp:Button ID="btnIVfindpatient" runat="server" Text="Button" onclientclick="ShowLoading();" onclick="btnIVfindpatient_Click" CssClass="displayNone"/>--%>
                 </telerik:RadAjaxPanel>
             </div>
