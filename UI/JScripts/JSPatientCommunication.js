@@ -1920,3 +1920,16 @@ function StartLoadingcursor() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     return true;
 }
+
+
+function OpenManageTasksClick() {
+    var FindHumanID = document.getElementById(GetClientId("txtAccount")).value;
+    var manageTasksURL = document.getElementById('hdnAkidoManageTasks').value.replace("[CapellaHumanID]", FindHumanID);
+    $('#resultLoading').css("display", "none");
+
+    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+
+    window.open(manageTasksURL, '_blank');
+
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+}

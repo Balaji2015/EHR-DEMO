@@ -339,11 +339,14 @@ namespace Acurus.Capella.UI
                 if (userAkidoCreateTask.ToList().Count > 0)
                 {
                     btnAkidoCreateTask.Visible = true;
+                    btnAkidoManageTasks.Visible = true;
                     hdnAkidoCreateTask.Value = System.Configuration.ConfigurationSettings.AppSettings["AkidoCreateTaskURL"];
+                    hdnAkidoManageTasks.Value = System.Configuration.ConfigurationSettings.AppSettings["AkidoManageTasksURL"];
                 }
                 else
                 {
                     btnAkidoCreateTask.Visible = false;
+                    btnAkidoManageTasks.Visible = false;
                 }
             }
             if (txtAccount.Text == "0")
