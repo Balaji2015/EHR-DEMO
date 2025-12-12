@@ -171,7 +171,7 @@ function btnSave_Clicked() {
     var e = $("#PatientDetails")[0].className;
     if ("patientPaneEnabled" == e) return DisplayErrorMessage("390006"), $("#hdnPageState").val(""), !1;
     if ($("#tbFilesBody tr.highlight").length == 0) {
-        document.getElementById('divLoading').style.display = "none";
+        StopLoading();
         StopLoadOnUploadFile();
         DisplayErrorMessage("114017");
         return false;
@@ -190,23 +190,23 @@ function btnSave_Clicked() {
         });
         if (!success) {
             alert('The selected file can not be indexed as the file has the special character such as #.Please rename the file and retry again.');
-            document.getElementById('divLoading').style.display = "none";
+            StopLoading();
             StopLoadOnUploadFile();
             return false;
         }
     }
     var t = $("#cboDocumentType :selected").text();
-    if ("" == t) return DisplayErrorMessage("115043"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
+    if ("" == t) return DisplayErrorMessage("115043"), StopLoading(), $("#hdnPageState").val(""), !1;
     var n = $("#cboDocumentSubType :selected").text();
-    if ("" == n) return DisplayErrorMessage("115044"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
+    if ("" == n) return DisplayErrorMessage("115044"), StopLoading(), $("#hdnPageState").val(""), !1;
     if (t.toUpperCase() == "ENCOUNTERS") {
         //Cap - 1290
         //if ($("#ddEncPhyName")[0].options.length == 1) return DisplayErrorMessage("115063"), document.getElementById('divLoading').style.display = "none", !1;
-        if ($("#ddEncPhyName")[0].options.length == 1) return DisplayErrorMessage("115063"), document.getElementById("IsClickDirectUpload").value = "No", document.getElementById('divLoading').style.display = "none", !1;
+        if ($("#ddEncPhyName")[0].options.length == 1) return DisplayErrorMessage("115063"), document.getElementById("IsClickDirectUpload").value = "No", StopLoading(), !1;
         var vEncPhyName = $("#ddEncPhyName :selected").text();
         //Cap - 1290
         //if ("" == vEncPhyName) return DisplayErrorMessage("115064"), document.getElementById('divLoading').style.display = "none", !1;
-        if ("" == vEncPhyName) return DisplayErrorMessage("115064"), document.getElementById("IsClickDirectUpload").value = "No", document.getElementById('divLoading').style.display = "none", !1;
+        if ("" == vEncPhyName) return DisplayErrorMessage("115064"), document.getElementById("IsClickDirectUpload").value = "No", StopLoading(), !1;
 
     }
     var a = $("#txtSelectedPages").val(),
@@ -252,7 +252,7 @@ function btnSave_Clicked() {
     if ($("#tbFilesBody tr.highlight").length > 0)
         document.getElementById("hdnsourceFile").value = $("#tbFilesBody tr.highlight")[0].cells[2].innerText;
 
-    return ShowLoading(), $("#hdnPageState").val("default"), !0
+    return StartLoading(), $("#hdnPageState").val("default"), !0
 }
 
 function txtSelectedPages_OnKeyPress() {
@@ -272,9 +272,6 @@ function DeleteGrid() {
     } else args._cancel = !0
 }
 
-function ShowLoading() {
-    document.getElementById("divLoading").style.display = "block"
-}
 function seteditflag() {
     document.getElementById("hdnIsEditgrid").value = "true";
 }
@@ -283,16 +280,16 @@ function changeDocuments() {
 }
 
 function PatientClick() {
-    ShowLoading()
+    StartLoading()
 }
 
 function ProcedureClick() {
-    ShowLoading()
+    StartLoading()
 }
 
 function MoveToNextProcess(e) {
     var t = DisplayErrorMessage("115019", "Indexing", e);
-    1 == t && (ShowLoading(), document.getElementById("InvisibleButton").click())
+    1 == t && (StartLoading(), document.getElementById("InvisibleButton").click())
 }
 
 function CloseAndDisplayAlert() {
@@ -307,6 +304,14 @@ function GetEndLocalTime() {
     document.getElementById(GetClientId("hdnEndLocalTime")).value = GetLocalTime(), document.getElementById(GetClientId("hdnNextDateAndTime")).value = GetLocalTime()
 }
 
+function StartLoading() {
+    sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
+}
+
+function StopLoading() {
+    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+}
+
 function btnMoveToNextProcess_Clicked() {
     //CAP-1516
     if (localStorage.getItem('IsClearAllClick') == null && localStorage.getItem('IsClearAllClick') == "") {
@@ -315,11 +320,11 @@ function btnMoveToNextProcess_Clicked() {
     localStorage.removeItem('IsClearAllClick');
     if (document.getElementById("hdnIsMyScan").value == "" && document.getElementById("grdIndexing").rows.length == 1) {
         var e = $("#PatientDetails")[0].className;
-        if ("patientPaneEnabled" == e) return DisplayErrorMessage("390006"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
+        if ("patientPaneEnabled" == e) return DisplayErrorMessage("390006"), StopLoading(), $("#hdnPageState").val(""), !1;
         var t = $("#cboDocumentType :selected").text();
-        if ("" == t) return DisplayErrorMessage("115043"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
+        if ("" == t) return DisplayErrorMessage("115043"), StopLoading(), $("#hdnPageState").val(""), !1;
         var n = $("#cboDocumentSubType :selected").text();
-        if ("" == n) return DisplayErrorMessage("115044"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
+        if ("" == n) return DisplayErrorMessage("115044"), StopLoading(), $("#hdnPageState").val(""), !1;
     }
 
     if (document.getElementById("grdIndexing").rows.length > 1) {
@@ -333,7 +338,7 @@ function btnMoveToNextProcess_Clicked() {
                 return false;
             }
             if ($("#tbFilesBody tr.highlight").length == 0) {
-                document.getElementById('divLoading').style.display = "none";
+                StopLoading();
                 StopLoadOnUploadFile();
                 DisplayErrorMessage("114017");
                 return false;
@@ -345,14 +350,14 @@ function btnMoveToNextProcess_Clicked() {
 
                     document.getElementById("hdnsourceFile").value = $("#tbFilesBody tr.highlight")[0].cells[2].innerText;
                     //For myscan direct upload take only grid line items.
-                    ShowLoading();
+                    StartLoading();
                     document.getElementById("btnHDNMoveToNextProcess").click();
                     localStorage.setItem('IsSaveClickedSucessfull', "");
 
                 }
                 else {
                     if (localStorage.getItem('IsSaveClickedSucessfull') == null || localStorage.getItem('IsSaveClickedSucessfull') == "") {
-                        ShowLoading();
+                        StartLoading();
                         //CAP-1816
                         document.getElementById("IsClickDirectUpload").value = "Yes";
                         document.getElementById("btnSave").disabled = false;
@@ -363,7 +368,7 @@ function btnMoveToNextProcess_Clicked() {
             }
             if (document.getElementById("hdnIsMyScan").value != "true") {
                 if (localStorage.getItem('IsSaveClickedSucessfull') != null && localStorage.getItem('IsSaveClickedSucessfull') != "" && localStorage.getItem('IsSaveClickedSucessfull') == "Success") {
-                    ShowLoading();
+                    StartLoading();
                     document.getElementById("btnHDNMoveToNextProcess").click();
                     localStorage.setItem('IsSaveClickedSucessfull', "");
                 }
@@ -375,7 +380,7 @@ function btnMoveToNextProcess_Clicked() {
     }
     else {//This part for direct move to next process//For Bug Id 58541 
         if ($("#tbFilesBody tr.highlight").length == 0) {
-            document.getElementById('divLoading').style.display = "none";
+            StopLoading();
             StopLoadOnUploadFile();
             DisplayErrorMessage("114017");
             return false;
@@ -390,7 +395,7 @@ function btnMoveToNextProcess_Clicked() {
             }
         }
         if (localStorage.getItem('IsSaveClickedSucessfull') == "Success") {
-            ShowLoading();
+            StartLoading();
             document.getElementById("btnHDNMoveToNextProcess").click();
             localStorage.setItem('IsSaveClickedSucessfull', "");
         }
@@ -677,7 +682,7 @@ function getLocalDate() {
 
 function confirmDelete() {
     if (confirm("Are you sure you want to delete this?")) {
-        ShowLoading();
+        StartLoading();
         $("#txtSelectedPages").val("");
         $("#dtpSpecCollection").val("");
         $("#OrdersPanel :input").attr("disabled", !0);
@@ -917,11 +922,11 @@ function ViewPDF() {
 
 function displayAlert() {
     DisplayErrorMessage("115056");
-    document.getElementById('divLoading').style.display = "none";
+    StopLoading();
 }
 function displaySelectedPagesAlert() {
     DisplayErrorMessage("115045");
-    document.getElementById('divLoading').style.display = "none";
+    StopLoading();
 }
 
 function StopLoadOnUploadFile() {
