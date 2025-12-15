@@ -112,7 +112,7 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
         DisplayErrorMessage('1011191');
 
             var role = document.getElementById('hdnRole').Value;
-            var WSData = "{\"encounter_id\":\"" + leaf[0].id.split('^')[1] + "\"}";
+        var WSData = "{\"encounter_id\":\"" + leaf[0].id.split('^')[1] + "\", \"isFromBulkAccess\":\"" + false + "\"}";
             document.getElementById('hdnEncounterId').value = leaf[0].id.split('^')[1];
             $.ajax({
                 type: "POST",

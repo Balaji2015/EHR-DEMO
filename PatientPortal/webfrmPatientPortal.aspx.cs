@@ -32,7 +32,7 @@ namespace Acurus.Capella.PatientPortal
         bool bZip = false;
 
         [System.Web.Services.WebMethod]
-        public static string showreport(string encounter_id)
+        public static string showreport(string encounter_id, bool isFromBulkAccess = false)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -126,9 +126,17 @@ namespace Acurus.Capella.PatientPortal
                 //  btnDownload.Enabled = true;
                 //imgmessage.Disabled = false;
             }
-            //Cap - 3616
-            //return "Success$" + PDFPath;
-            return PDFPath;
+            //CAP-4016
+            if (!isFromBulkAccess)
+            {
+                return "Success$" + PDFPath;
+            }
+            else
+            {
+                //Cap - 3616
+                //return "Success$" + PDFPath;
+                return PDFPath;
+            }
         }
 
         protected void btnShowReport_Click(object sender, EventArgs e)
