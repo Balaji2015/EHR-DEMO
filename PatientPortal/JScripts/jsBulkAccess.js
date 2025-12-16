@@ -151,7 +151,7 @@ $("#SummaryList input[type=checkbox]").change(function () {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         debugger;
         var EncId = $(this)[0].parentNode.attributes.getNamedItem("hdnId").value;
-        var WSData = "{\"encounter_id\":\"" + EncId + "\"}";
+        var WSData = "{\"encounter_id\":\"" + EncId + "\", \"isFromBulkAccess\":\"" + true + "\"}";
         //document.getElementById('hdnEncounterId').value = leaf[0].id.split('^')[1];
         $.ajax({
             type: "POST",

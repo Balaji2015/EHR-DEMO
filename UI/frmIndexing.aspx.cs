@@ -701,7 +701,8 @@ namespace Acurus.Capella.UI
                     cboDocumentType.SelectedIndex = 0;
                 }
                 cboDocumentSubType.Items.Clear();
-                divLoading.Style.Add("display", "none");
+                //divLoading.Style.Add("display", "none");
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
                 waitCursor.Update();
                 upIndexingDetails.Update();
                 return;
@@ -1241,7 +1242,8 @@ namespace Acurus.Capella.UI
             }
 
             #endregion
-            divLoading.Style.Add("display", "none");
+            //divLoading.Style.Add("display", "none");
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
             waitCursor.Update();
             upIndexingDetails.Update();
             chkExternalMedicalRecord.Checked = false;
@@ -1346,9 +1348,9 @@ namespace Acurus.Capella.UI
             }
             if (hdnHumanID.Value == "")// || PatientDetails.Text == "")
             {
-                divLoading.Style.Add("display", "none");
+                //divLoading.Style.Add("display", "none");
                 //CAP-1295
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "HUmanID", "document.getElementById('divLoading').style.display = 'none'; StopLoadOnUploadFile();DisplayErrorMessage('390006');", true);
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "HUmanID", "StopLoading(); StopLoadOnUploadFile();DisplayErrorMessage('390006');", true);
                 return;
             }
             file_name = new StringBuilder();
@@ -1387,14 +1389,14 @@ namespace Acurus.Capella.UI
 
                 if (cboOrderPhysician.SelectedIndex == 0)
                 {
-                    divLoading.Style.Add("display", "none");
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "document.getElementById('divLoading').style.display = 'none'; StopLoadOnUploadFile();DisplayErrorMessage('115065');", true);
+                    //divLoading.Style.Add("display", "none");
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "StopLoading(); StopLoadOnUploadFile();DisplayErrorMessage('115065');", true);
                     return;
                 }
                 if (cboPhysician.SelectedIndex == 0)
                 {
-                    divLoading.Style.Add("display", "none");
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "document.getElementById('divLoading').style.display = 'none'; StopLoadOnUploadFile();DisplayErrorMessage('114018');", true);
+                    //divLoading.Style.Add("display", "none");
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "StopLoading(); StopLoadOnUploadFile();DisplayErrorMessage('114018');", true);
                     return;
                 }
             }
@@ -1854,7 +1856,7 @@ namespace Acurus.Capella.UI
             if (IsClickDirectUpload.Value == "Yes")
             {
                 IsClickDirectUpload.Value = "No";
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ClickMovetoNextProcess", "ShowLoading();ClickMovetoNextProcess();", true);
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ClickMovetoNextProcess", "StartLoading();ClickMovetoNextProcess();", true);
             }
             else
             {
@@ -1862,8 +1864,8 @@ namespace Acurus.Capella.UI
                 {
                     LoadDocType();
                 }
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfullyAlert", "document.getElementById('hdnIsEditgrid').value='';localStorage.setItem('IsSaveClickedSucessfull', 'Success');CheckAll();DisplayErrorMessage('114003');", true);
-                divLoading.Style.Add("display", "none");
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfullyAlert", "StopLoading(); document.getElementById('hdnIsEditgrid').value='';localStorage.setItem('IsSaveClickedSucessfull', 'Success');CheckAll();DisplayErrorMessage('114003');", true);
+                //divLoading.Style.Add("display", "none");
             }
             IsClickDirectUpload.Value = "No";
             hdnIsEditgrid.Value = "";
@@ -1914,16 +1916,16 @@ namespace Acurus.Capella.UI
             }
             if (hdnHumanID.Value == "")//|| PatientDetails.Text == "")
             {
-                divLoading.Style.Add("display", "none");
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "HUmanID", "StopLoadOnUploadFile();DisplayErrorMessage('390006');", true);
+                //divLoading.Style.Add("display", "none");
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "HUmanID", "StopLoading(); StopLoadOnUploadFile();DisplayErrorMessage('390006');", true);
                 return;
             }
             file_name = new StringBuilder();
             file_name.Append(hdnsourceFile.Value);//(string)Session["FileName"];
             if (file_name.Length == 0)
             {
-                divLoading.Style.Add("display", "none");
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "StopLoadOnUploadFile();DisplayErrorMessage('114017');", true);
+                //divLoading.Style.Add("display", "none");
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "StopLoading(); StopLoadOnUploadFile();DisplayErrorMessage('114017');", true);
                 return;
             }
             if (Path.GetFileNameWithoutExtension(file_name.ToString()).ToString().Contains((Path.GetExtension(file_name.ToString()))) == true)
@@ -1934,7 +1936,7 @@ namespace Acurus.Capella.UI
             if (Path.GetExtension(file_name.ToString()).ToString().ToUpper() == ".PDF" && Path.GetFileNameWithoutExtension(file_name.ToString()).ToString().Contains("#") == true)
             {
                 //CAP-1556
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile(); document.getElementById('divLoading').style.display = 'none'; alert('The selected file can not be indexed as the file has the special character such as #.Please rename the file and retry again.');", true);
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile(); StopLoading(); alert('The selected file can not be indexed as the file has the special character such as #.Please rename the file and retry again.');", true);
                 return;
             }
 
@@ -2111,7 +2113,8 @@ namespace Acurus.Capella.UI
             btnClearAll.Text = "Reset";
             // cboFromPage.Value = "";
             HideOrders();
-            divLoading.Style.Add("display", "none");
+            //divLoading.Style.Add("display", "none");
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
             waitCursor.Update();
             updateGrid.Update();
         }
@@ -2145,7 +2148,8 @@ namespace Acurus.Capella.UI
                 }
 
             }
-            divLoading.Style.Add("display", "none");
+            //divLoading.Style.Add("display", "none");
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
             waitCursor.Update();
 
         }
@@ -2226,7 +2230,8 @@ namespace Acurus.Capella.UI
                     cboOrderPhysician.SelectedValue = sPhyId.ToString();
                 cboOrderPhysician.Enabled = false;
             }
-            divLoading.Style.Add("display", "none");
+            //divLoading.Style.Add("display", "none");
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
             waitCursor.Update();
             //CAP-2880
             if (chkExternalMedicalRecord.Checked == true)
@@ -3323,7 +3328,8 @@ namespace Acurus.Capella.UI
 
             #endregion
 
-            divLoading.Style.Add("display", "none");
+            //divLoading.Style.Add("display", "none");
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
             waitCursor.Update();
             //Remove the uploaded files from session //This session used for patient portal also.
             if (Session["BrowseLoadList"] != null && ((IList<Scan>)HttpContext.Current.Session["BrowseLoadList"]).Count > 0 && (string)Session["FileName"] != null)
@@ -4672,7 +4678,8 @@ namespace Acurus.Capella.UI
             btnClearAll.Text = "Cancel";
             hdnUpdateMode.Value = "";
             hdnUpdateMode.Value = string.Empty;
-            divLoading.Style.Add("display", "none");
+            //divLoading.Style.Add("display", "none");
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
             waitCursor.Update();
 
             //Cap - 1294
@@ -5145,7 +5152,8 @@ namespace Acurus.Capella.UI
                 PatientDetails.Attributes.Add("class", "patientPaneEnabled");
             }
 
-            divLoading.Style.Add("display", "none");
+            //divLoading.Style.Add("display", "none");
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
             waitCursor.Update();
 
             if (cboIs_Interperated.Items != null && cboIs_Interperated.Items.Count > 0)

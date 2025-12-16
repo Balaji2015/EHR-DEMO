@@ -47,7 +47,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     List<CDCDuplicateHumanTracker> listCDCDuplicateHumanTracker = new List<CDCDuplicateHumanTracker>();
                     listCDCDuplicateHumanTracker.Add(new CDCDuplicateHumanTracker()
                     {
-                        Human_ID = 0,
+                        Human_ID = CheckHuman?.HumanDetails?.Id ?? 0,
                         Error_Description = "Duplicate patient exists.",
                         Status = "Error",
                         Created_By = created_By,
@@ -56,7 +56,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     CDCDuplicateHumanTrackerManager cDCDuplicateHumanTrackerManager = new CDCDuplicateHumanTrackerManager();
                     cDCDuplicateHumanTrackerManager.SaveCDCDuplicateHumanTrackerWithTransaction(listCDCDuplicateHumanTracker, string.Empty);
 
-                    return Json(new { HumanID = 0, status = "ValidationError", ErrorDescription = "Duplicate patient exists." });
+                    return Json(new { HumanID = 0, DuplicatePatientID = CheckHuman?.HumanDetails?.Id, status = "ValidationError", ErrorDescription = "Duplicate patient exists." });
                 }
 
                 PatGuarantor objPatguarantor = new PatGuarantor();
@@ -238,15 +238,15 @@ namespace Acurus.Capella.UI.WebServices.API
                     if (medical_Record_Number.ToUpper() != humanData.Medical_Record_Number.ToUpper()
                         && patient_Account_External.ToUpper() != humanData.Patient_Account_External.ToUpper())
                     {
-                        CheckHuman = humanManager.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, medical_Record_Number, patient_Account_External, ClientSession.LegalOrg);
+                        CheckHuman = humanManager.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, medical_Record_Number, patient_Account_External, humanData.Legal_Org);
                     }
                     if (medical_Record_Number.ToUpper() != humanData.Medical_Record_Number.ToUpper() && CheckHuman.MedicalRecordNoList == true)
                     {
-                        return Json(new { HumanID = humanData.Id, status = "ValidationError", ErrorDescription = "Medical Record # already exists." });
+                        return Json(new { HumanID = humanData.Id, DuplicatePatientID = CheckHuman?.ulMedicalRecordID, status = "ValidationError", ErrorDescription = "Medical Record # already exists." });
                     }
                     if (patient_Account_External.ToUpper() != humanData.Patient_Account_External.ToUpper() && CheckHuman.Patient_Account_External == true)
                     {
-                        return Json(new { HumanID = humanData.Id, status = "ValidationError", ErrorDescription = "External Account # already exists." });
+                        return Json(new { HumanID = humanData.Id, DuplicatePatientID = CheckHuman?.ulPatientAccountExternalID, status = "ValidationError", ErrorDescription = "External Account # already exists." });
                     }
                 }
 

@@ -1598,6 +1598,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (criteria1.List<Human>().Count > 0)
                     {
                         CheckhumanDTO.Patient_Account_External = true;
+                        CheckhumanDTO.ulPatientAccountExternalID = criteria1.List<Human>()[0].Id;
                     }
                     else
                     {

@@ -16,6 +16,7 @@ namespace Acurus.Capella.Core.DTO
         private bool _Patient_Account_External;
         private InsurancePlan _InsuranceDetails;
         private ulong _ulMedicalRecordID;
+        private ulong _ulPatientAccountExternalID;
         private string _InsuranceCopy = string.Empty;
         private string _PatientInfo = string.Empty;
         private string _EligiblityVerified = string.Empty;
@@ -105,6 +106,12 @@ namespace Acurus.Capella.Core.DTO
         {
             get { return _ulMedicalRecordID; }
             set { _ulMedicalRecordID = value; }
+        }
+        [DataMember]
+        public virtual ulong ulPatientAccountExternalID
+        {
+            get { return _ulPatientAccountExternalID; }
+            set { _ulPatientAccountExternalID = value; }
         }
         [DataMember]
         public virtual InsurancePlan InsuranceDetails

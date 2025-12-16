@@ -365,15 +365,15 @@ namespace Acurus.Capella.PatientPortal
                 //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
                 xmlReqNode[0].Attributes[0].Value = "tel:" + "(111) 111-1111";
 
-
-            if (ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
+            //CAP-4019
+            if (ClinicalSummary.HumanList.Count > 0 && ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
                 xmlReqNode[1].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Work_Phone_No;
             else
                 //For BugID : 28462
                 //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
                 xmlReqNode[1].Attributes[0].Value = "tel:" + "(111) 111-1111";
-
-            if (ClinicalSummary.HumanList[0].Cell_Phone_Number != string.Empty)
+            //CAP-4019
+            if (ClinicalSummary.HumanList.Count > 0 && ClinicalSummary.HumanList[0].Cell_Phone_Number != string.Empty)
                 xmlReqNode[2].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
             else
                 //For BugID : 28462
@@ -1491,15 +1491,15 @@ namespace Acurus.Capella.PatientPortal
                 //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
                 xmlReqNode[0].Attributes[0].Value = "tel:" + "(111) 111-1111";
 
-
-            if (ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
+            //CAP-4019
+            if (ClinicalSummary.HumanList.Count > 0 && ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
                 xmlReqNode[1].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Work_Phone_No;
             else
                 //For BugID : 28462
                 //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
                 xmlReqNode[1].Attributes[0].Value = "tel:" + "(111) 111-1111";
-
-            if (ClinicalSummary.HumanList[0].Cell_Phone_Number != string.Empty)
+            //CAP-4019
+            if (ClinicalSummary.HumanList.Count > 0 && ClinicalSummary.HumanList[0].Cell_Phone_Number != string.Empty)
                 xmlReqNode[2].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
             else
                 //For BugID : 28462
@@ -3818,13 +3818,14 @@ namespace Acurus.Capella.PatientPortal
                         string startTime = ClinicalSummary.Birth_Date.ToString();
 
                         string endTime = ClientSession.LocalDate;
-
-                        TimeSpan duration = DateTime.ParseExact(endTime, "M'/'d'/'yyyy", null).Subtract(DateTime.Parse(startTime));
-
-                        int iAge = Convert.ToInt32(duration.TotalDays) / 365;
-                        if (iAge != null)
-                            elemUnit.Attributes[1].Value = iAge.ToString();
-
+                        //CAP-4019
+                        if (!string.IsNullOrEmpty(endTime))
+                        {
+                            TimeSpan duration = DateTime.ParseExact(endTime, "M'/'d'/'yyyy", null).Subtract(DateTime.Parse(startTime));
+                            int iAge = Convert.ToInt32(duration.TotalDays) / 365;
+                            if (iAge != null)
+                                elemUnit.Attributes[1].Value = iAge.ToString();
+                        }
                     }
 
                 }
@@ -4659,7 +4660,9 @@ namespace Acurus.Capella.PatientPortal
                             }
                             if (ilstPatientResult1[i].Loinc_Observation == "Height")
                             {
-                                if (ilstPatientResult1[i].Value == string.Empty)
+                                //CAP-4019
+                                if (!int.TryParse(ilstPatientResult1[i].Value, out int _)
+                                    && !decimal.TryParse(ilstPatientResult1[i].Value, out decimal _))
                                 {
                                     ilstPatientResult1[i].Value = "0";
                                 }
@@ -4669,7 +4672,7 @@ namespace Acurus.Capella.PatientPortal
                                 string sFormula = "2.54";
                                 if (ilstPatientResult1[i].Value != "")
                                 {
-                                    heigntCM = Convert.ToInt32(ilstPatientResult1[i].Value) * Convert.ToDecimal(sFormula);
+                                    heigntCM = Convert.ToDecimal(ilstPatientResult1[i].Value) * Convert.ToDecimal(sFormula);
                                 }
                                 if (Convert.ToString(heigntCM).Contains('.') == true)
                                 {
@@ -4832,7 +4835,9 @@ namespace Acurus.Capella.PatientPortal
                                 ////decimal remainInch = decimal.Round((inch % 12m), 2);
                                 ////string sHeight = feet.ToString() + "." + remainInch.ToString();
                                 //elemValue.Attributes[1].Value = sHeight;
-                                if (ilstPatientResult1[i].Value == string.Empty)
+                                //CAP-4019
+                                if (!int.TryParse(ilstPatientResult1[i].Value, out int _)
+                                    && !decimal.TryParse(ilstPatientResult1[i].Value, out decimal _))
                                 {
                                     ilstPatientResult1[i].Value = "0";
                                 }
@@ -4842,7 +4847,7 @@ namespace Acurus.Capella.PatientPortal
                                 string sFormula = "2.54";
                                 if (ilstPatientResult1[i].Value != "")
                                 {
-                                    heigntCM = Convert.ToInt32(ilstPatientResult1[i].Value) * Convert.ToDecimal(sFormula);
+                                    heigntCM = Convert.ToDecimal(ilstPatientResult1[i].Value) * Convert.ToDecimal(sFormula);
                                 }
                                 if (Convert.ToString(heigntCM).Contains('.') == true)
                                 {
