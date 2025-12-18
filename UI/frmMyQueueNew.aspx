@@ -168,7 +168,7 @@ table.dataTable > thead > tr > td {
                     <tr>
                         <td style="width: 47%  !important">
                             <asp:Label ID="lblcount" runat="server" Style="font-weight: bold"></asp:Label>
-                            <button id="btnMyAkidoTasks" style="margin-right: 2px; width:100%;display:none;" class="btn btn-primary" value="" runat="server" onclick="OpenMyAkidoTasksClick();">
+                            <button id="btnMyAkidoTasks" style="margin-right: 2px; width:100%;display:none;" class="btn btn-primary aspAkidoBluebutton" value="" runat="server" onclick="OpenMyAkidoTasksClick();">
                                 My Akido Tasks <i class="fa fa-external-link" style="color: white !important;padding-left: 88%;"></i>
                             </button>
                         </td>
