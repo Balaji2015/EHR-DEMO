@@ -47,6 +47,12 @@ namespace Acurus.Capella.UI
                 {
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "MyQueue", "{sessionStorage.setItem('IsAkidoPhysician', 'NO');}", true);
                 }
+                //CAP-4025
+                var userMyAkidoTaskTask = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101148 && u.user_name == ClientSession.UserName select u;
+                if (userMyAkidoTaskTask.ToList().Count > 0)
+                    btnMyAkidoTasks.Visible = true;
+                else
+                    btnMyAkidoTasks.Visible = false;
             }
 
             if (ClientSession.Is_All_Facilities.ToUpper() == "Y")

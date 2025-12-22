@@ -195,6 +195,8 @@ namespace Acurus.Capella.UI
                 objOtherProc.GMDN_PT_Name = txtGMDNPTName.Text;
                 objOtherProc.Description = txtDescription.Text;
                 objOtherProc.Rubber_Content = txtRubberContent.Text;
+                //Cap - 4014
+                objOtherProc.Facility_Name = ClientSession.FacilityName;
                 if (Session["sGmdnPTDefinition"] != null)
                 {
                     sGmdnPTDefinition = Convert.ToString(Session["sGmdnPTDefinition"]);

@@ -1057,6 +1057,7 @@ function ShowMyQTabs(sender) {
         $('#RefreshMyQ').css("background-color", "");
         $('#RefreshMyQ')[0].innerText = "Refresh My Encounters";//BugID:48827
         $('#chkMyTask14').css("display", "none");
+        $('#ctl00_C5POBody_btnMyAkidoTasks').css("display", "none");
         $('#lbl14days').css("display", "none");
         $('#chkOpenTask').css("display", "none");
         $('#lblOpenTask').css("display", "none");
@@ -3985,6 +3986,7 @@ function ChangeTableForTabs(sender) {
     $('#Processenctr').css("background-color", "");
     $('#btnChangeExamRoom').css("display", "none");
     $('#chkMyTask14').css("display", "none");
+    $('#ctl00_C5POBody_btnMyAkidoTasks').css("display", "none");
     $('#lbl14days').css("display", "none");
     $('#chkOpenTask').css("display", "none");
     $('#lblOpenTask').css("display", "none");
@@ -4029,6 +4031,7 @@ function ChangeTableForTabs(sender) {
         $("#btnMyEnc").addClass("default");
 
         $('#chkMyTask14').css("display", "");
+        $('#ctl00_C5POBody_btnMyAkidoTasks').css("display", "");
         $('#lbl14days').css("display", "");
         $('#chkOpenTask').css("display", "");
         $('#lblOpenTask').css("display", "");
@@ -5834,4 +5837,14 @@ function SetHeightForTabelBasedOnScreenSize() {
             }
         }
     }, 1000);
+}
+//CAP-4025
+function OpenMyAkidoTasksClick() {
+    var myAkidoTasksURL = document.getElementById('hdnMyAkidoTasksURL').value;
+
+    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+
+    window.open(myAkidoTasksURL, '_blank');
+
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }

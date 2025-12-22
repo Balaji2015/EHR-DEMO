@@ -19,6 +19,10 @@ using System.Collections;
 using System.Reflection;
 using iTextSharp.text.pdf;
 using NHibernate;
+using MySql.Data.MySqlClient;
+using System.Data;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace DownloadiPrescribe
 {
@@ -65,6 +69,11 @@ namespace DownloadiPrescribe
                     Console.WriteLine("ImportIndexingExceptionLog Started.");
                     ImportIndexingExceptionLogJob();
                     Console.WriteLine("ImportIndexingExceptionLog Method Invoked.");
+                    break;
+                case "CCDXmlGenerateAgent":
+                    Console.WriteLine("CCDXmlGenerateAgent Started.");
+                    CCDXmlGenerateAgent();
+                    Console.WriteLine("CCDXmlGenerateAgent Method Invoked.");
                     break;
             }
             //Console.WriteLine("Order Task Creation Started.");
@@ -1696,5 +1705,298 @@ namespace DownloadiPrescribe
                 }
             }
         }
+        //Cap - 3904
+        public static void CCDXmlGenerateAgent()
+        {
+            string Facility_Name = ConfigurationManager.AppSettings["ECMFacilityName"];
+            string sFolderPathName = ConfigurationManager.AppSettings["ECMSummaryPathName"];
+            ConnectionStringSettingsCollection strConnectionData = ConfigurationManager.ConnectionStrings;
+            string sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            string sStatus = string.Empty;
+            try
+            {
+                string querydt = "select * from ccd_medex_update_info";
+
+                DataSet dsGetDate = DBConnector.ReadData(querydt);
+                DataTable dtGetDate = dsGetDate.Tables[0];
+                string FileCreateDateTime = DateTime.Now.ToString("yyyyMMdd");
+
+                string query = "select contact_id,h.human_id,e.Encounter_ID,w.Current_Arrival_Time,convert_tz(e.Date_of_Service,'Gmt','Us/Pacific') as Date_of_Service from patient_consent p left join human h on replace(p.contact_number,'Contact-','')=h.Dynamics_Number left join encounter e on h.human_id = e.Human_ID left join wf_object w on e.Encounter_ID = w.Obj_System_Id where p.medical_authorization_all_records='true' and h.Human_ID is not null and e.Facility_Name in " + Facility_Name + " and w.Obj_Type = 'Documentation' and w.Current_Process = 'Document_complete'  and w.Current_Arrival_Time >= '"+ Convert.ToDateTime(dtGetDate.Rows[0]["Last_Generated_Date_Time"]).ToString("yyyy-MM-dd") + "' union select contact_id,h.human_id,e.Encounter_ID,w.Current_Arrival_Time,convert_tz(e.Date_of_Service,'Gmt','Us/Pacific') as Date_of_Service from patient_consent p left join human h on replace(p.contact_number,'Contact-','')=h.Dynamics_Number left join encounter_arc e on h.human_id = e.Human_ID left join wf_object_arc w on e.Encounter_ID = w.Obj_System_Id where p.medical_authorization_all_records='true' and h.Human_ID is not null and e.Facility_Name in" + Facility_Name + " and w.Obj_Type = 'Documentation' and w.Current_Process = 'Document_complete'  and w.Current_Arrival_Time >= '" + Convert.ToDateTime(dtGetDate.Rows[0]["Last_Generated_Date_Time"]).ToString("yyyy-MM-dd")+"'";
+
+                DataSet dsHuman = DBConnector.ReadData(query);
+                DataTable dtHumanList = dsHuman.Tables[0];
+
+                string sPrintPathName = string.Empty;
+                sPrintPathName = sFolderPathName;
+                Directory.CreateDirectory(sPrintPathName);
+
+                for (int iCount = 0; iCount < dtHumanList.Rows.Count; iCount++)
+                {
+                    String InputValue = "Reason Of Visit,Vitals,Clinical Instruction,Immunizations,Mental Status,Care Plan,Laboratory Test(s),Smoking Status,Allergy,Functional Status,Procedure(s),Laboratory Values/Results,Encounter,Goals,Assessment,Medication,Medications Administered During visit,Treatment Plan,Problem List,Reason for Referral,Implants,Future Appointment,Health Concern,Lab Test,Laboratory Information,Diagnostics Tests Pending,Future Scheduled Tests,Patient Decision Aids,Payer";
+
+                    string DateOfService = Convert.ToDateTime(dtHumanList.Rows[iCount]["Date_of_Service"]).ToString("yyyyMMdd");  
+
+                    string filePath = Path.Combine(sPrintPathName,"Clinical_Summary_"+ dtHumanList.Rows[iCount]["Human_Id"]+"_"+dtHumanList.Rows[iCount]["Encounter_ID"]+"_"+ DateOfService+ "_"+ FileCreateDateTime+".xml");
+                    XDocument doc = new XDocument(new XElement("Root"));
+                    doc.Save(filePath);
+
+                    sStatus = GenerateCCD(Convert.ToUInt64(dtHumanList.Rows[iCount]["Human_Id"]), Convert.ToUInt64(dtHumanList.Rows[iCount]["Encounter_Id"]), InputValue, filePath, string.Empty);
+                    if (sStatus == "Success")
+                    {
+                        Console.WriteLine("CCD Generated Successfully For Encounter ID : "+ Convert.ToUInt64(dtHumanList.Rows[iCount]["Encounter_Id"]));
+
+                    }
+                    else
+                    {
+                        Console.WriteLine(sStatus +" For Encounter ID : " + Convert.ToUInt64(dtHumanList.Rows[iCount]["Encounter_Id"]));
+                        Console.ReadLine();
+                        System.Environment.Exit(1);
+                    }
+                }
+                if (sStatus == "Success")
+                {
+                    string Query1 = "update ccd_medex_update_info set last_generated_date_time = date(now())";
+                    var UpdateDate = new MySqlConnectionStringBuilder(sConnectionString);
+                    MySqlConnection MyConn3 = new MySqlConnection(UpdateDate.ConnectionString);
+                    MySqlCommand MyCommand3 = new MySqlCommand(Query1, MyConn3);
+                    MySqlDataReader MyReader3;
+                    MyConn3.Open();
+                    MyReader3 = MyCommand3.ExecuteReader();
+                    MyConn3.Close();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error : " + ex.Message +"-"+ex.InnerException?.ToString() + " - " + ex.StackTrace);
+                Console.ReadLine();
+            }
+        }
+        public static string GenerateCCD(ulong ulHumanID, ulong ulEncounterID, string sCheckedItems, string sOutputLocation, string sDSN)
+        {
+            string sResult = string.Empty;
+
+            try
+            {
+                bool ishumancount = GetListCCD();
+                if (ishumancount)
+                {
+                    //Thread.Sleep(3000);
+                    //goto ln;
+                    Environment.Exit(0);
+                }
+                bool isHumanDone = InsertIntoListCCD(ulHumanID, ulEncounterID, sCheckedItems, sOutputLocation, sDSN);
+
+                if (ulHumanID != null)
+                {
+                    // CreateXMLByBackupProcess("Human", Application, XML_ID.ToString());
+                    string status = CreateCCDXMLByBatchProcess(sOutputLocation);
+                    if (status == string.Empty)
+
+                        sResult = "Success";
+
+                    else
+                        sResult = status;
+
+                    string sConnectionString = string.Empty;
+                    sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                    var builder = new MySqlConnectionStringBuilder(sConnectionString);
+                    try
+                    {
+                        using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                        {
+                            DBConnection.Open();
+                            using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                            {
+                                string sQuery = "delete from list_ccd where encounter_id=" + ulEncounterID.ToString() + ";";
+                                using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
+                                {
+                                    cmdInsert.CommandText = sQuery;
+                                    cmdInsert.CommandType = System.Data.CommandType.Text;
+                                    try
+                                    {
+                                        cmdInsert.ExecuteNonQuery();
+                                        DBTransaction.Commit();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        DBTransaction.Rollback();
+                                        throw;
+                                    }
+                                    finally { }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        //CAP-1942
+                        sResult = e.Message + e;
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                //CAP-1942
+                sResult = "ERROR: " + ex.Message + " STACKTRACE: " + ex.StackTrace + ex;
+            }
+            return sResult;
+        }
+
+        public static string CreateCCDXMLByBatchProcess(string sOutputLocation)
+        {
+            string status = "";
+
+            try
+            {
+                status = "First Block";
+                status = "Third Block Block";
+                string batchfile = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                string CCDOutputLocation = ConfigurationManager.AppSettings["CCDOutputLocation"];
+                if (File.Exists(batchfile))
+                {
+                    try
+                    {
+                        status = "Third Block - Sub 1";
+                        var proc1 = new Process();
+                        proc1.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString());
+                        proc1.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                        proc1.StartInfo.Arguments = "-v -s -a";
+                        status = "Third Block - Sub 2";
+                        bool bStart = proc1.Start();
+                        status = bStart + " Third Block - Sub 3 ";
+                        proc1.WaitForExit();
+                        status = bStart + " Third Block - Sub 4 ";
+                        var exitCode = proc1.ExitCode;
+                        proc1.Close();
+
+                        File.Copy(CCDOutputLocation, sOutputLocation, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        //CAP-1942
+                        throw new Exception(status + " " + ex.Message + "  " + ex.InnerException, ex);
+                    }
+
+                    //using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
+                    //{
+                    //    status = "Third Block - Sub 1";
+                    //    proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString());
+                    //    proc.StartInfo.FileName = "@" + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    status = "Third Block - Sub 2" +" " + proc.StartInfo.WorkingDirectory + " " + proc.StartInfo.FileName;
+                    //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4522 - CreateCCDXMLByBatchProcess: status  - " + status + " : Start", DateTime.Now, "0", "frmimageviewer");
+                    //    bool bStart = proc.Start();
+                    //    status = bStart + " Third Block - Sub 3 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    proc.WaitForExit();
+                    //    status = bStart + " Third Block - Sub 4 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4527 - CreateCCDXMLByBatchProcess: status  - " + status + " : End", DateTime.Now, "0", "frmimageviewer");
+                    //}
+                    status = string.Empty;
+                }
+                else
+                {
+                    status = "Batch File Not found-FileName:" + batchfile;
+                }
+                return status;
+
+            }
+            catch (Exception Ex)
+            {
+                //CAP-1942
+                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException, Ex);
+            }
+
+        }
+
+        public static bool GetListCCD()
+        {
+            string sConnectionString = string.Empty;
+            sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+            bool bExists = false;
+            try
+            {
+                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                {
+                    DBConnection.Open();
+                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                    {
+                        string sQuery = "Select *  from list_ccd ; ";
+                        using (MySqlCommand cmdCheck = new MySqlCommand(sQuery, DBConnection))
+                        {
+                            cmdCheck.CommandText = sQuery;
+                            cmdCheck.CommandType = System.Data.CommandType.Text;
+                            try
+                            {
+                                int iRows = 0;
+                                string sResult = string.Empty;
+                                iRows = Convert.ToInt32(cmdCheck.ExecuteScalar());
+                                if (iRows > 0)
+                                    bExists = true;
+
+                            }
+                            catch (Exception e)
+                            {
+                                //CAP-1942
+                                throw new Exception(e.Message, e);
+                            }
+                            finally { }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //CAP-1942
+                throw new Exception(e.Message, e);
+            }
+            return bExists;
+        }
+        public static bool InsertIntoListCCD(ulong humanID, ulong encounterID, string sInput, string sOutputLocation, string sDSN)
+        {
+            bool isInserted = false;
+            string sConnectionString = string.Empty;
+            sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+
+            try
+            {
+                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                {
+                    DBConnection.Open();
+                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                    {
+                        string sQuery = "insert into list_ccd values(" + humanID.ToString() + ", " + encounterID.ToString() + ", '" + sInput + "', '" + sOutputLocation.ToString() + "', '" + sDSN.ToString() + "');";
+                        using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
+                        {
+                            cmdInsert.CommandText = sQuery;
+                            cmdInsert.CommandType = System.Data.CommandType.Text;
+                            try
+                            {
+                                cmdInsert.ExecuteNonQuery();
+                                DBTransaction.Commit();
+                                isInserted = true;
+                            }
+                            catch (Exception e)
+                            {
+                                DBTransaction.Rollback();
+                                isInserted = false;
+                                //CAP-1942
+                                throw new Exception(e.Message, e);
+                            }
+                            finally { }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //CAP-1942
+                throw new Exception(e.Message, e);
+            }
+
+            return isInserted;
+        }
+
     }
 }

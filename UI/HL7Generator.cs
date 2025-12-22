@@ -6496,7 +6496,9 @@ namespace Acurus.Capella.UI
                     IList<PhysicianLibrary> iPhyList = ClinicalSummary.phyList.Where(q => q.Id == Phy.Id).ToList();
                     if (iPhyList != null && iPhyList.Count > 0)
                     {
-                        PhyFirstName = iPhyList[0].PhyPrefix + " " + iPhyList[0].PhyFirstName;
+                        //CAP-4020
+                        //PhyFirstName = iPhyList[0].PhyPrefix + " " + iPhyList[0].PhyFirstName;
+                        PhyFirstName = iPhyList[0].PhyFirstName;
                         PhyLastName = iPhyList[0].PhyLastName;
                         PhyMIName = iPhyList[0].PhyMiddleName;
                         sPhy_ID = iPhyList[0].Id.ToString();
@@ -6814,11 +6816,15 @@ namespace Acurus.Capella.UI
 
 
                     if (ClinicalSummary.ImmunizationList[i].Is_Administration_Refused.ToUpper() != "Y")
-                        sResult = sResult + "\n" + "ORC|RE|" + ClinicalSummary.ImmunizationList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|" + ClinicalSummary.ImmunizationList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
+                        //CAP-4021
+                        //sResult = sResult + "\n" + "ORC|RE|" + ClinicalSummary.ImmunizationList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|" + ClinicalSummary.ImmunizationList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
+                        sResult = sResult + "\n" + "ORC|RE|" + ClinicalSummary.ImmunizationList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|" + ClinicalSummary.ImmunizationList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN||" + sPhy_ID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
                     else
                         //sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.immunhistoryList[i].Id+ "^CAA|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CA-AA-1^L^^^PRN||" +"|||||"+sMSH6+"^"+sMSH6+"^HL70362|";
                         //sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.ImmunizationList[i].Id + "^NIST-AA-IZ-2|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1^L^^^PRN||" + "|||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
-                        sResult = sResult + "\n" + "ORC|RE||" + "9999" + "^NIST-AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN||" + "|||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
+                        //CAP-4021
+                        //sResult = sResult + "\n" + "ORC|RE||" + "9999" + "^NIST-AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN||" + "|||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
+                        sResult = sResult + "\n" + "ORC|RE||" + "9999" + "^NIST-AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN||" + "|||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
                     //sResult = sResult + "\n" + "ORC|RE||" + "9999" + "^CAA|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CA-AA-1^L^^^PRN||" + "|||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
 
 
@@ -6911,11 +6917,21 @@ namespace Acurus.Capella.UI
                             sCurd = "A";
                         if (ClinicalSummary.ImmunizationList[i].Is_Administration_Refused.ToUpper() != "Y")
                         {
+                            //CAP-4021
+                            //sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+                            //       + ClinicalSummary.ImmunizationList[i].NDC + "^" +
+                            //       ClinicalSummary.ImmunizationList[i].Immunization_Description + "^NDC|" + ClinicalSummary.ImmunizationList[i].Administered_Amount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier
+                            //       + "^UCUM||" + "00" + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+                            //       "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|^^^" + sRXA11 + "&2.16.840.1.113883.3.72.5.40.12&ISO" + "||||" +
+                            //       ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+                            //       + "|" + VaccineCode
+                            //       + "^" +
+                            //       ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|" + sCurd;
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                                    + ClinicalSummary.ImmunizationList[i].NDC + "^" +
                                    ClinicalSummary.ImmunizationList[i].Immunization_Description + "^NDC|" + ClinicalSummary.ImmunizationList[i].Administered_Amount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier
                                    + "^UCUM||" + "00" + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
-                                   "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|^^^" + sRXA11 + "&2.16.840.1.113883.3.72.5.40.12&ISO" + "||||" +
+                                   "" + phyID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|^^^" + sRXA11 + "&2.16.840.1.113883.3.72.5.40.12&ISO" + "||||" +
                                    ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                                    + "|" + VaccineCode
                                    + "^" +
@@ -7092,7 +7108,9 @@ namespace Acurus.Capella.UI
             {
                 for (int i = 0; i < ImmunizationHistoryList.Count; i++)
                 {
-                    sResult = sResult + "\n" + "ORC|RE||" + ImmunizationHistoryList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|||||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
+                    //CAP-4021
+                    //sResult = sResult + "\n" + "ORC|RE||" + ImmunizationHistoryList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|||||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
+                    sResult = sResult + "\n" + "ORC|RE||" + ImmunizationHistoryList[i].Id + "^NIST-AA-IZ-2AA-IZ-2^2.16.840.1.113883.3.72.5.40.10^ISO|||||||" + sPhy_ID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|||||||" + sMSH6 + "^" + sMSH6 + "^HL70362|";
                     string sAdminDate = string.Empty;
                     if (ImmunizationHistoryList[i].Administered_Date != string.Empty && ImmunizationHistoryList[i].Administered_Date.Length ==11)
                         sAdminDate = Convert.ToDateTime(ImmunizationHistoryList[i].Administered_Date).ToString("yyyyMMdd");
@@ -7208,7 +7226,9 @@ namespace Acurus.Capella.UI
                     IList<PhysicianLibrary> iPhyList = ClinicalSummary.phyList.Where(q => q.Id == Phy.Id).ToList();
                     if (iPhyList != null && iPhyList.Count > 0)
                     {
-                        PhyFirstName = iPhyList[0].PhyPrefix + " " + iPhyList[0].PhyFirstName;
+                        //CAP-4020
+                        //PhyFirstName = iPhyList[0].PhyPrefix + " " + iPhyList[0].PhyFirstName;
+                        PhyFirstName = iPhyList[0].PhyFirstName;
                         PhyLastName = iPhyList[0].PhyLastName;
                         PhyMIName = iPhyList[0].PhyMiddleName;
                         sPhy_ID = iPhyList[0].Id.ToString();
@@ -7481,7 +7501,9 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.ImmunizationList[i].Id + "^CAA|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CAA||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^^^^^^CA-AA-1^L";
+                        //CAP-4021
+                        //sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.ImmunizationList[i].Id + "^CAA|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CAA||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^^^^^^CA-AA-1^L";
+                        sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.ImmunizationList[i].Id + "^CAA|||||||" + sPhy_ID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^CAA||" + sPhy_ID + "^" + PhyLastName + "^" + PhyFirstName + "^^^^^^CA-AA-1^L";
                     }
 
                     //RXA
@@ -7567,11 +7589,21 @@ namespace Acurus.Capella.UI
                         //    ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
                         if (ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier != null && ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier.Trim() != string.Empty && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source != null && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source.Trim() != string.Empty)
                         {
+                            //CAP-4021
+                            //sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+                            //    + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+                            //    ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
+                            //    + "^UCUM||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+                            //    "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+                            //    ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+                            //    + "|" + VaccineCode
+                            //    + "^" +
+                            //    ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                                 + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
                                 ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
                                 + "^UCUM||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
-                                "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+                                "" + phyID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
                                 ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                                 + "|" + VaccineCode
                                 + "^" +
@@ -7579,10 +7611,19 @@ namespace Acurus.Capella.UI
                         }
                         else if (ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier != null && ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier.Trim() == string.Empty && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source != null && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source.Trim() != string.Empty)
                         {
+                            //CAP-4021
+                            //sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+                            //  + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+                            //  ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX||||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+                            //  "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+                            //  ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+                            //  + "|" + VaccineCode
+                            //  + "^" +
+                            //  ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                               + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
                               ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX||||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
-                              "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+                              "" + phyID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
                               ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                               + "|" + VaccineCode
                               + "^" +
@@ -7591,23 +7632,42 @@ namespace Acurus.Capella.UI
                         }
                         else if (ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier != null && ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier.Trim() != string.Empty && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source != null && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source.Trim() == string.Empty)
                         {
+                            //CAP-4021
+                            //  sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+                            //+ ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+                            //ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
+                            //+ "^UCUM|||" +
+                            //"" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+                            //ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+                            //+ "|" + VaccineCode
+                            //+ "^" +
+                            //ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
-                          + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
-                          ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
-                          + "^UCUM|||" +
-                          "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
-                          ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
-                          + "|" + VaccineCode
-                          + "^" +
-                          ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
+                            + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+                            ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
+                            + "^UCUM|||" +
+                            "" + phyID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+                            ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+                            + "|" + VaccineCode
+                            + "^" +
+                            ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
 
                         }
                         else if (ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier != null && ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier.Trim() == string.Empty && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source != null && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source.Trim() == string.Empty)
                         {
+                            //CAP-4021
+                            //sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+                            //  + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+                            //  ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "||||" +
+                            //  "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+                            //  ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+                            //  + "|" + VaccineCode
+                            //  + "^" +
+                            //  ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                               + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
                               ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "||||" +
-                              "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+                              "" + phyID + "^" + PhyLastName + "^" + PhyFirstName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
                               ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                               + "|" + VaccineCode
                               + "^" +

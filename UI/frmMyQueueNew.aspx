@@ -168,8 +168,11 @@ table.dataTable > thead > tr > td {
                     <tr>
                         <td style="width: 47%  !important">
                             <asp:Label ID="lblcount" runat="server" Style="font-weight: bold"></asp:Label>
+                            <button type="button" id="btnMyAkidoTasks" style="margin-right: 2px; width:100%;display:none;" class="btn btn-primary aspAkidoBluebutton" value="" runat="server" onclick="OpenMyAkidoTasksClick();">
+                                My Akido Tasks <i class="fa fa-external-link" style="color: white !important;padding-left: 88%;"></i>
+                            </button>
                         </td>
-                        <td style="width: 53% !important;">
+                        <td style="width: 33% !important;">
                             <table style="float: right;">
                                 <tr>
                                     <td>
@@ -271,6 +274,7 @@ table.dataTable > thead > tr > td {
     <input type="hidden" id="hdnIsShowAllGeneralTasksQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralTasksQueue"]%>" />
     <input type="hidden" id="hdnIsShowAllGeneralOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"]%>" />
     <input type="hidden" id="hdnIsShowAllGeneralAmendmentQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralAmendmentQueue"]%>" />
+    <input type="hidden" id="hdnMyAkidoTasksURL" value="<%=ConfigurationManager.AppSettings["MyAkidoTasksURL"]%>" />
 
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false" EnableScriptCombine="true">
         <Scripts>
