@@ -21,7 +21,7 @@ namespace Acurus.Capella.UI.WebServices.API
     public class PatientServiceController : ApiController
     {
         [HttpPost]
-        public IHttpActionResult SavePatientData(Human_Akido objHuman)
+        public IHttpActionResult SavePatientData([FromBody] Human_Akido objHuman, [FromUri] string version)
         {
             ulong uHumanId = 0;
             string created_By = "Acurus API";
@@ -33,7 +33,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     return Json(new { status = "Unauthorized", ErrorDescription = "The remote server returned an error: (403) Forbidden." });
                 }
 
-                string errorMsg = Validation(objHuman);
+                string errorMsg = Validation(objHuman, version);
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
                     return Json(new { HumanID = 0, status = "ValidationError", ErrorDescription = errorMsg });
@@ -108,6 +108,24 @@ namespace Acurus.Capella.UI.WebServices.API
                     objHuman.Work_Phone_No = FormatPhone(objHuman.Work_Phone_No);
                 }
 
+                #region V2
+                if (version.ToUpper() == "V2")
+                {
+                    if (objHuman.Emergency_Cnt_ZipCode.Length == 9)
+                    {
+                        objHuman.Emergency_Cnt_ZipCode = $"{objHuman.Emergency_Cnt_ZipCode.Substring(0, 5)}-{objHuman.Emergency_Cnt_ZipCode.Substring(5, 4)}";
+                    }
+                    if (objHuman.Emergency_Cnt_Home_Phone_Number?.Length == 10)
+                    {
+                        objHuman.Emergency_Cnt_Home_Phone_Number = FormatPhone(objHuman.Emergency_Cnt_Home_Phone_Number);
+                    }
+                    if (objHuman.Emergency_Cnt_CellPhone_Number?.Length == 10)
+                    {
+                        objHuman.Emergency_Cnt_CellPhone_Number = FormatPhone(objHuman.Emergency_Cnt_CellPhone_Number);
+                    }
+                }
+                #endregion
+
                 Human human = new Human()
                 {
                     Legal_Org = objHuman.Legal_Org,
@@ -149,6 +167,111 @@ namespace Acurus.Capella.UI.WebServices.API
                     Created_Date_And_Time = localTime,
                     Gender_Identity = objHuman.Sex.ToUpper() //TODO: When Gender_Identity is provided as input, a priority should be set.
                 };
+
+                if (version.ToUpper() == "V2")
+                {
+                    human.Granularity = objHuman.Granularity;
+                    human.Sexual_Orientation = objHuman.Sexual_Orientation;
+                    human.Sexual_Orientation_Specify = objHuman.Sexual_Orientation_Specify;
+                    human.Gender_Identity_Specify = objHuman.Gender_Identity_Specify;
+                    human.SigOn_File = objHuman.SigOn_File;
+                    human.Employment_Status = objHuman.Employment_Status;
+                    human.Patient_Notes = objHuman.Patient_Notes;
+                    human.Driver_State = objHuman.Driver_State;
+                    human.Driver_License_Num = objHuman.Driver_License_Num;
+                    human.Emergency_Cnt_Last_Name = objHuman.Emergency_Cnt_Last_Name;
+                    human.Emergency_Cnt_First_Name = objHuman.Emergency_Cnt_First_Name;
+                    human.Emergency_Cnt_MI = objHuman.Emergency_Cnt_MI;
+                    human.Emergency_Cnt_StreetAddr1 = objHuman.Emergency_Cnt_StreetAddr1;
+                    human.Emergency_Cnt_StreetAddr2 = objHuman.Emergency_Cnt_StreetAddr2;
+                    human.Emergency_Cnt_City = objHuman.Emergency_Cnt_City;
+                    human.Emergency_Cnt_Sex = objHuman.Emergency_Cnt_Sex;
+                    human.Emergency_Cnt_State = objHuman.Emergency_Cnt_State;
+                    human.Emergency_Cnt_ZipCode = objHuman.Emergency_Cnt_ZipCode;
+                    human.Emergency_Cnt_Home_Phone_Number = objHuman.Emergency_Cnt_Home_Phone_Number;
+                    human.Emergency_BirthDate = objHuman.Emergency_BirthDate;
+                    human.Emergency_Cnt_CellPhone_Number = objHuman.Emergency_Cnt_CellPhone_Number;
+                    human.Emer_Relation = objHuman.Emer_Relation;
+                    human.Demo_Status = objHuman.Demo_Status;
+                    human.People_In_Collection = objHuman.People_In_Collection;
+                    human.Preferred_Language = objHuman.Preferred_Language;
+                    human.Race = objHuman.Race;
+                    human.Ethnicity = objHuman.Ethnicity;
+                    human.Photo_Path = objHuman.Photo_Path;
+                    human.Race_No = objHuman.Race_No;
+                    human.Preferred_Confidential_Correspodence_Mode = objHuman.Preferred_Confidential_Correspodence_Mode;
+                    human.Human_Type = objHuman.Human_Type;
+                    human.Declared_Bankruptcy = objHuman.Declared_Bankruptcy;
+                    human.PCP_Name = objHuman.PCP_Name;
+                    human.PCP_NPI = objHuman.PCP_NPI;
+                    human.Mothers_Maiden_Name = objHuman.Mothers_Maiden_Name;
+                    human.Immunization_Registry_Status = objHuman.Immunization_Registry_Status;
+                    human.Publicity_Code = objHuman.Publicity_Code;
+                    human.Representative_Email = objHuman.Representative_Email;
+                    human.Data_Sharing_Preference = objHuman.Data_Sharing_Preference;
+                    human.Birth_Indicator = objHuman.Birth_Indicator;
+                    human.Birth_Order = objHuman.Birth_Order;
+                    human.Primary_Carrier_ID = objHuman.Primary_Carrier_ID;
+                    human.Is_Translator_Required = objHuman.Is_Translator_Required;
+                    human.Dynamics_Number = objHuman.Dynamics_Number;
+                    human.Tribal_Affiliation = objHuman.Tribal_Affiliation;
+                    human.Specific_Ethnicity = objHuman.Specific_Ethnicity;
+                    human.Insurance_Status = objHuman.Insurance_Status;
+                    human.Is_Sent_To_Rcopia = "Y";
+                }
+
+                if (!string.IsNullOrEmpty(human.Guarantor_Relationship))
+                {
+                    StaticLookupManager staticLookUpMngr = new StaticLookupManager();
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RELATIONSHIP");
+                    var filterData = staticlookuplist.FirstOrDefault(a => a.Value.ToLower().Trim() == human.Guarantor_Relationship.ToLower().Trim());
+                    if (filterData != null && !string.IsNullOrEmpty(filterData.Description))
+                    {
+                        human.Guarantor_Relationship_No = Convert.ToInt32(filterData.Description);
+                    }
+                }
+
+                #region V2
+                if (version.ToUpper() == "V2")
+                {
+                    if (!string.IsNullOrEmpty(objHuman.Ethnicity))
+                    {
+                        StaticLookupManager staticLookUpMngr = new StaticLookupManager();
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("ETHNICITY");
+                        var filterData = staticlookuplist.FirstOrDefault(a => a.Value.ToLower().Trim() == objHuman.Ethnicity.ToLower().Trim());
+                        if (filterData != null && !string.IsNullOrEmpty(filterData.Description))
+                        {
+                            human.Ethnicity_No = Convert.ToInt32(filterData.Description);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(objHuman.Race))
+                    {
+                        StaticLookupManager staticLookUpMngr = new StaticLookupManager();
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RACE");
+                        foreach (var item in objHuman.Race.Split(','))
+                        {
+                            var filterData = staticlookuplist.FirstOrDefault(a => a.Value.ToLower().Trim() == item.ToLower().Trim());
+                            if (filterData != null && !string.IsNullOrEmpty(filterData.Description))
+                            {
+                                string[] Race = filterData.Description.Split('-');
+                                if (Race.Count() == 2)
+                                {
+                                    human.Race_Alias += Race[0].ToString() + ",";
+                                    human.Race_No = Race[1].ToString() + ",";
+                                }
+                            }
+                        }
+                        if (human.Race_Alias.Trim().EndsWith(","))
+                        {
+                            human.Race_Alias = human.Race_Alias.TrimEnd(',');
+                        }
+                        if (human.Race_No.Trim().EndsWith(","))
+                        {
+                            human.Race_No = human.Race_No.TrimEnd(',');
+                        }
+                    }
+                }
+                #endregion
 
                 if (human.Guarantor_Is_Patient.ToUpper() == "Y")
                 {
@@ -197,7 +320,7 @@ namespace Acurus.Capella.UI.WebServices.API
         }
 
         [HttpPut]
-        public IHttpActionResult UpdatePatientData(UpdateHuman_Akido objUpdateHuman)
+        public IHttpActionResult UpdatePatientData([FromBody] UpdateHuman_Akido objUpdateHuman, [FromUri] string version)
         {
             ulong uHumanId = 0;
             DateTime localTime = DateTime.Now;
@@ -214,7 +337,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     return Json(new { HumanID = 0, status = "ValidationError", ErrorDescription = "HumanID is not present in the request." });
                 }
 
-                string errorMsg = ValidationForUpdate(objUpdateHuman.human_data);
+                string errorMsg = ValidationForUpdate(objUpdateHuman.human_data, version);
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
                     return Json(new { HumanID = objUpdateHuman.humanID, status = "ValidationError", ErrorDescription = errorMsg });
@@ -292,6 +415,7 @@ namespace Acurus.Capella.UI.WebServices.API
                         if (filterData != null && !string.IsNullOrEmpty(filterData.Description))
                         {
                             objPatguarantor.Relationship_No = Convert.ToInt16(filterData.Description);
+                            humanData.Guarantor_Relationship_No = Convert.ToInt16(filterData.Description);
                         }
                     }
                 }
@@ -331,6 +455,61 @@ namespace Acurus.Capella.UI.WebServices.API
                     humanData.Work_Phone_No = FormatPhone(humanData.Work_Phone_No);
                 }
 
+                #region V2
+                if (version.ToUpper() == "V2")
+                {
+                    if (objUpdateHuman.human_data.ContainsKey("Emergency_Cnt_ZipCode") && humanData.Emergency_Cnt_ZipCode.Length == 9)
+                    {
+                        humanData.Emergency_Cnt_ZipCode = $"{humanData.Emergency_Cnt_ZipCode.Substring(0, 5)}-{humanData.Emergency_Cnt_ZipCode.Substring(5, 4)}";
+                    }
+                    if (objUpdateHuman.human_data.ContainsKey("Emergency_Cnt_Home_Phone_Number") && humanData.Emergency_Cnt_Home_Phone_Number?.Length == 10)
+                    {
+                        humanData.Emergency_Cnt_Home_Phone_Number = FormatPhone(humanData.Emergency_Cnt_Home_Phone_Number);
+                    }
+                    if (objUpdateHuman.human_data.ContainsKey("Emergency_Cnt_CellPhone_Number") && humanData.Emergency_Cnt_CellPhone_Number?.Length == 10)
+                    {
+                        humanData.Emergency_Cnt_CellPhone_Number = FormatPhone(humanData.Emergency_Cnt_CellPhone_Number);
+                    }
+
+                    if (objUpdateHuman.human_data.ContainsKey("Ethnicity") && !string.IsNullOrEmpty(humanData.Ethnicity))
+                    {
+                        StaticLookupManager staticLookUpMngr = new StaticLookupManager();
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("ETHNICITY");
+                        var filterData = staticlookuplist.FirstOrDefault(a => a.Value.ToLower().Trim() == humanData.Ethnicity.ToLower().Trim());
+                        if (filterData != null && !string.IsNullOrEmpty(filterData.Description))
+                        {
+                            humanData.Ethnicity_No = Convert.ToInt32(filterData.Description);
+                        }
+                    }
+                    if (objUpdateHuman.human_data.ContainsKey("Race") && !string.IsNullOrEmpty(humanData.Race))
+                    {
+                        StaticLookupManager staticLookUpMngr = new StaticLookupManager();
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RACE");
+                        foreach (var item in humanData.Race.Split(','))
+                        {
+                            var filterData = staticlookuplist.FirstOrDefault(a => a.Value.ToLower().Trim() == item.ToLower().Trim());
+                            if (filterData != null && !string.IsNullOrEmpty(filterData.Description))
+                            {
+                                string[] Race = filterData.Description.Split('-');
+                                if (Race.Count() == 2)
+                                {
+                                    humanData.Race_Alias += Race[0].ToString() + ",";
+                                    humanData.Race_No = Race[1].ToString() + ",";
+                                }
+                            }
+                        }
+                        if (humanData.Race_Alias.Trim().EndsWith(","))
+                        {
+                            humanData.Race_Alias = humanData.Race_Alias.TrimEnd(',');
+                        }
+                        if (humanData.Race_No.Trim().EndsWith(","))
+                        {
+                            humanData.Race_No = humanData.Race_No.TrimEnd(',');
+                        }
+                    }
+                }
+                #endregion
+
                 humanData.Modified_By = modified_By;
                 humanData.Modified_Date_And_Time = localTime;
 
@@ -348,10 +527,11 @@ namespace Acurus.Capella.UI.WebServices.API
             return Json(new { HumanID = uHumanId, status = "Success" });
         }
 
-        public string Validation(Human_Akido objHuman)
+        public string Validation(Human_Akido objHuman, string version)
         {
             DateTime localTime = DateTime.Now;
             StaticLookupManager staticLookUpMngr = new StaticLookupManager();
+            #region V1
             if (string.IsNullOrEmpty(objHuman.Legal_Org))
             {
                 return "Legal_Org is not present in the request.";
@@ -592,7 +772,6 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
             }
 
-            #region LengthValidation
             if (!string.IsNullOrEmpty(objHuman.Last_Name) && objHuman.Last_Name.Length > 35)
             {
                 return "Last_Name exceeds the maximum length in the request.";
@@ -677,7 +856,6 @@ namespace Acurus.Capella.UI.WebServices.API
             {
                 return "Care_Giver_Last_Name exceeds the maximum length in the request.";
             }
-            #endregion
 
             if (string.IsNullOrEmpty(objHuman.Guarantor_Relationship))
             {
@@ -691,11 +869,361 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "Guarantor_Relationship is invalid in the request.";
                 }
             }
+            #endregion
+
+            #region V2
+            if (version.ToUpper() == "V2")
+            {
+                if (string.IsNullOrEmpty(objHuman.SigOn_File))
+                {
+                    return "SigOn_File is not present in the request.";
+                }
+                else
+                {
+                    var allowedDataList = new List<string>() { "YES", "NO" };
+                    if (!allowedDataList.Any(a => a.Equals(objHuman.SigOn_File.Trim().ToUpper())))
+                    {
+                        return "SigOn_File is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.People_In_Collection))
+                {
+                    return "People_In_Collection is not present in the request.";
+                }
+                else
+                {
+                    var allowedDataList = new List<string>() { "Y", "N" };
+                    if (!allowedDataList.Any(a => a.Equals(objHuman.People_In_Collection.Trim().ToUpper())))
+                    {
+                        return "People_In_Collection is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Preferred_Language))
+                {
+                    return "Preferred_Language is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("PREFERRED LANGUAGE");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Preferred_Language.ToLower().Trim()))
+                    {
+                        return "Preferred_Language is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Ethnicity))
+                {
+                    return "Ethnicity is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("ETHNICITY");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Ethnicity.ToLower().Trim()))
+                    {
+                        return "Ethnicity is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Human_Type))
+                {
+                    return "Human_Type is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("HUMAN TYPE");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Human_Type.ToLower().Trim()))
+                    {
+                        return "Human_Type is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Immunization_Registry_Status))
+                {
+                    return "Immunization_Registry_Status is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("IMMUNZATION REGISTRY STATUS");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Immunization_Registry_Status.ToLower().Trim()))
+                    {
+                        return "Immunization_Registry_Status is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Publicity_Code))
+                {
+                    return "Publicity_Code is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("PUBLICITY CODE");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Publicity_Code.ToLower().Trim()))
+                    {
+                        return "Publicity_Code is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Data_Sharing_Preference))
+                {
+                    return "Data_Sharing_Preference is not present in the request.";
+                }
+                else
+                {
+                    var allowedDataList = new List<string>() { "YES", "NO" };
+                    if (!allowedDataList.Any(a => a.Equals(objHuman.Data_Sharing_Preference.Trim().ToUpper())))
+                    {
+                        return "Data_Sharing_Preference is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Birth_Indicator))
+                {
+                    return "Birth_Indicator is not present in the request.";
+                }
+                else
+                {
+                    var allowedDataList = new List<string>() { "YES", "NO" };
+                    if (!allowedDataList.Any(a => a.Equals(objHuman.Birth_Indicator.Trim().ToUpper())))
+                    {
+                        return "Birth_Indicator is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Birth_Order))
+                {
+                    return "Birth_Order is not present in the request.";
+                }
+                else
+                {
+                    var allowedDataList = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+                    if (!allowedDataList.Any(a => a.Equals(objHuman.Birth_Order.Trim().ToUpper())))
+                    {
+                        return "Birth_Order is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Is_Translator_Required))
+                {
+                    return "Is_Translator_Required is not present in the request.";
+                }
+                else
+                {
+                    var allowedDataList = new List<string>() { "Y", "N" };
+                    if (!allowedDataList.Any(a => a.Equals(objHuman.Is_Translator_Required.Trim().ToUpper())))
+                    {
+                        return "Is_Translator_Required is invalid in the request.";
+                    }
+                }
+
+
+
+                if (!string.IsNullOrEmpty(objHuman.Employment_Status))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("EMPLOYMENT STATUS");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Employment_Status.ToLower().Trim()))
+                    {
+                        return "Employment_Status is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Driver_State))
+                {
+                    StateManager StateMngr = new StateManager();
+                    var statelist = StateMngr.Getstate();
+                    if (!statelist.Any(a => a.State_Code.ToLower().Trim() == objHuman.Driver_State.ToLower().Trim()))
+                    {
+                        return "Driver_State is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_Sex))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEX");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Emergency_Cnt_Sex.ToLower().Trim()))
+                    {
+                        return "Emergency_Cnt_Sex is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_State))
+                {
+                    StateManager StateMngr = new StateManager();
+                    var statelist = StateMngr.Getstate();
+                    if (!statelist.Any(a => a.State_Code.ToLower().Trim() == objHuman.Emergency_Cnt_State.ToLower().Trim()))
+                    {
+                        return "Emergency_Cnt_State is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emer_Relation))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RELATIONSHIP");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Emer_Relation.ToLower().Trim()))
+                    {
+                        return "Emer_Relation is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Demo_Status))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("DEMO STATUS");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Demo_Status.ToLower().Trim()))
+                    {
+                        return "Demo_Status is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Race))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RACE");
+                    foreach (var item in objHuman.Race.Split(','))
+                    {
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == item.ToLower().Trim()))
+                        {
+                            return "Race is invalid in the request.";
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Preferred_Confidential_Correspodence_Mode))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("PREFERRED CONFIDENTIAL CO");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Preferred_Confidential_Correspodence_Mode.ToLower().Trim()))
+                    {
+                        return "Preferred_Confidential_Correspodence_Mode is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Declared_Bankruptcy))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("DECLAREDBANKRUPTCY");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Declared_Bankruptcy.ToLower().Trim()))
+                    {
+                        return "Declared_Bankruptcy is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Sexual_Orientation))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEXUAL ORIENTATION");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Sexual_Orientation.ToLower().Trim()))
+                    {
+                        return "Sexual_Orientation is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Gender_Identity))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("GENDER IDENTITY");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Gender_Identity.ToLower().Trim()))
+                    {
+                        return "Gender_Identity is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Granularity))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("GRANULARITY");
+                    foreach (var item in objHuman.Granularity.Split(','))
+                    {
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == item.ToLower().Trim()))
+                        {
+                            return "Granularity is invalid in the request.";
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Tribal_Affiliation))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("Tribal Affiliation");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Tribal_Affiliation.ToLower().Trim()))
+                    {
+                        return "Tribal_Affiliation is invalid in the request.";
+                    }
+                }
+                if (!string.IsNullOrEmpty(objHuman.Specific_Ethnicity))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SPECIFIC ETHINICITY");
+                    foreach (var item in objHuman.Specific_Ethnicity.Split(','))
+                    {
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == item.ToLower().Trim()))
+                        {
+                            return "Specific_Ethnicity is invalid in the request.";
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_ZipCode)
+                    && (objHuman.Emergency_Cnt_ZipCode.Length != 5
+                    || objHuman.Emergency_Cnt_ZipCode.Length != 9
+                    || !Regex.IsMatch(objHuman.Emergency_Cnt_ZipCode, @"^\d+$")))
+                {
+                    return "Emergency_Cnt_ZipCode is invalid in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_Home_Phone_Number)
+                    && (objHuman.Emergency_Cnt_Home_Phone_Number.Length != 10
+                    || !Regex.IsMatch(objHuman.Emergency_Cnt_Home_Phone_Number, @"^\d+$")))
+                {
+                    return "Emergency_Cnt_Home_Phone_Number is invalid in the request.";
+                }
+                if (ValidateDateFormate(objHuman.Emergency_BirthDate.ToString()))
+                {
+                    return "Emergency_BirthDate is invalid in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_CellPhone_Number)
+                    && (objHuman.Emergency_Cnt_CellPhone_Number.Length != 10
+                    || !Regex.IsMatch(objHuman.Emergency_Cnt_CellPhone_Number, @"^\d+$")))
+                {
+                    return "Emergency_Cnt_CellPhone_Number is invalid in the request.";
+                }
+
+                if (!string.IsNullOrEmpty(objHuman.Street_Address2) && objHuman.Street_Address2.Length > 55)
+                {
+                    return "Street_Address2 exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Driver_License_Num) && objHuman.Driver_License_Num.Length > 15)
+                {
+                    return "Driver_License_Num exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_Last_Name) && objHuman.Emergency_Cnt_Last_Name.Length > 35)
+                {
+                    return "Emergency_Cnt_Last_Name exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_First_Name) && objHuman.Emergency_Cnt_First_Name.Length > 25)
+                {
+                    return "Emergency_Cnt_First_Name exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_MI) && objHuman.Emergency_Cnt_MI.Length > 55)
+                {
+                    return "Emergency_Cnt_MI exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_StreetAddr1) && objHuman.Emergency_Cnt_StreetAddr1.Length > 55)
+                {
+                    return "Emergency_Cnt_StreetAddr1 exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_StreetAddr2) && objHuman.Emergency_Cnt_StreetAddr2.Length > 55)
+                {
+                    return "Emergency_Cnt_StreetAddr2 exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Emergency_Cnt_City) && objHuman.Emergency_Cnt_City.Length > 35)
+                {
+                    return "Emergency_Cnt_City exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.PCP_Name) && objHuman.PCP_Name.Length > 100)
+                {
+                    return "PCP_Name exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.PCP_NPI) && objHuman.PCP_NPI.Length > 10)
+                {
+                    return "PCP_NPI exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Mothers_Maiden_Name) && objHuman.Mothers_Maiden_Name.Length > 50)
+                {
+                    return "Mothers_Maiden_Name exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Representative_Email) && objHuman.Representative_Email.Length > 100)
+                {
+                    return "Representative_Email exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Sexual_Orientation_Specify) && objHuman.Sexual_Orientation_Specify.Length > 100)
+                {
+                    return "Sexual_Orientation_Specify exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Gender_Identity_Specify) && objHuman.Gender_Identity_Specify.Length > 100)
+                {
+                    return "Gender_Identity_Specify exceeds the maximum length in the request.";
+                }
+                if (!string.IsNullOrEmpty(objHuman.Dynamics_Number) && objHuman.Dynamics_Number.Length > 25)
+                {
+                    return "Dynamics_Number exceeds the maximum length in the request.";
+                }
+            }
+            #endregion
 
             return "";
         }
 
-        public string ValidationForUpdate(Dictionary<string, object> human_data)
+        public string ValidationForUpdate(Dictionary<string, object> human_data, string version)
         {
             DateTime localTime = DateTime.Now;
             Human_Akido objHuman = new Human_Akido();
@@ -732,6 +1260,8 @@ namespace Acurus.Capella.UI.WebServices.API
             }
 
             StaticLookupManager staticLookUpMngr = new StaticLookupManager();
+
+            #region V1
             // 2. Validation only for fields included in human_data
             if (human_data.ContainsKey("Legal_Org") && string.IsNullOrEmpty(objHuman.Legal_Org))
                 return "Legal_Org is not present in the request.";
@@ -972,7 +1502,6 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
             }
 
-            #region LengthValidation
             if (human_data.ContainsKey("Last_Name") && !string.IsNullOrEmpty(objHuman.Last_Name) && objHuman.Last_Name.Length > 35)
             {
                 return "Last_Name exceeds the maximum length in the request.";
@@ -1056,6 +1585,391 @@ namespace Acurus.Capella.UI.WebServices.API
             if (human_data.ContainsKey("Care_Giver_Last_Name") && !string.IsNullOrEmpty(objHuman.Care_Giver_Last_Name) && objHuman.Care_Giver_Last_Name.Length > 35)
             {
                 return "Care_Giver_Last_Name exceeds the maximum length in the request.";
+            }
+            #endregion
+
+            #region V2
+            if (version.ToUpper() == "V2")
+            {
+                if (human_data.ContainsKey("SigOn_File"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.SigOn_File))
+                    {
+                        return "SigOn_File is not present in the request.";
+                    }
+                    else
+                    {
+                        var allowedDataList = new List<string>() { "YES", "NO" };
+                        if (!allowedDataList.Any(a => a.Equals(objHuman.SigOn_File.Trim().ToUpper())))
+                        {
+                            return "SigOn_File is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("People_In_Collection"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.People_In_Collection))
+                    {
+                        return "People_In_Collection is not present in the request.";
+                    }
+                    else
+                    {
+                        var allowedDataList = new List<string>() { "Y", "N" };
+                        if (!allowedDataList.Any(a => a.Equals(objHuman.People_In_Collection.Trim().ToUpper())))
+                        {
+                            return "People_In_Collection is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Preferred_Language"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Preferred_Language))
+                    {
+                        return "Preferred_Language is not present in the request.";
+                    }
+                    else
+                    {
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("PREFERRED LANGUAGE");
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Preferred_Language.ToLower().Trim()))
+                        {
+                            return "Preferred_Language is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Ethnicity"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Ethnicity))
+                    {
+                        return "Ethnicity is not present in the request.";
+                    }
+                    else
+                    {
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("ETHNICITY");
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Ethnicity.ToLower().Trim()))
+                        {
+                            return "Ethnicity is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Human_Type"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Human_Type))
+                    {
+                        return "Human_Type is not present in the request.";
+                    }
+                    else
+                    {
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("HUMAN TYPE");
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Human_Type.ToLower().Trim()))
+                        {
+                            return "Human_Type is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Immunization_Registry_Status"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Immunization_Registry_Status))
+                    {
+                        return "Immunization_Registry_Status is not present in the request.";
+                    }
+                    else
+                    {
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("IMMUNZATION REGISTRY STATUS");
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Immunization_Registry_Status.ToLower().Trim()))
+                        {
+                            return "Immunization_Registry_Status is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Publicity_Code"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Publicity_Code))
+                    {
+                        return "Publicity_Code is not present in the request.";
+                    }
+                    else
+                    {
+                        var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("PUBLICITY CODE");
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Publicity_Code.ToLower().Trim()))
+                        {
+                            return "Publicity_Code is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Data_Sharing_Preference"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Data_Sharing_Preference))
+                    {
+                        return "Data_Sharing_Preference is not present in the request.";
+                    }
+                    else
+                    {
+                        var allowedDataList = new List<string>() { "YES", "NO" };
+                        if (!allowedDataList.Any(a => a.Equals(objHuman.Data_Sharing_Preference.Trim().ToUpper())))
+                        {
+                            return "Data_Sharing_Preference is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Birth_Indicator"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Birth_Indicator))
+                    {
+                        return "Birth_Indicator is not present in the request.";
+                    }
+                    else
+                    {
+                        var allowedDataList = new List<string>() { "YES", "NO" };
+                        if (!allowedDataList.Any(a => a.Equals(objHuman.Birth_Indicator.Trim().ToUpper())))
+                        {
+                            return "Birth_Indicator is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Birth_Order"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Birth_Order))
+                    {
+                        return "Birth_Order is not present in the request.";
+                    }
+                    else
+                    {
+                        var allowedDataList = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+                        if (!allowedDataList.Any(a => a.Equals(objHuman.Birth_Order.Trim().ToUpper())))
+                        {
+                            return "Birth_Order is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Is_Translator_Required"))
+                {
+                    if (string.IsNullOrEmpty(objHuman.Is_Translator_Required))
+                    {
+                        return "Is_Translator_Required is not present in the request.";
+                    }
+                    else
+                    {
+                        var allowedDataList = new List<string>() { "Y", "N" };
+                        if (!allowedDataList.Any(a => a.Equals(objHuman.Is_Translator_Required.Trim().ToUpper())))
+                        {
+                            return "Is_Translator_Required is invalid in the request.";
+                        }
+                    }
+                }
+
+
+
+                if (human_data.ContainsKey("Employment_Status") && !string.IsNullOrEmpty(objHuman.Employment_Status))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("EMPLOYMENT STATUS");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Employment_Status.ToLower().Trim()))
+                    {
+                        return "Employment_Status is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Driver_State") && !string.IsNullOrEmpty(objHuman.Driver_State))
+                {
+                    StateManager StateMngr = new StateManager();
+                    var statelist = StateMngr.Getstate();
+                    if (!statelist.Any(a => a.State_Code.ToLower().Trim() == objHuman.Driver_State.ToLower().Trim()))
+                    {
+                        return "Driver_State is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_Sex") && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_Sex))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEX");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Emergency_Cnt_Sex.ToLower().Trim()))
+                    {
+                        return "Emergency_Cnt_Sex is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_State") && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_State))
+                {
+                    StateManager StateMngr = new StateManager();
+                    var statelist = StateMngr.Getstate();
+                    if (!statelist.Any(a => a.State_Code.ToLower().Trim() == objHuman.Emergency_Cnt_State.ToLower().Trim()))
+                    {
+                        return "Emergency_Cnt_State is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Emer_Relation") && !string.IsNullOrEmpty(objHuman.Emer_Relation))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RELATIONSHIP");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Emer_Relation.ToLower().Trim()))
+                    {
+                        return "Emer_Relation is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Demo_Status") && !string.IsNullOrEmpty(objHuman.Demo_Status))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("DEMO STATUS");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Demo_Status.ToLower().Trim()))
+                    {
+                        return "Demo_Status is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Race") && !string.IsNullOrEmpty(objHuman.Race))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RACE");
+                    foreach (var item in objHuman.Race.Split(','))
+                    {
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == item.ToLower().Trim()))
+                        {
+                            return "Race is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Preferred_Confidential_Correspodence_Mode") && !string.IsNullOrEmpty(objHuman.Preferred_Confidential_Correspodence_Mode))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("PREFERRED CONFIDENTIAL CO");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Preferred_Confidential_Correspodence_Mode.ToLower().Trim()))
+                    {
+                        return "Preferred_Confidential_Correspodence_Mode is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Declared_Bankruptcy") && !string.IsNullOrEmpty(objHuman.Declared_Bankruptcy))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("DECLAREDBANKRUPTCY");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Declared_Bankruptcy.ToLower().Trim()))
+                    {
+                        return "Declared_Bankruptcy is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Sexual_Orientation") && !string.IsNullOrEmpty(objHuman.Sexual_Orientation))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEXUAL ORIENTATION");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Sexual_Orientation.ToLower().Trim()))
+                    {
+                        return "Sexual_Orientation is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Gender_Identity") && !string.IsNullOrEmpty(objHuman.Gender_Identity))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("GENDER IDENTITY");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Gender_Identity.ToLower().Trim()))
+                    {
+                        return "Gender_Identity is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Granularity") && !string.IsNullOrEmpty(objHuman.Granularity))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("GRANULARITY");
+                    foreach (var item in objHuman.Granularity.Split(','))
+                    {
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == item.ToLower().Trim()))
+                        {
+                            return "Granularity is invalid in the request.";
+                        }
+                    }
+                }
+                if (human_data.ContainsKey("Tribal_Affiliation") && !string.IsNullOrEmpty(objHuman.Tribal_Affiliation))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("Tribal Affiliation");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Tribal_Affiliation.ToLower().Trim()))
+                    {
+                        return "Tribal_Affiliation is invalid in the request.";
+                    }
+                }
+                if (human_data.ContainsKey("Specific_Ethnicity") && !string.IsNullOrEmpty(objHuman.Specific_Ethnicity))
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SPECIFIC ETHINICITY");
+                    foreach (var item in objHuman.Specific_Ethnicity.Split(','))
+                    {
+                        if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == item.ToLower().Trim()))
+                        {
+                            return "Specific_Ethnicity is invalid in the request.";
+                        }
+                    }
+                }
+
+                if (human_data.ContainsKey("Emergency_Cnt_ZipCode")
+                    && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_ZipCode)
+                    && (objHuman.Emergency_Cnt_ZipCode.Length != 5
+                    || objHuman.Emergency_Cnt_ZipCode.Length != 9
+                    || !Regex.IsMatch(objHuman.Emergency_Cnt_ZipCode, @"^\d+$")))
+                {
+                    return "Emergency_Cnt_ZipCode is invalid in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_Home_Phone_Number")
+                    && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_Home_Phone_Number)
+                    && (objHuman.Emergency_Cnt_Home_Phone_Number.Length != 10
+                    || !Regex.IsMatch(objHuman.Emergency_Cnt_Home_Phone_Number, @"^\d+$")))
+                {
+                    return "Emergency_Cnt_Home_Phone_Number is invalid in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_BirthDate") && ValidateDateFormate(objHuman.Emergency_BirthDate.ToString()))
+                {
+                    return "Emergency_BirthDate is invalid in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_CellPhone_Number")
+                    && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_CellPhone_Number)
+                    && (objHuman.Emergency_Cnt_CellPhone_Number.Length != 10
+                    || !Regex.IsMatch(objHuman.Emergency_Cnt_CellPhone_Number, @"^\d+$")))
+                {
+                    return "Emergency_Cnt_CellPhone_Number is invalid in the request.";
+                }
+
+                if (human_data.ContainsKey("Street_Address2") && !string.IsNullOrEmpty(objHuman.Street_Address2) && objHuman.Street_Address2.Length > 55)
+                {
+                    return "Street_Address2 exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Driver_License_Num") && !string.IsNullOrEmpty(objHuman.Driver_License_Num) && objHuman.Driver_License_Num.Length > 15)
+                {
+                    return "Driver_License_Num exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_Last_Name") && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_Last_Name) && objHuman.Emergency_Cnt_Last_Name.Length > 35)
+                {
+                    return "Emergency_Cnt_Last_Name exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_First_Name") && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_First_Name) && objHuman.Emergency_Cnt_First_Name.Length > 25)
+                {
+                    return "Emergency_Cnt_First_Name exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_MI") && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_MI) && objHuman.Emergency_Cnt_MI.Length > 55)
+                {
+                    return "Emergency_Cnt_MI exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_StreetAddr1") && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_StreetAddr1) && objHuman.Emergency_Cnt_StreetAddr1.Length > 55)
+                {
+                    return "Emergency_Cnt_StreetAddr1 exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_StreetAddr2") && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_StreetAddr2) && objHuman.Emergency_Cnt_StreetAddr2.Length > 55)
+                {
+                    return "Emergency_Cnt_StreetAddr2 exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Emergency_Cnt_City") && !string.IsNullOrEmpty(objHuman.Emergency_Cnt_City) && objHuman.Emergency_Cnt_City.Length > 35)
+                {
+                    return "Emergency_Cnt_City exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("PCP_Name") && !string.IsNullOrEmpty(objHuman.PCP_Name) && objHuman.PCP_Name.Length > 100)
+                {
+                    return "PCP_Name exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Work_Phone_Ext") && !string.IsNullOrEmpty(objHuman.PCP_NPI) && objHuman.PCP_NPI.Length > 10)
+                {
+                    return "PCP_NPI exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Mothers_Maiden_Name") && !string.IsNullOrEmpty(objHuman.Mothers_Maiden_Name) && objHuman.Mothers_Maiden_Name.Length > 50)
+                {
+                    return "Mothers_Maiden_Name exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Representative_Email") && !string.IsNullOrEmpty(objHuman.Representative_Email) && objHuman.Representative_Email.Length > 100)
+                {
+                    return "Representative_Email exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Sexual_Orientation_Specify") && !string.IsNullOrEmpty(objHuman.Sexual_Orientation_Specify) && objHuman.Sexual_Orientation_Specify.Length > 100)
+                {
+                    return "Sexual_Orientation_Specify exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Gender_Identity_Specify") && !string.IsNullOrEmpty(objHuman.Gender_Identity_Specify) && objHuman.Gender_Identity_Specify.Length > 100)
+                {
+                    return "Gender_Identity_Specify exceeds the maximum length in the request.";
+                }
+                if (human_data.ContainsKey("Dynamics_Number") && !string.IsNullOrEmpty(objHuman.Dynamics_Number) && objHuman.Dynamics_Number.Length > 25)
+                {
+                    return "Dynamics_Number exceeds the maximum length in the request.";
+                }
             }
             #endregion
 
@@ -1188,11 +2102,88 @@ namespace Acurus.Capella.UI.WebServices.API
         public virtual string Care_Giver_First_Name { get; set; } = string.Empty;
         public virtual string Care_Giver_Last_Name { get; set; } = string.Empty;
         public virtual string Care_Giver_Phone_Number { get; set; } = string.Empty;
+
+        //V2
+        public virtual string Granularity { get; set; } = string.Empty;
+        public virtual string Sexual_Orientation { get; set; } = string.Empty;
+        public virtual string Sexual_Orientation_Specify { get; set; } = string.Empty;
+        public virtual string Gender_Identity { get; set; } = string.Empty;
+        public virtual string Gender_Identity_Specify { get; set; } = string.Empty;
+        public virtual string SigOn_File { get; set; } = string.Empty;
+        public virtual string Employment_Status { get; set; } = string.Empty;
+        public virtual string Patient_Notes { get; set; } = string.Empty;
+        public virtual string Driver_State { get; set; } = string.Empty;
+        public virtual string Driver_License_Num { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_Last_Name { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_First_Name { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_MI { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_StreetAddr1 { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_StreetAddr2 { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_City { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_Sex { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_State { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_ZipCode { get; set; } = string.Empty;
+        public virtual string Emergency_Cnt_Home_Phone_Number { get; set; } = string.Empty;
+        public virtual DateTime Emergency_BirthDate { get; set; } = DateTime.MinValue;
+        public virtual string Emergency_Cnt_CellPhone_Number { get; set; } = string.Empty;
+        public virtual string Emer_Relation { get; set; } = string.Empty;
+        public virtual string Demo_Status { get; set; } = string.Empty;
+        public virtual string People_In_Collection { get; set; } = string.Empty;
+        public virtual string Preferred_Language { get; set; } = string.Empty;
+        public virtual string Race { get; set; } = string.Empty;
+        public virtual string Ethnicity { get; set; } = string.Empty;
+        public virtual string Photo_Path { get; set; } = string.Empty;
+        public virtual string Race_No { get; set; } = string.Empty;
+        public virtual string Preferred_Confidential_Correspodence_Mode { get; set; } = string.Empty;
+        public virtual string Human_Type { get; set; } = string.Empty;
+        public virtual string Declared_Bankruptcy { get; set; } = string.Empty;
+        public virtual string PCP_Name { get; set; } = string.Empty;
+        public virtual string PCP_NPI { get; set; } = string.Empty;
+        public virtual string Mothers_Maiden_Name { get; set; } = string.Empty;
+        public virtual string Immunization_Registry_Status { get; set; } = string.Empty;
+        public virtual string Publicity_Code { get; set; } = string.Empty;
+        public virtual string Representative_Email { get; set; } = string.Empty;
+        public virtual string Data_Sharing_Preference { get; set; } = string.Empty;
+        public virtual string Birth_Indicator { get; set; } = string.Empty;
+        public virtual string Birth_Order { get; set; } = string.Empty;
+        public virtual ulong Primary_Carrier_ID { get; set; } = 0;
+        public virtual string Is_Translator_Required { get; set; } = string.Empty;
+        public virtual string Dynamics_Number { get; set; } = string.Empty;
+        public virtual string Tribal_Affiliation { get; set; } = string.Empty;
+        public virtual string Specific_Ethnicity { get; set; } = string.Empty;
+        public virtual string Insurance_Status { get; set; } = string.Empty;
     }
 
     public class UpdateHuman_Akido
     {
         public ulong humanID { get; set; }
         public Dictionary<string, object> human_data { get; set; }
+    }
+
+    //V3
+    public class PatientInsuredPlan_Akido
+    {
+        public virtual ulong Human_ID { get; set; } = 0;
+        public virtual ulong Insurance_Plan_ID { get; set; } = 0;
+        public virtual string Group_Number { get; set; } = string.Empty;
+        public virtual string Policy_Holder_ID { get; set; } = string.Empty;
+        public virtual DateTime Effective_Start_Date { get; set; } = DateTime.MinValue;
+        public virtual DateTime Termination_Date { get; set; } = DateTime.MinValue;
+        public virtual double PCP_Copay { get; set; } = 0.0;
+        public virtual double Specialist_Copay { get; set; } = 0.0;
+        public virtual double Deductible { get; set; } = 0.0;
+        public virtual double Co_Insurance { get; set; } = 0.0;
+        public virtual string Insurance_Type { get; set; } = string.Empty;
+        public virtual string Assignment { get; set; } = string.Empty;
+        public virtual string Relationship { get; set; } = string.Empty;
+        public virtual string Active { get; set; } = string.Empty;
+        public virtual ulong PCP_ID { get; set; } = 0;
+        public virtual int Relationship_No { get; set; } = 0;
+        public virtual int Sort_Order { get; set; } = 0;
+        public virtual string PCP_Name { get; set; } = string.Empty;
+        public virtual string PCP_NPI { get; set; } = string.Empty;
+        public virtual double Deductible_Met_So_Far { get; set; } = 0;
+        public virtual string Other_Insurance_Comments { get; set; } = string.Empty;
+        public virtual string CCV_Name { get; set; } = string.Empty;
     }
 }
