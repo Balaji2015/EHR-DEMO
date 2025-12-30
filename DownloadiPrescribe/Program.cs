@@ -23,6 +23,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Diagnostics;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace DownloadiPrescribe
 {
@@ -619,6 +620,11 @@ namespace DownloadiPrescribe
             //    return true;
             //}
             else if (sFile.Split('_').Length != 4)
+            {
+                return true;
+            }
+            //CAP-4038
+            else if (!Regex.IsMatch(sFile, @"^[a-zA-Z0-9_.]+$"))
             {
                 return true;
             }
