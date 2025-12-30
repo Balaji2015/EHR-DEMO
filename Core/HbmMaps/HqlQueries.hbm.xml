@@ -3618,7 +3618,7 @@ S.Modified_By, CAST(S.Modified_Date_And_Time AS char(100)), S.Version from order
 	</sql-query>
 	<!-- Added file_management_index in queries:FillMyOrderObjectDetails.WithoutFacility,FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse,FillMyOrderObjectDetails.WithFacility,FillMyOrderObjectDetails.WithFacility.ShowAllFalse for BUGID:43099-->
 	<sql-query name="FillMyOrderObjectDetails.WithoutFacility">
-		<![CDATA[SELECT group_concat(concat(O.Lab_Procedure,'-',O.Lab_Procedure_Description) separator ';'),h.Medical_Record_Number,
+		<![CDATA[SELECT group_concat(distinct concat(O.Lab_Procedure,'-',O.Lab_Procedure_Description) separator ';'),h.Medical_Record_Number,
 h.human_id,h.last_name,h.first_name,h.mi,p.Person_Name,OS.Lab_Name,OS.Lab_Location_Name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
 OS.Encounter_ID,OS.Physician_ID,OS.Lab_ID,OS.Lab_Location_ID,w.Obj_System_ID,w.Current_Owner,w.Current_Process,w.Obj_Type,w.Obj_Sub_Type,OS.Order_submit_id,
 cast(OS.created_date_and_time as char(100)),O.CMG_Encounter_ID,fmn.file_management_index_id,w.Is_abnormal,OS.Test_Date,c.is_narrative_interpretation
