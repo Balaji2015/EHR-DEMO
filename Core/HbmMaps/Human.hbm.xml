@@ -164,6 +164,7 @@
 		<property name="Tribal_Affiliation" column="Tribal_Affiliation" />
 		<property name="Specific_Ethnicity" column="Specific_Ethnicity" />
 		<property name="Insurance_Status" column="Insurance_Status" />
+		<property name="Duplicate_of_Human_ID" column="Duplicate_of_Human_ID" />
 		<bag name="PatientInsuredBag" cascade="all" lazy="false" inverse="true" >
 			<key column="Human_ID" />
 			<one-to-many class="Acurus.Capella.Core.DomainObjects.PatientInsuredPlan, Acurus.Capella.Core" />
