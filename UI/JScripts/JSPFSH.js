@@ -1061,14 +1061,18 @@ function LoadPhysicianList(Control) {
         dataType: "json",
         success: function (xml) {
             var FacilityList = xml.PhysicianFacility;
-            var FacilityRole = window.parent.parent.parent.theForm.ctl00_C5POBody_hdnFacilityRole.value;
+            var FacilityRole;
+            //CAP-3984
+            if (window?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnFacilityRole != undefined && window?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnFacilityRole != null) {
+                FacilityRole = window.parent.parent.parent.theForm.ctl00_C5POBody_hdnFacilityRole.value;
+            }
             var cookies = document.cookie.split(';');
             var CLegalOrg = "";
             for (var l = 0; l < cookies.length; l++) {
                 if (cookies[l].indexOf("CLegalOrg") > -1)
                     CLegalOrg = cookies[l].split("=")[1];
             }
-            if (FacilityRole != "") {
+            if (FacilityRole != undefined && FacilityRole != null && FacilityRole != "") {
                 if (FacilityRole.split('&')[1] != "" && (FacilityRole.split('&')[1].toUpperCase() == "PHYSICIAN" || FacilityRole.split('&')[1].toUpperCase() == "PHYSICIAN ASSISTANT")) {
                     $("#lblSelectPhysician")[0].disabled = true;
                     $("#cboPhysician")[0].disabled = true;
