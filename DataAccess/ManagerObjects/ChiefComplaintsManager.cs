@@ -950,9 +950,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<TreatmentPlan> GetTreatmentPlanForcareplan(ulong ulEncounterID)
         {
             IList<TreatmentPlan> ilstTreatmentPlan = new List<TreatmentPlan>();
+            List<string> ilstPlanType = new List<string>();
+            ilstPlanType.Add("ASSESSMENT");
+            ilstPlanType.Add("PLAN");
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria Criteria = session.GetISession().CreateCriteria(typeof(TreatmentPlan)).Add(Expression.Eq("Encounter_Id", ulEncounterID)).Add(Expression.Eq("Plan_Type", "ASSESSMENT")).Add(Restrictions.Not(Restrictions.Eq("Plan",string.Empty)));
+                //ICriteria Criteria = session.GetISession().CreateCriteria(typeof(TreatmentPlan)).Add(Expression.Eq("Encounter_Id", ulEncounterID)).Add(Expression.Eq("Plan_Type", "ASSESSMENT")).Add(Restrictions.Not(Restrictions.Eq("Plan",string.Empty)));
+                ICriteria Criteria = session.GetISession().CreateCriteria(typeof(TreatmentPlan)).Add(Expression.Eq("Encounter_Id", ulEncounterID)).Add(Expression.In("Plan_Type", ilstPlanType)).Add(Restrictions.Not(Restrictions.Eq("Plan",string.Empty)));
                 ilstTreatmentPlan = Criteria.List<TreatmentPlan>();
             }
             return ilstTreatmentPlan;
@@ -4379,7 +4383,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 CarePlanLookupHead = careplanHead.ToList<CarePlanLookup>();
                 var careplanLabel = from l in CarePlanLookup where l.Field_Name == "Care_Name_Value" select l;
                 CarePlanLookupLabel = careplanLabel.ToList<CarePlanLookup>();
-                ISQLQuery sql1 = iMySession.CreateSQLQuery("select o.*from care_plan o  where o.Encounter_ID='" + ulEncounterID + "' and (o.Status ='Yes' and o.Care_Plan_Notes<>'' or o.Status_Value<>'')").AddEntity("o", typeof(CarePlan));
+                //ISQLQuery sql1 = iMySession.CreateSQLQuery("select o.*from care_plan o  where o.Encounter_ID='" + ulEncounterID + "' and (o.Status ='Yes' and o.Care_Plan_Notes<>'' or o.Status_Value<>'')").AddEntity("o", typeof(CarePlan));
+                ISQLQuery sql1 = iMySession.CreateSQLQuery("select o.*from care_plan o  where o.Encounter_ID='" + ulEncounterID + "' and o.Care_Plan_Notes<>''").AddEntity("o", typeof(CarePlan));
                 CarePlanValue = sql1.List<CarePlan>();
                 //IQuery query1 = session.GetISession().GetNamedQuery("Fill.CSCarePlan.List");
                 //query1.SetParameter(0, ulEncounterID);
