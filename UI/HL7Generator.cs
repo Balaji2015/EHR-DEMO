@@ -26,7 +26,7 @@ namespace Acurus.Capella.UI
         StaticLookupManager objStaticLookupManager = new StaticLookupManager();
         XmlWriterSettings wSettings = new XmlWriterSettings();
         MemoryStream ms;
-      //  XmlWriter xmlWriter;
+        //  XmlWriter xmlWriter;
         public XmlDocument CreateCarePlanXML(PhysicianLibrary Phy, FillClinicalSummary ClinicalSummary, string sPrintFileName)
         {
             XmlDocument xmlDoc = new XmlDocument();
@@ -40,7 +40,7 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("effectiveTime");
             xmlReqNode[0].Attributes[0].Value = DateTime.Now.ToString("yyyyMMddhhmmss+0500");
             string sMAName = string.Empty;
-            
+
             #region OLdHEADER_CAREPLAN
             /* Old Header
             #region PatientRole
@@ -366,20 +366,20 @@ namespace Acurus.Capella.UI
                 //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
                 xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
-
-            if (ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
-                xmlReqNode[1].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Work_Phone_No;
-            else
-                //For BugID : 28462
-                //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[1].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
+            //Cap - 3923
+            //if (ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
+            //    xmlReqNode[1].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Work_Phone_No;
+            //else
+            //    //For BugID : 28462
+            //    //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
+            //    xmlReqNode[1].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
             if (ClinicalSummary.HumanList[0].Cell_Phone_Number != string.Empty)
-                xmlReqNode[2].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
+                xmlReqNode[1].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
             else
                 //For BugID : 28462
                 //xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
-                xmlReqNode[2].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
+                xmlReqNode[1].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
             #endregion
 
             #region Patient
@@ -404,7 +404,8 @@ namespace Acurus.Capella.UI
             if (ClinicalSummary.Previous_Name.Trim() != "")
             {
                 xmlReqNode[1].ChildNodes[0].InnerText = ClinicalSummary.Previous_Name.Trim();
-                xmlReqNode[1].ChildNodes[1].InnerText = ClinicalSummary.First_Name;
+                //Cap - 3923
+                //xmlReqNode[1].ChildNodes[1].InnerText = ClinicalSummary.First_Name;
                 xmlReqNode[1].ChildNodes[2].InnerText = ClinicalSummary.Last_Name;
             }
             else
@@ -565,7 +566,9 @@ namespace Acurus.Capella.UI
             if (ClinicalSummary.Encounter != null && ClinicalSummary.Encounter.Count > 0)
                 sfacility = ClinicalSummary.Encounter[0].Facility_Name;
             xmlReqNode = xmlDoc.GetElementsByTagName("streetAddressLine");
-            xmlReqNode[1].InnerText = sfacility + ", " + Phy.PhyAddress1;
+            //Cap - 3923
+            //xmlReqNode[1].InnerText = sfacility + ", " + Phy.PhyAddress1;
+            xmlReqNode[1].InnerText = Phy.PhyAddress1;
             xmlReqNode = xmlDoc.GetElementsByTagName("city");
             xmlReqNode[1].InnerText = Phy.PhyCity;
             xmlReqNode = xmlDoc.GetElementsByTagName("state");
@@ -578,10 +581,11 @@ namespace Acurus.Capella.UI
 
             xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
             string sphyTelephoneno = Phy.PhyTelephone;
+            //Cap - 3923
             if (sphyTelephoneno != string.Empty)
-                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + sphyTelephoneno;
+                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[2].ChildNodes[2].Attributes[1].Value = "tel:+1" + sphyTelephoneno;
             else
-                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + "(909) 621-4949";
+                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[2].ChildNodes[2].Attributes[1].Value = "tel:+1" + "(909) 621-4949";
 
             xmlReqNode = xmlDoc.GetElementsByTagName("prefix");
             xmlReqNode[0].InnerText = Phy.PhyPrefix;
@@ -627,14 +631,17 @@ namespace Acurus.Capella.UI
             //new
             #region custodian
             xmlReqNode = xmlDoc.GetElementsByTagName("name");
-            if (ClinicalSummary.Guarantor_human_MI == "")
-            {
-                xmlReqNode[2].InnerText = ClinicalSummary.Guarantor_human_Lastname + "," + ClinicalSummary.Guarantor_human_name;
-            }
-            else
-            {
-                xmlReqNode[2].InnerText = ClinicalSummary.Guarantor_human_Lastname + "," + ClinicalSummary.Guarantor_human_name + ClinicalSummary.Guarantor_human_MI;
-            }
+            //Cap - 3923
+            //if (ClinicalSummary.Guarantor_human_MI == "")
+            //{
+            //    xmlReqNode[2].InnerText = ClinicalSummary.Guarantor_human_Lastname + "," + ClinicalSummary.Guarantor_human_name;
+            //}
+            //else
+            //{
+            //    xmlReqNode[2].InnerText = ClinicalSummary.Guarantor_human_Lastname + "," + ClinicalSummary.Guarantor_human_name + ClinicalSummary.Guarantor_human_MI;
+            //}
+            xmlReqNode[2].InnerText = sfacility;
+
             xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
             //string sgurantorphoneno = ClinicalSummary.Guarantor_Home_Phone_No;
             //if (sgurantorphoneno != string.Empty)
@@ -803,8 +810,11 @@ namespace Acurus.Capella.UI
                         if (lst.Count > 0)
                         {
                             string[] name = lst[0].person_name.Split(' ');
-                            xmlReqNode[1].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = name[0];
-                            sMAName = name[0];
+                            //Cap - 3923
+                            //xmlReqNode[1].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = name[0];
+                            //sMAName = name[0];
+                            xmlReqNode[1].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = name[0].Replace(",", "");
+                            sMAName = lst[0].person_name;
                             if (name.Count() > 1)
                                 xmlReqNode[1].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[1].InnerText = name[1];
                         }
@@ -890,7 +900,7 @@ namespace Acurus.Capella.UI
                 if (xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1].ChildNodes[0].ChildNodes[3].InnerText == "Health Concerns Section")
                 {
 
-                   // XmlElement TempElement = null;
+                    // XmlElement TempElement = null;
 
                     XmlElement elemOld = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1].ChildNodes[0].ChildNodes[4];
 
@@ -980,7 +990,7 @@ namespace Acurus.Capella.UI
 
                     for (int i = 0; i < ClinicalSummary.ProblemListing.Count; i++)
                     {
-                       
+
                         String sDate = DateTime.Now.ToString("yyyyMMddhhmmss");
 
                         DateTime digDate = DateTime.MinValue;
@@ -988,22 +998,23 @@ namespace Acurus.Capella.UI
                         {
                             digDate= DateTime.Parse(ClinicalSummary.ProblemListing[i].Date_Diagnosed);
                         }
-                        
 
-                            XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
+
+                        XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
                         //Cap - 3648
                         //xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.PhyId.ToString()).Replace("{DateDiagnosed}", digDate.ToString("yyyyMMdd")).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{SnomedCode}", ClinicalSummary.ProblemListing[i].Snomed_Code).Trim().Replace("{SnomedDescription}", ClinicalSummary.ProblemListing[i].Snomed_Code_Description).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
-                        xfragAllergy.InnerText = docAllergyEntry.DocumentElement.InnerXml.Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.PhyId.ToString()).Replace("{DateDiagnosed}", digDate.ToString("yyyyMMdd")).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{SnomedCode}",ClinicalSummary.ProblemListing[i].Snomed_Code).Trim().Replace("{SnomedDescription}", ClinicalSummary.ProblemListing[i].Snomed_Code_Description).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
+                        xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.PhyId.ToString()).Replace("{DateDiagnosed}", digDate.ToString("yyyyMMdd")).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{SnomedCode}", ClinicalSummary.ProblemListing[i].Snomed_Code).Trim().Replace("{SnomedDescription}", ClinicalSummary.ProblemListing[i].Snomed_Code_Description.Replace(">", "&gt;").Replace("<", "&lt;")).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
 
-                      
+
+
                         elemOldEntry.LastChild.AppendChild(xfragAllergy);
                         xmlDoc.Save(sPrintFileName);
                         xmlDoc.Load(sPrintFileName);
 
                         elemOldEntry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1];
-                        
-                        
-                         //XmlElement elemProcedureCode = null;
+
+
+                        //XmlElement elemProcedureCode = null;
                         //elemProcedureCode = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1].ChildNodes[0].ChildNodes[5 + i].ChildNodes[1].ChildNodes[5].ChildNodes[0].ChildNodes[2];
                         //elemProcedureCode = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1].ChildNodes[1].ChildNodes[4 + i].LastChild.ChildNodes[5].LastChild.ChildNodes[1];
                         // elemProcedureCode.Attributes[0].Value = ClinicalSummary.ProblemListing[i].ICD_9_Description;//ICD_ID value
@@ -1168,7 +1179,7 @@ namespace Acurus.Capella.UI
                         //}
                         //else
                         //    AssignedAuthor.Attributes[0].Value = "111-111-111";
-                        }
+                    }
                 }
             }
             else
@@ -1235,21 +1246,25 @@ namespace Acurus.Capella.UI
 
                     for (int i = 0; i < ClinicalSummary.Vitals.Count; i++)
                     {
-                        String sDate = DateTime.Now.ToString("yyyyMMddhhmmss");
+                        //Cap - 3923
+                        if (ClinicalSummary.Vitals[i].Notes.Trim() != string.Empty)
+                        {
+                            String sDate = DateTime.Now.ToString("yyyyMMddhhmmss");
 
-                        XmlDocumentFragment xfragIntervention = xmlDoc.CreateDocumentFragment();
+                            XmlDocumentFragment xfragIntervention = xmlDoc.CreateDocumentFragment();
 
-                        sEntryTextHere = "<code code=\"LoincCode\" displayName=\"LoincDescription\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName =\"LOINC\"/><text>LoincDescription</text>";
+                            sEntryTextHere = "<code code=\"LoincCode\" displayName=\"LoincDescription\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName =\"LOINC\"/><text>LoincDescription</text>";
 
-                        sEntryTextHere = sEntryTextHere.Replace("LoincCode", ClinicalSummary.Vitals[i].Loinc_Identifier);
-                        sEntryTextHere = sEntryTextHere.Replace("LoincDescription", ClinicalSummary.Vitals[i].Loinc_Observation);
+                            sEntryTextHere = sEntryTextHere.Replace("LoincCode", ClinicalSummary.Vitals[i].Loinc_Identifier);
+                            sEntryTextHere = sEntryTextHere.Replace("LoincDescription", ClinicalSummary.Vitals[i].Loinc_Observation);
 
-                        xfragIntervention.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{EntryTextHere}", sEntryTextHere).Replace("{CurrentDate}", sDate).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
+                            xfragIntervention.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{EntryTextHere}", sEntryTextHere).Replace("{CurrentDate}", sDate).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
 
 
-                        elemOldentry.LastChild.AppendChild(xfragIntervention);
-                        //xmlDoc.Save(sPrintFileName);
-                        //xmlDoc.Load(sPrintFileName);
+                            elemOldentry.LastChild.AppendChild(xfragIntervention);
+                            //xmlDoc.Save(sPrintFileName);
+                            //xmlDoc.Load(sPrintFileName);
+                        }
                     }
 
 
@@ -1307,20 +1322,20 @@ namespace Acurus.Capella.UI
             //        XmlElement elemOldEntry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3];
             //        XmlDocument docAllergyEntry = new XmlDocument();
 
-                    //docAllergyEntry.Load(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "SampleXML\\Intervention.xml"));
+            //docAllergyEntry.Load(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "SampleXML\\Intervention.xml"));
 
 
 
-                    //for (int i = 0; i < ClinicalSummary.Encounter.Count; i++)
+            //for (int i = 0; i < ClinicalSummary.Encounter.Count; i++)
             //{
 
-                    //    XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
+            //    XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
             //    xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml;
             //    elemOldEntry.LastChild.AppendChild(xfragAllergy);
             //    xmlDoc.Save(sPrintFileName);
             //    xmlDoc.Load(sPrintFileName);
 
-                    //    elemOldEntry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3];
+            //    elemOldEntry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3];
             //    XmlElement elemVisitType = null;
             //    XmlElement elemDOS = null;
             //    XmlElement elemFacilityName = null;
@@ -1329,27 +1344,27 @@ namespace Acurus.Capella.UI
             //    XmlElement elemState = null;
             //    XmlElement elemPostalCode = null;
 
-                    //    XmlElement elemName = null;
+            //    XmlElement elemName = null;
             //    XmlElement elemReasonDOS = null;
             //    XmlElement elemReasonTypeVisit = null;
 
-                    //    elemVisitType = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[2];
+            //    elemVisitType = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[2];
             //    elemDOS = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[4];
 
-                    //    elemFacilityName = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[7].ChildNodes[0].ChildNodes[1];
+            //    elemFacilityName = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[7].ChildNodes[0].ChildNodes[1];
             //    elemAddress = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[7].ChildNodes[0].ChildNodes[2].ChildNodes[0];
             //    elemCity = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[7].ChildNodes[0].ChildNodes[2].ChildNodes[1];
             //    elemState = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[7].ChildNodes[0].ChildNodes[2].ChildNodes[2];
             //    elemPostalCode = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[7].ChildNodes[0].ChildNodes[2].ChildNodes[3];
             //    elemName = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[7].ChildNodes[0].ChildNodes[4].ChildNodes[0];
 
-                    //    elemReasonDOS = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[9].ChildNodes[0].ChildNodes[4].ChildNodes[0];
+            //    elemReasonDOS = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[9].ChildNodes[0].ChildNodes[4].ChildNodes[0];
             //    elemReasonTypeVisit = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i].ChildNodes[9].ChildNodes[0].ChildNodes[5];
 
-                    //    elemVisitType.Attributes[3].Value = "InPatient Admission";//ClinicalSummary.Encounter[i].Visit_Type;
+            //    elemVisitType.Attributes[3].Value = "InPatient Admission";//ClinicalSummary.Encounter[i].Visit_Type;
             //    elemDOS.Attributes[0].Value = ClinicalSummary.Encounter[i].Date_of_Service.ToString("yyyyMMdd");
 
-                    //    elemFacilityName.Attributes[3].Value = ClinicalSummary.Encounter[i].Facility_Name;
+            //    elemFacilityName.Attributes[3].Value = ClinicalSummary.Encounter[i].Facility_Name;
             //    FacilityManager objFacilityMngr = new FacilityManager();
             //    IList<FacilityLibrary> ilstFacility = new List<FacilityLibrary>();
             //    ilstFacility = objFacilityMngr.GetFacilityByFacilityname(ClinicalSummary.Encounter[i].Facility_Name.ToString());
@@ -1357,29 +1372,29 @@ namespace Acurus.Capella.UI
             //    {
             //        elemAddress.InnerText = ilstFacility[0].Fac_Address1;
 
-                    //        elemCity.InnerText = ilstFacility[0].Fac_City;
+            //        elemCity.InnerText = ilstFacility[0].Fac_City;
             //        elemState.InnerText = ilstFacility[0].Fac_State;
 
-                    //        elemPostalCode.InnerText = ilstFacility[0].Fac_Zip;
+            //        elemPostalCode.InnerText = ilstFacility[0].Fac_Zip;
             //        elemName.InnerText = ilstFacility[0].Fac_Name;
             //    }
             //    elemReasonDOS.Attributes[0].Value = ClinicalSummary.Encounter[i].Date_of_Service.ToString("yyyyMMdd");
             //    elemReasonTypeVisit.Attributes[2].Value = ClinicalSummary.Encounter[i].Purpose_of_Visit;
 
-                    //    int k = 0;
+            //    int k = 0;
             //    for (int j = 0; j < ClinicalSummary.EncounterDiagnosis.Count; j++)
             //    {
             //        XmlElement elemOldEntry1 = (XmlElement)xmlDoc.GetElementsByTagName("encounter")[i];
             //        XmlDocument docAllergyEntry1 = new XmlDocument();
 
-                    //        docAllergyEntry1.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\EncounterDiagnosis.xml"));
+            //        docAllergyEntry1.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\EncounterDiagnosis.xml"));
             //        XmlDocumentFragment xfragAllergy1 = xmlDoc.CreateDocumentFragment();
             //        xfragAllergy1.InnerXml = docAllergyEntry1.DocumentElement.InnerXml;
             //        elemOldEntry1.AppendChild(xfragAllergy1);
             //        xmlDoc.Save(sPrintFileName);
             //        xmlDoc.Load(sPrintFileName);
 
-                    //        XmlElement elemDiagnosisActLow = null;
+            //        XmlElement elemDiagnosisActLow = null;
             //        XmlElement elemDiagnosisobsLow = null;
             //        XmlElement elemDiagnosisValue = null;
             //        if (j == 0)
@@ -1405,10 +1420,10 @@ namespace Acurus.Capella.UI
             //            k += 2;
             //        }
 
-                    //    }
+            //    }
 
 
-                    //}
+            //}
             //}
             //}
             #endregion
@@ -1561,15 +1576,21 @@ namespace Acurus.Capella.UI
             //Middle Name
             xmlReqNode = xmlDoc.GetElementsByTagName("given");
             xmlReqNode[1].InnerText = ClinicalSummary.MI;
+            //Cap - 3923
+            xmlReqNode[3].InnerText = ClinicalSummary.MI;
+            xmlReqNode = xmlDoc.GetElementsByTagName("family");
+            xmlReqNode[1].InnerText = ClinicalSummary.Last_Name;
+            xmlReqNode = xmlDoc.GetElementsByTagName("low");
+            xmlReqNode[0].Attributes[0].Value = ClinicalSummary.Birth_Date.ToString("yyyyMMdd");
             xmlDoc.GetElementsByTagName("dataEnterer")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].InnerText = sMAName;
 
             String sCurrentDate = DateTime.Now.ToString("yyyyMMddhhmmss");
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("{CurrentDate}", sCurrentDate);
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("{TaxonomicalCode}", Phy.Taxonomy_Code);
 
-            xmlDoc.Save(sPrintFileName);            
+            xmlDoc.Save(sPrintFileName);
             return xmlDoc;
-           
+
 
         }
         public XmlDocument CreateCCDXML(PhysicianLibrary Phy, FillClinicalSummary ClinicalSummary, string sPrintFileName, Hashtable hashCheckedList)

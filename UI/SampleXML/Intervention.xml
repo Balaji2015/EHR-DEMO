@@ -1,44 +1,6 @@
 ﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
 	<entry>
 		<!--
-		An Intervention Act is wrapper to identify activities as interventions. Interventions are actions taken to increase the 
-		likelihood of achieving the patient's or providers' goals. 
-		An Intervention Act should contain a reference to a Goal Observation representing the reason for the intervention.
-		-->
-		<act classCode="ACT" moodCode="EVN">
-			<templateId root="2.16.840.1.113883.10.20.22.4.131" extension="2015-08-01"/>
-			<templateId root="2.16.840.1.113883.10.20.22.4.131"/>
-			<id root="45a8d282-2409-450f-b26f-cc0eb6204296"/>
-			<code code="362956003" codeSystem="2.16.840.1.113883.6.96"/>
-			<statusCode code="completed"/>
-			<effectiveTime value="{CurrentDate}"/>
-			<author typeCode="AUT">
-				<templateId root="2.16.840.1.113883.10.20.22.4.119"/>
-				<time value="{CurrentDate}"/>
-				<assignedAuthor>
-					<!-- This id points back to a participant in the header -->
-					<id root="d839038b-7171-4165-a760-467925b43857"/>
-					<code code="{TaxonomicalCode}" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)" displayName="{TaxonomicalDescription}"/>
-				</assignedAuthor>
-			</author>
-			<entryRelationship typeCode="RSON">
-				<!-- This is the "Entry Reference" Template that enables referencing another entry in the same CDA document instance. 
-					 In a Care Plan it is particularly useful because it is necessary to repeatedly relate Health Concerns, Goals, Interventions and Outcomes.-->
-				<!-- An Intervention Act should contain a reference to a Goal Observation representing the reason for the intervention. -->
-				<act classCode="ACT" moodCode="EVN">
-					<templateId root="2.16.840.1.113883.10.20.22.4.122" />
-					<!-- This ID equals the ID of the GOAL: Decrease Nausea and Vomiting  -->
-					<id root="1.3.6.1.4.1.22812.4.222.334.4.34" extension="1074100"/>
-					<!-- The code is nulled to "NP" Not Present" -->
-					<code nullFlavor="NP" />
-					<text></text>
-					<statusCode code="completed"/>
-				</act>
-			</entryRelationship>
-		</act>
-	</entry>
-	<entry>
-		<!--
 			An Intervention Act is wrapper to identify activities as interventions. Interventions are actions taken to increase the 
 			likelihood of achieving the patient's or providers' goals. 
 			An Intervention Act should contain a reference to a Goal Observation representing the reason for the intervention.

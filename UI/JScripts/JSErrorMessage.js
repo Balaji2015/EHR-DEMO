@@ -3042,8 +3042,9 @@ function FilterWithdelimiter(array, terms, checkdelimiter, SearchIndex) {
         for (var i = 0; i < arrayOfTerms.length; i++) {
             resultant = $.grep(first_resultant, function (item) {
 
-                if (item != undefined && checkdelimiter != "") {
-                    return item.split(checkdelimiter)[arrayindex].toLowerCase().indexOf(arrayOfTerms[i].toLowerCase()) > -1;
+                if (item != undefined && item != null && checkdelimiter != "") {
+                    //CAP-3981
+                    return item.split(checkdelimiter)[arrayindex]?.toLowerCase()?.indexOf(arrayOfTerms[i]?.toLowerCase()) > -1;
                 }
 
             });

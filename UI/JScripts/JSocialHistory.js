@@ -314,7 +314,8 @@ function Filter(array, terms) {
         var resultant;
         for (var i = 1; i < arrayOfTerms.length; i++) {
             resultant = $.grep(first_resultant, function (item) {
-                return item.label.toLowerCase().indexOf(arrayOfTerms[i].toLowerCase()) > -1;
+                //CAP-3983
+                return item?.label?.toLowerCase()?.indexOf(arrayOfTerms[i]?.toLowerCase()) > -1;
             });
             first_resultant = resultant;
         }
