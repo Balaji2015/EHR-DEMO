@@ -1011,10 +1011,10 @@ namespace Acurus.Capella.UI
                             }
 
                             //OrderText += "|[ #" + submittedorders.ToString() + " ]|";
-
-                            OrderText.Append("|[ #" + submittedorders.ToString() + " ]|");
+                            //CAP-3894
+                            //OrderText.Append("|[ #" + submittedorders.ToString() + " ]|");
                             String dtSpecCollectionDateConverted = string.Empty;
-
+                            DateTime orderDate = DateTime.MinValue;
                             if (Request.QueryString["CurrentZone"] != null)
                             {
                                 //string Offset = Request.QueryString["CurrentZone"];
@@ -1023,8 +1023,10 @@ namespace Acurus.Capella.UI
                                 if (Offset.ToString().StartsWith("-"))
                                 {
                                     DateTime localTime = OrderDateAndTime.AddMinutes(Convert.ToDouble(Offset.ToString()));
+                                    //CAP-3894
+                                    orderDate = localTime;
                                     // OrderText += localTime.ToString("dd-MMM-yyyy hh:mm tt");
-                                    OrderText.Append(localTime.ToString("dd-MMM-yyyy hh:mm tt"));
+                                    //OrderText.Append(localTime.ToString("dd-MMM-yyyy hh:mm tt"));
                                     if (SpecCollectionDate != DateTime.MinValue)
                                     { dtSpecCollectionDateConverted = SpecCollectionDate.AddMinutes(Convert.ToDouble(Offset.ToString())).ToString("dd-MMM-yyyy hh:mm tt"); }
                                     //else
@@ -1036,8 +1038,10 @@ namespace Acurus.Capella.UI
                                 else
                                 {
                                     DateTime localTime = OrderDateAndTime.Subtract(new TimeSpan(0, Convert.ToInt32(Offset.ToString()), 0));
+                                    //CAP-3894
+                                    orderDate = localTime;
                                     //OrderText += localTime.ToString("dd-MMM-yyyy hh:mm tt");
-                                    OrderText.Append(localTime.ToString("dd-MMM-yyyy hh:mm tt"));
+                                    //OrderText.Append(localTime.ToString("dd-MMM-yyyy hh:mm tt"));
                                     if (SpecCollectionDate != DateTime.MinValue)
                                     {
                                         dtSpecCollectionDateConverted = SpecCollectionDate.Subtract(new TimeSpan(0, Convert.ToInt32(Offset.ToString()), 0)).ToString("dd-MMM-yyyy hh:mm tt");
@@ -1051,7 +1055,14 @@ namespace Acurus.Capella.UI
 
                             if (bIsSkip == false)
                             {
-                                orderItems.Text = OrderText.ToString();
+                                //CAP-3894
+                                OrdersSubmitManager ordersSubmitManager = new OrdersSubmitManager();
+                                var ordersSubmitData = ordersSubmitManager.GetById(submittedorders);
+                                UserManager userManager = new UserManager();
+                                var orderingPhysician = userManager.GetUserbyPhysicianLibraryID(PhyID)?.FirstOrDefault();
+                                string orderDateNew = orderDate == DateTime.MinValue ? "" : orderDate.ToString("dd-MMM-yyyy");
+                                string label = $"Order Name : {OrderText.ToString()}  |  Order # : {submittedorders.ToString()}  |  Order Date : {orderDateNew}  |  Ordering Facility : {ordersSubmitData.Facility_Name}  |  Ordering Physician : {orderingPhysician?.person_name ?? ""}";
+                                orderItems.Text = label;
                                 //string orderValue = PhyID.ToString() + "|" + LabID.ToString() + "|" + submittedorders.ToString();
                                 StringBuilder orderValue = new StringBuilder();
                                 orderValue.Append(PhyID.ToString() + "|" + LabID.ToString() + "|" + submittedorders.ToString());
@@ -1061,7 +1072,7 @@ namespace Acurus.Capella.UI
                                     orderValue.Append("|" + dtSpecCollectionDateConverted);
                                 }
                                 orderItems.Value = orderValue.ToString();
-                                orderItems.Attributes.Add("title", OrderText.ToString());
+                                orderItems.Attributes.Add("title", label);
                                 cboStandingOrders.Items.Add(orderItems);
                             }
 
@@ -1247,7 +1258,7 @@ namespace Acurus.Capella.UI
             waitCursor.Update();
             upIndexingDetails.Update();
             chkExternalMedicalRecord.Checked = false;
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StandingOrderSelectedValue", "localStorage.setItem('StandingOrderSelectedValue', $('#cboStandingOrders').val());", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StandingOrderSelectedValue", "localStorage.setItem('StandingOrderSelectedValue', $('#cboStandingOrders').val()); loadSelect2();", true);
             //if (btnSave.Text == "Update")
             //{
             //    btnSave.Text = "Update";
@@ -4424,10 +4435,10 @@ namespace Acurus.Capella.UI
                                     if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] != null)
                                         PhyID = Convert.ToUInt32(ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"]);
                                 }
-
-                                OrderText.Append("|[ #" + submittedorders.ToString() + " ]|");
+                                //CAP-3894
+                                //OrderText.Append("|[ #" + submittedorders.ToString() + " ]|");
                                 String dtSpecCollectionDateConverted = string.Empty;
-
+                                DateTime orderDate = DateTime.MinValue;
                                 if (Request.QueryString["CurrentZone"] != null)
                                 {
                                     //string Offset = Request.QueryString["CurrentZone"];
@@ -4436,21 +4447,32 @@ namespace Acurus.Capella.UI
                                     if (Offset.ToString().StartsWith("-"))
                                     {
                                         DateTime localTime = OrderDateAndTime.AddMinutes(Convert.ToDouble(Offset.ToString()));
-                                        OrderText.Append(localTime.ToString("dd-MMM-yyyy hh:mm tt"));
+                                        //CAP-3894
+                                        orderDate = localTime;
+                                        //OrderText.Append(localTime.ToString("dd-MMM-yyyy hh:mm tt"));
                                         if (SpecCollectionDate != DateTime.MinValue)
                                         { dtSpecCollectionDateConverted = SpecCollectionDate.AddMinutes(Convert.ToDouble(Offset.ToString())).ToString("dd-MMM-yyyy hh:mm tt"); }
                                     }
                                     else
                                     {
                                         DateTime localTime = OrderDateAndTime.Subtract(new TimeSpan(0, Convert.ToInt32(Offset.ToString()), 0));
-                                        OrderText.Append(localTime.ToString("dd-MMM-yyyy hh:mm tt"));
+                                        //CAP-3894
+                                        orderDate = localTime;
+                                        //OrderText.Append(localTime.ToString("dd-MMM-yyyy hh:mm tt"));
                                         if (SpecCollectionDate != DateTime.MinValue)
                                         { dtSpecCollectionDateConverted = SpecCollectionDate.Subtract(new TimeSpan(0, Convert.ToInt32(Offset.ToString()), 0)).ToString("dd-MMM-yyyy hh:mm tt"); }
                                     }
                                 }
                                 if (bIsSkip == false)
                                 {
-                                    orderItems.Text = OrderText.ToString();
+                                    //CAP-3894
+                                    OrdersSubmitManager ordersSubmitManager = new OrdersSubmitManager();
+                                    var ordersSubmitData = ordersSubmitManager.GetById(submittedorders);
+                                    UserManager userManager = new UserManager();
+                                    var orderingPhysician = userManager.GetUserbyPhysicianLibraryID(PhyID)?.FirstOrDefault();
+                                    string orderDateNew = orderDate == DateTime.MinValue ? "" : orderDate.ToString("dd-MMM-yyyy");
+                                    string label = $"Order Name : {OrderText.ToString()}  |  Order # : {submittedorders.ToString()}  |  Order Date : {orderDateNew}  |  Ordering Facility : {ordersSubmitData.Facility_Name}  |  Ordering Physician : {orderingPhysician?.person_name ?? ""}";
+                                    orderItems.Text = label;
                                     //string orderValue = PhyID.ToString() + "|" + LabID.ToString() + "|" + submittedorders.ToString();
                                     StringBuilder orderValue = new StringBuilder();
                                     orderValue.Append(PhyID.ToString() + "|" + LabID.ToString() + "|" + submittedorders.ToString());
@@ -4460,7 +4482,7 @@ namespace Acurus.Capella.UI
                                         orderValue.Append("|" + dtSpecCollectionDateConverted);
                                     }
                                     orderItems.Value = orderValue.ToString();
-                                    orderItems.Attributes.Add("title", OrderText.ToString());
+                                    orderItems.Attributes.Add("title", label);
                                     cboStandingOrders.Items.Add(orderItems);
                                 }
                             }
@@ -4679,7 +4701,7 @@ namespace Acurus.Capella.UI
             hdnUpdateMode.Value = "";
             hdnUpdateMode.Value = string.Empty;
             //divLoading.Style.Add("display", "none");
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading();", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", "StopLoading(); loadSelect2();", true);
             waitCursor.Update();
 
             //Cap - 1294

@@ -1662,3 +1662,9 @@ function LoadSubDocType() {
         }
     });
 }
+
+function loadSelect2() {
+    $('#cboStandingOrders').select2({
+        width: '398px'
+    });
+}

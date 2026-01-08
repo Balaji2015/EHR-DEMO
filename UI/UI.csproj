@@ -380,6 +380,7 @@
     <Content Include="CSS\bootstrap.min.css" />
     <Content Include="CSS\jquery.dataTables.min.css" />
     <Content Include="CSS\metro.css" />
+    <Content Include="CSS\select2.min.css" />
     <Content Include="ErrorMessage.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -463,6 +464,7 @@
     <Content Include="JScripts\JSSelectLegalOrg.js" />
     <Content Include="JScripts\metro.js" />
     <Content Include="JScripts\pako.min.js" />
+    <Content Include="JScripts\select2.min.js" />
     <Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <Content Include="Resources\1286960053_resultset_first.ico" />
     <Content Include="Resources\16_16.ico" />

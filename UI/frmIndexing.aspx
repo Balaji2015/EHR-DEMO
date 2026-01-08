@@ -11,8 +11,11 @@
     <base target="_self" />
     <link href="CSS/ScanningAndIndexing.css" rel="stylesheet" />
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
-     <link href="CSS/font-awesome.4.4.0.css" rel="stylesheet" />
-
+    <link href="CSS/font-awesome.4.4.0.css" rel="stylesheet" />
+    <link href="CSS/bootstrap.min3.4.0.css" rel="stylesheet" />
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />
+    <link href="CSS/select2.min.css" rel="Stylesheet" />
      <style>
          .divhighlight:hover {
              font-weight: bold;
@@ -648,19 +651,14 @@
         <asp:Button ID="hdnbtngenerateindexingxml" runat="server" OnClick="hdnbtngeneratexml_Click"  style="display:none" />
 
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
-            <%--<script src="JScripts/jquery-1.7.1.min.js" type="text/javascript"></script>--%>
-             <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
-            <script src="Jscripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+            <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
             <%--<script src="JScripts/jquery-ui.min.js"></script>--%>
             <%--<script src="JScripts/jquery-2.2.3.js"></script>--%>
             <script type="text/javascript" src="JScripts/jquery.datetimepicker.js"></script>
             <script type="text/javascript" src="JScripts/Lazyload.js"></script>
- 
-            <link href="CSS/bootstrap.min3.4.0.css" rel="stylesheet" />
-            <link href="CSS/bootstrap.min.css" rel="stylesheet" />
-              <link href="CSS/jquery-ui.css" rel="Stylesheet" />
-              <script src="JScripts/bootstrap.min3.4.0.js" type="text/javascript"></script>
-  
+            <script src="JScripts/bootstrap.min3.4.0.js" type="text/javascript"></script>
+            <script src="JScripts/select2.min.js" type="text/javascript"></script>
             <!--Certain Files are marked as static files, no need to implement the VersionConfiguration Technology in the pages-->
             <script src="JScripts/JSModalWindow.js" type="text/javascript" defer="defer"></script>
             <script src="JScripts/JSIndexingAndRescanning.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
