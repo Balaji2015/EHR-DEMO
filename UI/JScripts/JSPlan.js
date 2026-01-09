@@ -49,7 +49,7 @@ function EnableSave() {
 function OpenPDFStatic(fileNotFound, screen, DownloadDoc, FaxSubject) {
     if (FaxSubject != "")
         localStorage['FaxSubject1'] = JSON.stringify(FaxSubject);
-        //Jira CAP-1011
+    //Jira CAP-1011
     //if (document.getElementById('hdnSelectedItem').value != "") {
     //    var obj = new Array();
     //    obj.push("SI=" + document.getElementById('hdnSelectedItem').value);
@@ -183,21 +183,21 @@ function LoadDocuments() {
     //CAP-2781
     $.get("ConfigXML/PhysicianFacilityMapping.json", {}, function (xml) {
         xml.PhysicianFacility.forEach((i) => {
-                if (i.name.toUpperCase().indexOf("SURGERY-") >= 0) {
-                    $(this).Physician.each(function (k) {
-                        if (k.username == physician_Name) {
-                            $('#chkSurgeryDeclaration').attr("disabled", false);
-                        }
+            if (i.name.toUpperCase().indexOf("SURGERY-") >= 0) {
+                $(this).Physician.each(function (k) {
+                    if (k.username == physician_Name) {
+                        $('#chkSurgeryDeclaration').attr("disabled", false);
+                    }
 
-                        var QuerystringValues = localStorage.getItem('QueryStr').split('&');//BugID:47526
-                        role = QuerystringValues[2];
+                    var QuerystringValues = localStorage.getItem('QueryStr').split('&');//BugID:47526
+                    role = QuerystringValues[2];
 
-                        if (role.toUpperCase() != 'PHYSICIAN') {
-                            $('#chkSurgeryDeclaration').hide();
-                            $('#ProceedwithSurgeryasPlanned').hide();
-                        }
-                    });
-                }
+                    if (role.toUpperCase() != 'PHYSICIAN') {
+                        $('#chkSurgeryDeclaration').hide();
+                        $('#ProceedwithSurgeryasPlanned').hide();
+                    }
+                });
+            }
         });
     });
 
@@ -236,7 +236,11 @@ function LoadDocuments() {
     }
 
     $('#btnSave')[0].disabled = true;
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    //CAP-4051
+    if (window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable != undefined && window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable != null) {
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    }
+
     localStorage.setItem("bSave", "true");
     $.ajax({
         type: "POST",
@@ -686,7 +690,7 @@ function SavePlan() {
             var ValidationMessage = result.ValidationMessage ?? "";
             if (ValidationMessage != "" && ValidationMessage.indexOf("_") > -1) {
                 var message = ValidationMessage.split("_");
-                DisplayErrorMessage(message[0], '',message[1] + "-" + message[2].replaceAll("-",""));
+                DisplayErrorMessage(message[0], '', message[1] + "-" + message[2].replaceAll("-", ""));
                 AutoSaveUnsuccessful();
                 return;
             }
@@ -717,17 +721,17 @@ function SavePlan() {
                 //CAP-798 Unexpected end of JSON input
                 if (isValidJSON(xhr.responseText)) {
                     var log = JSON.parse(xhr.responseText);
-                
-                console.log(log);
-                //alert("USER MESSAGE:\n" +
-                //                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                //                   "Message: " + log.Message);
 
-                window.location = "ErrorPage.aspx?Message=" + log.Message + "|$|" + log.StackTrace;;
+                    console.log(log);
+                    //alert("USER MESSAGE:\n" +
+                    //                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //                   "Message: " + log.Message);
+
+                    window.location = "ErrorPage.aspx?Message=" + log.Message + "|$|" + log.StackTrace;;
                 }
                 else {
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry.");
+                        ". Cannot process request. Please Login again and retry.");
 
                 }
             }
@@ -1475,7 +1479,7 @@ function cboRelationship_SelectedIndexChanged() {
         $('#txtGivento')[0].style.backgroundColor = "white";
     }
     //Cap - 936
-    if (Data != "" && $('#cboIsDocumentGiven')[0].selectedIndex== 0) {
+    if (Data != "" && $('#cboIsDocumentGiven')[0].selectedIndex == 0) {
         $('#cboIsDocumentGiven')[0].selectedIndex = 1;
     }
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2661,7 +2665,7 @@ function ChangeRadio() {
         document.getElementById("chkElectronicDeclaration").disabled = false;
     }
     //if (document.getElementById("radbtnCorrection").checked == true && document.getElementById("radbtnCorrection").disabled == false) {
-    if (document.getElementById("radbtnCorrection").checked == true) { 
+    if (document.getElementById("radbtnCorrection").checked == true) {
         document.getElementById("txtCorrectionToPlan").disabled = false;
         document.getElementById("txtAddendumToPlan").disabled = true;
         $('#txtCorrectionToPlan').removeClass('nonEditabletxtbox');
