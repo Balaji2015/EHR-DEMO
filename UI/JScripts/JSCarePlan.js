@@ -266,7 +266,7 @@ function fun(agrulist) {
                 flag++;
             }
             if (flag == 0) {
-                $("#" + control + ".actcmpt").val(sugglistval + "," + selectedvalue);
+                $("#" + control + ".actcmpt").val(sugglistval + ", " + selectedvalue);
             }
         }
         else {
@@ -286,7 +286,7 @@ function fun(agrulist) {
                 }
             }
             if (flag == 0) {
-                $("#" + value[1]?.trim() + ".actcmpt").val(sugglistval + "," + value[0]);
+                $("#" + value[1]?.trim() + ".actcmpt").val(sugglistval + ", " + value[0]);
             }
         }
         else {
