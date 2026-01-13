@@ -337,11 +337,19 @@ function OpenModal(data) {
                 if (xhr.status == 999)
                     window.location = "/frmSessionExpired.aspx";
                 else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //CAP-4053
+                    var msg = "";
+
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        msg = log?.Message ?? (typeof (log) === 'string') ? log : "Something went wrong!";
+                    }
+                    else {
+                        msg = xhr.responseText;
+                    }
+
+                    alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${msg}`);
                 }
             }
         });
@@ -3599,10 +3607,16 @@ function OnSuccessSummaryBarEprescription(response) {
         else
             top.window.document.getElementById("CheifComplaints_tooltp").innerText = "";
         }
-        if (response.d[7].replace("Problem List :<br/>", "").length != 0)
-            top.window.document.getElementById("ProblemList_tooltp").innerText = response.d[7].replace(regex, "\n") + "\n";
-        else
-            top.window.document.getElementById("ProblemList_tooltp").innerText = "";
+
+        var problemListToolTip = top?.window?.document?.getElementById("ProblemList_tooltp");
+        //CAP-4050
+        if (problemListToolTip != undefined && problemListToolTip != null) {
+            if (response.d[7].replace("Problem List :<br/>", "").length != 0)
+                problemListToolTip.innerText = response.d[7].replace(regex, "\n") + "\n";
+            else
+                problemListToolTip.innerText = "";
+        }
+
         if (response.d[8].replace("Vitals :<br/>", "").length != 0)
             top.window.document.getElementById("Vitals_tooltp").innerText = response.d[8].replace(regex, "\n") + "\n";
         else
@@ -3771,5 +3785,6 @@ $("#ctl00_ulwindow").click(function () {
     localStorage.setItem("OpenFeedbackCoding", "YES");
 });
 function btnAddressHistoryClose_Click() {
-    top.window.document.getElementById("TabAdressHistoryFrame").contentWindow.document.getElementById("hdnbtnClose").click();
+    //CAP-4054
+    top?.window?.document?.getElementById("TabAdressHistoryFrame")?.contentWindow?.document?.getElementById("hdnbtnClose")?.click();
 }
