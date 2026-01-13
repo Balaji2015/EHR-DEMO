@@ -839,7 +839,9 @@ function openDemographicsRadGrid() {
                                 msg = xhr.responseText;
                             }
 
-                            alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${msg}`);
+                            if (msg) {
+                                alert(`USER MESSAGE:\nCannot process request. Please Login again and retry.\nEXCEPTION DETAILS:\nMessage: ${msg}`);
+                            }
                         }
                     }
                 });
