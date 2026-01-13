@@ -1014,7 +1014,7 @@ namespace Acurus.Capella.UI
                             //CAP-3894
                             //OrderText.Append("|[ #" + submittedorders.ToString() + " ]|");
                             String dtSpecCollectionDateConverted = string.Empty;
-                            DateTime orderDate = DateTime.MinValue;
+                            DateTime orderDate = OrderDateAndTime;
                             if (Request.QueryString["CurrentZone"] != null)
                             {
                                 //string Offset = Request.QueryString["CurrentZone"];
@@ -4438,7 +4438,7 @@ namespace Acurus.Capella.UI
                                 //CAP-3894
                                 //OrderText.Append("|[ #" + submittedorders.ToString() + " ]|");
                                 String dtSpecCollectionDateConverted = string.Empty;
-                                DateTime orderDate = DateTime.MinValue;
+                                DateTime orderDate = OrderDateAndTime;
                                 if (Request.QueryString["CurrentZone"] != null)
                                 {
                                     //string Offset = Request.QueryString["CurrentZone"];

@@ -623,8 +623,8 @@ namespace DownloadiPrescribe
             {
                 return true;
             }
-            //CAP-4038
-            else if (!Regex.IsMatch(sFile, @"^[a-zA-Z0-9_.]+$"))
+            //CAP-4038, CAP-4058
+            else if (!Regex.IsMatch(sFile, @"^[a-zA-Z0-9_ .]+$"))
             {
                 return true;
             }
