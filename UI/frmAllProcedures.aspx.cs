@@ -58,6 +58,11 @@ namespace Acurus.Capella.UI
             if (ClientSession.EncounterId != 0)
             {
                 sDate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.ToString("yyyy-MM-dd");
+                //Cap-4057
+                if(sDate == "0001-01-01")
+                {
+                    sDate = DateTime.Now.ToString("yyyy-MM-dd");
+                }
             }
             else
                 sDate = DateTime.Now.ToString("yyyy-MM-dd");
