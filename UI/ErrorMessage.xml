@@ -3033,6 +3033,7 @@
 	<Message number="1011198" Type="OK" Text="A new phone encounter can not be created while you have an encounter open."></Message>
 	<Message number="1011199" Type="OK" Text="We have encountered an error retrieving the clinical note.  Try again and if this persists, contact support."></Message>
 	<Message number="1011201" Type="OK" Text="Electronic is not present in EV Type dropdown. Please contact support."></Message>
+	<Message number="1011202" Type="CCDGenerate" Text="The Care Note Generate is in progress. Please wait as it takes few minutes."></Message>
 
 	<Message number="10113401" Type="OK" Text="Please select a Username."></Message>
 	<Message number="10113402" Type="OK" Text="Please enter a valid Password."></Message>

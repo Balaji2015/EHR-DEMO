@@ -6,7 +6,9 @@
 
     var filelocation = document.getElementById('hdnXmlPath').value; // To open the generated XML in Human readable format
     window.open(filelocation, "CDA Human Readable", "", "")
-     {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+    //Jira cap - 4047
+    ToolStripAlertHidexml();
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
 
 
@@ -102,6 +104,8 @@ function IsEmail(Email) {
 
 function GenerateXML()
 {   { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    //Jira cap - 4047
+    DisplayErrorMessage('1011202');
 }
 
 function GenerateXMLAltova() {
