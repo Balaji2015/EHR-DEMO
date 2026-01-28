@@ -462,8 +462,9 @@ namespace Acurus.Capella.UI
                     ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "NotSaved();DisplayErrorMessage('7490003');", true);
                     return;
                 }
-
-                if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant))
+                //CAP-3511
+                //if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant))
+                if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician))
                 {
                     if ((loadAddendumNotesForPhysicianObj.Count == 0 && chkElectronicDigitalSignature.Checked == false) || (chkElectronicDigitalSignature.Checked == false))
                     {
@@ -543,7 +544,9 @@ namespace Acurus.Capella.UI
                         objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, sOwner, string.Empty, true, true, 1, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
                     }
                 }
-                else if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+                //CAP-3511
+                //else if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+                else if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician))
                 {
                     if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) && objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() != "" && objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() != "ADDENDUM_CORRECTION")
                     {
@@ -595,7 +598,9 @@ namespace Acurus.Capella.UI
                         addendumNotes.Provider_Signed_ID = ClientSession.CurrentPhysicianId;//ClientSession.PhysicianId;
                         addendumNotes.Provider_Signed_Date_And_Time = UtilityManager.ConvertToUniversal();
                     }
-                    if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+                    //CAP-3511
+                    //if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+                    if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician))
                     {
                         //if (loadAddendumNotesForPhysicianObj.Count > 0 && loadAddendumNotesForPhysicianObj[0].Provider_Signed_ID > 0)
                         //{
@@ -793,7 +798,9 @@ namespace Acurus.Capella.UI
                 else
                         objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, ClientSession.UserName, ClientSession.UserRole, true, false, 0, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
             }
-            else if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+            //CAP-3511
+            //else if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+            else if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician))
             {
                 if (loadAddendumNotesForPhysicianObj != null && loadAddendumNotesForPhysicianObj.Count > 0)
                     addendumNotes = loadAddendumNotesForPhysicianObj[0];
@@ -905,7 +912,9 @@ namespace Acurus.Capella.UI
                 addendumNotes.Provider_Signed_ID = ClientSession.CurrentPhysicianId;//ClientSession.PhysicianId;ClientSession.currentPhysician_ID;
                 addendumNotes.Provider_Signed_Date_And_Time = UtilityManager.ConvertToUniversal();
             }
-            if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+            //CAP-3511
+            //if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+            if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician))
             {
                 if (loadAddendumNotesForPhysicianObj.Count > 0 && loadAddendumNotesForPhysicianObj[0].Provider_Signed_ID > 0)
                 {
@@ -1003,7 +1012,9 @@ namespace Acurus.Capella.UI
                 addendumNotes.Provider_Signed_ID = ClientSession.CurrentPhysicianId;//ClientSession.PhysicianId;ClientSession.currentPhysician_ID;
                 addendumNotes.Provider_Signed_Date_And_Time = UtilityManager.ConvertToUniversal();
             }
-            if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+            //CAP-3511
+            //if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+            if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician))
             {
                 if (loadAddendumNotesForPhysicianObj.Count > 0 && loadAddendumNotesForPhysicianObj[0].Provider_Signed_ID > 0)
                 {
@@ -1086,9 +1097,13 @@ namespace Acurus.Capella.UI
         private void loadAddendum()
         {
             FillEncounterandWFObject objFillEncounterandWFObject = (FillEncounterandWFObject)Session["objFillEncounterandWFObject"];
-
-            if ((ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant)
-                || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Coder)) && (objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION"
+            //CAP-3511
+            //if ((ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant)
+            //    || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Coder)) && (objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION"
+            //    || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_REVIEW" || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CODING"
+            //    || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CODING_2"))
+            if ((ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician)
+                || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Coder) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant)) && (objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION"
                 || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_REVIEW" || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CODING"
                 || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CODING_2"))
                 lblAddendumSignedBy.Visible = txtAddendumSignedByText.Visible = lblAddendumSignedDateAndTime.Visible = txtAddendumSignedDateAndTimeText.Visible = true;
@@ -1161,9 +1176,14 @@ namespace Acurus.Capella.UI
                             txtFacilityNameText.Text = EncountList[0].Facility_Name;
                         }
                     }
+                    //CAP-3511
+                    //if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Coder)
+                    //    || ((ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician)
+                    //    || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant)) && (objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_REVIEW")))
                     if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Coder)
                         || ((ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician)
-                        || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant)) && (objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_REVIEW")))
+                        || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant)
+                        || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician)) && (objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_REVIEW")))
                     {
                         ulong phyId = (loadAddendumNotesForPhysicianObj[0].Provider_Review_Signed_ID > 0 && loadAddendumNotesForPhysicianObj[0].Provider_Signed_ID > 0) ? loadAddendumNotesForPhysicianObj[0].Provider_Signed_ID : (loadAddendumNotesForPhysicianObj[0].Provider_Review_Signed_ID > 0) ? loadAddendumNotesForPhysicianObj[0].Provider_Review_Signed_ID : loadAddendumNotesForPhysicianObj[0].Provider_Signed_ID;
 
