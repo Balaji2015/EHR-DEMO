@@ -59,7 +59,10 @@ namespace Acurus.Capella.UI
             eUserType_FrontOffice = 4,
 
             [Description("OFFICE MANAGER")]
-            eUserType_OfficeManager = 5
+            eUserType_OfficeManager = 5,
+            //CAP-3511
+            [Description("TECHNICIAN")]
+            eUserType_Technician = 6
         };
 
         #endregion
@@ -98,7 +101,8 @@ namespace Acurus.Capella.UI
                     hdnIsAssistant.Value = "true";
                     pnlAttestation.Visible = lblAddendumTypedDateTime.Visible = txtAddendumTypedDateTimeText.Visible = true;
                 }
-                else if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
+                //CAP-3511
+                else if (ClientSession.UserRole != null && (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician)))
                 {
                     pnlAttestation.Visible = true;
                     lblSelectReviewPhysician.Visible = cboShowAllPhysicians.Visible = chkShowAllPhysicians.Visible = false;
@@ -146,7 +150,8 @@ namespace Acurus.Capella.UI
                 PhysicianManager objPhysicianManager = new PhysicianManager();
                 PhysicianLibrary PhysicianList = objPhysicianManager.GetphysiciannameByPhyID(ClientSession.PhysicianId).Count > 0 ? objPhysicianManager.GetphysiciannameByPhyID(ClientSession.PhysicianId)[0] : new PhysicianLibrary();
 
-                if (ClientSession.UserRole != null && (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician)))
+                //CAP-3511
+                if (ClientSession.UserRole != null && (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician)))
                 {
                     //PhysicianLibrary CurrentPhysician=objPhysicianManager.
                     UserManager userMngr = new UserManager();
@@ -1118,12 +1123,13 @@ namespace Acurus.Capella.UI
             txtEncounterProviderText.Text = ClientSession.PatientPaneList[selectedEncounterNode].Assigned_Physician;*/
             //txtMedicalAssistantText.Text = userList.Where(u => u.user_name == ClientSession.PatientPaneList[selectedEncounterNode].Assigned_Medical_Asst).Count() > 0 ? userList.Where(u => u.user_name == ClientSession.PatientPaneList[selectedEncounterNode].Assigned_Medical_Asst).ToList()[0].person_name : string.Empty;
             #endregion
-
+            //CAP-3511
             if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_MedicalAssistant)
                 || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician)
                 || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant)
                 || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Coder)
-                || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_OfficeManager))
+                || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_OfficeManager)
+                || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Technician))
             {
                 loadAddendumNotesForPhysicianObj = new List<AddendumNotes>();
                 AddendumNotesManager objAddendumNotesManager = new AddendumNotesManager();

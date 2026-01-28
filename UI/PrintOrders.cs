@@ -4638,9 +4638,12 @@ namespace Acurus.Capella.UI
                     orderCode += obj.Lab_Procedure + "\t" + obj.Lab_Procedure_Description + "|" + obj.Id.ToString() + "\n";
                     SubComp.Add(obj.Lab_Procedure + "\t" + obj.Lab_Procedure_Description + "|" + obj.Id.ToString(), (from rec in ilstOrderComponents where rec.Order_Code == obj.Lab_Procedure select rec).ToList<OrderComponents>());
                     tempState = objSub.Temperature;
-                    notes += " " + objSub.Order_Notes;
+                    //CAP-4068
+                    //notes += " " + objSub.Order_Notes;
                     //}
                 }
+                //CAP-4068
+                notes += " " + objOrdDTO.ilstOrderLabDetailsDTO[0]?.OrdersSubmit?.Order_Notes ?? "";
                 //orderCode += "\n";
                 RequestionNo = objOrder.Id.ToString();
 
