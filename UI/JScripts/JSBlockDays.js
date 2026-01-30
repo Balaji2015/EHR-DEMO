@@ -43,12 +43,16 @@ function dtpNonRecurDate_SelectedDateChanged() {
 }
 
 function ShowResume() {
+    var ddlFacilityText;
     var ddlFacility = $find("ddlFacilityName");
-    if (ddlFacility._text.indexOf("#") != -1) {
-        var ddlFacilityText = ddlFacility._text.replace("#", "_");
-    }
-    else {
-        var ddlFacilityText = ddlFacility._text;
+    //CAP-4092
+    if (ddlFacility != undefined && ddlFacility != null) {
+        if (ddlFacility?._text?.indexOf("#") != -1) {
+            ddlFacilityText = ddlFacility._text.replace("#", "_");
+        }
+        else {
+            ddlFacilityText = ddlFacility._text;
+        }
     }
     if (document.getElementById('hdnForMedicalAssistant').value != "MEDICAL ASSISTANT") {
         var checkedValues = '';
@@ -73,7 +77,9 @@ function ShowResume() {
         }
 
         var obj = new Array();
-        obj.push("Facility_Name=" + ddlFacilityText);
+        if (ddlFacilityText != undefined && ddlFacilityText != null) {
+            obj.push("Facility_Name=" + ddlFacilityText);
+        }
         obj.push("Physician_Name=" + checkedValues);
         document.getElementById('hdnShowBlockDetaills').value = "Yes";
         var Result = openModal("frmBlockDaysDetails.aspx", 480, 1120, obj, "ModalWindow");
@@ -83,7 +89,9 @@ function ShowResume() {
     }
     else {
         var obj = new Array();
-        obj.push("Facility_Name=" + ddlFacilityText);
+        if (ddlFacilityText != undefined && ddlFacilityText != null) {
+            obj.push("Facility_Name=" + ddlFacilityText);
+        }
         obj.push("hdnForMedicalAssistant=" + "MEDICAL ASSISTANT");
         var Result = openModal("frmBlockDaysDetails.aspx", 460, 1120, obj, "ModalWindow");
         return false;
