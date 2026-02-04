@@ -262,8 +262,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //    ObjXml.itemDoc.Save(ObjXml.strXmlFilePath);
             }
         }
-        public void BatchAddUpdatePatInsured(IList<PatientInsuredPlan> patinsuredPlan, IList<PatientInsuredPlan> updatepatinsuredPlan, string MACAddress)
+        public ulong BatchAddUpdatePatInsured(IList<PatientInsuredPlan> patinsuredPlan, IList<PatientInsuredPlan> updatepatinsuredPlan, string MACAddress)
         {
+            ulong uPat_Insured_Plan_ID = 0;
             IList<PatientInsuredPlan> Patinslistadd = null;
             //GenerateXml ObjXml = new GenerateXml();
             //ISession MySession = Session.GetISession();
@@ -271,6 +272,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (patinsuredPlan.Count > 0)
             {
                 SaveUpdateDelete_DBAndXML_WithTransaction(ref patinsuredPlan, ref updatepatinsuredPlan, null, MACAddress, true, false, patinsuredPlan[0].Human_ID, string.Empty);
+                uPat_Insured_Plan_ID = patinsuredPlan[0].Id;
                 //int Result = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Patinslistadd, ref patinsuredPlan, null, MySession, "", true, false, patinsuredPlan[0].Human_ID, string.Empty, ref ObjXml);
                 //bPhysicianPatient = ObjXml.CheckDataConsistency(patinsuredPlan.Cast<object>().ToList(), true, "");
                 //if (bPhysicianPatient)
@@ -285,6 +287,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //if (bPhysicianPatient)
                 //    ObjXml.itemDoc.Save(ObjXml.strXmlFilePath);
             }
+            return uPat_Insured_Plan_ID;
         }
         //Added by srividhya on 09-Nov-2013
         public IList<PatientInsuredPlan> GetActiveInsurancePoliciesByHumanId(ulong ulHumanID)
