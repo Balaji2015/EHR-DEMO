@@ -688,7 +688,7 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 if (patientInsuredPlan == null || patientInsuredPlan.Id == 0)
                 {
-                    return Json(new { Pat_Insured_Plan_ID = patientInsuredPlan.Id, status = "ValidationError", ErrorDescription = "Pat_Insured_Plan_ID is invalid." });
+                    return Json(new { Pat_Insured_Plan_ID = patientInsuredPlan?.Id ?? 0, status = "ValidationError", ErrorDescription = "Pat_Insured_Plan_ID is invalid." });
                 }
 
                 foreach (var item in updateInsuredPlan_Akido.Pat_Insured_Plan_Data)
