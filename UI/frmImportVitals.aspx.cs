@@ -52,6 +52,10 @@ namespace Acurus.Capella.UI
             {
                 ulMyPhysicianID = 0;
             }
+            else if(ClientSession.UserRole.ToUpper() == "SCRIBE" || ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT" || ClientSession.UserRole.ToUpper() != "OFFICE MANAGER" || ClientSession.UserRole.ToUpper() != "FRONT OFFICE" || ClientSession.UserRole.ToUpper() != "CODER")
+            {
+                ulMyPhysicianID = 0;
+            }
             else
             {
                 ulMyPhysicianID = ClientSession.PhysicianId;
