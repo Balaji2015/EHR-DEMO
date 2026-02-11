@@ -4216,9 +4216,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     foreach (var item in yearArrayList)
                     {
                         var itemData = (object[])item;
-                        yearList.Add((itemData[0].ToString(), itemData[1].ToString()));
+                        if(itemData[0] != null)
+                        {
+                            yearList.Add((itemData[0]?.ToString(), itemData[1]?.ToString()));
+                        }
                     }
-                    yearList = yearList.Where(a => a.Item1.Length > 3).OrderByDescending(x => x.Item1).ToList();
+                    yearList = yearList
+                        .Where(x => x.Item1.Length > 3)
+                        .GroupBy(x => x.Item1)
+                        .Select(g => (g.Key, g.Sum(x => Convert.ToInt32(x.Item2)).ToString()))
+                        .OrderByDescending(x => x.Key)
+                        .ToList();
                 }
                 catch (Exception ex)
                 {

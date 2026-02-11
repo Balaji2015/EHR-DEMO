@@ -3487,16 +3487,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ulong encountercount = 0;
             encountercount = objMngr.GetEncountershowallcount(ProcessType[0], UserName, ObjTypeshowall, FacName);
             GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays, ShowAllObjType);
-            //CAP-2824, CAP-2866, CAP-2885
-            if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
-            {
-                var yearList = objMngr.GetListOrdersYears(FacName, ObjType, UserName, bShowAll);
-                if (yearList != null && yearList.Any())
-                {
-                    var data = yearList.OrderByDescending(a => a.Item1).FirstOrDefault();
-                    GenQCount[0].My_Order_Count = Convert.ToInt32(data.Item2 ?? "0");
-                }
-            }
             Hashtable ht = new Hashtable();
             if (myqList.Count > 0)
             {

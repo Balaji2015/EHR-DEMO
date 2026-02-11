@@ -3651,7 +3651,7 @@ and YEAR(OS.Created_Date_And_Time) = ?
 and  (w.Obj_Type in (:ObjList)) group by w.obj_system_id]]>
 	</sql-query>
 	<sql-query name="FillMyOrderObjectDetails.WithoutFacility.Years">
-		<![CDATA[SELECT CAST(YEAR(OS.Created_Date_And_Time) AS CHAR(4)),COUNT(1)
+		<![CDATA[SELECT CAST(fd.Created_Date_And_Time AS CHAR(4)), COUNT(1) FROM (SELECT YEAR(OS.Created_Date_And_Time) AS Created_Date_And_Time
 from wf_object w
 left join orders_submit OS on (w.obj_system_id=OS.Order_submit_id)
 left join orders O on (O.Order_submit_id=OS.Order_submit_id)
@@ -3661,7 +3661,7 @@ left join scan_index_conversion c on (c.Order_ID = os.Order_submit_id)
 left join file_management_index fmn on (c.scan_index_conversion_id=fmn.scan_index_conversion_id)
 where w.current_owner = ?
 and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
-and (w.Obj_Type in (:ObjList)) group by YEAR(OS.Created_Date_And_Time);]]>
+and  (w.Obj_Type in (:ObjList)) group by w.obj_system_id) fd group by fd.Created_Date_And_Time;]]>
 	</sql-query>
 	<sql-query name="FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse">
 		<!--<![CDATA[SELECT group_concat(concat(O.Lab_Procedure,'-',O.Lab_Procedure_Description) separator ';'),h.Medical_Record_Number,
@@ -3716,7 +3716,7 @@ group by w.obj_system_id]]>
 	</sql-query>
 
 	<sql-query name="FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse.Years">
-		<![CDATA[SELECT CAST(YEAR(OS.Created_Date_And_Time) AS CHAR(4)),COUNT(1)
+		<![CDATA[SELECT CAST(fd.Created_Date_And_Time AS CHAR(4)), COUNT(1) FROM (SELECT YEAR(OS.Created_Date_And_Time) AS Created_Date_And_Time
 from wf_object w
 left join orders_submit OS on (w.obj_system_id=OS.Order_submit_id)
 left join orders O on (O.Order_submit_id=OS.Order_submit_id)
@@ -3726,8 +3726,8 @@ left join scan_index_conversion c on (c.Order_ID = os.Order_submit_id)
 left join file_management_index fmn on (c.scan_index_conversion_id=fmn.scan_index_conversion_id)
 where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? 
 and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
-and (w.Obj_Type in (:ObjList))
-group by YEAR(OS.Created_Date_And_Time);]]>
+and  (w.Obj_Type in (:ObjList))
+group by w.obj_system_id) fd group by fd.Created_Date_And_Time;]]>
 	</sql-query>
 
 	<sql-query name="FillMyOrderObjectDetails.WithFacility">
@@ -6090,13 +6090,13 @@ and (w.Obj_Type in (:ObjList))group by w.obj_system_id;
 	</sql-query>
 
 	<sql-query name="FillMyImmunizationOrderObjectDetails.WithoutFacility.Years">
-		<![CDATA[SELECT CAST(YEAR(O.created_date_and_time) AS CHAR(4)),COUNT(1)
+		<![CDATA[SELECT CAST(fd.created_date_and_time AS CHAR(4)),COUNT(1) FROM (SELECT YEAR(O.created_date_and_time) AS created_date_and_time
 from wf_object w left join immunization O on (w.Obj_System_ID=O.Immunization_Group_ID) 
 left join human H on O.Human_ID=H.Human_ID left join  user p on O.Physician_ID=p.Physician_Library_ID
 left join encounter e on O.Encounter_ID=e.Encounter_ID 
 where w.current_owner = ? 
 and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
-and (w.Obj_Type in (:ObjList))group by YEAR(O.created_date_and_time);]]>
+and (w.Obj_Type in (:ObjList))group by w.obj_system_id) fd group by fd.created_date_and_time;]]>
 	</sql-query>
 
 	<sql-query name="FillMyImmunizationOrderObjectDetails.WithoutFacility.ShowAllFalse">
@@ -6127,13 +6127,13 @@ left join encounter e on O.Encounter_ID=e.Encounter_ID
 	</sql-query>
 
 	<sql-query name="FillMyImmunizationOrderObjectDetails.WithoutFacility.ShowAllFalse.Years">
-		<![CDATA[SELECT CAST(YEAR(O.created_date_and_time) AS CHAR(4)),COUNT(1)
+		<![CDATA[SELECT CAST(fd.created_date_and_time AS CHAR(4)), COUNT(1) FROM (SELECT YEAR(O.created_date_and_time) AS created_date_and_time
 from wf_object w left join immunization O on (w.Obj_System_ID=O.Immunization_Group_ID) 
 left join human H on O.Human_ID=H.Human_ID left join user p on O.Physician_ID=p.Physician_Library_ID
 left join encounter e on O.Encounter_ID=e.Encounter_ID 
  where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ?  
  and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
- and  (w.Obj_Type in (:ObjList))group by YEAR(O.created_date_and_time);]]>
+ and  (w.Obj_Type in (:ObjList))group by w.obj_system_id) fd group by fd.created_date_and_time;]]>
 	</sql-query>
 
 	<sql-query name="FillMyImmunizationOrderObjectDetails.WithFacility">
@@ -8017,13 +8017,13 @@ and w.current_process in (SELECT process_name FROM process_user  where user_name
 and (w.Obj_Type in (:ObjList)) group by w.obj_system_id]]>
 	</sql-query>
 	<sql-query name="FillMyReferralOrderObjectDetails.WithoutFacility.Years">
-		<![CDATA[SELECT CAST(YEAR(O.created_date_and_time) AS CHAR(4)),COUNT(1)
+		<![CDATA[SELECT CAST(fd.created_date_and_time AS CHAR(4)), COUNT(1) FROM (SELECT YEAR(O.created_date_and_time) AS created_date_and_time
 from wf_object w left join referral_order O on (w.obj_system_id=O.Referral_Order_Group_ID) 
 left join human H on O.Human_ID=H.Human_ID left join user p on O.From_Physician_ID=p.Physician_Library_ID
 left join encounter e on O.Encounter_ID=e.Encounter_ID
 where w.current_owner = ? 
-and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
-and (w.Obj_Type in (:ObjList)) group by YEAR(O.created_date_and_time);]]>
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?) 
+and (w.Obj_Type in (:ObjList)) group by w.obj_system_id) fd group by fd.created_date_and_time;]]>
 	</sql-query>
 	<sql-query name="FillMyReferralOrderObjectDetails.WithoutFacility.ShowAllFalse">
 		<![CDATA[SELECT h.Medical_Record_Number,
@@ -8050,14 +8050,14 @@ and  (w.Obj_Type in (:ObjList))
 group by w.obj_system_id]]>
 	</sql-query>
 	<sql-query name="FillMyReferralOrderObjectDetails.WithoutFacility.ShowAllFalse.Years">
-		<![CDATA[SELECT CAST(YEAR(O.created_date_and_time) AS CHAR(4)),COUNT(1)
+		<![CDATA[SELECT CAST(fd.created_date_and_time AS CHAR(4)), COUNT(1) FROM (SELECT YEAR(O.created_date_and_time) AS created_date_and_time
 from wf_object w left join referral_order O on (w.obj_system_id=O.Referral_Order_Group_ID) 
 left join human H on O.Human_ID=H.Human_ID left join user p on O.From_Physician_ID=p.Physician_Library_ID
 left join encounter e on O.Encounter_ID=e.Encounter_ID
 where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? 
-and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?) 
 and  (w.Obj_Type in (:ObjList))
-group by YEAR(O.created_date_and_time);]]>
+group by w.obj_system_id) fd group by fd.created_date_and_time;]]>
 	</sql-query>
 
 
@@ -12723,7 +12723,7 @@ left join process_user u on w.current_process=u.process_name
 	</sql-query>
 	
 	<sql-query name="FillMyResultsObjectDetails.Years">
-		<![CDATA[select CAST(YEAR(w.Current_Arrival_Time) AS CHAR(4)),COUNT(1)
+		<![CDATA[SELECT CAST(fd.Current_Arrival_Time AS CHAR(4)), COUNT(1) FROM (select YEAR(w.Current_Arrival_Time) AS Current_Arrival_Time
  from Result_Master r left join Wf_Object w on r.Result_Master_Id=w.obj_system_id
 left join human h on h.Human_ID=r.Matching_Patient_ID
 left join result_orc rc on rc.Result_Master_Id=r.Result_Master_Id
@@ -12731,7 +12731,7 @@ left join physician_library pl on pl.Physician_NPI=rc.ORC_Ordering_Provider_ID
 left join lab l on l.Lab_ID=r.Lab_ID
 left join process_user u on w.current_process=u.process_name
  where  w.Is_Default_MyQ_LineItem=1  and w.obj_type=? and w.current_owner=? 
- group by YEAR(w.Current_Arrival_Time);]]>
+ group by w.obj_system_id) fd group by fd.Current_Arrival_Time;]]>
 	</sql-query>
 	<sql-query name="FillMyResultsObjectDetails.ShowAllFalse">
 		<![CDATA[select cast(w.Current_Arrival_Time as char(100)),h.human_id,h.Patient_Account_External,h.last_name,h.first_name,h.mi,
@@ -12764,15 +12764,15 @@ left join process_user u on w.current_process=u.process_name
 	</sql-query>
 
 	<sql-query name="FillMyResultsObjectDetails.ShowAllFalse.Years">
-		<![CDATA[select CAST(YEAR(w.Current_Arrival_Time) AS CHAR(4)),COUNT(1)
+		<![CDATA[select CAST(fd.Current_Arrival_Time AS CHAR(4)), COUNT(1) from (select YEAR(w.Current_Arrival_Time) AS Current_Arrival_Time
  from Result_Master r left join Wf_Object w on r.Result_Master_Id=w.obj_system_id
 left join human h on h.Human_ID=r.Matching_Patient_ID
 left join result_orc rc on rc.Result_Master_Id=r.Result_Master_Id
 left join physician_library pl on pl.Physician_NPI=rc.ORC_Ordering_Provider_ID
 left join lab l on l.Lab_ID=r.Lab_ID
 left join process_user u on w.current_process=u.process_name
- where  w.obj_type=? and w.current_owner=?
- group by YEAR(w.Current_Arrival_Time);]]>
+ where  w.obj_type=? and w.current_owner=? 
+ group by w.obj_system_id) fd group by fd.Current_Arrival_Time;]]>
 	</sql-query>
 	
 	<sql-query name="Fill.ResultMasterListWithoutOrderID">
