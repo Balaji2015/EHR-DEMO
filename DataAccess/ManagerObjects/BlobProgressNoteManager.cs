@@ -20,7 +20,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Blob_Progress_Note> GetBlobProgressNotes(ulong ulEncounterID);
 
         void SaveBlobProgressNotesWithTransaction(IList<Blob_Progress_Note> ListToUpdateBlobProgressNotes, string MACAddress);
-        IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstStatus, string sDuration = "");
+        IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstNotStatus, IList<string> lstErrorMessage, string sDuration = "");
     }
 
     public partial class BlobProgressNoteManager : ManagerBase<Blob_Progress_Note, ulong>, IBlobProgressNoteManager
@@ -53,25 +53,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstBlobProgressNotes;
             
         }
-        public IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstStatus,string sDuration = "")
+        public IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstNotStatus, IList<string> lstErrorMessage, string sDuration = "")
         {
-            IList<Blob_Progress_Note> ilstBlobProgressNotes = new List<Blob_Progress_Note>();
             session.GetISession().Close();
-            if (sDuration != "")
+            IList<Blob_Progress_Note> ilstBlobProgressNotes = new List<Blob_Progress_Note>();
+            string sErrorDescription = string.Empty;
+            string sDurationQuery = string.Empty;
+
+            if (lstErrorMessage.Count > 0)
             {
-                ISQLQuery sq = session.GetISession().CreateSQLQuery("SELECT B.* FROM cdc_progress_note B where B.Status not in (" + string.Join(",", lstStatus) + ") and Modified_Date_And_Time < NOW() - INTERVAL " + sDuration + " HOUR;")
-                           .AddEntity("B", typeof(Blob_Progress_Note));
-                ilstBlobProgressNotes = sq.List<Blob_Progress_Note>();
+                lstErrorMessage = lstErrorMessage.Select(x => "Error_Description like '%" + x + "%'").ToList();
+                sErrorDescription = " or (B.status = 'error' and (" + string.Join(" or ", lstErrorMessage) + "))";
             }
-            else
-            {
-                ISQLQuery sq = session.GetISession().CreateSQLQuery("SELECT B.* FROM cdc_progress_note B where B.Status not in (" + string.Join(",", lstStatus) + ");")
-                           .AddEntity("B", typeof(Blob_Progress_Note));
-                ilstBlobProgressNotes = sq.List<Blob_Progress_Note>();
-            }
+            if (sDuration != "") { sDurationQuery = " and Modified_Date_And_Time < NOW() - INTERVAL " + sDuration + " HOUR"; }
+
+            ISQLQuery sq = session.GetISession().CreateSQLQuery("SELECT B.* FROM cdc_progress_note B where (B.Status not in (" + string.Join(",", lstNotStatus) + ")" + sErrorDescription + ")" + sDurationQuery + ";")
+                       .AddEntity("B", typeof(Blob_Progress_Note));
+            ilstBlobProgressNotes = sq.List<Blob_Progress_Note>();
             return ilstBlobProgressNotes;
         }
-
         public void SaveBlobProgressNotesWithTransaction(IList<Blob_Progress_Note> ListToUpdateBlobProgressNotes, string MACAddress)
         {
             IList<Blob_Progress_Note> ilstBlobProgressNotes = null;

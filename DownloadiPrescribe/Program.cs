@@ -543,8 +543,9 @@ namespace DownloadiPrescribe
             IList<Blob_Progress_Note> ilstBlopProgressNote = new List<Blob_Progress_Note>();
             BlobProgressNoteManager blobProgressNoteManager = new BlobProgressNoteManager();
             string sDuration = ConfigurationSettings.AppSettings["Duration"]?.ToString() ?? "";
-
-            ilstBlopProgressNote = blobProgressNoteManager.GetBlobProgressNotesByStatus(new List<string>() { "'Error'", "'Completed'" }, sDuration);
+            IList<string> lstStatus = new List<string>() { "System.OutOfMemoryException", "Message : Transaction not successfully", "Message : Timeout expired" };
+            IList<string> lstNotStatus = new List<string>() { "'Error'", "'Completed'" };
+            ilstBlopProgressNote = blobProgressNoteManager.GetBlobProgressNotesByStatus(lstNotStatus, lstStatus, sDuration);
             Console.WriteLine("Total encounters : " + ilstBlopProgressNote.Count);
             foreach (Blob_Progress_Note blob_Progress_Note in ilstBlopProgressNote)
             {
@@ -552,7 +553,6 @@ namespace DownloadiPrescribe
                 IsAkidoCDC(blob_Progress_Note.Human_ID.ToString(), blob_Progress_Note.Id.ToString(), "Acurus", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                 Console.WriteLine("HumanID : " + blob_Progress_Note.Human_ID + " EncounterID : " + blob_Progress_Note.Id + " - End");
             }
-
         }
         public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)
         {
