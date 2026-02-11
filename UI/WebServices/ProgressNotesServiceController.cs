@@ -885,7 +885,11 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
                 //Jira CAP-3738
                 //sFinalOutPut = Regex.Replace(sFinalOutPut, @"\\(?![""\\/bfnrtu])", @"\\");
-                sFinalOutPut = Regex.Replace(sFinalOutPut, @"\\(?![""/bfnrtu])", @"\\");
+                //Jira CAP-4121
+                //sFinalOutPut = Regex.Replace(sFinalOutPut, @"\\(?![""/bfnrtu])", @"\\");
+                sFinalOutPut = Regex.Replace(sFinalOutPut, @"\\(?![""/bfnrt])", @"\\");
+                //Jira CAP-4119
+                sFinalOutPut = sFinalOutPut.Replace("\\\"", "\\\\\"");
                 //Jira CAP-3738 - End
                 //Jira CAP-3642
                 var FinalJson = JObject.Parse(sFinalOutPut + "}");
@@ -1194,7 +1198,20 @@ namespace Acurus.Capella.UI.WebServices.API
 
                                     if (sCreatedAt != "")
                                     {
-                                        sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
+                                        //Jira CAP-4120
+                                        //sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
+                                        if (sCreatedAt.Length == 22 && sCreatedAt.Count(c => c == '-') == 2 && sCreatedAt.Count(c => c == ':') == 2 && (sCreatedAt.EndsWith("AM") || sCreatedAt.EndsWith("PM")))
+                                        {
+                                            sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
+                                        }
+                                        else
+                                        {
+                                            if (sNotesName == "")
+                                            {
+                                                sNotesName = sCreatedAt;
+                                            }
+                                            sCreatedAt = "";
+                                        }
                                     }
                                     sNotesName = sNotesName.Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", "").Replace('"', '\"');
                                     sNotesName = sNotesName.Substring(0, sNotesName.Length - @"\n".Length);
@@ -1250,7 +1267,20 @@ namespace Acurus.Capella.UI.WebServices.API
                                     string createdBy = tempCreatedBy ?? string.Empty;
                                     if (sCreatedAt != "")
                                     {
-                                        sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
+                                        //Jira CAP-4120
+                                        //sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
+                                        if (sCreatedAt.Length == 22 && sCreatedAt.Count(c => c == '-') == 2 && sCreatedAt.Count(c => c == ':') == 2 && (sCreatedAt.EndsWith("AM") || sCreatedAt.EndsWith("PM")))
+                                        {
+                                            sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
+                                        }
+                                        else
+                                        {
+                                            if (sNotesName == "")
+                                            {
+                                                sNotesName = sCreatedAt;
+                                            }
+                                            sCreatedAt = "";
+                                        }
                                     }
 
                                     sNotesName = sNotesName.Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", "").Replace('"', '\"');

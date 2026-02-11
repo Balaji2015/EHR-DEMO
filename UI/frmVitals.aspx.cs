@@ -212,10 +212,17 @@ namespace Acurus.Capella.UI
 
                 if (openingfrom == "Menu")
                 {
-
+                    
                     if (ClientSession.HumanId == 0)
                         ClientSession.HumanId = Convert.ToUInt64(Request["HumanID"].ToString());
-                    objVitalDTO = vitalmngr.GetPastVitalDetailsByPatient(ClientSession.HumanId, 1, 25, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID);
+                    //Cap - 3862
+                    ulong ulPhyid = 0;
+                    if (Request["PhyID"].ToString()!="")
+                    {
+                        ulPhyid = Convert.ToUInt64(Request["PhyID"].ToString());
+                    }
+
+                    objVitalDTO = vitalmngr.GetPastVitalDetailsByPatient(ClientSession.HumanId, 1, 25, ulPhyid, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID);
                     objList = objVitalDTO.ObjList;
                     vitalList = objVitalDTO.VitalsList;
                     Session["objVitalDTO"] = objVitalDTO;
