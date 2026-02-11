@@ -11,6 +11,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Web;
 using System.IO;
+using System.Configuration;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -2271,14 +2272,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             return myqList;
         }
-        public IList<MyQ> GetListObjects(string FacName, string[] ObjType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string FacilityName)
+        public IList<MyQ> GetListObjects(string FacName, string[] ObjType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string FacilityName, string Year = "")
         {
             IList<MyQ> myqList = new List<MyQ>();
 
             ObjectManager wfMngr = new ObjectManager();
-            myqList = wfMngr.FillObjects(FacName, ObjType, ProcessType[0], UserName, bShowAll, DefaultNoofDays, FacilityName);
+            myqList = wfMngr.FillObjects(FacName, ObjType, ProcessType[0], UserName, bShowAll, DefaultNoofDays, FacilityName, Year);
 
             return myqList;
+        }
+        //CAP-2824, CAP-2866, CAP-2885
+        public IList<(string, string)> GetListOrdersYears(string FacName, string[] ObjType, string UserName, Boolean bShowAll)
+        {
+            return new ObjectManager().GetListOrdersYears(FacName, ObjType, UserName, bShowAll);
         }
         public IList<MyQ> GetListObjectsCompleted(string FacName, string[] ObjType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string FacilityName)
         {
@@ -3481,6 +3487,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ulong encountercount = 0;
             encountercount = objMngr.GetEncountershowallcount(ProcessType[0], UserName, ObjTypeshowall, FacName);
             GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays, ShowAllObjType);
+            //CAP-2824, CAP-2866, CAP-2885
+            if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+            {
+                var yearList = objMngr.GetListOrdersYears(FacName, ObjType, UserName, bShowAll);
+                if (yearList != null && yearList.Any())
+                {
+                    var data = yearList.OrderByDescending(a => a.Item1).FirstOrDefault();
+                    GenQCount[0].My_Order_Count = Convert.ToInt32(data.Item2 ?? "0");
+                }
+            }
             Hashtable ht = new Hashtable();
             if (myqList.Count > 0)
             {

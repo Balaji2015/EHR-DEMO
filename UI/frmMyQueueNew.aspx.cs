@@ -516,7 +516,19 @@ namespace Acurus.Capella.UI
 
             WFObjectManager wfMngr = new WFObjectManager();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder GetListObjects DB call : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            MyHome = wfMngr.GetListObjects("ALL", ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);//ClientSession.DefaultNoofDays);
+            
+            IList<string> yearList = new List<string>();
+            if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+            {
+                //CAP-2824, CAP-2866, CAP-2885
+                var resultYearList = wfMngr.GetListOrdersYears("ALL", ObjType, ClientSession.UserName, bValue);
+                if (resultYearList != null && resultYearList.Any())
+                {
+                    yearList = resultYearList.Select(a => a.Item1).Distinct().ToList();
+                    sYear = string.IsNullOrEmpty(extra_search.Year) ? yearList.Max(a => a) : extra_search.Year;
+                }
+            }
+            MyHome = wfMngr.GetListObjects("ALL", ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty, sYear);//ClientSession.DefaultNoofDays);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder GetListObjects DB call : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var MyOrdersQ = from g in MyHome where g.Current_Owner != "UNKNOWN" orderby g.Created_Date_And_Time descending select g;
             MyOrdersQ = from g in MyOrdersQ orderby g.Is_Abnormal descending select g;
@@ -524,14 +536,9 @@ namespace Acurus.Capella.UI
             //MyOrdersQ = (from g in MyOrdersQ  select g).OrderByDescending(a => a.Created_Date_And_Time).ThenByDescending(b => b.Is_Abnormal);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var result = MyOrdersQ.ToList<MyQ>();
-            //CAP-2824, 2866, 2885
-            var yearList = result.GroupBy(a => a.Created_Date_And_Time.ToString("yyyy")).Select(a => a.Key).OrderByDescending(a => a).ToList();
-            sYear = sYear == "" ? yearList[0] : sYear;
-            var newResult = result.Where(a => a.Created_Date_And_Time.ToString("yyyy") == sYear).ToList();
-
             var resultNew = new
             {
-                data = Compress(JsonConvert.SerializeObject(newResult)),
+                data = Compress(JsonConvert.SerializeObject(result)),
                 yearList
             };
             return resultNew;

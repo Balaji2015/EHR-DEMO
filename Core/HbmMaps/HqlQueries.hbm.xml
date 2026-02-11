@@ -3633,6 +3633,36 @@ where w.current_owner = ?
 and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
 and  (w.Obj_Type in (:ObjList)) group by w.obj_system_id]]>
 	</sql-query>
+	<sql-query name="FillMyOrderObjectDetails.WithoutFacility.V2">
+		<![CDATA[SELECT group_concat(distinct concat(O.Lab_Procedure,'-',O.Lab_Procedure_Description) separator ';'),h.Medical_Record_Number,
+h.human_id,h.last_name,h.first_name,h.mi,p.Person_Name,OS.Lab_Name,OS.Lab_Location_Name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
+OS.Encounter_ID,OS.Physician_ID,OS.Lab_ID,OS.Lab_Location_ID,w.Obj_System_ID,w.Current_Owner,w.Current_Process,w.Obj_Type,w.Obj_Sub_Type,OS.Order_submit_id,
+cast(OS.created_date_and_time as char(100)),O.CMG_Encounter_ID,fmn.file_management_index_id,w.Is_abnormal,OS.Test_Date,c.is_narrative_interpretation
+from wf_object w
+left join orders_submit OS on (w.obj_system_id=OS.Order_submit_id)
+left join orders O on (O.Order_submit_id=OS.Order_submit_id)
+left join human H on H.Human_ID=OS.Human_ID
+left join User p on OS.Physician_ID=p.Physician_Library_ID
+left join scan_index_conversion c on (c.Order_ID = os.Order_submit_id)
+left join file_management_index fmn on (c.scan_index_conversion_id=fmn.scan_index_conversion_id)
+where w.current_owner = ?
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and YEAR(OS.Created_Date_And_Time) = ?
+and  (w.Obj_Type in (:ObjList)) group by w.obj_system_id]]>
+	</sql-query>
+	<sql-query name="FillMyOrderObjectDetails.WithoutFacility.Years">
+		<![CDATA[SELECT CAST(YEAR(OS.Created_Date_And_Time) AS CHAR(4)),COUNT(1)
+from wf_object w
+left join orders_submit OS on (w.obj_system_id=OS.Order_submit_id)
+left join orders O on (O.Order_submit_id=OS.Order_submit_id)
+left join human H on H.Human_ID=OS.Human_ID
+left join User p on OS.Physician_ID=p.Physician_Library_ID
+left join scan_index_conversion c on (c.Order_ID = os.Order_submit_id)
+left join file_management_index fmn on (c.scan_index_conversion_id=fmn.scan_index_conversion_id)
+where w.current_owner = ?
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and (w.Obj_Type in (:ObjList)) group by YEAR(OS.Created_Date_And_Time);]]>
+	</sql-query>
 	<sql-query name="FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse">
 		<!--<![CDATA[SELECT group_concat(concat(O.Lab_Procedure,'-',O.Lab_Procedure_Description) separator ';'),h.Medical_Record_Number,
 h.human_id,h.last_name,h.first_name,h.mi,concat(p.Physician_Prefix,' ',p.Physician_First_Name,' ',p.Physician_Middle_Name,' ',
@@ -3666,6 +3696,40 @@ and  (w.Obj_Type in (:ObjList))
 group by w.obj_system_id]]>
 	</sql-query>
 
+	<sql-query name="FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse.V2">
+		<![CDATA[SELECT group_concat(concat(O.Lab_Procedure,'-',O.Lab_Procedure_Description) separator ';'),h.Medical_Record_Number,
+h.human_id,h.last_name,h.first_name,h.mi,p.person_name, OS.Lab_Name, OS.Lab_Location_Name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
+OS.Encounter_ID,OS.Physician_ID,OS.Lab_ID,OS.Lab_Location_ID,w.Obj_System_ID,w.Current_Owner,w.Current_Process,w.Obj_Type,w.Obj_Sub_Type,OS.Order_submit_id,
+cast(OS.created_date_and_time as char(100)),O.CMG_Encounter_ID,fmn.file_management_index_id,w.Is_abnormal,OS.Test_Date,c.is_narrative_interpretation
+from wf_object w
+left join orders_submit OS on (w.obj_system_id=OS.Order_submit_id)
+left join orders O on (O.Order_submit_id=OS.Order_submit_id)
+left join human H on H.Human_ID=OS.Human_ID
+left join user p on OS.Physician_ID=p.Physician_Library_ID
+left join scan_index_conversion c on (c.Order_ID = os.Order_submit_id)
+left join file_management_index fmn on (c.scan_index_conversion_id=fmn.scan_index_conversion_id)
+where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? 
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and YEAR(OS.Created_Date_And_Time) = ?
+and  (w.Obj_Type in (:ObjList))
+group by w.obj_system_id]]>
+	</sql-query>
+
+	<sql-query name="FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse.Years">
+		<![CDATA[SELECT CAST(YEAR(OS.Created_Date_And_Time) AS CHAR(4)),COUNT(1)
+from wf_object w
+left join orders_submit OS on (w.obj_system_id=OS.Order_submit_id)
+left join orders O on (O.Order_submit_id=OS.Order_submit_id)
+left join human H on H.Human_ID=OS.Human_ID
+left join user p on OS.Physician_ID=p.Physician_Library_ID
+left join scan_index_conversion c on (c.Order_ID = os.Order_submit_id)
+left join file_management_index fmn on (c.scan_index_conversion_id=fmn.scan_index_conversion_id)
+where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? 
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and (w.Obj_Type in (:ObjList))
+group by YEAR(OS.Created_Date_And_Time);]]>
+	</sql-query>
+
 	<sql-query name="FillMyOrderObjectDetails.WithFacility">
 		<![CDATA[SELECT group_concat(concat(O.Lab_Procedure,'-',O.Lab_Procedure_Description) separator ';'),h.Medical_Record_Number,
 h.human_id,h.last_name,h.first_name,h.mi,p.Person_Name,OS.Lab_Name, OS.Lab_Location_Name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
@@ -3682,7 +3746,7 @@ left join file_management_index fmn on (c.scan_index_conversion_id=fmn.scan_inde
 where u.user_name=? and w.current_owner =? and w.facility_name= ? and (w.Obj_Type in (:ObjList)) group by w.obj_system_id]]>
 
 	</sql-query>
-
+	
 	<sql-query name="FillMyOrderObjectDetails.WithFacility.ShowAllFalse">
 		<![CDATA[SELECT group_concat(concat(O.Lab_Procedure,'-',O.Lab_Procedure_Description) separator ';'),h.Medical_Record_Number,
 h.human_id,h.last_name,h.first_name,h.mi,p.person_name, OS.Lab_Name, OS.Lab_Location_Name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
@@ -6011,6 +6075,30 @@ and (w.Obj_Type in (:ObjList))group by w.obj_system_id;
 ]]>
 	</sql-query>
 
+	<sql-query name="FillMyImmunizationOrderObjectDetails.WithoutFacility.V2">
+		<![CDATA[SELECT group_concat(concat(O.Procedure_Code,'-',O.Immunization_Description)separator ';'),h.Medical_Record_Number,
+h.human_id,h.last_name,h.first_name,h.mi, p.person_name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
+O.Encounter_ID,O.Physician_ID,O.Facility_Name,cast(e.Date_of_Service as char(100)) as d,O.Immunization_Group_ID,w.Current_Owner,w.Current_Process,w.Obj_Type,w.Obj_Sub_Type,cast(O.created_date_and_time as char(100)) 
+from wf_object w left join immunization O on (w.Obj_System_ID=O.Immunization_Group_ID) 
+left join human H on O.Human_ID=H.Human_ID left join  user p on O.Physician_ID=p.Physician_Library_ID
+left join encounter e on O.Encounter_ID=e.Encounter_ID 
+where w.current_owner = ? 
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and YEAR(O.created_date_and_time) = ?
+and (w.Obj_Type in (:ObjList))group by w.obj_system_id;
+]]>
+	</sql-query>
+
+	<sql-query name="FillMyImmunizationOrderObjectDetails.WithoutFacility.Years">
+		<![CDATA[SELECT CAST(YEAR(O.created_date_and_time) AS CHAR(4)),COUNT(1)
+from wf_object w left join immunization O on (w.Obj_System_ID=O.Immunization_Group_ID) 
+left join human H on O.Human_ID=H.Human_ID left join  user p on O.Physician_ID=p.Physician_Library_ID
+left join encounter e on O.Encounter_ID=e.Encounter_ID 
+where w.current_owner = ? 
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and (w.Obj_Type in (:ObjList))group by YEAR(O.created_date_and_time);]]>
+	</sql-query>
+
 	<sql-query name="FillMyImmunizationOrderObjectDetails.WithoutFacility.ShowAllFalse">
 		<![CDATA[SELECT group_concat(concat(O.Procedure_Code,'-',O.Immunization_Description)separator ';'),h.Medical_Record_Number,
 h.human_id,h.last_name,h.first_name,h.mi, p.person_name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
@@ -6022,6 +6110,30 @@ left join encounter e on O.Encounter_ID=e.Encounter_ID
  and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
  and  (w.Obj_Type in (:ObjList))group by w.obj_system_id;
 ]]>
+	</sql-query>
+
+	<sql-query name="FillMyImmunizationOrderObjectDetails.WithoutFacility.ShowAllFalse.V2">
+		<![CDATA[SELECT group_concat(concat(O.Procedure_Code,'-',O.Immunization_Description)separator ';'),h.Medical_Record_Number,
+h.human_id,h.last_name,h.first_name,h.mi, p.person_name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
+O.Encounter_ID,O.Physician_ID,O.Facility_Name,cast(e.Date_of_Service as char(100)) as d,O.Immunization_Group_ID,w.Current_Owner,w.Current_Process,w.Obj_Type,w.Obj_Sub_Type,cast(O.created_date_and_time as char(100))
+from wf_object w left join immunization O on (w.Obj_System_ID=O.Immunization_Group_ID) 
+left join human H on O.Human_ID=H.Human_ID left join user p on O.Physician_ID=p.Physician_Library_ID
+left join encounter e on O.Encounter_ID=e.Encounter_ID 
+ where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ?  
+ and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+ and YEAR(O.created_date_and_time) = ?
+ and  (w.Obj_Type in (:ObjList))group by w.obj_system_id;
+]]>
+	</sql-query>
+
+	<sql-query name="FillMyImmunizationOrderObjectDetails.WithoutFacility.ShowAllFalse.Years">
+		<![CDATA[SELECT CAST(YEAR(O.created_date_and_time) AS CHAR(4)),COUNT(1)
+from wf_object w left join immunization O on (w.Obj_System_ID=O.Immunization_Group_ID) 
+left join human H on O.Human_ID=H.Human_ID left join user p on O.Physician_ID=p.Physician_Library_ID
+left join encounter e on O.Encounter_ID=e.Encounter_ID 
+ where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ?  
+ and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+ and  (w.Obj_Type in (:ObjList))group by YEAR(O.created_date_and_time);]]>
 	</sql-query>
 
 	<sql-query name="FillMyImmunizationOrderObjectDetails.WithFacility">
@@ -6043,7 +6155,7 @@ from wf_object w left join immunization O on (w.Obj_System_ID=O.Immunization_Gro
 left join human H on O.Human_ID=H.Human_ID left join user p on O.Physician_ID=p.Physician_Library_ID
 left join encounter e on O.Encounter_ID=e.Encounter_ID 
 left join process_user u on (w.current_process=u.process_name) where 
- w.Is_Default_MyQ_LineItem=1 and u.user_name=? and w.current_owner = ? and w.facility_name= ? and 
+ w.Is_Default_MyQ_LineItem=1 and u.user_name=? and w.current_owner = ? and w.facility_name= ? and  
     (w.Obj_Type in (:ObjList)) group by w.obj_system_id;]]>
 	</sql-query>
 
@@ -7890,8 +8002,28 @@ from wf_object w left join referral_order O on (w.obj_system_id=O.Referral_Order
 left join human H on O.Human_ID=H.Human_ID left join user p on O.From_Physician_ID=p.Physician_Library_ID
 left join encounter e on O.Encounter_ID=e.Encounter_ID
 where w.current_owner = ? 
-and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?) 
 and (w.Obj_Type in (:ObjList)) group by w.obj_system_id]]>
+	</sql-query>
+	<sql-query name="FillMyReferralOrderObjectDetails.WithoutFacility.V2">
+		<![CDATA[SELECT h.Medical_Record_Number,
+h.human_id,h.last_name,h.first_name,h.mi,p.person_name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
+O.Encounter_ID,O.From_Physician_ID,w.Facility_Name,cast(e.Date_of_Service as char(100)) as d,O.Referral_Order_Group_ID,w.Current_Owner,w.Current_Process,w.Obj_Type,w.Obj_Sub_Type,O.Reason_For_Referral,O.To_Physician_Name,O.To_Facility_Name,cast(O.created_date_and_time as char(100))
+from wf_object w left join referral_order O on (w.obj_system_id=O.Referral_Order_Group_ID) 
+left join human H on O.Human_ID=H.Human_ID left join user p on O.From_Physician_ID=p.Physician_Library_ID
+left join encounter e on O.Encounter_ID=e.Encounter_ID
+where w.current_owner = ? 
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?) and YEAR(O.created_date_and_time) = ?
+and (w.Obj_Type in (:ObjList)) group by w.obj_system_id]]>
+	</sql-query>
+	<sql-query name="FillMyReferralOrderObjectDetails.WithoutFacility.Years">
+		<![CDATA[SELECT CAST(YEAR(O.created_date_and_time) AS CHAR(4)),COUNT(1)
+from wf_object w left join referral_order O on (w.obj_system_id=O.Referral_Order_Group_ID) 
+left join human H on O.Human_ID=H.Human_ID left join user p on O.From_Physician_ID=p.Physician_Library_ID
+left join encounter e on O.Encounter_ID=e.Encounter_ID
+where w.current_owner = ? 
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and (w.Obj_Type in (:ObjList)) group by YEAR(O.created_date_and_time);]]>
 	</sql-query>
 	<sql-query name="FillMyReferralOrderObjectDetails.WithoutFacility.ShowAllFalse">
 		<![CDATA[SELECT h.Medical_Record_Number,
@@ -7901,9 +8033,31 @@ from wf_object w left join referral_order O on (w.obj_system_id=O.Referral_Order
 left join human H on O.Human_ID=H.Human_ID left join user p on O.From_Physician_ID=p.Physician_Library_ID
 left join encounter e on O.Encounter_ID=e.Encounter_ID
 where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? 
-and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?) 
 and  (w.Obj_Type in (:ObjList))
 group by w.obj_system_id]]>
+	</sql-query>
+	<sql-query name="FillMyReferralOrderObjectDetails.WithoutFacility.ShowAllFalse.V2">
+		<![CDATA[SELECT h.Medical_Record_Number,
+h.human_id,h.last_name,h.first_name,h.mi,p.person_name,h.Patient_Account_External,cast(h.Birth_Date as char(100)),
+O.Encounter_ID,O.From_Physician_ID,w.Facility_Name,cast(e.Date_of_Service as char(100)) as d,O.Referral_Order_Group_ID,w.Current_Owner,w.Current_Process,w.Obj_Type,w.Obj_Sub_Type,O.Reason_For_Referral,O.To_Physician_Name,O.To_Facility_Name,cast(O.created_date_and_time as char(100))
+from wf_object w left join referral_order O on (w.obj_system_id=O.Referral_Order_Group_ID) 
+left join human H on O.Human_ID=H.Human_ID left join user p on O.From_Physician_ID=p.Physician_Library_ID
+left join encounter e on O.Encounter_ID=e.Encounter_ID
+where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? 
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?) and YEAR(O.created_date_and_time) = ?
+and  (w.Obj_Type in (:ObjList))
+group by w.obj_system_id]]>
+	</sql-query>
+	<sql-query name="FillMyReferralOrderObjectDetails.WithoutFacility.ShowAllFalse.Years">
+		<![CDATA[SELECT CAST(YEAR(O.created_date_and_time) AS CHAR(4)),COUNT(1)
+from wf_object w left join referral_order O on (w.obj_system_id=O.Referral_Order_Group_ID) 
+left join human H on O.Human_ID=H.Human_ID left join user p on O.From_Physician_ID=p.Physician_Library_ID
+left join encounter e on O.Encounter_ID=e.Encounter_ID
+where w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? 
+and w.current_process in (SELECT process_name FROM process_user  where user_name = ?)
+and  (w.Obj_Type in (:ObjList))
+group by YEAR(O.created_date_and_time);]]>
 	</sql-query>
 
 
@@ -7929,7 +8083,7 @@ left join encounter e on O.Encounter_ID=e.Encounter_ID
 left join process_user u on (w.current_process=u.process_name)
 where w.Is_Default_MyQ_LineItem=1 and u.user_name=? and w.current_owner = ? and w.facility_name= ? and  (w.Obj_Type in (:ObjList)) group by w.obj_system_id]]>
 	</sql-query>
-
+	
 	<sql-query name="Get.Questionnaire.Lookup.model1">
 		<![CDATA[SELECT 0 as HealthCare_Questionnaire_ID, e.Questionnaire_Lookup_ID,e.Questionnaire_Category,e.Questionnaire_Type,
 e.Question,'' as Selected_Option,e.Lookup_Values as Possible_Options,'' as Notes,'' as CreatedBy,'0001-01-01 00:00:00' as CreatedDateandTime,
@@ -12553,6 +12707,32 @@ left join process_user u on w.current_process=u.process_name
  where  w.Is_Default_MyQ_LineItem=1  and w.obj_type=? and w.current_owner=? 
  group by w.obj_system_id;]]>
 	</sql-query>
+
+	<sql-query name="FillMyResultsObjectDetails.V2">
+		<![CDATA[select cast(w.Current_Arrival_Time as char(100)),h.human_id,h.Patient_Account_External,h.last_name,h.first_name,h.mi,cast(h.Birth_Date as char(100)),
+w.Current_Process,r.Lab_ID,concat( pl.Physician_Prefix,' ', pl.Physician_First_Name,' ', pl.Physician_Middle_Name,' ',
+ pl.Physician_Last_Name,' ', pl.Physician_Suffix),l.Lab_Name,r.Result_Master_ID,w.Obj_Type,pl.Physician_Library_ID,w.Is_abnormal
+ from Result_Master r left join Wf_Object w on r.Result_Master_Id=w.obj_system_id
+left join human h on h.Human_ID=r.Matching_Patient_ID
+left join result_orc rc on rc.Result_Master_Id=r.Result_Master_Id
+left join physician_library pl on pl.Physician_NPI=rc.ORC_Ordering_Provider_ID
+left join lab l on l.Lab_ID=r.Lab_ID
+left join process_user u on w.current_process=u.process_name
+ where  w.Is_Default_MyQ_LineItem=1  and w.obj_type=? and w.current_owner=? and YEAR(w.Current_Arrival_Time) = ?
+ group by w.obj_system_id;]]>
+	</sql-query>
+	
+	<sql-query name="FillMyResultsObjectDetails.Years">
+		<![CDATA[select CAST(YEAR(w.Current_Arrival_Time) AS CHAR(4)),COUNT(1)
+ from Result_Master r left join Wf_Object w on r.Result_Master_Id=w.obj_system_id
+left join human h on h.Human_ID=r.Matching_Patient_ID
+left join result_orc rc on rc.Result_Master_Id=r.Result_Master_Id
+left join physician_library pl on pl.Physician_NPI=rc.ORC_Ordering_Provider_ID
+left join lab l on l.Lab_ID=r.Lab_ID
+left join process_user u on w.current_process=u.process_name
+ where  w.Is_Default_MyQ_LineItem=1  and w.obj_type=? and w.current_owner=? 
+ group by YEAR(w.Current_Arrival_Time);]]>
+	</sql-query>
 	<sql-query name="FillMyResultsObjectDetails.ShowAllFalse">
 		<![CDATA[select cast(w.Current_Arrival_Time as char(100)),h.human_id,h.Patient_Account_External,h.last_name,h.first_name,h.mi,
 cast(h.Birth_Date as char(100)),
@@ -12564,11 +12744,37 @@ left join result_orc rc on rc.Result_Master_Id=r.Result_Master_Id
 left join physician_library pl on pl.Physician_NPI=rc.ORC_Ordering_Provider_ID
 left join lab l on l.Lab_ID=r.Lab_ID
 left join process_user u on w.current_process=u.process_name
- where  w.obj_type=? and w.current_owner=?
+ where  w.obj_type=? and w.current_owner=? 
  group by w.obj_system_id;]]>
 	</sql-query>
 
+	<sql-query name="FillMyResultsObjectDetails.ShowAllFalse.V2">
+		<![CDATA[select cast(w.Current_Arrival_Time as char(100)),h.human_id,h.Patient_Account_External,h.last_name,h.first_name,h.mi,
+cast(h.Birth_Date as char(100)),
+w.Current_Process,r.Lab_ID,concat( pl.Physician_Prefix,' ', pl.Physician_First_Name,' ', pl.Physician_Middle_Name,' ',
+ pl.Physician_Last_Name,' ', pl.Physician_Suffix),l.Lab_Name,r.Result_Master_ID,w.Obj_Type,pl.Physician_Library_ID,w.Is_abnormal
+ from Result_Master r left join Wf_Object w on r.Result_Master_Id=w.obj_system_id
+left join human h on h.Human_ID=r.Matching_Patient_ID
+left join result_orc rc on rc.Result_Master_Id=r.Result_Master_Id
+left join physician_library pl on pl.Physician_NPI=rc.ORC_Ordering_Provider_ID
+left join lab l on l.Lab_ID=r.Lab_ID
+left join process_user u on w.current_process=u.process_name
+ where  w.obj_type=? and w.current_owner=? and YEAR(w.Current_Arrival_Time) = ?
+ group by w.obj_system_id;]]>
+	</sql-query>
 
+	<sql-query name="FillMyResultsObjectDetails.ShowAllFalse.Years">
+		<![CDATA[select CAST(YEAR(w.Current_Arrival_Time) AS CHAR(4)),COUNT(1)
+ from Result_Master r left join Wf_Object w on r.Result_Master_Id=w.obj_system_id
+left join human h on h.Human_ID=r.Matching_Patient_ID
+left join result_orc rc on rc.Result_Master_Id=r.Result_Master_Id
+left join physician_library pl on pl.Physician_NPI=rc.ORC_Ordering_Provider_ID
+left join lab l on l.Lab_ID=r.Lab_ID
+left join process_user u on w.current_process=u.process_name
+ where  w.obj_type=? and w.current_owner=?
+ group by YEAR(w.Current_Arrival_Time);]]>
+	</sql-query>
+	
 	<sql-query name="Fill.ResultMasterListWithoutOrderID">
 		<![CDATA[SELECT r.result_master_id myid,cast(Created_Date_And_Time  as char(100)) as Created_Date_And_Time ,
 (select OBR_Specimen_Collection_Date_And_Time from result_obr where result_master_id=myid limit 1),

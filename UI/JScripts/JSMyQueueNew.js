@@ -1783,7 +1783,9 @@ function loadMyorder() {
     } else {
         $('#chkMyShowAll,#lblMyShowAll').css("display", "");
     }
-    $('#cmbYears').css("display", "");
+    if ($('#hdnMyOrdersQueueVersion').val() == 'V2') {
+        $('#cboYears').css("display", "");
+    }
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -1844,22 +1846,23 @@ function loadMyorder() {
             dataType: "JSON",
             deferRender: true,
             data: function (d) {
-                d.extra_search = JSON.stringify({ Showall: Showall, Year: $("#cmbYears").val() });
+                d.extra_search = JSON.stringify({ Showall: Showall, Year: $("#cboYears").val() });
                 return d;
             },
             dataSrc: function (json) {
                 var objdata = json.d;
                 objdata.data = Decompress(objdata.data);
-
-                var year = $("#cmbYears").val();
-                $("#cmbYears").empty();
-                $.each(objdata.yearList, function (index, value) {
-                    if (year == value) {
-                        $("#cmbYears").append($("<option selected></option>").val(value).text(value));
-                    } else {
-                        $("#cmbYears").append($("<option></option>").val(value).text(value));
-                    }
-                });
+                if ($('#hdnMyOrdersQueueVersion').val() == 'V2') {
+                    var year = $("#cboYears").val();
+                    $("#cboYears").empty();
+                    $.each(objdata.yearList, function (index, value) {
+                        if (year == value) {
+                            $("#cboYears").append($("<option selected></option>").val(value).text(value));
+                        } else {
+                            $("#cboYears").append($("<option></option>").val(value).text(value));
+                        }
+                    });
+                }
                 
                 $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.data.length + ")";
                 if (Showall != "Checked") {
@@ -2071,7 +2074,8 @@ function loadMyorder() {
         sessionStorage.setItem('MyQRemoveIdList', '');
     });
 
-    $("#cmbYears").change(function () {
+    $("#cboYears").change(function () {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         dataTable.ajax.reload();
     });
 }
@@ -4005,7 +4009,7 @@ function ChangeTableForTabs(sender) {
     $('#lbl14days').css("display", "none");
     $('#chkOpenTask').css("display", "none");
     $('#lblOpenTask').css("display", "none");
-    $('#cmbYears').css("display", "none");
+    $('#cboYears').css("display", "none");
     if (sender.innerText.indexOf("My Encounter") > -1) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         $("#btnMyEnc").removeClass("default");

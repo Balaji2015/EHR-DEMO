@@ -195,7 +195,7 @@ table.dataTable > thead > tr > td {
                                         <button type="button" class="btn btn-primary btncolor" id="btnChangeExamRoom" style="background-color: none;">Change Exam Room</button>
                                     </td>
                                     <td style="padding-right:1px;">
-                                        <select id="cmbYears" class="form-control" style="display:none;"></select>
+                                        <select id="cboYears" class="form-control" style="display:none;"></select>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-primary btncolor" onclick="chkShowAllClick(this)" id="RefreshMyQ" style="background-color: none; margin-left: 1px;">Refresh My Encounters</button>
@@ -278,6 +278,7 @@ table.dataTable > thead > tr > td {
     <input type="hidden" id="hdnIsShowAllGeneralOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"]%>" />
     <input type="hidden" id="hdnIsShowAllGeneralAmendmentQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralAmendmentQueue"]%>" />
     <input type="hidden" id="hdnMyAkidoTasksURL" value="<%=ConfigurationManager.AppSettings["MyAkidoTasksURL"]%>" />
+    <input type="hidden" id="hdnMyOrdersQueueVersion" value="<%=ConfigurationManager.AppSettings["MyOrdersQueueVersion"]%>" />
 
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false" EnableScriptCombine="true">
         <Scripts>

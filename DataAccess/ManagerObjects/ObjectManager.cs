@@ -9,6 +9,7 @@ using System.Web;
 using System.IO;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Configuration;
 //Added By Selvaraman
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -2843,7 +2844,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return resultmyqList;
         }
 
-        public IList<MyQ> FillObjects(string FacName, string[] ObjType, string ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string FacilityName)
+        public IList<MyQ> FillObjects(string FacName, string[] ObjType, string ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string FacilityName, string Year = "")
         {
 
             //string sAncillary = string.Empty;
@@ -2862,6 +2863,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 try
                 {
+                    //CAP-2824, CAP-2866, CAP-2885
+                    string querySuffix = "";
+                    if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                    {
+                        querySuffix = ".V2";
+                    }
+
                     if (ObjType.Contains("ENCOUNTER") || ObjType.Contains("DOCUMENTATION") || ObjType.Contains("DOCUMENT REVIEW") || ObjType.Contains("CHECK OUT") || ObjType.Contains("PHONE ENCOUNTER"))
                     {
 
@@ -3549,9 +3557,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             if (FacName == "ALL")
                             {
-                                query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithoutFacility");
+                                query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithoutFacility" + querySuffix);
                                 query1.SetString(0, UserName);
                                 query1.SetString(1, UserName);
+                                //CAP-2824, CAP-2866, CAP-2885
+                                if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                                {
+                                    query1.SetString(2, Year);
+                                }
                             }
                             else
                             {
@@ -3581,10 +3594,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                             if (FacName == "ALL")
                             {
-                                query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse");
+                                query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse" + querySuffix);
                                 query1.SetString(0, UserName);
                                 query1.SetString(1, UserName);
-
+                                //CAP-2824, CAP-2866, CAP-2885
+                                if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                                {
+                                    query1.SetString(2, Year);
+                                }
                             }
                             else
                             {
@@ -3779,9 +3796,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             if (FacName == "ALL")
                             {
-                                query1 = Mysession.GetNamedQuery("FillMyImmunizationOrderObjectDetails.WithoutFacility");
+                                query1 = Mysession.GetNamedQuery("FillMyImmunizationOrderObjectDetails.WithoutFacility" + querySuffix);
                                 query1.SetString(0, UserName);
                                 query1.SetString(1, UserName);
+                                //CAP-2824, CAP-2866, CAP-2885
+                                if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                                {
+                                    query1.SetString(2, Year);
+                                }
                             }
                             else
                             {
@@ -3795,9 +3817,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             if (FacName == "ALL")
                             {
-                                query1 = Mysession.GetNamedQuery("FillMyImmunizationOrderObjectDetails.WithoutFacility.ShowAllFalse");
+                                query1 = Mysession.GetNamedQuery("FillMyImmunizationOrderObjectDetails.WithoutFacility.ShowAllFalse" + querySuffix);
                                 query1.SetString(0, UserName);
                                 query1.SetString(1, UserName);
+                                //CAP-2824, CAP-2866, CAP-2885
+                                if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                                {
+                                    query1.SetString(2, Year);
+                                }
                             }
                             else
                             {
@@ -3821,9 +3848,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             if (FacName == "ALL")
                             {
-                                query1 = Mysession.GetNamedQuery("FillMyReferralOrderObjectDetails.WithoutFacility");
+                                query1 = Mysession.GetNamedQuery("FillMyReferralOrderObjectDetails.WithoutFacility" + querySuffix);
                                 query1.SetString(0, UserName);
                                 query1.SetString(1, UserName);
+                                //CAP-2824, CAP-2866, CAP-2885
+                                if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                                {
+                                    query1.SetString(2, Year);
+                                }
                             }
                             else
                             {
@@ -3837,10 +3869,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             if (FacName == "ALL")
                             {
-                                query1 = Mysession.GetNamedQuery("FillMyReferralOrderObjectDetails.WithoutFacility.ShowAllFalse");
+                                query1 = Mysession.GetNamedQuery("FillMyReferralOrderObjectDetails.WithoutFacility.ShowAllFalse" + querySuffix);
                                 query1.SetString(0, UserName);
                                 query1.SetString(1, UserName);
-
+                                //CAP-2824, CAP-2866, CAP-2885
+                                if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                                {
+                                    query1.SetString(2, Year);
+                                }
                             }
                             else
                             {
@@ -3993,9 +4029,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             string[] myObjType = new string[1];
                             myObjType[0] = "DIAGNOSTIC_RESULT";
-                            query1 = Mysession.GetNamedQuery("FillMyResultsObjectDetails.ShowAllFalse");
+                            query1 = Mysession.GetNamedQuery("FillMyResultsObjectDetails.ShowAllFalse" + querySuffix);
                             query1.SetString(0, "DIAGNOSTIC_RESULT");
                             query1.SetString(1, UserName);
+                            //CAP-2824, CAP-2866, CAP-2885
+                            if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                            {
+                                query1.SetString(2, Year);
+                            }
                             FavoriteList = new ArrayList(query1.List());
                             FillDTO(FavoriteList, myObjType);
                         }
@@ -4003,9 +4044,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             string[] myObjType = new string[1];
                             myObjType[0] = "DIAGNOSTIC_RESULT";
-                            query1 = Mysession.GetNamedQuery("FillMyResultsObjectDetails");
+                            query1 = Mysession.GetNamedQuery("FillMyResultsObjectDetails" + querySuffix);
                             query1.SetString(0, "DIAGNOSTIC_RESULT");
                             query1.SetString(1, UserName);
+                            //CAP-2824, CAP-2866, CAP-2885
+                            if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+                            {
+                                query1.SetString(2, Year);
+                            }
                             FavoriteList = new ArrayList(query1.List());
                             FillDTO(FavoriteList, myObjType);
                         }
@@ -4042,6 +4088,148 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
             }
             return resultmyqList;
+        }
+        //CAP-2824, CAP-2866, CAP-2885
+        public IList<(string, string)> GetListOrdersYears(string FacName, string[] ObjType, string UserName, Boolean bShowAll)
+        {
+            IList<(string, string)> yearList = new List<(string, string)>();
+            ArrayList yearArrayList = new ArrayList();
+            using (ISession Mysession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                try
+                {
+                    IQuery query1 = null;
+                    if (ObjType.Contains("DIAGNOSTIC ORDER") || ObjType.Contains("IMAGE ORDER") || ObjType.Contains("DME ORDER"))
+                    {
+                        string[] myObjType = new string[3];
+                        myObjType[0] = "DIAGNOSTIC ORDER";
+                        myObjType[1] = "IMAGE ORDER";
+                        myObjType[2] = "DME ORDER";
+                        StaticLookupManager objStaticLookupMgr = new StaticLookupManager();
+                        if (bShowAll == true)
+                        {
+                            if (FacName == "ALL")
+                            {
+                                query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithoutFacility.Years");
+                                query1.SetString(0, UserName);
+                                query1.SetString(1, UserName);
+                            }
+                        }
+                        else
+                        {
+                            if (FacName == "ALL")
+                            {
+                                query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithoutFacility.ShowAllFalse.Years");
+                                query1.SetString(0, UserName);
+                                query1.SetString(1, UserName);
+                            }
+                        }
+                        if (query1 != null)
+                        {
+                            query1.SetParameterList("ObjList", myObjType);
+                            var result = new ArrayList(query1.List());
+                            yearArrayList.AddRange(result);
+                        }
+                    }
+                    if (ObjType.Contains("IMMUNIZATION ORDER"))
+                    {
+                        string[] myObjType = new string[1];
+                        myObjType[0] = "IMMUNIZATION ORDER";
+                        if (bShowAll == true)
+                        {
+                            if (FacName == "ALL")
+                            {
+                                query1 = Mysession.GetNamedQuery("FillMyImmunizationOrderObjectDetails.WithoutFacility.Years");
+                                query1.SetString(0, UserName);
+                                query1.SetString(1, UserName);
+                            }
+                        }
+                        else
+                        {
+                            if (FacName == "ALL")
+                            {
+                                query1 = Mysession.GetNamedQuery("FillMyImmunizationOrderObjectDetails.WithoutFacility.ShowAllFalse.Years");
+                                query1.SetString(0, UserName);
+                                query1.SetString(1, UserName);
+                            }
+                        }
+                        if (query1 != null)
+                        {
+                            query1.SetParameterList("ObjList", myObjType);
+                            var result = new ArrayList(query1.List());
+                            yearArrayList.AddRange(result);
+                        }
+                    }
+                    if (ObjType.Contains("REFERRAL ORDER"))
+                    {
+                        string[] myObjType = new string[1];
+                        myObjType[0] = "REFERRAL ORDER";
+                        if (bShowAll == true)
+                        {
+                            if (FacName == "ALL")
+                            {
+                                query1 = Mysession.GetNamedQuery("FillMyReferralOrderObjectDetails.WithoutFacility.Years");
+                                query1.SetString(0, UserName);
+                                query1.SetString(1, UserName);
+                            }
+                        }
+                        else
+                        {
+                            if (FacName == "ALL")
+                            {
+                                query1 = Mysession.GetNamedQuery("FillMyReferralOrderObjectDetails.WithoutFacility.ShowAllFalse.Years");
+                                query1.SetString(0, UserName);
+                                query1.SetString(1, UserName);
+                            }
+                        }
+                        if (query1 != null)
+                        {
+                            query1.SetParameterList("ObjList", myObjType);
+                            var result = new ArrayList(query1.List());
+                            yearArrayList.AddRange(result);
+                        }
+                    }
+                    if (ObjType.Contains("DIAGNOSTIC_RESULT") && FacName == "ALL")
+                    {
+                        if (bShowAll)
+                        {
+                            string[] myObjType = new string[1];
+                            myObjType[0] = "DIAGNOSTIC_RESULT";
+                            query1 = Mysession.GetNamedQuery("FillMyResultsObjectDetails.ShowAllFalse.Years");
+                            query1.SetString(0, "DIAGNOSTIC_RESULT");
+                            query1.SetString(1, UserName);
+                            var result = new ArrayList(query1.List());
+                            yearArrayList.AddRange(result);
+                        }
+                        else
+                        {
+                            string[] myObjType = new string[1];
+                            myObjType[0] = "DIAGNOSTIC_RESULT";
+                            query1 = Mysession.GetNamedQuery("FillMyResultsObjectDetails.Years");
+                            query1.SetString(0, "DIAGNOSTIC_RESULT");
+                            query1.SetString(1, UserName);
+                            var result = new ArrayList(query1.List());
+                            yearArrayList.AddRange(result);
+                        }
+                    }
+
+                    foreach (var item in yearArrayList)
+                    {
+                        var itemData = (object[])item;
+                        yearList.Add((itemData[0].ToString(), itemData[1].ToString()));
+                    }
+                    yearList = yearList.Where(a => a.Item1.Length > 3).OrderByDescending(x => x.Item1).ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    Mysession.Close();
+                }
+            }
+            return yearList;
         }
     }
 
