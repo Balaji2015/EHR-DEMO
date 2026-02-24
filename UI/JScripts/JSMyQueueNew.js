@@ -671,7 +671,7 @@ function MyQclick() {
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                async: true,
+                async: false,
                 success: function (data) {
                 },
                 error: function OnError(xhr) {
