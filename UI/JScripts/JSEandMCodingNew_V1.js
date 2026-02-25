@@ -264,7 +264,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     }
                 }
                 //Cap - 3086
-                if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
             else {
                 if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -598,6 +598,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         if ($("#txtCPT").val().length == 1) {
             bBool = false;
         }
+        $("#txtCPT").autocomplete("search", $("#txtCPT").val());
     });
 
     function BindCPTtable() {
@@ -1099,6 +1100,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             $(".ui-autocomplete").hide();
             bBool = false;
         }
+        $("#txtCPTDescription").autocomplete("search", $("#txtCPTDescription").val());
     });
     function FilterCodes(array, terms) {
         arrayOfTerms = terms.split(" ");
