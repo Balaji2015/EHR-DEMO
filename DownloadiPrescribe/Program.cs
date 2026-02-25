@@ -543,15 +543,32 @@ namespace DownloadiPrescribe
             IList<Blob_Progress_Note> ilstBlopProgressNote = new List<Blob_Progress_Note>();
             BlobProgressNoteManager blobProgressNoteManager = new BlobProgressNoteManager();
             string sDuration = ConfigurationSettings.AppSettings["Duration"]?.ToString() ?? "";
+            string sRestTime = ConfigurationSettings.AppSettings["TimeOut"]?.ToString() ?? "0";
+            int iNumberOfRetryAllowed = Convert.ToInt32(ConfigurationSettings.AppSettings["NumberOfRetry"]?.ToString() ?? "0");
             IList<string> lstStatus = new List<string>() { "System.OutOfMemoryException", "Message : Transaction not successfully", "Message : Timeout expired" };
             IList<string> lstNotStatus = new List<string>() { "'Error'", "'Completed'" };
-            ilstBlopProgressNote = blobProgressNoteManager.GetBlobProgressNotesByStatus(lstNotStatus, lstStatus, sDuration);
+            ilstBlopProgressNote = blobProgressNoteManager.GetBlobProgressNotesByStatus(lstNotStatus, lstStatus, iNumberOfRetryAllowed, sDuration);
             Console.WriteLine("Total encounters : " + ilstBlopProgressNote.Count);
+            int iCount = 0;
             foreach (Blob_Progress_Note blob_Progress_Note in ilstBlopProgressNote)
             {
+                if (iCount > 50)
+                {
+                    iCount = 0;
+                    int iTime = Convert.ToInt32(sRestTime) * 60000;
+                    Console.WriteLine($"Time out start. Wait for {iTime} min");
+                    System.Threading.Thread.Sleep(iTime);
+                    Console.WriteLine("Time out end.");
+                }
+
+                int iRetryCount = Convert.ToInt32((blob_Progress_Note.Retry_Count == "" || blob_Progress_Note.Retry_Count == null) ? "0" : blob_Progress_Note.Retry_Count);
                 Console.WriteLine("HumanID : " + blob_Progress_Note.Human_ID + " EncounterID : " + blob_Progress_Note.Id + " - Start");
                 IsAkidoCDC(blob_Progress_Note.Human_ID.ToString(), blob_Progress_Note.Id.ToString(), "Acurus", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                 Console.WriteLine("HumanID : " + blob_Progress_Note.Human_ID + " EncounterID : " + blob_Progress_Note.Id + " - End");
+                iRetryCount++;
+                string insertQuery = "Update cdc_progress_note set Retry_Count = " + iRetryCount + " where Encounter_ID = " + blob_Progress_Note.Id + ";";
+                int iReturn = DBConnector.WriteData(insertQuery);
+                iCount++;
             }
         }
         public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)

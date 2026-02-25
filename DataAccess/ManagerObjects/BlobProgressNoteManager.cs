@@ -20,7 +20,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Blob_Progress_Note> GetBlobProgressNotes(ulong ulEncounterID);
 
         void SaveBlobProgressNotesWithTransaction(IList<Blob_Progress_Note> ListToUpdateBlobProgressNotes, string MACAddress);
-        IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstNotStatus, IList<string> lstErrorMessage, string sDuration = "");
+        IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstNotStatus, IList<string> lstErrorMessage, int iNumberOfRetryAllowed, string sDuration = "");
     }
 
     public partial class BlobProgressNoteManager : ManagerBase<Blob_Progress_Note, ulong>, IBlobProgressNoteManager
@@ -53,7 +53,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstBlobProgressNotes;
             
         }
-        public IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstNotStatus, IList<string> lstErrorMessage, string sDuration = "")
+        public IList<Blob_Progress_Note> GetBlobProgressNotesByStatus(IList<string> lstNotStatus, IList<string> lstErrorMessage,int iNumberOfRetryAllowed, string sDuration = "")
         {
             session.GetISession().Close();
             IList<Blob_Progress_Note> ilstBlobProgressNotes = new List<Blob_Progress_Note>();
@@ -67,7 +67,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             if (sDuration != "") { sDurationQuery = " and Modified_Date_And_Time < NOW() - INTERVAL " + sDuration + " HOUR"; }
 
-            ISQLQuery sq = session.GetISession().CreateSQLQuery("SELECT B.* FROM cdc_progress_note B where (B.Status not in (" + string.Join(",", lstNotStatus) + ")" + sErrorDescription + ")" + sDurationQuery + ";")
+            ISQLQuery sq = session.GetISession().CreateSQLQuery("SELECT B.* FROM cdc_progress_note B where (B.Status not in (" + string.Join(",", lstNotStatus) + ")" + sErrorDescription + ")" + sDurationQuery + " and Retry_Count < " + iNumberOfRetryAllowed + ";")
                        .AddEntity("B", typeof(Blob_Progress_Note));
             ilstBlobProgressNotes = sq.List<Blob_Progress_Note>();
             return ilstBlobProgressNotes;
