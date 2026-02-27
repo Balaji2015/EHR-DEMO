@@ -5195,7 +5195,7 @@ namespace Acurus.Capella.UI
             }
 
         }
-        public static string GenerateXMLForCDC(string sXMLID, string sXMLType, string sHumanID, string sEncounterID)
+        public static string GenerateXMLForCDC(string sXMLID, string sXMLType, string sHumanID, string sEncounterID, string sRetryCount = "")
         {
             int ulTimeOut = 0;
             if (System.Configuration.ConfigurationSettings.AppSettings["CDCXMLRegenerationTimeOut"] != null 
@@ -5253,6 +5253,7 @@ namespace Acurus.Capella.UI
                                 ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                                 ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate_Wait";
                                 ilstBlob_Progress_Note[0].Error_Description = "";
+                                ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                                 ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                                 ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                                 blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -5269,6 +5270,7 @@ namespace Acurus.Capella.UI
                         ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                         ilstBlob_Progress_Note[0].Status = "Error";
                         ilstBlob_Progress_Note[0].Error_Description = "Human_XML_Generate_Wait Time Out Exceeded";
+                        ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                         ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                         ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                         blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -5283,6 +5285,7 @@ namespace Acurus.Capella.UI
                         ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                         ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate";
                         ilstBlob_Progress_Note[0].Error_Description = "";
+                        ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                         ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                         ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                         blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -5311,6 +5314,7 @@ namespace Acurus.Capella.UI
                                     ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                                     ilstBlob_Progress_Note[0].Status = "Initiated";
                                     ilstBlob_Progress_Note[0].Error_Description = "";
+                                    ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                                     ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                                     ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                                     blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -5330,6 +5334,7 @@ namespace Acurus.Capella.UI
                                 ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                                 ilstBlob_Progress_Note[0].Status = "Error";
                                 ilstBlob_Progress_Note[0].Error_Description = "Human_XML_Generate Time Out Exceeded";
+                                ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                                 ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                                 ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                                 blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -5420,6 +5425,7 @@ namespace Acurus.Capella.UI
                                     ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                                     ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate_Wait";
                                     ilstBlob_Progress_Note[0].Error_Description = "";
+                                    ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                                     ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                                     ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                                     blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -5436,6 +5442,7 @@ namespace Acurus.Capella.UI
                             ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                             ilstBlob_Progress_Note[0].Status = "Error";
                             ilstBlob_Progress_Note[0].Error_Description = "Encounter_XML_Generate_Wait Time Out Exceeded";
+                            ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                             ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                             ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                             blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -5449,7 +5456,8 @@ namespace Acurus.Capella.UI
                         ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                         ilstBlob_Progress_Note[0].Status = sXMLType + "_XML_Generate";
                         ilstBlob_Progress_Note[0].Error_Description = "";
-                        ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                            ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
+                            ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                         ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                         blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                         
@@ -5474,6 +5482,7 @@ namespace Acurus.Capella.UI
                                         ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                                         ilstBlob_Progress_Note[0].Status = sXMLType + "Initiated";
                                         ilstBlob_Progress_Note[0].Error_Description = "";
+                                        ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                                         ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                                         ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                                         blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -5494,6 +5503,7 @@ namespace Acurus.Capella.UI
                                     ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                                     ilstBlob_Progress_Note[0].Status = "Error";
                                     ilstBlob_Progress_Note[0].Error_Description = "Encounter_XML_Generate Time Out Exceeded";
+                                    ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                                     ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                                     ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                                     blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);

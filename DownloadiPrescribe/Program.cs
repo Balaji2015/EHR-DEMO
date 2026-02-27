@@ -563,15 +563,13 @@ namespace DownloadiPrescribe
 
                 int iRetryCount = Convert.ToInt32((blob_Progress_Note.Retry_Count == "" || blob_Progress_Note.Retry_Count == null) ? "0" : blob_Progress_Note.Retry_Count);
                 Console.WriteLine("HumanID : " + blob_Progress_Note.Human_ID + " EncounterID : " + blob_Progress_Note.Id + " - Start");
-                IsAkidoCDC(blob_Progress_Note.Human_ID.ToString(), blob_Progress_Note.Id.ToString(), "Acurus", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
-                Console.WriteLine("HumanID : " + blob_Progress_Note.Human_ID + " EncounterID : " + blob_Progress_Note.Id + " - End");
                 iRetryCount++;
-                string insertQuery = "Update cdc_progress_note set Retry_Count = " + iRetryCount + " where Encounter_ID = " + blob_Progress_Note.Id + ";";
-                int iReturn = DBConnector.WriteData(insertQuery);
+                IsAkidoCDC(blob_Progress_Note.Human_ID.ToString(), blob_Progress_Note.Id.ToString(), "Acurus", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"), iRetryCount.ToString());
+                Console.WriteLine("HumanID : " + blob_Progress_Note.Human_ID + " EncounterID : " + blob_Progress_Note.Id + " - End");
                 iCount++;
             }
         }
-        public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)
+        public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime, string sRetryCount = "")
         {
             string bIsAkidoEncounter = "false";
             //Jira CAP-1379
@@ -583,7 +581,7 @@ namespace DownloadiPrescribe
                 iRetryCount = iRetryCount + 1;
 
                 string akidoNoteCDCURL = ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString();
-                akidoNoteCDCURL = akidoNoteCDCURL.Replace("[CapellaHumanID]", sHumanID).Replace("[CapellaEncounterID]", sEncounterID).Replace("[CapellaTransactionBy]", sTransactionBy).Replace("[CapellaTransactionDateTime]", sTransactionDateTime);
+                akidoNoteCDCURL = akidoNoteCDCURL.Replace("[CapellaHumanID]", sHumanID).Replace("[CapellaEncounterID]", sEncounterID).Replace("[CapellaTransactionBy]", sTransactionBy).Replace("[CapellaTransactionDateTime]", sTransactionDateTime).Replace("[CapellaTransactionRetryCount]", sRetryCount);
                 var myUri = new Uri(akidoNoteCDCURL);
                 string AccessToken = ConfigurationSettings.AppSettings["AkidoNoteCDCURLToken"].ToString();
                 var myWebRequest = WebRequest.Create(myUri);
