@@ -22,6 +22,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Modified_By = string.Empty;
         private DateTime _Modified_Date_And_Time;
         private int _version = 0;
+        private string _Retry_Count = string.Empty;
         #endregion
 
         #region HashCode Value
@@ -41,6 +42,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Modified_By);
             sb.Append(_Modified_Date_And_Time);
             sb.Append(_version);
+            sb.Append(_Retry_Count);
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -125,6 +127,12 @@ namespace Acurus.Capella.Core.DomainObjects
             {
                 _version = value;
             }
+        }
+        [DataMember]
+        public virtual string Retry_Count
+        {
+            get { return _Retry_Count; }
+            set { _Retry_Count = value; }
         }
         #endregion
     }

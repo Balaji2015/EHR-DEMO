@@ -1519,6 +1519,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             $(".ui-autocomplete").hide();
             bBool = false;
         }
+        $("#txtICD10").autocomplete("search", $("#txtICD10").val());
     });
     $("#txtDescription").autocomplete({
         source: function (request, response) {
@@ -1724,6 +1725,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             $(".ui-autocomplete").hide();
             bBool = false;
         }
+        $("#txtDescription").autocomplete("search", $("#txtDescription").val());
     });
 
 

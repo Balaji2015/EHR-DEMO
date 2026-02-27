@@ -289,7 +289,7 @@ namespace Acurus.Capella.UI.WebServices.API
         }
 
         [HttpGet]
-        public IHttpActionResult LoadProgressNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
+        public IHttpActionResult LoadProgressNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime,string sRetryCount = "")
         {
             HumanManager humanManager = new HumanManager();
             Human objHuman = new Human();
@@ -400,7 +400,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     //try
                     //{
-                        GenerateJsonNotes(sHumanID, sEncounterID, transactionBy, transactionDateTime);
+                        GenerateJsonNotes(sHumanID, sEncounterID, transactionBy, transactionDateTime, sRetryCount);
                     //}
                     //finally
                     //{
@@ -423,7 +423,7 @@ namespace Acurus.Capella.UI.WebServices.API
             return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "Acknowledged" });
         }
 
-        private void GenerateJsonNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
+        private void GenerateJsonNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime,string sRetryCount = "")
         {
         lnGenerateJsonNotes:
 
@@ -436,7 +436,7 @@ namespace Acurus.Capella.UI.WebServices.API
             IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
             Blob_Progress_Note objBlobProgressNotesInitiated = new Blob_Progress_Note();
             //ilstBlob_Progress_Note = BlobProgressNoteMngr.GetBlobProgressNotes(Convert.ToUInt64(sEncounterID));
-            string blobProgressNotesQry = "SELECT Encounter_ID AS Id, Human_ID, Progress_Note_Json, Status, Error_Description, Created_By, Created_Date_And_Time, Modified_By, Modified_Date_And_Time, Version FROM cdc_progress_note WHERE Encounter_ID = {0};";
+            string blobProgressNotesQry = "SELECT Encounter_ID AS Id, Human_ID, Progress_Note_Json, Status, Error_Description, Created_By, Created_Date_And_Time, Modified_By, Modified_Date_And_Time, Version, Retry_Count FROM cdc_progress_note WHERE Encounter_ID = {0};";
             DataSet BlobProgressNotesResult = DBConnector.ReadData(string.Format(blobProgressNotesQry, sEncounterID));
             ilstBlob_Progress_Note = DBConnector.DataTableToList<Blob_Progress_Note>(BlobProgressNotesResult.Tables[0]) ?? new List<Blob_Progress_Note>();
             bool isModified = false;
@@ -462,6 +462,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                 ilstBlob_Progress_Note[0].Status = "Initiated";
                 ilstBlob_Progress_Note[0].Error_Description = string.Empty;
+                ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
 
                 BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                 //End
@@ -966,6 +967,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     ilstBlob_Progress_Note[0].Status = "Completed";
                     ilstBlob_Progress_Note[0].Progress_Note_Json = bytesKeep;
                     ilstBlob_Progress_Note[0].Error_Description = string.Empty;
+                    ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                     if (isModified)
                     {
                         ilstBlob_Progress_Note[0].Modified_By = transactionBy;
@@ -998,6 +1000,7 @@ namespace Acurus.Capella.UI.WebServices.API
                         ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                         ilstBlob_Progress_Note[0].Status = "Error";
                         ilstBlob_Progress_Note[0].Error_Description = (sStatus != "") ? "Error : " + sStatus : "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
+                        ilstBlob_Progress_Note[0].Retry_Count = (ilstBlob_Progress_Note[0].Retry_Count != "" && sRetryCount == "") ? ilstBlob_Progress_Note[0].Retry_Count : sRetryCount;
                         ilstBlob_Progress_Note[0].Modified_By = "Acurus";
                         ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                         BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
@@ -1009,7 +1012,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
             }
         }
-        public string RegenerateXML(Exception ex, string sHumanID, string sEncounterID)
+        public string RegenerateXML(Exception ex, string sHumanID, string sEncounterID, string sRetryCount = "")
         {
             string sStatus = string.Empty;
             string sEncounterStatus = string.Empty;
@@ -1039,7 +1042,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     catch
                     {
                         sResultHuman = "Failure";
-                        sStatus = UtilityManager.GenerateXMLForCDC(sHumanID, "HUMAN", sHumanID, sEncounterID);
+                        sStatus = UtilityManager.GenerateXMLForCDC(sHumanID, "HUMAN", sHumanID, sEncounterID, sRetryCount);
                     }
 
                     if (sStatus == "Success")
@@ -1058,7 +1061,7 @@ namespace Acurus.Capella.UI.WebServices.API
                         catch
                         {
                             sResultEncounter = "Failure";
-                            sStatus = UtilityManager.GenerateXMLForCDC(sEncounterID, "ENCOUNTER", sHumanID, sEncounterID);
+                            sStatus = UtilityManager.GenerateXMLForCDC(sEncounterID, "ENCOUNTER", sHumanID, sEncounterID, sRetryCount);
                         }
                     }
                 }
