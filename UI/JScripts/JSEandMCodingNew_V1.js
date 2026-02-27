@@ -2565,10 +2565,12 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             iIndex = -1;
             //DeleteArrayICD.push(table.find('tr')[iCheck].children[8].innerText.trim());
             DeleteArrayICD.push(table.find('tr')[iCheck].children[3].innerText.trim());
+            //Jira Cap - 4155 - new list for delete
+            DelList.push(table.find('tr')[iCheck].children[3].innerText.trim());
             for (var i = 0; i < $scope.EandMCodingICDTable.length; i++) {
-                for (var j = 0; j < DeleteArrayICD.length; j++) {
+                for (var j = 0; j < DelList.length; j++) {
                     //CAP-1471
-                    if (DeleteArrayICD[j]?.trim() == $scope?.EandMCodingICDTable[i]?.ICDCode?.trim()) {
+                    if (DelList[j]?.trim() == $scope?.EandMCodingICDTable[i]?.ICDCode?.trim()) {
                         $scope.EandMCodingICDTable.splice(i, 1);
 
                         //Remove diagnosis pointer mapping from CPT table if ICD deleted
@@ -2587,6 +2589,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             }
             $scope.EnableSaveButton();
             $scope.RefershGrid();
+            DelList = [];
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
         else {
