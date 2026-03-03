@@ -723,7 +723,7 @@ namespace Acurus.Capella.UI
 
             FillAkidoInterpretationNoteButton(uOrderID.ToString());
             //CAP-4130
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "TabViewResult", " $(top.window.document).find('#TabViewResult')[0].style.display = 'block'; ", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "TabViewResult", " if($(top.window.document).find('#TabViewResult')[0].style.display == 'none'){$(top.window.document).find('#TabViewResult')[0].style.display = 'block';} ", true);
         }
         private string ConstructTreeView(ulong humanId, string Doc_type, ulong KeyID)
         {
