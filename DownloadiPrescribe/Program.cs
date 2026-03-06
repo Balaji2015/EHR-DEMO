@@ -24,6 +24,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using Renci.SshNet;
 
 namespace DownloadiPrescribe
 {
@@ -1731,6 +1732,13 @@ namespace DownloadiPrescribe
         {
             string Facility_Name = ConfigurationManager.AppSettings["ECMFacilityName"];
             string sFolderPathName = ConfigurationManager.AppSettings["ECMSummaryPathName"];
+            //Jira cap - 4008
+            string sFTPServer = ConfigurationManager.AppSettings["CCDFtpServerIP"];
+            string sFTPUser = ConfigurationManager.AppSettings["CCDFtpUserID"];
+            string sFTPPassword = ConfigurationManager.AppSettings["CCDFtpPassword"];
+            string sPort = ConfigurationManager.AppSettings["CCDPort"];
+            string sArchiveFolder = ConfigurationManager.AppSettings["CCDArchiveLocation"];
+                  
             ConnectionStringSettingsCollection strConnectionData = ConfigurationManager.ConnectionStrings;
             string sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
             string sStatus = string.Empty;
@@ -1779,6 +1787,9 @@ namespace DownloadiPrescribe
                 }
                 if (sStatus == "Success")
                 {
+                    //Jira cap - 4008
+                    if (ConfigurationManager.AppSettings["IsCCDSFTPEnabled"] == "Y")
+                    {
                     string Query1 = "update ccd_medex_update_info set last_generated_date_time = date(now())";
                     var UpdateDate = new MySqlConnectionStringBuilder(sConnectionString);
                     MySqlConnection MyConn3 = new MySqlConnection(UpdateDate.ConnectionString);
@@ -1787,7 +1798,10 @@ namespace DownloadiPrescribe
                     MyConn3.Open();
                     MyReader3 = MyCommand3.ExecuteReader();
                     MyConn3.Close();
+                        //Jira cap - 4008
+                        UploadFolder(sFolderPathName, sFTPServer, sFTPUser, sFTPPassword, sArchiveFolder, Convert.ToInt32(sPort));
                 }
+            }
             }
             catch(Exception ex)
             {
@@ -2020,6 +2034,44 @@ namespace DownloadiPrescribe
             }
 
             return isInserted;
+        }
+
+
+        public static void UploadFolder(string localFolder, string ftpFolder, string user, string password, string archiveFolder, int port)
+        {
+            string[] files = Directory.GetFiles(localFolder);
+            var connectionInfo = new PasswordConnectionInfo(ftpFolder, port, user, password);
+
+            using (var sftp = new SftpClient(connectionInfo)) //ftpFolder, port, user, password))
+            {
+                sftp.Connect();
+
+                foreach (string file in files)
+                {
+                    string fileName = Path.GetFileName(file);
+                    string ftpFullPath = ftpFolder + fileName;
+
+                    try
+                    {
+                        using (var fileStream = new FileStream(file, FileMode.Open))
+                        {
+                            sftp.UploadFile(fileStream, ftpFolder);
+                        }
+                        if (!Directory.Exists(archiveFolder))
+                        {
+                            Directory.CreateDirectory(archiveFolder);
+                        }
+                        string destPath = Path.Combine(archiveFolder, fileName);
+                        File.Move(file, destPath);
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                sftp.Disconnect();
+            }
         }
 
     }
