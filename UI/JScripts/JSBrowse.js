@@ -89,13 +89,14 @@ return false;
 function OnSuccess(response)
  {
  var RadDownload=$find('actLogRadWindow');
- RadDownload.show();
- RadDownload._resizeExtender.set_hideIframes(true);
- var TextBox=document.getElementById("actLogRadWindow_C_txtActivityLog");
- TextBox.value=response.d;
- 
- 
- }
+    RadDownload.show();
+    RadDownload._resizeExtender.set_hideIframes(true);
+    var TextBox=document.getElementById("actLogRadWindow_C_txtActivityLog");
+    TextBox.value = response.d;
+    //Jira Cap - 4012
+    TextBox.readOnly = true;
+    TextBox.disabled = true;
+}
 
     
     
