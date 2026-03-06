@@ -6013,8 +6013,9 @@ namespace Acurus.Capella.UI
                         status = bStart + " Third Block - Sub 4 ";
                         var exitCode = proc1.ExitCode;
                         proc1.Close();
-
-                        File.Copy(System.Configuration.ConfigurationManager.AppSettings["CCDOutputLocation"].ToString(), sOutputLocation);
+                        //Jira Cap - 4151
+                        //File.Copy(System.Configuration.ConfigurationManager.AppSettings["CCDOutputLocation"].ToString(), sOutputLocation);
+                        File.Move(System.Configuration.ConfigurationManager.AppSettings["CCDOutputLocation"].ToString(), sOutputLocation);
                     }
                     catch (Exception ex)
                     {

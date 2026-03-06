@@ -1907,8 +1907,9 @@ namespace DownloadiPrescribe
                         status = bStart + " Third Block - Sub 4 ";
                         var exitCode = proc1.ExitCode;
                         proc1.Close();
-
-                        File.Copy(CCDOutputLocation, sOutputLocation, true);
+                        //Jira Cap - 4151
+                        //File.Copy(CCDOutputLocation, sOutputLocation, true);
+                        File.Move(CCDOutputLocation, sOutputLocation);
                     }
                     catch (Exception ex)
                     {
