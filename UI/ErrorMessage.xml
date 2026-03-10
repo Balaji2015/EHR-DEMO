@@ -467,6 +467,7 @@
 	<Message number="200032" Type="OK" Text="Please enter  Value for {0}. "/>
 	<Message number="200033" Type="OK" Text="Please enter Reason Not Performed For BMI. "/><!--BugID:46825-->
 	<Message number="200034" Type="OK" Text="Value should be in the range of {0} to {1}. "/>
+	<Message number="200035" Type="OK" Text="Please close the screen and retry the transaction."/>
 	<Message number="200099" Type="OK" Text="Please fill either Value or Reason Not Performed for {0}"/>
 	<Message number="210001" Type="ToolStrip" Text="Moved to next process" />
 	<Message number="210002" Type="OK" Text="The Check out is not done by the patient. Cannot complete the documentation." />

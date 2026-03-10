@@ -725,3 +725,6 @@ function DOBConvert(DOB) {
     //return SplitDOB[2] + "-" + monthNames[parseInt(SplitDOB[1]) - 1] + "-" + SplitDOB[0];
     return SplitDOB[2] + "-" + SplitDOB[1] + "-" + SplitDOB[0];
 }
+function PageLoadValidation() {
+    DisplayErrorMessage('200035');
+}

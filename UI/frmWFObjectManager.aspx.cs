@@ -59,7 +59,11 @@ namespace Acurus.Capella.UI
                     txtAccountNo.Text = ClientSession.HumanId.ToString();
                 string sName = string.Empty;
                 string sDOB = string.Empty;
-
+                if (txtAccountNo.Text == "" || txtAccountNo.Text == "0")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "PageLoadValidation", " PageLoadValidation(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    return;
+                }
                 if (Request["PatientName"] == null)
                 {
                     IList<string> ilstAdminTagList = new List<string>();
