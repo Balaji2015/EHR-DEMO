@@ -1454,11 +1454,18 @@ function CreateAuditLogEntry() {
             if (xhr.status == 999)
                 window.location = "/frmSessionExpired.aspx";
             else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                //CAP-4179-"undefined" is not valid JSON
+                if (isValidJSON(xhr.responseText)) { 
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+                else {
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry.");
+                }
             }
         }
     });
