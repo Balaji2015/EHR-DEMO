@@ -3625,10 +3625,13 @@ function OnSuccessSummaryBarEprescription(response) {
                 top.window.document.getElementById("Vitals_tooltp").innerText = "";
             }
 
-        if (response.d[9].replace("Medication :<br/>", "").length != 0)
-            top.window.document.getElementById("Medication_tooltp").innerText = response.d[9].replace(regex, "\n") + "\n";
-        else
-            top.window.document.getElementById("Medication_tooltp").innerText = "";
+        //CAP-4178 / CAP-4181 -Cannot set properties of null (setting innerText)
+        if (top?.window?.document?.getElementById("Medication_tooltp") != undefined && top?.window?.document?.getElementById("Medication_tooltp") != null) {
+            if (response.d[9].replace("Medication :<br/>", "").length != 0)
+                top.window.document.getElementById("Medication_tooltp").innerText = response.d[9].replace(regex, "\n") + "\n";
+            else
+                top.window.document.getElementById("Medication_tooltp").innerText = "";
+        }
         RefreshOverallSummaryTooltip();
 
     }
