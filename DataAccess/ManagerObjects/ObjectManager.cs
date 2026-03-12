@@ -4090,9 +4090,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return resultmyqList;
         }
         //CAP-2824, CAP-2866, CAP-2885
-        public IList<(string, string)> GetListOrdersYears(string FacName, string[] ObjType, string UserName, Boolean bShowAll)
+        public IList<string> GetListOrdersYears(string FacName, string[] ObjType, string UserName, Boolean bShowAll)
         {
-            IList<(string, string)> yearList = new List<(string, string)>();
+            IList<string> yearList = new List<string>();
             ArrayList yearArrayList = new ArrayList();
             using (ISession Mysession = NHibernateSessionManager.Instance.CreateISession())
             {
@@ -4218,14 +4218,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         var itemData = (object[])item;
                         if(itemData[0] != null)
                         {
-                            yearList.Add((itemData[0]?.ToString(), itemData[1]?.ToString()));
+                            yearList.Add((itemData[0]?.ToString()));
                         }
                     }
+                    
                     yearList = yearList
-                        .Where(x => x.Item1.Length > 3)
-                        .GroupBy(x => x.Item1)
-                        .Select(g => (g.Key, g.Sum(x => Convert.ToInt32(x.Item2)).ToString()))
-                        .OrderByDescending(x => x.Key)
+                        .Where(x => x.Length > 3)
+                        .GroupBy(x => x)
+                        .Select(g => g.Key)
+                        .OrderByDescending(x => x)
                         .ToList();
                 }
                 catch (Exception ex)

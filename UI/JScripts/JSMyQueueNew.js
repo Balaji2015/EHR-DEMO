@@ -1864,10 +1864,10 @@ function loadMyorder() {
                     });
                 }
                 
-                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.data.length + ")";
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Order_Count", objdata.data.length);
-                }
+                //$("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.data.length + ")";
+                //if (Showall != "Checked") {
+                //    sessionStorage.setItem("My_Order_Count", objdata.data.length);
+                //}
                 localStorage.setItem("Myorderscount", objdata.data.length);
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "Note:All abnormal results are in <span style='color:red'> RED</span> color font.";
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

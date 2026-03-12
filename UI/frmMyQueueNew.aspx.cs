@@ -145,26 +145,7 @@ namespace Acurus.Capella.UI
             PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
             var pat = new List<MyQ>();
             QCount = (IList<MyQueueCountDTO>)LoadMyQ["Qcount"];
-            //CAP-2824, CAP-2866, CAP-2885
-            if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
-            {
-                string[] ObjTypeOrder = new string[7];
-                ObjTypeOrder[0] = "DIAGNOSTIC ORDER";
-                ObjTypeOrder[1] = "DME ORDER";
-                ObjTypeOrder[3] = "IMMUNIZATION ORDER";
-                ObjTypeOrder[4] = "REFERRAL ORDER";
-                ObjTypeOrder[5] = "DIAGNOSTIC_RESULT";
-                ObjTypeOrder[6] = "DME ORDER";
-                var resultYearList = wfMngr.GetListOrdersYears("ALL", ObjTypeOrder, ClientSession.UserName, flgShowAll);
-                if (resultYearList != null && resultYearList.Any())
-                {
-                    List<string> YearList = new List<string>();
-                    YearList.AddRange(resultYearList.Select(a => a.Item1).ToList());
-                    HttpContext.Current.Session["YearList"] = YearList;
-                    var selectedYear = resultYearList.FirstOrDefault();
-                    QCount[0].My_Order_Count = Convert.ToInt32(selectedYear.Item2 ?? "0");
-                }
-            }
+            
             if (PatientQ != null)
             {
                 //  pat = PatientQ.Where(a => a.Current_Owner != "UNKNOWN" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && (a.EHR_Obj_Type == "ENCOUNTER" || a.EHR_Obj_Type == "DOCUMENTATION" || a.EHR_Obj_Type == "DOCUMENT REVIEW" || a.EHR_Obj_Type == "PHONE ENCOUNTER")).ToList<MyQ>();
@@ -264,26 +245,7 @@ namespace Acurus.Capella.UI
                 PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
                 var pat = new List<MyQ>();
                 QCount = (IList<MyQueueCountDTO>)LoadMyQ["Qcount"];
-                //CAP-2824, CAP-2866, CAP-2885
-                if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
-                {
-                    string[] ObjTypeOrder = new string[7];
-                    ObjTypeOrder[0] = "DIAGNOSTIC ORDER";
-                    ObjTypeOrder[1] = "DME ORDER";
-                    ObjTypeOrder[3] = "IMMUNIZATION ORDER";
-                    ObjTypeOrder[4] = "REFERRAL ORDER";
-                    ObjTypeOrder[5] = "DIAGNOSTIC_RESULT";
-                    ObjTypeOrder[6] = "DME ORDER";
-                    var resultYearList = wfMngr.GetListOrdersYears("ALL", ObjTypeOrder, ClientSession.UserName, flgShowAll);
-                    if (resultYearList != null && resultYearList.Any())
-                    {
-                        List<string> YearList = new List<string>();
-                        YearList.AddRange(resultYearList.Select(a => a.Item1).ToList());
-                        HttpContext.Current.Session["YearList"] = YearList;
-                        var selectedYear = resultYearList.FirstOrDefault();
-                        QCount[0].My_Order_Count = Convert.ToInt32(selectedYear.Item2 ?? "0");
-                    }
-                }
+                
                 ulong Encountershowallcount = Convert.ToUInt32(LoadMyQ["EncounterShowallCount"]);
                 if (PatientQ != null)
                 {
@@ -529,11 +491,6 @@ namespace Acurus.Capella.UI
             string sShowall = extra_search.Showall ?? "";
             string sYear = extra_search.Year ?? "";
 
-            List<string> YearList = (List<string>)HttpContext.Current.Session["YearList"];
-            if (YearList != null && YearList.Any())
-            {
-                sYear = string.IsNullOrEmpty(extra_search.Year) ? YearList.Max(a => a) : extra_search.Year;
-            }
             bool bValue = false;
             if (ConfigurationSettings.AppSettings["IsShowAllMyOrdersQueue"] == "Y")
             {
@@ -557,6 +514,22 @@ namespace Acurus.Capella.UI
             ObjType[5] = "DIAGNOSTIC_RESULT";
             ObjType[6] = "DME ORDER";
             //$muthusamy 
+
+            IList<string> YearList = new List<string>();
+            if (ConfigurationSettings.AppSettings["MyOrdersQueueVersion"] == "V2")
+            {
+                YearList = (List<string>)HttpContext.Current.Session["YearList"];
+                if (YearList == null || YearList.Count == 0)
+                {
+                    YearList = new WFObjectManager().GetListOrdersYears("ALL", ObjType, ClientSession.UserName, bValue);
+                }
+                if (YearList != null && YearList.Any())
+                {
+                    HttpContext.Current.Session["YearList"] = YearList;
+                    sYear = string.IsNullOrEmpty(extra_search.Year) ? YearList.Max(a => a) : extra_search.Year;
+                }
+            }
+
             IList<MyQ> MyHome;
 
             WFObjectManager wfMngr = new WFObjectManager();

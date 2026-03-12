@@ -2282,7 +2282,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return myqList;
         }
         //CAP-2824, CAP-2866, CAP-2885
-        public IList<(string, string)> GetListOrdersYears(string FacName, string[] ObjType, string UserName, Boolean bShowAll)
+        public IList<string> GetListOrdersYears(string FacName, string[] ObjType, string UserName, Boolean bShowAll)
         {
             return new ObjectManager().GetListOrdersYears(FacName, ObjType, UserName, bShowAll);
         }
