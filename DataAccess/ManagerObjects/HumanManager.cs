@@ -2656,6 +2656,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public Human GetHumanIfDuplicateEMail(string email, string sLegalOrg)
         {
             Human humanObj = new Human();
+            if (email == null || email == "")
+            {
+                humanObj = null;
+                return humanObj;
+            }
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ICriteria crit = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("EMail", email)).Add(Expression.Eq("Legal_Org", sLegalOrg)) ;
