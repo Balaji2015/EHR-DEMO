@@ -35,6 +35,7 @@ namespace Acurus.Capella.UI
             {
                 DataSet dsReturn = new DataSet();
                 MyDataAdap = new MySqlDataAdapter(Query, ReadConnection());
+                MyDataAdap.SelectCommand.CommandTimeout = 300;
                 MyDataAdap.Fill(dsReturn);
                 return dsReturn;
             }
