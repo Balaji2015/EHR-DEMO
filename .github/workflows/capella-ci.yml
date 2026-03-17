@@ -8,49 +8,51 @@ on:
         required: true
         default: "10.0.0.4"
 
-env:
-  NUGET_PATH: "C:\\Program Files\\Nuget\\nuget.exe"
-  MSBUILD_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe"
-
 jobs:
 
 # ================= BUILD ================= #
 
   build:
-    runs-on: windows-latest
+    runs-on: self-hosted   # ✅ IMPORTANT (use your server)
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Restore NuGet
-        run: |
-          echo "Nuget script..start"
-          & "$env:NUGET_PATH" restore EHR-Capella5.0.sln
-          echo "Nuget script..Completed"
+      # ✅ Setup NuGet
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
 
+      # ✅ Restore packages
+      - name: Restore NuGet
+        run: nuget restore EHR-Capella5.0.sln
+
+      # ✅ Setup MSBuild
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      # ✅ Build
       - name: Build Solution
         run: |
-          echo "UI Building..start"
-          & "$env:MSBUILD_PATH" EHR-Capella5.0.sln `
+          msbuild EHR-Capella5.0.sln `
             /p:DeployOnBuild=true `
             /p:Configuration=Release `
             /p:DeleteExistingFiles=True `
             /p:Platform="Any CPU" `
             /p:PublishProfile=FolderProfile.pubxml
-          echo "Building..Completed"
 
+      # ✅ Upload artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: capella-build
           path: EHR-Capella5.0\
 
-# ================= DEPLOY TEST ================= #
+# ================= DEPLOY TEST 4 ================= #
 
   deploy_test_4:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
     steps:
@@ -58,21 +60,19 @@ jobs:
         with:
           name: capella-build
 
-      - name: Deploy to TEST 10.0.0.4
+      - name: Deploy TEST 10.0.0.4
         run: |
-          echo "Backup CMG MT..Start.."
-          xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
-          echo "Backup Completed"
+          echo "Backup Start"
+          xcopy /y /s /e "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
 
           echo "Deploy Start"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
-          echo "Deploy Completed"
+          xcopy /y /s /e "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
 
 # ================= DEPLOY TEST 11 ================= #
 
   deploy_test_11:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.0.0.11' }}
 
     steps:
@@ -80,19 +80,19 @@ jobs:
         with:
           name: capella-build
 
-      - name: Deploy to TEST 10.0.0.11
+      - name: Deploy TEST 10.0.0.11
         run: |
-          echo "Backup CMG MT..Start.."
-          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+          echo "Backup Start"
+          xcopy /y /s /e "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
 
           echo "Deploy Start"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+          xcopy /y /s /e "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
 
-# ================= DEPLOY PROD ================= #
+# ================= DEPLOY PROD 6 ================= #
 
   deploy_prod_6:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.1.0.6' }}
 
     steps:
@@ -103,14 +103,16 @@ jobs:
       - name: Deploy PROD 10.1.0.6
         run: |
           echo "Backup Start"
-          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+          xcopy /y /s /e "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG\"
 
           echo "Deploy Start"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+          xcopy /y /s /e "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+
+# ================= DEPLOY PROD 10 ================= #
 
   deploy_prod_10:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.1.0.10' }}
 
     steps:
@@ -120,12 +122,14 @@ jobs:
 
       - name: Deploy PROD 10.1.0.10
         run: |
-          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+          xcopy /y /s /e "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG\"
+          xcopy /y /s /e "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+
+# ================= DEPLOY PROD 11 ================= #
 
   deploy_prod_11:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.1.0.11' }}
 
     steps:
@@ -135,5 +139,5 @@ jobs:
 
       - name: Deploy PROD 10.1.0.11
         run: |
-          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+          xcopy /y /s /e "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG\"
+          xcopy /y /s /e "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
