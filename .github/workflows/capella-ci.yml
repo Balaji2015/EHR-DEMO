@@ -25,15 +25,13 @@ jobs:
 
       - name: Restore NuGet
         run: |
-          echo "Nuget script..start"
-          #& "$env:NUGET_PATH" restore EHR-Capella5.0.sln
+          echo "Nuget script..start"          
           dotnet restore EHR-Capella5.0.sln
           echo "Nuget script..Completed"
 
       - name: Build Solution
         run: |
-          echo "UI Building..start"
-          #& "$env:MSBUILD_PATH" EHR-Capella5.0.sln `
+          echo "UI Building..start"         
           dotnet build EHR-Capella5.0.sln `
             /p:DeployOnBuild=true `
             /p:Configuration=Release `
