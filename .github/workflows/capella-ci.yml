@@ -85,8 +85,8 @@ jobs:
       - name: Deploy to TEST 10.0.0.4
         run: |
           echo "Backup CMG MT..Start.."
-          mkdir "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt" -Force
-          xcopy /y /s /e /i "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
+          #mkdir "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt" -Force
+          #xcopy /y /s /e /i "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
           #xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
           echo "Backup Completed"
 
