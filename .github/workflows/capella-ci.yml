@@ -63,7 +63,7 @@ jobs:
 
   deploy_test_4:
     needs: build
-    runs-on: self-hosted
+    runs-on: windows-latest
     if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
     steps:
