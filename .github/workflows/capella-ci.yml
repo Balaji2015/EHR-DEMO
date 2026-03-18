@@ -86,12 +86,12 @@ jobs:
         shell: powershell
         run: |
           echo "Backup CMG MT..Start.."
-          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
-          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+          $sourcePath = "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
+          $backupPath = "D:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
           $deployPath = "$PWD\deploy"
           Get-PSDrive -PSProvider FileSystem
-          # Check if E: drive is actually available
-          if (Test-Path "E:\") {
+          # Check if D: drive is actually available
+          if (Test-Path "D:\") {
               echo "Backup CMG MT..Start.."
               
               # Ensure backup directory exists
@@ -108,16 +108,16 @@ jobs:
               echo "Deploy Completed"
           }
           else {
-              Write-Error "Drive E: not found. Check if the Self-Hosted runner has the drive mapped or use a different path."
+              Write-Error "Drive D: not found. Check if the Self-Hosted runner has the drive mapped or use a different path."
               exit 1
           }
           
-          #xcopy /y /s /e /i "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
+          #xcopy /y /s /e /i "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "D:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
           #xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
           echo "Backup Completed"
 
           echo "Deploy Start"
-          xcopy /y /s /e /i "deploy\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+          xcopy /y /s /e /i "deploy\*.*" "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
           echo "Deploy Completed"
 
 # ================= DEPLOY TEST 11 ================= #
