@@ -10,8 +10,8 @@ on:
 
 env:
   NUGET_PATH: "C:\\Program Files\\Nuget\\nuget.exe"
-  MSBUILD_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe"
-  PUBLISH_PATH: "E:\\Acurus_Web\\Deployee\\Builds\\Capella_Publish\\"
+  MSBUILD_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe"  
+  PUBLISH_PATH: 'F:\Acurus_Web\Deployee\builds\Capella_Publish\'
 jobs:
 
 # ================= BUILD ================= #
@@ -46,7 +46,7 @@ jobs:
            /p:Configuration=Release `
            /p:DeleteExistingFiles=True `
            /p:Platform="Any CPU" `         
-           /p:publishUrl="${{ github.workspace }}\publish" `
+           /p:publishUrl="${{ env.PUBLISH_PATH }}" `
            /p:PublishProfile=FolderProfile.pubxml
           echo "Build completed"
 
