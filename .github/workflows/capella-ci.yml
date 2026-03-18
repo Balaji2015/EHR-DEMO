@@ -48,7 +48,7 @@ jobs:
            /p:DeleteExistingFiles=True `
            /p:Platform="Any CPU" `         
            /p:publishUrl="${{ github.workspace }}\publish" `
-           /p:PublishProfile=FolderProfile.pubxml
+           /p:PublishProfile=FolderProfile.pubxml `
           echo "Build completed"
 
       - name: Upload Artifact
