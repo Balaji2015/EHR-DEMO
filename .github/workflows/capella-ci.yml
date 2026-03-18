@@ -23,29 +23,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Install NuGet
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      # Install MSBuild
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
-
       - name: Restore NuGet Packages
         run: |
-          echo "Nuget script..start"          
-          dotnet restore EHR-Capella5.0.sln
-          echo "Nuget script..Completed"
+          echo "Nuget restore start"
+          nuget restore EHR-Capella5.0.sln
+          echo "Nuget restore completed"
 
       - name: Build Solution
         run: |
-          echo "UI Building..start"         
-            msbuild EHR-Capella5.0.sln `
-            /p:DeployOnBuild=true `
-            /p:Configuration=Release `
-            /p:DeleteExistingFiles=True `
-            /p:Platform="Any CPU" `
-            /p:publishUrl=$env:PUBLISH_PATH `
-            /p:PublishProfile=FolderProfile.pubxml           
-          echo "Building..Completed"
+          echo "Build start"
+          msbuild EHR-Capella5.0.sln `
+          /p:DeployOnBuild=true `
+          /p:Configuration=Release `
+          /p:DeleteExistingFiles=True `
+          /p:Platform="Any CPU" `
+          /p:publishUrl=$env:PUBLISH_PATH `
+          /p:PublishProfile=FolderProfile.pubxml
+          echo "Build completed"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
