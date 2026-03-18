@@ -26,7 +26,8 @@ jobs:
       - name: Restore NuGet
         run: |
           echo "Nuget script..start"
-          & "$env:NUGET_PATH" restore EHR-Capella5.0.sln
+          #& "$env:NUGET_PATH" restore EHR-Capella5.0.sln
+          dotnet restore EHR-Capella5.0.sln
           echo "Nuget script..Completed"
 
       - name: Build Solution
