@@ -36,6 +36,10 @@ jobs:
           echo "Nuget restore start"
           nuget restore EHR-Capella5.0.sln
           echo "Nuget restore completed"
+          
+        # Create publish folder inside runner
+      - name: Create Publish Folder
+        run: mkdir publish
 
       - name: Build Solution
         run: |
@@ -45,7 +49,7 @@ jobs:
           /p:Configuration=Release `
           /p:DeleteExistingFiles=True `
           /p:Platform="Any CPU" `
-          /p:publishUrl=$env:PUBLISH_PATH `
+          /p:publishUrl=publish `
           /p:PublishProfile=FolderProfile.pubxml
           echo "Build completed"
 
