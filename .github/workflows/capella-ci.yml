@@ -38,13 +38,14 @@ jobs:
           echo "Nuget restore completed"
                  
       - name: Build Solution
+        shell: pwsh
         run: |
           echo "Build start"         
           msbuild EHR-Capella5.0.sln `
            /p:DeployOnBuild=true `
            /p:Configuration=Release `
            /p:DeleteExistingFiles=True `
-           /p:Platform="Any CPU" `          
+           /p:Platform="Any CPU" `         
            /p:publishUrl="${{ github.workspace }}\publish" `
            /p:PublishProfile=FolderProfile.pubxml
           echo "Build completed"
