@@ -39,9 +39,8 @@ jobs:
                  
       - name: Build Solution
         run: |
-          echo "Build start"
-          & "${{ env.MSBUILD_PATH }}" EHR-Capella5.0.sln `
-          #msbuild EHR-Capella5.0.sln `
+          echo "Build start"         
+          msbuild EHR-Capella5.0.sln `
            /p:DeployOnBuild=true `
            /p:Configuration=Release `
            /p:DeleteExistingFiles=True `
