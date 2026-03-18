@@ -49,7 +49,7 @@ jobs:
           /p:Configuration=Release `
           /p:DeleteExistingFiles=True `
           /p:Platform="Any CPU" `          
-          /p:publishUrl=publish `
+          /p:PublishUrl="${{ github.workspace }}\publish" `
           /p:PublishProfile=FolderProfile.pubxml
           echo "Build completed"
 
