@@ -104,7 +104,8 @@ jobs:
               echo "Backup Completed"
 
               echo "Deploy Start"
-              xcopy /y /s /e /i "deploy\*.*" "$sourcePath\"
+              #xcopy /y /s /e /i "deploy\*.*" "$sourcePath\";
+              xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
               echo "Deploy Completed"
           }
           else {
