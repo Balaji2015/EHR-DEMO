@@ -43,7 +43,8 @@ jobs:
             /p:Configuration=Release `
             /p:DeleteExistingFiles=True `
             /p:Platform="Any CPU" `
-            /p:PublishProfile=FolderProfile.pubxml
+            /p:PublishProfile=FolderProfile.pubxml `
+            /p:VisualStudioVersion="17.0"
           echo "Building..Completed"
 
       - name: Upload Artifact
