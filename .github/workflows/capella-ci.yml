@@ -45,12 +45,12 @@ jobs:
         run: |
           echo "Build start"
           msbuild EHR-Capella5.0.sln `
-          /p:DeployOnBuild=true `
-          /p:Configuration=Release `
-          /p:DeleteExistingFiles=True `
-          /p:Platform="Any CPU" `          
-          /p:PublishUrl="${{ github.workspace }}\publish" `
-          /p:PublishProfile=FolderProfile.pubxml
+           /p:DeployOnBuild=true `
+           /p:Configuration=Release `
+           /p:DeleteExistingFiles=True `
+           /p:Platform="Any CPU" `          
+           /p:PublishUrl=publish `
+           /p:PublishProfile=FolderProfile.pubxml
           echo "Build completed"
 
       - name: Upload Artifact
