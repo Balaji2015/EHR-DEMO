@@ -43,7 +43,7 @@ jobs:
             /p:Configuration=Release `
             /p:DeleteExistingFiles=True `
             /p:Platform="Any CPU" `
-            /p:publishUrl=$env:PUBLISH_PATH '
+            /p:publishUrl=$env:PUBLISH_PATH `
             /p:PublishProfile=FolderProfile.pubxml           
           echo "Building..Completed"
 
