@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: capella-build
-          path: EHR-Capella5.0\
+          path: UI\bin\Release\Publish\
 
 # ================= DEPLOY TEST ================= #
 
