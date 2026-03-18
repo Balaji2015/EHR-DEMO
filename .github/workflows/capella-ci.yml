@@ -11,7 +11,7 @@ on:
 env:
   NUGET_PATH: "C:\\Program Files\\Nuget\\nuget.exe"
   MSBUILD_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe"
-  PUBLISH_PATH: "E:\Acurus_Web\Deployee\Builds\Capella_Publish\"
+  PUBLISH_PATH: "E:\\Acurus_Web\\Deployee\\Builds\\Capella_Publish\\"
 jobs:
 
 # ================= BUILD ================= #
