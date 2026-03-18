@@ -64,22 +64,25 @@ jobs:
 
   deploy_test_4:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: capella-build
+          path: deploy
 
       - name: Deploy to TEST 10.0.0.4
         run: |
           echo "Backup CMG MT..Start.."
+          mkdir "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt" -Force
+          xcopy /y /s /e /i "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
           #xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
           echo "Backup Completed"
 
           echo "Deploy Start"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+          xcopy /y /s /e /i "deploy\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
           echo "Deploy Completed"
 
 # ================= DEPLOY TEST 11 ================= #
