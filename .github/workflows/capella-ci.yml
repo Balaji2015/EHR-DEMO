@@ -23,7 +23,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Restore NuGet
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet Packages
         run: |
           echo "Nuget script..start"          
           dotnet restore EHR-Capella5.0.sln
@@ -32,7 +38,7 @@ jobs:
       - name: Build Solution
         run: |
           echo "UI Building..start"         
-          dotnet build EHR-Capella5.0.sln `
+          msbuild EHR-Capella5.0.sln `
             /p:DeployOnBuild=true `
             /p:Configuration=Release `
             /p:DeleteExistingFiles=True `
