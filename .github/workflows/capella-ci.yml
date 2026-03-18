@@ -83,10 +83,13 @@ jobs:
           path: deploy
 
       - name: Deploy to TEST 10.0.0.4
+        shell: powershell
         run: |
           echo "Backup CMG MT..Start.."
           $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
           $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+          $deployPath = "$PWD\deploy"
+          Get-PSDrive -PSProvider FileSystem
           # Check if E: drive is actually available
           if (Test-Path "E:\") {
               echo "Backup CMG MT..Start.."
