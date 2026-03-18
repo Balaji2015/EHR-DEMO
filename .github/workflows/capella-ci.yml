@@ -91,7 +91,7 @@ jobs:
           echo "Backup Completed"
 
           echo "Deploy Start"
-          xcopy /y /s /e /i "deploy\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+          xcopy /y /s /e /i "deploy\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
           echo "Deploy Completed"
 
 # ================= DEPLOY TEST 11 ================= #
