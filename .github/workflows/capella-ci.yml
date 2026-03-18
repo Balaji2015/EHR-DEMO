@@ -41,14 +41,16 @@ jobs:
                  
       - name: Build Solution        
         run: |
-          echo "Build start"         
-          msbuild EHR-Capella5.0.sln `
-           /p:DeployOnBuild=true `
-           /p:Configuration=Release `
-           /p:DeleteExistingFiles=True `
-           /p:Platform="Any CPU" `         
-           /p:publishUrl="${{ github.workspace }}\publish" `
-           /p:PublishProfile=FolderProfile.pubxml `
+          msbuild  EHR-Capella5.0.sln `
+          /p:Configuration=Release `
+          /p:DeployOnBuild=true `
+          /p:PublishProfile=FolderProfile `
+          /p:WebPublishMethod=FileSystem `
+          /p:PublishUrl="${{ github.workspace }}\publish" `
+          /p:PublishProfile=FolderProfile.pubxml `
+          /p:DeleteExistingFiles=true `
+          /p:Platform="Any CPU"
+                   
           echo "Build completed"
 
       - name: Upload Artifact
@@ -56,6 +58,16 @@ jobs:
         with:
           name: capella-build
           path: ${{ github.workspace }}\publish
+
+      - name: Verify Publish Output
+        run: |
+         if (Test-Path "${{ github.workspace }}\publish") {
+          echo "Publish folder exists"
+         dir "${{ github.workspace }}\publish"
+         } else {
+         echo "Publish folder NOT created"
+         exit 1
+         }
 
 # ================= DEPLOY TEST ================= #
 
