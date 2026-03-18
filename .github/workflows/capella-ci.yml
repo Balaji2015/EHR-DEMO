@@ -33,7 +33,8 @@ jobs:
       - name: Build Solution
         run: |
           echo "UI Building..start"
-          & "$env:MSBUILD_PATH" EHR-Capella5.0.sln `
+          #& "$env:MSBUILD_PATH" EHR-Capella5.0.sln `
+          dotnet build EHR-Capella5.0.sln
             /p:DeployOnBuild=true `
             /p:Configuration=Release `
             /p:DeleteExistingFiles=True `
