@@ -45,11 +45,14 @@ jobs:
         shell: powershell -ExecutionPolicy Bypass {0}
         run: |
          echo "Build start"
-        
-          & "$env:MSBUILD_PATH" "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln" `
+         $msbuild = "$env:MSBUILD_PATH"
+         $solution = "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+         $publishPath = "$env:GITHUB_WORKSPACE\publish"
+         
+         & $msbuild $solution `
           /p:Configuration=Release `
           /p:DeployOnBuild=true `                    
-          /p:PublishUrl="$env:GITHUB_WORKSPACE\publish" `         
+          "/p:PublishUrl=$publishPath" `       
           /p:PublishProfile=FolderProfile.pubxml `
           /p:DeleteExistingFiles=true `
           /p:Platform="Any CPU"
