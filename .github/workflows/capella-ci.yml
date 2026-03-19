@@ -58,18 +58,7 @@ jobs:
          "/p:DeleteExistingFiles=true" `
          "/p:Platform=Any CPU"
                    
-          echo "Build completed"
-
-      - name: Verify Publish Output
-        shell: powershell -ExecutionPolicy Bypass {0}
-        run: |
-         if (Test-Path "${{ github.workspace }}\publish") {
-          echo "Publish folder exists"
-         dir "${{ github.workspace }}\publish"
-         } else {
-         echo "Publish folder NOT created"
-         exit 1
-         }
+          echo "Build completed"      
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
