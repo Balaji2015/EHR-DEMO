@@ -31,6 +31,7 @@ jobs:
       - name: Restore NuGet
         shell: powershell
         run: |
+          Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
           echo "Nuget restore start"
           & "$env:NUGET_PATH" restore EHR-Capella5.0.sln
           echo "Nuget restore completed"
