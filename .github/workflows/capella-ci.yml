@@ -66,13 +66,8 @@ jobs:
                    
           echo "Build completed"
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: capella-build
-          path: ${{ github.workspace }}\publish
-
       - name: Verify Publish Output
+        shell: powershell -ExecutionPolicy Bypass {0}
         run: |
          if (Test-Path "${{ github.workspace }}\publish") {
           echo "Publish folder exists"
@@ -81,6 +76,14 @@ jobs:
          echo "Publish folder NOT created"
          exit 1
          }
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: capella-build
+          path: ${{ github.workspace }}\publish
+
+     
 
 # ================= DEPLOY TEST ================= #
 
