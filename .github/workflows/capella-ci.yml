@@ -163,48 +163,129 @@ jobs:
 
   deploy_prod_6:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.1.0.6' }}
 
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: capella-build
-
-      - name: Deploy PROD 10.1.0.6
+    steps:     
+          
+      - name: Deploy to TEST 10.1.0.6
+        shell: powershell -ExecutionPolicy Bypass {0}
         run: |
-          echo "Backup Start"
-          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+          echo "Backup CMG MT..Start.."
+          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
+          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
+          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
+          $projectName = "capella_cmg_mt"
+          # Timestamp
+          $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+          $backupPath = "$backupPath\$projectName`_$timestamp"
 
-          echo "Deploy Start"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+          # Check source exists
+          if (!(Test-Path $sourcePath)) {
+           Write-Error "Source path not found: $sourcePath"
+           exit 1
+          }
+        
+          # Create backup folder
+          New-Item -ItemType Directory -Path $backupPath -Force
+          
+             echo "Backup CMG MT..Start.."                        
+              # Perform Backup
+              xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
+              echo "Backup Completed"
+
+              # Deploy
+              if (Test-Path $publishPath) {
+                 echo "Deploy Start"             
+                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
+                 echo "Deploy Completed"
+              } else {
+                Write-Error "Publish path not found: $publishPath"
+                exit 1
+                }
 
   deploy_prod_10:
     needs: build
-    runs-on: windows-latest
-    if: ${{ github.event.inputs.SERVER == '10.1.0.10' }}
+    runs-on: self-hosted
+    if: ${{ github.event.inputs.SERVER == '10.0.0.10' }}
 
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: capella-build
-
-      - name: Deploy PROD 10.1.0.10
+    steps:     
+          
+      - name: Deploy to TEST 10.1.0.10
+        shell: powershell -ExecutionPolicy Bypass {0}
         run: |
-          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+          echo "Backup CMG MT..Start.."
+          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
+          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
+          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
+          $projectName = "capella_cmg_mt"
+          # Timestamp
+          $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+          $backupPath = "$backupPath\$projectName`_$timestamp"
+
+          # Check source exists
+          if (!(Test-Path $sourcePath)) {
+           Write-Error "Source path not found: $sourcePath"
+           exit 1
+          }
+        
+          # Create backup folder
+          New-Item -ItemType Directory -Path $backupPath -Force
+          
+             echo "Backup CMG MT..Start.."                        
+              # Perform Backup
+              xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
+              echo "Backup Completed"
+
+              # Deploy
+              if (Test-Path $publishPath) {
+                 echo "Deploy Start"             
+                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
+                 echo "Deploy Completed"
+              } else {
+                Write-Error "Publish path not found: $publishPath"
+                exit 1
+                }
 
   deploy_prod_11:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.1.0.11' }}
 
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: capella-build
-
-      - name: Deploy PROD 10.1.0.11
+    steps:     
+          
+      - name: Deploy to TEST 10.1.0.11
+        shell: powershell -ExecutionPolicy Bypass {0}
         run: |
-          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+          echo "Backup CMG MT..Start.."
+          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
+          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
+          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
+          $projectName = "capella_cmg_mt"
+          # Timestamp
+          $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+          $backupPath = "$backupPath\$projectName`_$timestamp"
+
+          # Check source exists
+          if (!(Test-Path $sourcePath)) {
+           Write-Error "Source path not found: $sourcePath"
+           exit 1
+          }
+        
+          # Create backup folder
+          New-Item -ItemType Directory -Path $backupPath -Force
+          
+             echo "Backup CMG MT..Start.."                        
+              # Perform Backup
+              xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
+              echo "Backup Completed"
+
+              # Deploy
+              if (Test-Path $publishPath) {
+                 echo "Deploy Start"             
+                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
+                 echo "Deploy Completed"
+              } else {
+                Write-Error "Publish path not found: $publishPath"
+                exit 1
+                }
