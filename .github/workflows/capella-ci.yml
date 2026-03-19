@@ -50,12 +50,12 @@ jobs:
          $publishPath = "$env:GITHUB_WORKSPACE\publish"
          
          & $msbuild $solution `
-          /p:Configuration=Release `
-          /p:DeployOnBuild=true `                    
-          "/p:PublishUrl=$publishPath" `       
-          /p:PublishProfile=FolderProfile.pubxml `
-          /p:DeleteExistingFiles=true `
-          /p:Platform="Any CPU"
+         "/p:Configuration=Release" `
+         "/p:DeployOnBuild=true" `
+         "/p:PublishUrl=$publishPath" `
+         "/p:PublishProfile=FolderProfile.pubxml" `
+         "/p:DeleteExistingFiles=true" `
+         "/p:Platform=Any CPU"
                    
           echo "Build completed"
 
