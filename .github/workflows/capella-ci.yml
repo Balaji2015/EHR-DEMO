@@ -15,7 +15,7 @@ jobs:
 
 # ================= BUILD ================= #
   build:
-    runs-on: windows-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout
@@ -78,7 +78,7 @@ jobs:
 
   deploy_test_4:
     needs: build
-    runs-on: windows-latest
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
     steps:
