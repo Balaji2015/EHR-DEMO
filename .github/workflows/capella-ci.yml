@@ -10,6 +10,10 @@ on:
 
 #env:
   #PUBLISH_PATH: 'D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\'
+env:
+  NUGET_PATH: "C:\\Nuget\\nuget.exe"
+  MSBUILD_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe"
+
   
 jobs:
 
@@ -22,12 +26,18 @@ jobs:
         uses: actions/checkout@v4
 
       # Install NuGet
-      - name: Setup NuGet
-        uses: nuget/setup-nuget@v2
+      #- name: Setup NuGet
+      #  uses: nuget/setup-nuget@v2
+      - name: Restore NuGet
+        shell: powershell
+        run: |
+          echo "Nuget restore start"
+          & "$env:NUGET_PATH" restore EHR-Capella5.0.sln
+          echo "Nuget restore completed"
 
       # Install MSBuild
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+      #- name: Setup MSBuild
+      #  uses: microsoft/setup-msbuild@v2
 
       - name: Restore NuGet Packages
         run: |
