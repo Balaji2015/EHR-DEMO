@@ -33,11 +33,7 @@ jobs:
         run: |          
           echo "Nuget restore start"
           & "$env:NUGET_PATH" restore "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
-          echo "Nuget restore completed"
-
-      # Install MSBuild
-      #- name: Setup MSBuild
-      #  uses: microsoft/setup-msbuild@v2
+          echo "Nuget restore completed"      
       
         # Ensure publish folder exists
       - name: Ensure publish folder exists
@@ -48,12 +44,9 @@ jobs:
       - name: Build Solution 
         shell: powershell -ExecutionPolicy Bypass {0}
         run: |
-         #if (Test-Path "E:\") {
-         #echo "PUBLISH_PATH=D:\Acurus_Web\capella_cmg_project\capella_cmg_mt" >> $env:GITHUB_ENV
-         #} else {
-         #echo "PUBLISH_PATH=${{ github.workspace }}\publish" >> $env:GITHUB_ENV
-         #}
-          msbuild  EHR-Capella5.0.sln `
+         echo "Build start"
+        
+          & "$env:MSBUILD_PATH" "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln" `
           /p:Configuration=Release `
           /p:DeployOnBuild=true `
           /p:PublishProfile=FolderProfile `
