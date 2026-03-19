@@ -47,7 +47,8 @@ jobs:
          echo "Build start"
          $msbuild = "$env:MSBUILD_PATH"
          $solution = "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
-         $publishPath = "$env:GITHUB_WORKSPACE\publish"
+         #$publishPath = "$env:GITHUB_WORKSPACE\publish"
+          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
          
          & $msbuild $solution `
          "/p:Configuration=Release" `
