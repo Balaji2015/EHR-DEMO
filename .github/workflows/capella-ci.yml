@@ -87,7 +87,7 @@ jobs:
           $projectName = "capella_cmg_mt"
           # Timestamp
           $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-          $backupPath = "$backupRoot\$projectName`_$timestamp"
+          $backupPath = "$backupPath\$projectName`_$timestamp"
 
           # Check source exists
           if (!(Test-Path $sourcePath)) {
