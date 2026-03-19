@@ -29,40 +29,37 @@ jobs:
       #- name: Setup NuGet
       #  uses: nuget/setup-nuget@v2
       - name: Restore NuGet
-        shell: powershell
-        run: |
-          Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |          
           echo "Nuget restore start"
-          & "$env:NUGET_PATH" restore EHR-Capella5.0.sln
+          & "$env:NUGET_PATH" restore "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
           echo "Nuget restore completed"
 
       # Install MSBuild
       #- name: Setup MSBuild
       #  uses: microsoft/setup-msbuild@v2
-
-      - name: Restore NuGet Packages
-        run: |
-          echo "Nuget restore start"
-          nuget restore EHR-Capella5.0.sln
-          echo "Nuget restore completed"
-
+      
         # Ensure publish folder exists
       - name: Ensure publish folder exists
-        run: mkdir "${{ github.workspace }}\publish"
-                 
-      - name: Build Solution        
+        shell: powershell -ExecutionPolicy Bypass {0}
         run: |
-         if (Test-Path "E:\") {
-         echo "PUBLISH_PATH=D:\Acurus_Web\capella_cmg_project\capella_cmg_mt" >> $env:GITHUB_ENV
-         } else {
-         echo "PUBLISH_PATH=${{ github.workspace }}\publish" >> $env:GITHUB_ENV
-         }
+         New-Item -ItemType Directory -Force -Path "$env:GITHUB_WORKSPACE\publish"
+                 
+      - name: Build Solution 
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |
+         #if (Test-Path "E:\") {
+         #echo "PUBLISH_PATH=D:\Acurus_Web\capella_cmg_project\capella_cmg_mt" >> $env:GITHUB_ENV
+         #} else {
+         #echo "PUBLISH_PATH=${{ github.workspace }}\publish" >> $env:GITHUB_ENV
+         #}
           msbuild  EHR-Capella5.0.sln `
           /p:Configuration=Release `
           /p:DeployOnBuild=true `
           /p:PublishProfile=FolderProfile `
           /p:WebPublishMethod=FileSystem `
-          /p:PublishUrl="PUBLISH_PATH" `
+          /p:PublishUrl="$env:GITHUB_WORKSPACE\publish" `
+          #/p:PublishUrl="PUBLISH_PATH" `
           /p:PublishProfile=FolderProfile.pubxml `
           /p:DeleteExistingFiles=true `
           /p:Platform="Any CPU"
