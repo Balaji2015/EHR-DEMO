@@ -68,7 +68,7 @@ jobs:
 
      
 
-# ================= DEPLOY TEST ================= #
+# ================= DEPLOY TEST 4================= #
 
   deploy_test_4:
     needs: build
@@ -159,7 +159,7 @@ jobs:
                 exit 1
                 }
 
-# ================= DEPLOY PROD ================= #
+# ================= DEPLOY PROD 6================= #
 
   deploy_prod_6:
     needs: build
@@ -203,7 +203,7 @@ jobs:
                 Write-Error "Publish path not found: $publishPath"
                 exit 1
                 }
-
+# ================= DEPLOY TEST 10 ================= #
   deploy_prod_10:
     needs: build
     runs-on: self-hosted
@@ -246,7 +246,7 @@ jobs:
                 Write-Error "Publish path not found: $publishPath"
                 exit 1
                 }
-
+# ================= DEPLOY TEST 11 ================= #
   deploy_prod_11:
     needs: build
     runs-on: self-hosted
