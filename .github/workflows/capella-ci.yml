@@ -72,7 +72,7 @@ jobs:
 
   deploy_test_4:
     needs: build
-    runs-on: [self-hosted, TEST_RUNNER_PC]
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
     steps:     
@@ -118,7 +118,7 @@ jobs:
 
   deploy_test_11:
     needs: build
-    runs-on: [self-hosted, TEST_RUNNER_PC]
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.0.0.11' }}
 
     steps:     
@@ -163,7 +163,7 @@ jobs:
 
   deploy_prod_6:
     needs: build
-    runs-on: [self-hosted, TEST_RUNNER_PC]
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.1.0.6' }}
 
     steps:     
@@ -206,7 +206,7 @@ jobs:
 # ================= DEPLOY TEST 10 ================= #
   deploy_prod_10:
     needs: build
-    runs-on: [self-hosted, TEST_RUNNER_PC]
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.1.0.10' }}
 
     steps:     
@@ -249,7 +249,7 @@ jobs:
 # ================= DEPLOY TEST 11 ================= #
   deploy_prod_11:
     needs: build
-    runs-on: [self-hosted, TEST_RUNNER_PC]
+    runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.1.0.11' }}
 
     steps:     
