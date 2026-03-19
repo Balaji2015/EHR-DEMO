@@ -75,51 +75,35 @@ jobs:
     runs-on: self-hosted
     if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: capella-build
-          path: deploy
-
+    steps:     
+          
       - name: Deploy to TEST 10.0.0.4
-        shell: powershell
+        shell: powershell -ExecutionPolicy Bypass {0}
         run: |
           echo "Backup CMG MT..Start.."
           $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
           $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
-          $deployPath = "$PWD\deploy"
-          Get-PSDrive -PSProvider FileSystem
-          # Check if E: drive is actually available
-          if (Test-Path "E:\") {
-              echo "Backup CMG MT..Start.."
-              
-              # Ensure backup directory exists
-              if (!(Test-Path $backupPath)) { 
-                  New-Item -ItemType Directory -Path $backupPath -Force 
-              }
+          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
 
+            # Ensure backup folder exists
+              if (!(Test-Path $backupPath)) {
+                New-Item -ItemType Directory -Path $backupPath -Force
+              }
+              echo "Backup CMG MT..Start.."                        
               # Perform Backup
               xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
               echo "Backup Completed"
 
-              echo "Deploy Start"
-              #xcopy /y /s /e /i "deploy\*.*" "$sourcePath\";
-              xcopy /y /s "EHR-Capella5.0\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
-              echo "Deploy Completed"
-          }
-          else {
-              Write-Error "Drive D: not found. Check if the Self-Hosted runner has the drive mapped or use a different path."
-              exit 1
-          }
-          
-          #xcopy /y /s /e /i "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "D:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
-          #xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
-          #echo "Backup Completed"
-
-          #echo "Deploy Start"
-          #xcopy /y /s /e /i "deploy\*.*" "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
-          #xcopy /y /s "EHR-Capella5.0\*.*" "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
-          #echo "Deploy Completed"
+              # Deploy
+              if (Test-Path $publishPath) {
+                 echo "Deploy Start"             
+                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
+                 echo "Deploy Completed"
+              } else {
+                Write-Error "Publish path not found: $publishPath"
+                exit 1
+                }
+                                         
 
 # ================= DEPLOY TEST 11 ================= #
 
