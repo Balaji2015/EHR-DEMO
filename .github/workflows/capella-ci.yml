@@ -95,12 +95,12 @@ jobs:
         shell: powershell
         run: |
           echo "Backup CMG MT..Start.."
-          $sourcePath = "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
-          $backupPath = "D:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
+          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
           $deployPath = "$PWD\deploy"
           Get-PSDrive -PSProvider FileSystem
-          # Check if D: drive is actually available
-          if (Test-Path "D:\") {
+          # Check if E: drive is actually available
+          if (Test-Path "E:\") {
               echo "Backup CMG MT..Start.."
               
               # Ensure backup directory exists
@@ -114,7 +114,7 @@ jobs:
 
               echo "Deploy Start"
               #xcopy /y /s /e /i "deploy\*.*" "$sourcePath\";
-              xcopy /y /s "EHR-Capella5.0\*.*" "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+              xcopy /y /s "EHR-Capella5.0\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
               echo "Deploy Completed"
           }
           else {
@@ -124,12 +124,12 @@ jobs:
           
           #xcopy /y /s /e /i "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "D:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt\"
           #xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
-          echo "Backup Completed"
+          #echo "Backup Completed"
 
-          echo "Deploy Start"
-          xcopy /y /s /e /i "deploy\*.*" "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+          #echo "Deploy Start"
+          #xcopy /y /s /e /i "deploy\*.*" "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
           #xcopy /y /s "EHR-Capella5.0\*.*" "D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
-          echo "Deploy Completed"
+          #echo "Deploy Completed"
 
 # ================= DEPLOY TEST 11 ================= #
 
