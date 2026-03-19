@@ -9,7 +9,7 @@ on:
         default: "10.0.0.4"
 
 env:
-  PUBLISH_PATH: 'F:\Acurus_Web\Deployee\builds\Capella_Publish\'
+  PUBLISH_PATH: 'D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\'
   
 jobs:
 
