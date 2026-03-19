@@ -82,14 +82,23 @@ jobs:
         run: |
           echo "Backup CMG MT..Start.."
           $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
-          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
           $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
+          $projectName = "capella_cmg_mt"
+          # Timestamp
+          $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+          $backupPath = "$backupRoot\$projectName`_$timestamp"
 
-            # Ensure backup folder exists
-              if (!(Test-Path $backupPath)) {
-                New-Item -ItemType Directory -Path $backupPath -Force
-              }
-              echo "Backup CMG MT..Start.."                        
+          # Check source exists
+          if (!(Test-Path $sourcePath)) {
+           Write-Error "Source path not found: $sourcePath"
+           exit 1
+          }
+        
+          # Create backup folder
+          New-Item -ItemType Directory -Path $backupPath -Force
+          
+             echo "Backup CMG MT..Start.."                        
               # Perform Backup
               xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
               echo "Backup Completed"
