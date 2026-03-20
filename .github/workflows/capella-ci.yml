@@ -6,7 +6,7 @@ on:
       SERVER:
         description: "Target Server IP"
         required: true
-        default: "10.0.0.4"
+        default: "10.0.0.4,10.0.0.11"
 
 #env:
   #PUBLISH_PATH: 'D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\'
