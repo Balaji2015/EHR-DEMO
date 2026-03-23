@@ -6,20 +6,26 @@ on:
       SERVER:
         description: "Target Server IP"
         required: true
+        type: choice
         default: "10.0.0.4"
+        options:
+          - "10.0.0.4"
+          - "10.0.0.11"
+          - "10.1.0.6"
+          - "10.1.0.10"
+          - "10.1.0.11"
 
 #env:
   #PUBLISH_PATH: 'D:\Acurus_Web\capella_cmg_project\capella_cmg_mt\'
 env:
-  NUGET_PATH: "C:\\Nuget\\nuget.exe"
+  NUGET_PATH: "C:\\Program Files\\Nuget\\nuget.exe"
   MSBUILD_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe"
 
-  
 jobs:
 
-# ================= BUILD ================= #
-  build:
-    runs-on: self-hosted
+# ================= BUILD TEST 10.0.0.4================= #
+  BUILD_JOB_TEST_4:
+    runs-on: [self-hosted, TEST_RUNNER_PC]
 
     steps:
       - name: Checkout
@@ -33,14 +39,12 @@ jobs:
         run: |          
           echo "Nuget restore start"
           & "$env:NUGET_PATH" restore "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "NuGet restore failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
           echo "Nuget restore completed"      
       
-        # Ensure publish folder exists
-      - name: Ensure publish folder exists
-        shell: powershell -ExecutionPolicy Bypass {0}
-        run: |
-         New-Item -ItemType Directory -Force -Path "$env:GITHUB_WORKSPACE\publish"
-                 
       - name: Build Solution 
         shell: powershell -ExecutionPolicy Bypass {0}
         run: |
@@ -48,7 +52,7 @@ jobs:
          $msbuild = "$env:MSBUILD_PATH"
          $solution = "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
          #$publishPath = "$env:GITHUB_WORKSPACE\publish"
-          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
          
          & $msbuild $solution `
          "/p:Configuration=Release" `
@@ -58,21 +62,207 @@ jobs:
          "/p:DeleteExistingFiles=true" `
          "/p:Platform=Any CPU"
                    
-          echo "Build completed"      
+          echo "Build completed"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: capella-build
-          path: ${{ github.workspace }}\publish
+          path: F:\Acurus_Web\Deployee\builds\Capella_publish
 
-     
+# ================= BUILD TEST 10.0.0.11================= #
+  BUILD_JOB_TEST_11:
+    runs-on: [self-hosted, IIS-2022-Testing-2]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install NuGet
+      #- name: Setup NuGet
+      #  uses: nuget/setup-nuget@v2
+      - name: Restore NuGet
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |          
+          echo "Nuget restore start"
+          & "$env:NUGET_PATH" restore "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "NuGet restore failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+          echo "Nuget restore completed"      
+      
+      - name: Build Solution 
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |
+         echo "Build start"
+         $msbuild = "$env:MSBUILD_PATH"
+         $solution = "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+         #$publishPath = "$env:GITHUB_WORKSPACE\publish"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
+         
+         & $msbuild $solution `
+         "/p:Configuration=Release" `
+         "/p:DeployOnBuild=true" `
+         "/p:PublishUrl=$publishPath" `
+         "/p:PublishProfile=FolderProfile.pubxml" `
+         "/p:DeleteExistingFiles=true" `
+         "/p:Platform=Any CPU"
+                   
+          echo "Build completed"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: capella-build
+          path: F:\Acurus_Web\Deployee\builds\Capella_publish
+
+# ================= BUILD PRO 10.1.0.6================= #
+  BUILD_JOB_PROD_6:
+    runs-on: [self-hosted, Prod-web-server-1-2022]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install NuGet
+      #- name: Setup NuGet
+      #  uses: nuget/setup-nuget@v2
+      - name: Restore NuGet
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |          
+          echo "Nuget restore start"
+          & "$env:NUGET_PATH" restore "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "NuGet restore failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+          echo "Nuget restore completed"      
+      
+      - name: Build Solution 
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |
+         echo "Build start"
+         $msbuild = "$env:MSBUILD_PATH"
+         $solution = "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+         #$publishPath = "$env:GITHUB_WORKSPACE\publish"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
+         
+         & $msbuild $solution `
+         "/p:Configuration=Release" `
+         "/p:DeployOnBuild=true" `
+         "/p:PublishUrl=$publishPath" `
+         "/p:PublishProfile=FolderProfile.pubxml" `
+         "/p:DeleteExistingFiles=true" `
+         "/p:Platform=Any CPU"
+                   
+          echo "Build completed"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: capella-build
+          path: F:\Acurus_Web\Deployee\builds\Capella_publish
+
+# ================= BUILD PRO 10.1.0.10================= #
+  BUILD_JOB_PROD_10:
+    runs-on: [self-hosted, Prod-web-server-2-2022]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install NuGet
+      #- name: Setup NuGet
+      #  uses: nuget/setup-nuget@v2
+      - name: Restore NuGet
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |          
+          echo "Nuget restore start"
+          & "$env:NUGET_PATH" restore "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "NuGet restore failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+          echo "Nuget restore completed"      
+      
+      - name: Build Solution 
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |
+         echo "Build start"
+         $msbuild = "$env:MSBUILD_PATH"
+         $solution = "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+         #$publishPath = "$env:GITHUB_WORKSPACE\publish"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
+         
+         & $msbuild $solution `
+         "/p:Configuration=Release" `
+         "/p:DeployOnBuild=true" `
+         "/p:PublishUrl=$publishPath" `
+         "/p:PublishProfile=FolderProfile.pubxml" `
+         "/p:DeleteExistingFiles=true" `
+         "/p:Platform=Any CPU"
+                   
+          echo "Build completed"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: capella-build
+          path: F:\Acurus_Web\Deployee\builds\Capella_publish
+
+# ================= BUILD PRO 10.1.0.11================= #
+  BUILD_JOB_PROD_11:
+    runs-on: [self-hosted, Prod-web-server]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install NuGet
+      #- name: Setup NuGet
+      #  uses: nuget/setup-nuget@v2
+      - name: Restore NuGet
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |          
+          echo "Nuget restore start"
+          & "$env:NUGET_PATH" restore "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "NuGet restore failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+          echo "Nuget restore completed"      
+      
+      - name: Build Solution 
+        shell: powershell -ExecutionPolicy Bypass {0}
+        run: |
+         echo "Build start"
+         $msbuild = "$env:MSBUILD_PATH"
+         $solution = "$env:GITHUB_WORKSPACE\EHR-Capella5.0.sln"
+         #$publishPath = "$env:GITHUB_WORKSPACE\publish"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
+         
+         & $msbuild $solution `
+         "/p:Configuration=Release" `
+         "/p:DeployOnBuild=true" `
+         "/p:PublishUrl=$publishPath" `
+         "/p:PublishProfile=FolderProfile.pubxml" `
+         "/p:DeleteExistingFiles=true" `
+         "/p:Platform=Any CPU"
+                   
+          echo "Build completed"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: capella-build
+          path: F:\Acurus_Web\Deployee\builds\Capella_publish
 
 # ================= DEPLOY TEST 4================= #
 
   deploy_test_4:
     needs: build
-    runs-on: self-hosted
+    runs-on: [self-hosted, TEST_RUNNER_PC]
     if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
     steps:     
@@ -81,9 +271,12 @@ jobs:
         shell: powershell -ExecutionPolicy Bypass {0}
         run: |
           echo "Backup CMG MT..Start.."
-          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
-          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
-          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
+          #Actual 10.0.0.4 sourcepath
+          #$sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
+          #Duplicate 10.0.0.4 sourcepath
+          $sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt1"
+          $backupPath = "F:\Acurus_Web\Deployee\Backup-do not delete\Git"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
           $projectName = "capella_cmg_mt"
           # Timestamp
           $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
@@ -100,36 +293,47 @@ jobs:
           
              echo "Backup CMG MT..Start.."                        
               # Perform Backup
-              xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
+              robocopy "$sourcePath" "$backupPath" /E /COPY:DAT /R:3 /W:5
+              if ($LASTEXITCODE -ge 8) {
+                Write-Error "Backup failed with exit code $LASTEXITCODE"
+                exit $LASTEXITCODE
+              }
               echo "Backup Completed"
 
               # Deploy
               if (Test-Path $publishPath) {
-                 echo "Deploy Start"             
-                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
+                 echo "Deploy Start"
+                 robocopy "$publishPath" "$sourcePath" /E /COPY:DAT /R:3 /W:5
+                 if ($LASTEXITCODE -ge 8) {
+                   Write-Error "Deploy failed with exit code $LASTEXITCODE"
+                   exit $LASTEXITCODE
+                 }
                  echo "Deploy Completed"
               } else {
                 Write-Error "Publish path not found: $publishPath"
                 exit 1
-                }
+              }
                                          
 
 # ================= DEPLOY TEST 11 ================= #
 
   deploy_test_11:
     needs: build
-    runs-on: self-hosted
+    runs-on: [self-hosted, IS-2022-Testing-2]
     if: ${{ github.event.inputs.SERVER == '10.0.0.11' }}
 
     steps:     
-          
+      
       - name: Deploy to TEST 10.0.0.11
         shell: powershell -ExecutionPolicy Bypass {0}
         run: |
           echo "Backup CMG MT..Start.."
-          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
-          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
-          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
+          #Actual 10.0.0.11 sourcepath
+          #$sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
+          #Duplicate 10.0.0.11 sourcepath
+          $sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt1"
+          $backupPath = "F:\Acurus_Web\Deployee\Backup-do not delete\Git"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
           $projectName = "capella_cmg_mt"
           # Timestamp
           $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
@@ -137,45 +341,56 @@ jobs:
 
           # Check source exists
           if (!(Test-Path $sourcePath)) {
-           Write-Error "Source path not found: $sourcePath"
-           exit 1
+            Write-Error "Source path not found: $sourcePath"
+            exit 1
           }
-        
+
           # Create backup folder
           New-Item -ItemType Directory -Path $backupPath -Force
-          
-             echo "Backup CMG MT..Start.."                        
-              # Perform Backup
-              xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
-              echo "Backup Completed"
 
-              # Deploy
-              if (Test-Path $publishPath) {
-                 echo "Deploy Start"             
-                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
-                 echo "Deploy Completed"
-              } else {
-                Write-Error "Publish path not found: $publishPath"
-                exit 1
-                }
+          echo "Backup CMG MT..Start.."
+          # Perform Backup
+          robocopy "$sourcePath" "$backupPath" /E /COPY:DAT /R:3 /W:5
+          if ($LASTEXITCODE -ge 8) {
+            Write-Error "Backup failed with exit code $LASTEXITCODE."
+            exit $LASTEXITCODE
+          }
+          echo "Backup Completed"
+
+          # Deploy
+          if (Test-Path $publishPath) {
+            echo "Deploy Start"
+            robocopy "$publishPath" "$sourcePath" /E /COPY:DAT /R:3 /W:5
+            if ($LASTEXITCODE -ge 8) {
+              Write-Error "Deploy failed with exit code $LASTEXITCODE."
+              exit $LASTEXITCODE
+            }
+            echo "Deploy Completed"
+          } else {
+            Write-Error "Publish path not found: $publishPath"
+            exit 1
+          }
 
 # ================= DEPLOY PROD 6================= #
 
   deploy_prod_6:
     needs: build
-    runs-on: self-hosted
+    runs-on: [self-hosted, Prod-web-server-1-2022]
     if: ${{ github.event.inputs.SERVER == '10.1.0.6' }}
 
     steps:     
           
-      - name: Deploy to TEST 10.1.0.6
+      - name: Deploy to PROD 10.1.0.6
         shell: powershell -ExecutionPolicy Bypass {0}
         run: |
-          echo "Backup CMG MT..Start.."
-          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
-          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
-          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
-          $projectName = "capella_cmg_mt"
+          echo "Backup CMG ..Start.."
+          #Actual 10.1.0.6 sourcepath
+          #$sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr"
+          #Duplicate 10.1.0.6 sourcepath
+          $sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr1"
+          $backupPath = "F:\Acurus_Web\Deployee\Backup-do not delete\Git"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
+          $projectName = "capella_cmg"
           # Timestamp
           $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
           $backupPath = "$backupPath\$projectName`_$timestamp"
@@ -189,79 +404,102 @@ jobs:
           # Create backup folder
           New-Item -ItemType Directory -Path $backupPath -Force
           
-             echo "Backup CMG MT..Start.."                        
-              # Perform Backup
-              xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
-              echo "Backup Completed"
+          echo "Backup CMG ..Start.."
+          # Perform Backup
+          robocopy "$sourcePath" "$backupPath" /E /COPY:DAT /R:3 /W:5
+          if ($LASTEXITCODE -ge 8) {
+            Write-Error "Backup failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+          echo "Backup Completed"
 
-              # Deploy
-              if (Test-Path $publishPath) {
-                 echo "Deploy Start"             
-                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
-                 echo "Deploy Completed"
-              } else {
-                Write-Error "Publish path not found: $publishPath"
-                exit 1
-                }
+          # Deploy
+          if (Test-Path $publishPath) {
+            echo "Deploy Start"
+            robocopy "$publishPath" "$sourcePath" /E /COPY:DAT /R:3 /W:5
+            if ($LASTEXITCODE -ge 8) {
+              Write-Error "Deploy failed with exit code $LASTEXITCODE"
+              exit $LASTEXITCODE
+            }
+            echo "Deploy Completed"
+          } else {
+            Write-Error "Publish path not found: $publishPath"
+            exit 1
+          }
 # ================= DEPLOY PROD 10 ================= #
+
   deploy_prod_10:
     needs: build
-    runs-on: self-hosted
+    runs-on: [self-hosted, Prod-web-server-2-2022]
     if: ${{ github.event.inputs.SERVER == '10.1.0.10' }}
 
     steps:     
           
-      - name: Deploy to TEST 10.1.0.10
+      - name: Deploy to PROD 10.1.0.10
         shell: powershell -ExecutionPolicy Bypass {0}
         run: |
-          echo "Backup CMG MT..Start.."
-          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
-          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
-          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
-          $projectName = "capella_cmg_mt"
+          echo "Backup CMG ..Start.."
+          #Actual 10.1.0.10 sourcepath
+          #$sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr"
+          #Duplicate 10.1.0.10 sourcepath
+          $sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr1"
+          $backupPath = "F:\Acurus_Web\Deployee\Backup-do not delete\Git"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
+          $projectName = "capella_cmg"
           # Timestamp
           $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
           $backupPath = "$backupPath\$projectName`_$timestamp"
 
           # Check source exists
           if (!(Test-Path $sourcePath)) {
-           Write-Error "Source path not found: $sourcePath"
-           exit 1
+            Write-Error "Source path not found: $sourcePath"
+            exit 1
           }
-        
+
           # Create backup folder
           New-Item -ItemType Directory -Path $backupPath -Force
-          
-             echo "Backup CMG MT..Start.."                        
-              # Perform Backup
-              xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
-              echo "Backup Completed"
 
-              # Deploy
-              if (Test-Path $publishPath) {
-                 echo "Deploy Start"             
-                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
-                 echo "Deploy Completed"
-              } else {
-                Write-Error "Publish path not found: $publishPath"
-                exit 1
-                }
+          echo "Backup CMG ..Start.."
+          # Perform Backup
+          robocopy "$sourcePath" "$backupPath" /E /COPY:DAT /R:3 /W:5
+          if ($LASTEXITCODE -ge 8) {
+            Write-Error "Backup failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+          echo "Backup Completed"
+
+          # Deploy
+          if (Test-Path $publishPath) {
+            echo "Deploy Start"
+            robocopy "$publishPath" "$sourcePath" /E /COPY:DAT /R:3 /W:5
+            if ($LASTEXITCODE -ge 8) {
+              Write-Error "Deploy failed with exit code $LASTEXITCODE"
+              exit $LASTEXITCODE
+            }
+            echo "Deploy Completed"
+          } else {
+            Write-Error "Publish path not found: $publishPath"
+            exit 1
+          }
+
 # ================= DEPLOY PROD 11 ================= #
+
   deploy_prod_11:
     needs: build
-    runs-on: self-hosted
+    runs-on: [self-hosted, Prod-web-server]
     if: ${{ github.event.inputs.SERVER == '10.1.0.11' }}
-
     steps:     
-          
-      - name: Deploy to TEST 10.1.0.11
+      - name: Deploy to PROD 10.1.0.11
         shell: powershell -ExecutionPolicy Bypass {0}
         run: |
-          echo "Backup CMG MT..Start.."
-          $sourcePath = "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt"
-          $backupPath = "E:\Acurus_Web\Deployee\Backup-do not delete\Git"
-          $publishPath = "D:\Acurus_Web\Deployee\builds\Capella_publish"
-          $projectName = "capella_cmg_mt"
+          echo "Backup CMG ..Start.."
+          #Actual 10.1.0.11 sourcepath
+          #$sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr"
+          #Duplicate 10.1.0.11 sourcepath
+          $sourcePath = "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr1"
+          $backupPath = "F:\Acurus_Web\Deployee\Backup-do not delete\Git"
+          $publishPath = "F:\Acurus_Web\Deployee\builds\Capella_publish"
+          $projectName = "capella_cmg"
           # Timestamp
           $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
           $backupPath = "$backupPath\$projectName`_$timestamp"
@@ -275,17 +513,25 @@ jobs:
           # Create backup folder
           New-Item -ItemType Directory -Path $backupPath -Force
           
-             echo "Backup CMG MT..Start.."                        
-              # Perform Backup
-              xcopy /y /s /e /i "$sourcePath\*.*" "$backupPath\"
-              echo "Backup Completed"
+          echo "Backup CMG ..Start.."
+          # Perform Backup
+          robocopy "$sourcePath" "$backupPath" /E /COPY:DAT /R:3 /W:5
+          if ($LASTEXITCODE -ge 8) {
+            Write-Error "Backup failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+          echo "Backup Completed"
 
-              # Deploy
-              if (Test-Path $publishPath) {
-                 echo "Deploy Start"             
-                 xcopy /y /s /e /i "$publishPath\*.*" "$sourcePath\"
-                 echo "Deploy Completed"
-              } else {
-                Write-Error "Publish path not found: $publishPath"
-                exit 1
-                }
+          # Deploy
+          if (Test-Path $publishPath) {
+            echo "Deploy Start"
+            robocopy "$publishPath" "$sourcePath" /E /COPY:DAT /R:3 /W:5
+            if ($LASTEXITCODE -ge 8) {
+              Write-Error "Deploy failed with exit code $LASTEXITCODE"
+              exit $LASTEXITCODE
+            }
+            echo "Deploy Completed"
+          } else {
+            Write-Error "Publish path not found: $publishPath"
+            exit 1
+          }
