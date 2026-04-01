@@ -26,7 +26,7 @@ jobs:
 # ================= DEPLOY TEST 4 ================= #
 
   deploy_test_4:
-    runs-on: [self-hosted, IIS-2022-Testing-1]
+    runs-on: [self-hosted, TEST_RUNNER_PC]
     if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
     steps:
